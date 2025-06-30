@@ -27,7 +27,7 @@ class ObjectsTemplate:
 
     def to_dict(self):
         return {
-            "def": self.definition,         #! variable name changed for JSON serialization
+            "def": self.definition,             #! variable name changed for JSON serialization
             "passability": self.passability,
             "actionability": self.actionability,
             "allowed_landscapes": self.allowed_landscapes,
