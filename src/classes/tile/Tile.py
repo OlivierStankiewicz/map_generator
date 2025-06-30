@@ -19,7 +19,7 @@ class Tile:
         self.river_type = 0
         self.river_sprite =  0
         self.road_type = 0
-        self.road_type = 0
+        self.road_sprite = 0
         self.flags = Flags()
 
     def __init__(self, terrain_type: TerrainType, terrain_sprite: int, river_type: int, river_sprite: int, road_type: int, road_sprite: int, flags: Flags):
@@ -28,7 +28,7 @@ class Tile:
         self.river_type = river_type
         self.river_sprite =  river_sprite
         self.road_type = road_type
-        self.road_type = road_sprite
+        self.road_sprite = road_sprite
         self.flags = flags
 
     def to_dict(self):

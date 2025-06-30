@@ -1,69 +1,43 @@
-class Alignment:
-    def __init__(self, castle=False, rampart=False, tower=False, inferno=False, necropolis=False,
-                 dungeon=False, stronghold=False, fortress=False, conflux=False,
-                 padding_9=False, padding_10=False, padding_11=False, padding_12=False,
-                 padding_13=False, padding_14=False, padding_15=False):
-        self.castle = castle
-        self.rampart = rampart
-        self.tower = tower
-        self.inferno = inferno
-        self.necropolis = necropolis
-        self.dungeon = dungeon
-        self.stronghold = stronghold
-        self.fortress = fortress
-        self.conflux = conflux
-        self.padding_9 = padding_9
-        self.padding_10 = padding_10
-        self.padding_11 = padding_11
-        self.padding_12 = padding_12
-        self.padding_13 = padding_13
-        self.padding_14 = padding_14
-        self.padding_15 = padding_15
+from AllowedAlignments import AllowedAlignments
+from StartingHero import StartingHero
 
 class Player:
     def __init__(self):
         self.can_be_human = 0
-
-    def __init__(self, can_be_human=0, can_be_computer=0, behavior=0, has_customized_alignments=216,
-                 allowed_alignments=None, allow_random_alignment=0, main_town=None,
-                 has_random_heroes=0, starting_hero=None, num_nonspecific_placeholder_heroes=0, heroes=None):
-        self.can_be_human = 0
         self.can_be_computer = 0
         self.behavior = 0
-        self.has_customized_alignments = 216
+        self.has_customized_alignments= 76
+        self.allowed_alignments= AllowedAlignments()
+        self.allow_random_alignment= 0
+        self.has_random_heroes= 0
+        self.starting_hero= StartingHero()
+        self.num_nonspecific_placeholder_heroes= 0
+        self.heroes= []
+
+    def __init__(self, can_be_human: int, can_be_computer: int, behavior: int, has_customized_alignments: int,
+                 allowed_alignments: AllowedAlignments, allow_random_alignment: int, has_random_heroes: int,
+                 starting_hero: StartingHero, num_nonspecific_placeholder_heroes: int, heroes: list):
+        self.can_be_human = can_be_human
+        self.can_be_computer = can_be_computer
+        self.behavior = behavior
+        self.has_customized_alignments = has_customized_alignments
         self.allowed_alignments = allowed_alignments
+        self.allow_random_alignment = allow_random_alignment
+        self.has_random_heroes = has_random_heroes
+        self.starting_hero = starting_hero
+        self.num_nonspecific_placeholder_heroes = num_nonspecific_placeholder_heroes
+        self.heroes = heroes
 
-
-
-# {
-#       "can_be_human": 0,
-#       "can_be_computer": 0,
-#       "behavior": 0, // Random
-#       "has_customized_alignments": 216,
-#       "allowed_alignments": {
-#         "castle": false,
-#         "rampart": false,
-#         "tower": false,
-#         "inferno": false,
-#         "necropolis": false,
-#         "dungeon": false,
-#         "stronghold": false,
-#         "fortress": false,
-#         "conflux": false,
-#         "padding_9": false,
-#         "padding_10": false,
-#         "padding_11": false,
-#         "padding_12": false,
-#         "padding_13": false,
-#         "padding_14": false,
-#         "padding_15": false
-#       },
-#       "allow_random_alignment": 0,
-#       // "main_town" field is missing because the player doesn't have a designated main town.
-#       "has_random_heroes": 0,
-#       "starting_hero": {
-#         "type": 255 // (None)
-#       },
-#       "num_nonspecific_placeholder_heroes": 0,
-#       "heroes": []
-# },
+    def to_dict(self):
+        return {
+            "can_be_human": self.can_be_human,
+            "can_be_computer": self.can_be_computer,
+            "behavior": self.behavior,
+            "has_customized_alignments": self.has_customized_alignments,
+            "allowed_alignments": self.allowed_alignments.to_dict(),
+            "allow_random_alignment": self.allow_random_alignment,
+            "has_random_heroes": self.has_random_heroes,
+            "starting_hero": self.starting_hero.to_dict(),
+            "num_nonspecific_placeholder_heroes": self.num_nonspecific_placeholder_heroes,
+            "heroes": [hero for hero in self.heroes]
+        }
