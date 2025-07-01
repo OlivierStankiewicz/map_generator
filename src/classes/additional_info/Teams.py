@@ -1,5 +1,6 @@
 class Teams:
-    def __init__(self):
+    @classmethod
+    def from_default(self):
        self.num_teams = 0
 
     def __init__(self, num_teams: int):

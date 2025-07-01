@@ -1,16 +1,17 @@
-from AllowedAlignments import AllowedAlignments
-from StartingHero import StartingHero
+from classes.player.AllowedAlignments import AllowedAlignments
+from classes.player.StartingHero import StartingHero
 
 class Player:
-    def __init__(self):
+    @classmethod
+    def from_default(self):
         self.can_be_human = 0
         self.can_be_computer = 0
         self.behavior = 0
         self.has_customized_alignments= 76
-        self.allowed_alignments= AllowedAlignments()
+        self.allowed_alignments= AllowedAlignments.from_default()
         self.allow_random_alignment= 0
         self.has_random_heroes= 0
-        self.starting_hero= StartingHero()
+        self.starting_hero= StartingHero.from_default()
         self.num_nonspecific_placeholder_heroes= 0
         self.heroes= []
 

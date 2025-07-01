@@ -1,5 +1,6 @@
 class AllowedAlignments:
-    def __init__(self):
+    @classmethod
+    def from_default(self):
         self.castle = False
         self.rampart = False
         self.tower = False

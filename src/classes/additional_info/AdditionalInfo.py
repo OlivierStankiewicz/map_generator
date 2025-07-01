@@ -1,23 +1,24 @@
-from .VictoryCondition import VictoryCondition
-from .LossCondition import LossCondition
-from .Teams import Teams
-from .HeroesAvailability import HeroesAvailability
-from .DisabledArtifacts import DisabledArtifacts
-from .DisabledSpells import DisabledSpells
-from .DisabledSkills import DisabledSkills
+from classes.additional_info.VictoryCondition import VictoryCondition
+from classes.additional_info.LossCondition import LossCondition
+from classes.additional_info.Teams import Teams
+from classes.additional_info.HeroesAvailability import HeroesAvailability
+from classes.additional_info.DisabledArtifacts import DisabledArtifacts
+from classes.additional_info.DisabledSpells import DisabledSpells
+from classes.additional_info.DisabledSkills import DisabledSkills
 
 class AdditionalInfo:
-    def __init__(self):
-        self.victory_condition = VictoryCondition()
-        self.loss_condition = LossCondition()
-        self.teams = Teams()
-        self.heroes_availability = HeroesAvailability()
+    @classmethod
+    def from_default(self):
+        self.victory_condition = VictoryCondition.from_default()
+        self.loss_condition = LossCondition.from_default()
+        self.teams = Teams.from_default()
+        self.heroes_availability = HeroesAvailability.from_default()
         self.placeholder_heroes = []
         self.custom_heroes = []
         self.reserved = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-        self.disabled_artifacts = DisabledArtifacts()
-        self.disabled_spells = DisabledSpells()
-        self.disabled_skills = DisabledSkills()
+        self.disabled_artifacts = DisabledArtifacts.from_default()
+        self.disabled_spells = DisabledSpells.from_default()
+        self.disabled_skills = DisabledSkills.from_default()
         self.rumors = []
         self.heroes_settings = []
 

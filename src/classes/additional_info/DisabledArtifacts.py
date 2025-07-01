@@ -1,5 +1,6 @@
 class DisabledArtifacts:
-    def __init__(self):
+    @classmethod
+    def from_default(self):
         self.spellbook= False
         self.spell_scroll= False
         self.grail= False

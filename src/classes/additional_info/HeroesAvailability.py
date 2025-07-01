@@ -1,5 +1,6 @@
 class HeroesAvailability:
-    def __init__(self):
+    @classmethod
+    def from_default(self):
         self.orrin= True
         self.valeska= True
         self.edric= True

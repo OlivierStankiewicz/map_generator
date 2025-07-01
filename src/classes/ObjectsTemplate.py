@@ -1,5 +1,6 @@
 class ObjectsTemplate:
-    def __init__(self):
+    @classmethod
+    def from_default(self):
         self.definition= "AVWmrnd0.def"         #! variable name different than needed for JSON serialization
         self.passability= [255, 255, 255, 255, 255, 127]
         self.actionability= [0, 0, 0, 0, 0, 128]

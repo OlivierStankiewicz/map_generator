@@ -1,5 +1,6 @@
 class Flags:
-    def __init__(self):
+    @classmethod
+    def from_default(self):
         self.terrain_x =  False
         self.terrain_y = False
         self.river_x = False

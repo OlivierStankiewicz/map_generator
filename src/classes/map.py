@@ -1,19 +1,20 @@
-from .BasicInfo import BasicInfo
-from player.Player import Player
-from additional_info.AdditionalInfo import AdditionalInfo
-from tile.Tile import Tile
-from .ObjectsTemplate import ObjectsTemplate
+from classes.BasicInfo import BasicInfo
+from classes.player.Player import Player
+from classes.additional_info.AdditionalInfo import AdditionalInfo
+from classes.tile.Tile import Tile
+from classes.ObjectsTemplate import ObjectsTemplate
 
 # possible number of tiles: 10368 (72x72x2) / 36x36, / 108x108, / 144x144
 
 class Map:
-    def __init__(self):
+    @classmethod
+    def from_default(self):
         self.format = 28
-        self.basic_info = BasicInfo()
-        self.players = [Player() for _ in range(8)]
-        self.additional_info = AdditionalInfo()
-        self.tiles = [Tile() for _ in range(10368)]
-        self.objects_templates = [ObjectsTemplate()]
+        self.basic_info = BasicInfo.from_default()
+        self.players = [Player.from_default() for _ in range(8)]
+        self.additional_info = AdditionalInfo.from_default()
+        self.tiles = [Tile.from_default() for _ in range(10368)]
+        self.objects_templates = [ObjectsTemplate.from_default()]
         self.objects = []
         self.global_events = []
         self.padding = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,

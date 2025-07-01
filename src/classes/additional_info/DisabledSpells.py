@@ -1,5 +1,6 @@
 class DisabledSpells:
-    def __init__(self):
+    @classmethod
+    def from_default(self):
         self.summon_boat= False
         self.scuttle_boat= False
         self.visions= False

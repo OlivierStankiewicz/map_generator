@@ -1,5 +1,6 @@
 class DisabledSkills:
-    def __init__(self):
+    @classmethod
+    def from_default(self):
         self.pathfinding= False
         self.archery= False
         self.logistics= False

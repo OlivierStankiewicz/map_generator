@@ -1,5 +1,6 @@
 class BasicInfo:
-    def __init__(self):
+    @classmethod
+    def from_default(self):
         self.is_playable= 0
         self.map_size= 72
         self.has_two_levels= 1

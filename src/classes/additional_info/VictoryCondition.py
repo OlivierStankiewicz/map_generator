@@ -1,5 +1,6 @@
 class VictoryCondition:
-    def __init__(self):
+    @classmethod
+    def from_default(self):
        self.type = 255
 
     def __init__(self, type: int):
