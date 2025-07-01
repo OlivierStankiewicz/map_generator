@@ -1,8 +1,8 @@
 class BasicInfo:
 
-    # alternative no-argument constructor
+    # no-argument constructor
     @classmethod
-    def create_default(cls):
+    def create_default(cls) -> "BasicInfo":
         return cls(
             is_playable= 0,
             map_size= 72,
@@ -13,7 +13,7 @@ class BasicInfo:
             max_hero_level= 0
         )
     
-    def __init__(self, is_playable: int, map_size: int, has_two_levels: int, name: str, description: str, difficulty: int, max_hero_level: int):
+    def __init__(self, is_playable: int, map_size: int, has_two_levels: int, name: str, description: str, difficulty: int, max_hero_level: int) -> None:
         self.is_playable = is_playable
         self.map_size = map_size
         self.has_two_levels = has_two_levels
@@ -22,7 +22,7 @@ class BasicInfo:
         self.difficulty = difficulty
         self.max_hero_level = max_hero_level
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return {
             "is_playable": self.is_playable,
             "map_size": self.map_size,

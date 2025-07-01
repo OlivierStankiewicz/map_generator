@@ -8,9 +8,9 @@ from classes.additional_info.DisabledSkills import DisabledSkills
 
 class AdditionalInfo:
 
-    # alternative no-argument constructor
+    # no-argument constructor
     @classmethod
-    def create_default(cls):
+    def create_default(cls) -> "AdditionalInfo":
         return cls(
             victory_condition = VictoryCondition.create_default(),
             loss_condition = LossCondition.create_default(),
@@ -29,7 +29,7 @@ class AdditionalInfo:
     def __init__(self, victory_condition: VictoryCondition, loss_condition: LossCondition, teams: Teams,
                  heroes_availability: HeroesAvailability, placeholder_heroes: list, custom_heroes: list,
                  reserved: list[int], disabled_artifacts: DisabledArtifacts, disabled_spells: DisabledSpells,
-                 disabled_skills: DisabledSkills, rumors: list, heroes_settings: list):
+                 disabled_skills: DisabledSkills, rumors: list, heroes_settings: list) -> None:
         self.victory_condition = victory_condition
         self.loss_condition = loss_condition
         self.teams = teams
@@ -43,7 +43,7 @@ class AdditionalInfo:
         self.rumors = rumors
         self.heroes_settings = heroes_settings
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return {
             "victory_condition": self.victory_condition.to_dict(),
             "loss_condition": self.loss_condition.to_dict(),

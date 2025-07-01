@@ -15,9 +15,9 @@ class TerrainType(Enum):
 
 class Tile:
 
-    # alternative no-argument constructor
+    # no-argument constructor
     @classmethod
-    def create_default(cls):
+    def create_default(cls) -> "Tile":
         return cls(
             terrain_type = TerrainType.WATER,
             terrain_sprite = 7,
@@ -28,7 +28,7 @@ class Tile:
             flags = Flags.create_default()
         )
 
-    def __init__(self, terrain_type: TerrainType, terrain_sprite: int, river_type: int, river_sprite: int, road_type: int, road_sprite: int, flags: Flags):
+    def __init__(self, terrain_type: TerrainType, terrain_sprite: int, river_type: int, river_sprite: int, road_type: int, road_sprite: int, flags: Flags) -> None:
         self.terrain_type = terrain_type
         self.terrain_sprite = terrain_sprite
         self.river_type = river_type
@@ -37,7 +37,7 @@ class Tile:
         self.road_sprite = road_sprite
         self.flags = flags
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return {
             "terrain_type": self.terrain_type,
             "terrain_sprite": self.terrain_sprite,

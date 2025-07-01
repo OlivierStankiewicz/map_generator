@@ -8,9 +8,9 @@ from classes.ObjectsTemplate import ObjectsTemplate
 
 class Map:
 
-    # alternative no-argument constructor
+    # no-argument constructor
     @classmethod
-    def create_default(cls):
+    def create_default(cls) -> "Map":
         return cls(
             format= 28,
             basic_info= BasicInfo.create_default(),
@@ -31,7 +31,7 @@ class Map:
 
     def __init__(self, format: int, basic_info: BasicInfo, players: list[Player],
                  additional_info: AdditionalInfo, tiles: list[Tile], objects_templates: list[ObjectsTemplate],
-                 objects: list, global_events: list, padding: list[int]):
+                 objects: list, global_events: list, padding: list[int]) -> None:
         self.format = format
         self.basic_info = basic_info
         self.players = players
@@ -42,7 +42,7 @@ class Map:
         self.global_events = global_events
         self.padding = padding
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return {
             "format": self.format,
             "basic_info": self.basic_info.to_dict(),

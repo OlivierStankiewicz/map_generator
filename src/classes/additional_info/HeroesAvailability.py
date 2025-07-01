@@ -1,8 +1,8 @@
 class HeroesAvailability:
 
-    # alternative no-argument constructor
+    # no-argument constructor
     @classmethod
-    def create_default(cls):
+    def create_default(cls) -> "HeroesAvailability":
         return cls(
             orrin= True,
             valeska= True,
@@ -199,8 +199,7 @@ class HeroesAvailability:
         inteus: bool, aenain: bool, gelare: bool, grindan: bool, sir_mullich: bool,
         adrienne: bool, catherine: bool, dracon: bool, gelu: bool, kilgor: bool,
         haart_lich: bool, mutare: bool, roland: bool, mutare_drake: bool, boragus: bool,
-        xeron: bool, padding_156: bool, padding_157: bool, padding_158: bool, padding_159: bool
-    ):
+        xeron: bool, padding_156: bool, padding_157: bool, padding_158: bool, padding_159: bool) -> None:
         self.orrin = orrin
         self.valeska = valeska
         self.edric = edric

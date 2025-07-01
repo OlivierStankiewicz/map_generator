@@ -1,8 +1,8 @@
 class DisabledArtifacts:
 
-    # alternative no-argument constructor
+    # no-argument constructor
     @classmethod
-    def create_default(cls):
+    def create_default(cls) -> "DisabledArtifacts":
         return cls(
             spellbook= False,
             spell_scroll= False,
@@ -192,7 +192,7 @@ class DisabledArtifacts:
         cloak_of_the_undead_king: bool, elixir_of_life: bool, armor_of_the_damned: bool, statue_of_legion: bool,
         power_of_the_dragon_father: bool, titans_thunder: bool, admirals_hat: bool,
         bow_of_the_sharpshooter: bool, wizards_well: bool, ring_of_the_magi: bool, cornucopia: bool,
-        diplomats_suit: bool, mired_in_neutrality: bool, ironfist_of_the_ogre: bool):
+        diplomats_suit: bool, mired_in_neutrality: bool, ironfist_of_the_ogre: bool) -> None:
         self.spellbook = spellbook
         self.spell_scroll = spell_scroll
         self.grail = grail
@@ -338,7 +338,7 @@ class DisabledArtifacts:
         self.mired_in_neutrality = mired_in_neutrality
         self.ironfist_of_the_ogre = ironfist_of_the_ogre
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return {
             'spellbook': self.spellbook,
             'spell_scroll': self.spell_scroll,

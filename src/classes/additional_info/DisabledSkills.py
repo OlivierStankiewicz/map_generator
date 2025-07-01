@@ -1,8 +1,8 @@
 class DisabledSkills:
 
-    # alternative no-argument constructor
+    # no-argument constructor
     @classmethod
-    def create_default(cls):
+    def create_default(cls) -> "DisabledSkills":
         return cls(
             pathfinding= False,
             archery= False,
@@ -46,7 +46,7 @@ class DisabledSkills:
                  artillery: bool, learning: bool, offense: bool, armorer: bool,
                  intelligence: bool, sorcery: bool, resistance: bool,
                  first_aid: bool, padding_28: bool, padding_29: bool,
-                 padding_30: bool, padding_31: bool):
+                 padding_30: bool, padding_31: bool) -> None:
         self.pathfinding= pathfinding
         self.archery= archery
         self.logistics= logistics
@@ -80,7 +80,7 @@ class DisabledSkills:
         self.padding_30= padding_30
         self.padding_31= padding_31
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return {
             "pathfinding": self.pathfinding,
             "archery": self.archery,

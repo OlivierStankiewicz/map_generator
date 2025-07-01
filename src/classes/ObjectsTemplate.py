@@ -1,8 +1,8 @@
 class ObjectsTemplate:
 
-    # alternative no-argument constructor
+    # no-argument constructor
     @classmethod
-    def create_default(cls):
+    def create_default(cls) -> "ObjectsTemplate":
         return cls(
             definition= "AVWmrnd0.def",         #! variable name different than needed for JSON serialization
             passability= [255, 255, 255, 255, 255, 127],
@@ -18,7 +18,7 @@ class ObjectsTemplate:
 
     def __init__(self, definition: str, passability: list[int], actionability: list[int], allowed_landscapes: list[int],
                  landscape_group: list[int], object_class: int, object_subclass: int, object_group: int,
-                 is_ground: int, unknown: list[int]):
+                 is_ground: int, unknown: list[int]) -> None:
         self.definition = definition
         self.passability = passability
         self.actionability = actionability
@@ -30,7 +30,7 @@ class ObjectsTemplate:
         self.is_ground = is_ground
         self.unknown = unknown
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return {
             "def": self.definition,                 #! variable name changed for JSON serialization
             "passability": self.passability,

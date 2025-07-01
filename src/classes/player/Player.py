@@ -3,9 +3,9 @@ from classes.player.StartingHero import StartingHero
 
 class Player:
 
-    # alternative no-argument constructor
+    # no-argument constructor
     @classmethod
-    def create_default(cls):
+    def create_default(cls) -> "Player":
         return cls(
             can_be_human = 0,
             can_be_computer = 0,
@@ -21,7 +21,7 @@ class Player:
 
     def __init__(self, can_be_human: int, can_be_computer: int, behavior: int, has_customized_alignments: int,
                  allowed_alignments: AllowedAlignments, allow_random_alignment: int, has_random_heroes: int,
-                 starting_hero: StartingHero, num_nonspecific_placeholder_heroes: int, heroes: list):
+                 starting_hero: StartingHero, num_nonspecific_placeholder_heroes: int, heroes: list) -> None:
         self.can_be_human = can_be_human
         self.can_be_computer = can_be_computer
         self.behavior = behavior
@@ -33,7 +33,7 @@ class Player:
         self.num_nonspecific_placeholder_heroes = num_nonspecific_placeholder_heroes
         self.heroes = heroes
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return {
             "can_be_human": self.can_be_human,
             "can_be_computer": self.can_be_computer,

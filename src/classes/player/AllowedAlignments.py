@@ -1,8 +1,8 @@
 class AllowedAlignments:
 
-    # alternative no-argument constructor
+    # no-argument constructor
     @classmethod
-    def create_default(cls):
+    def create_default(cls) -> "AllowedAlignments":
         return cls(
             castle = False,
             rampart = False,
@@ -25,7 +25,7 @@ class AllowedAlignments:
     def __init__(self, castle: bool, rampart: bool, tower: bool, inferno: bool, necropolis: bool,
                  dungeon: bool, stronghold: bool, fortress: bool, conflux: bool,
                  padding_9: bool, padding_10: bool, padding_11: bool, padding_12: bool,
-                 padding_13: bool, padding_14: bool, padding_15: bool):
+                 padding_13: bool, padding_14: bool, padding_15: bool) -> None:
         self.castle = castle
         self.rampart = rampart
         self.tower = tower
@@ -43,7 +43,7 @@ class AllowedAlignments:
         self.padding_14 = padding_14
         self.padding_15 = padding_15
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return {
             "castle": self.castle,
             "rampart": self.rampart,

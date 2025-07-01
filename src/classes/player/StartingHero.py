@@ -1,6 +1,6 @@
 class StartingHero:
 
-    # alternative no-argument constructor
+    # no-argument constructor
     @classmethod
     def create_default(cls):
         return cls(

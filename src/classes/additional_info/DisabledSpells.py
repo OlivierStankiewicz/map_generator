@@ -1,8 +1,8 @@
 class DisabledSpells:
 
-    # alternative no-argument constructor
+    # no-argument constructor
     @classmethod
-    def create_default(cls):
+    def create_default(cls) -> "DisabledSpells":
         return cls(
             summon_boat= False,
             scuttle_boat= False,
@@ -96,7 +96,7 @@ class DisabledSpells:
                  counterstrike :bool , berserk :bool , hypnotize :bool , forgetfulness :bool ,
                  blind :bool , teleport :bool , remove_obstacle :bool , clone :bool ,
                  fire_elemental :bool , earth_elemental :bool , water_elemental :bool ,
-                 air_elemental :bool , padding_70 :bool , padding_71 :bool):
+                 air_elemental :bool , padding_70 :bool , padding_71 :bool) -> None:
         self.summon_boat= summon_boat
         self.scuttle_boat= scuttle_boat
         self.visions= visions
@@ -170,7 +170,7 @@ class DisabledSpells:
         self.padding_70= padding_70
         self.padding_71= padding_71
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return {
             "summon_boat": self.summon_boat,
             "scuttle_boat": self.scuttle_boat,

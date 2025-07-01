@@ -1,8 +1,8 @@
 class Flags:
 
-    # alternative no-argument constructor
+    # no-argument constructor
     @classmethod
-    def create_default(cls):
+    def create_default(cls) -> "Flags":
         return cls(
             terrain_x =  False,
             terrain_y = False,
@@ -14,7 +14,7 @@ class Flags:
             unknown = False
         )
     
-    def __init__(self, terrain_x: bool, terrain_y: bool, river_x: bool, river_y: bool, road_x: bool, road_y: bool, coast: bool, unknown: bool):
+    def __init__(self, terrain_x: bool, terrain_y: bool, river_x: bool, river_y: bool, road_x: bool, road_y: bool, coast: bool, unknown: bool) -> None:
         self.terrain_x = terrain_x
         self.terrain_y = terrain_y
         self.river_x = river_x
@@ -24,7 +24,7 @@ class Flags:
         self.coast = coast
         self.unknown = unknown
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return {
             "terrain_x": self.terrain_x,
             "terrain_y": self.terrain_y,

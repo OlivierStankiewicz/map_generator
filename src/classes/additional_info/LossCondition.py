@@ -1,16 +1,16 @@
 class LossCondition:
 
-    # alternative no-argument constructor
+    # no-argument constructor
     @classmethod
-    def create_default(cls):
+    def create_default(cls) -> "LossCondition":
         return cls(
             type=255
         )
 
-    def __init__(self, type: int):
+    def __init__(self, type: int) -> None:
         self.type = type
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return {
             "type": self.type
         }
