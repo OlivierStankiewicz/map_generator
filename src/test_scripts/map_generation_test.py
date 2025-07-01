@@ -1,5 +1,6 @@
 import os
 import sys
+# Ensure that imports are done from the level of the src directory
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 import tkinter as tk
