@@ -1,14 +1,18 @@
 class Flags:
+
+    # alternative no-argument constructor
     @classmethod
-    def from_default(self):
-        self.terrain_x =  False
-        self.terrain_y = False
-        self.river_x = False
-        self.river_y = False
-        self.road_x = False
-        self.road_y = False
-        self.coast = False
-        self.unknown = False
+    def create_default(cls):
+        return cls(
+            terrain_x =  False,
+            terrain_y = False,
+            river_x = False,
+            river_y = False,
+            road_x = False,
+            road_y = False,
+            coast = False,
+            unknown = False
+        )
     
     def __init__(self, terrain_x: bool, terrain_y: bool, river_x: bool, river_y: bool, road_x: bool, road_y: bool, coast: bool, unknown: bool):
         self.terrain_x = terrain_x

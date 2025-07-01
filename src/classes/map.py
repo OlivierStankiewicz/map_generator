@@ -7,23 +7,27 @@ from classes.ObjectsTemplate import ObjectsTemplate
 # possible number of tiles: 10368 (72x72x2) / 36x36, / 108x108, / 144x144
 
 class Map:
+
+    # alternative no-argument constructor
     @classmethod
-    def from_default(self):
-        self.format = 28
-        self.basic_info = BasicInfo.from_default()
-        self.players = [Player.from_default() for _ in range(8)]
-        self.additional_info = AdditionalInfo.from_default()
-        self.tiles = [Tile.from_default() for _ in range(10368)]
-        self.objects_templates = [ObjectsTemplate.from_default()]
-        self.objects = []
-        self.global_events = []
-        self.padding = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    def create_default(cls):
+        return cls(
+            format= 28,
+            basic_info= BasicInfo.create_default(),
+            players= [Player.create_default() for _ in range(8)],
+            additional_info= AdditionalInfo.create_default(),
+            tiles= [Tile.create_default() for _ in range(10368)],
+            objects_templates = [ObjectsTemplate.create_default()],
+            objects= [],
+            global_events= [],
+            padding= [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        )
 
     def __init__(self, format: int, basic_info: BasicInfo, players: list[Player],
                  additional_info: AdditionalInfo, tiles: list[Tile], objects_templates: list[ObjectsTemplate],

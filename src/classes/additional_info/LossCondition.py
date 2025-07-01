@@ -1,7 +1,11 @@
 class LossCondition:
+
+    # alternative no-argument constructor
     @classmethod
-    def from_default(self):
-       self.type = 255
+    def create_default(cls):
+        return cls(
+            type=255
+        )
 
     def __init__(self, type: int):
         self.type = type

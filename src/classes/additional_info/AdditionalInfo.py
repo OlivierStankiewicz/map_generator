@@ -7,20 +7,24 @@ from classes.additional_info.DisabledSpells import DisabledSpells
 from classes.additional_info.DisabledSkills import DisabledSkills
 
 class AdditionalInfo:
+
+    # alternative no-argument constructor
     @classmethod
-    def from_default(self):
-        self.victory_condition = VictoryCondition.from_default()
-        self.loss_condition = LossCondition.from_default()
-        self.teams = Teams.from_default()
-        self.heroes_availability = HeroesAvailability.from_default()
-        self.placeholder_heroes = []
-        self.custom_heroes = []
-        self.reserved = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-        self.disabled_artifacts = DisabledArtifacts.from_default()
-        self.disabled_spells = DisabledSpells.from_default()
-        self.disabled_skills = DisabledSkills.from_default()
-        self.rumors = []
-        self.heroes_settings = []
+    def create_default(cls):
+        return cls(
+            victory_condition = VictoryCondition.create_default(),
+            loss_condition = LossCondition.create_default(),
+            teams = Teams.create_default(),
+            heroes_availability = HeroesAvailability.create_default(),
+            placeholder_heroes = [],
+            custom_heroes = [],
+            reserved = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            disabled_artifacts = DisabledArtifacts.create_default(),
+            disabled_spells = DisabledSpells.create_default(),
+            disabled_skills = DisabledSkills.create_default(),
+            rumors = [],
+            heroes_settings = []
+        )
 
     def __init__(self, victory_condition: VictoryCondition, loss_condition: LossCondition, teams: Teams,
                  heroes_availability: HeroesAvailability, placeholder_heroes: list, custom_heroes: list,

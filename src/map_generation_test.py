@@ -20,16 +20,16 @@ if not filename:
 print("Chosen filename:", filename)
 
 print("Generating map representation...")
-map_instance = Map.from_default()
+map_instance = Map.create_default()
 map_representation = map_instance.to_dict()
 print("Map representation generated successfully")
 
-file_path = os.path.join(folder_path, filename, ".json")
+file_path = os.path.join(folder_path, f"{filename}.json")
 
 print(f"Saving map representation to: {file_path}")
 try:
     with open(file_path, 'w', encoding='utf-8') as f:
-        f.write(map_representation)
+        f.write(str(map_representation))
     print(f"File created successfully at: {file_path}")
 except Exception as e:
     print(f"Failed to create file: {e}")

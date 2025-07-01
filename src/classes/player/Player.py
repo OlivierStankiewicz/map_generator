@@ -2,18 +2,22 @@ from classes.player.AllowedAlignments import AllowedAlignments
 from classes.player.StartingHero import StartingHero
 
 class Player:
+
+    # alternative no-argument constructor
     @classmethod
-    def from_default(self):
-        self.can_be_human = 0
-        self.can_be_computer = 0
-        self.behavior = 0
-        self.has_customized_alignments= 76
-        self.allowed_alignments= AllowedAlignments.from_default()
-        self.allow_random_alignment= 0
-        self.has_random_heroes= 0
-        self.starting_hero= StartingHero.from_default()
-        self.num_nonspecific_placeholder_heroes= 0
-        self.heroes= []
+    def create_default(cls):
+        return cls(
+            can_be_human = 0,
+            can_be_computer = 0,
+            behavior = 0,
+            has_customized_alignments= 76,
+            allowed_alignments= AllowedAlignments.create_default(),
+            allow_random_alignment= 0,
+            has_random_heroes= 0,
+            starting_hero= StartingHero.create_default(),
+            num_nonspecific_placeholder_heroes= 0,
+            heroes= []
+        )
 
     def __init__(self, can_be_human: int, can_be_computer: int, behavior: int, has_customized_alignments: int,
                  allowed_alignments: AllowedAlignments, allow_random_alignment: int, has_random_heroes: int,

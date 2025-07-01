@@ -1,38 +1,42 @@
 class DisabledSkills:
+
+    # alternative no-argument constructor
     @classmethod
-    def from_default(self):
-        self.pathfinding= False
-        self.archery= False
-        self.logistics= False
-        self.scouting= False
-        self.diplomacy= False
-        self.navigation= False
-        self.leadership= False
-        self.wisdom= False
-        self.mysticism= False
-        self.luck= False
-        self.ballistics= False
-        self.eagle_eye= False
-        self.necromancy= False
-        self.estates= False
-        self.fire_magic= False
-        self.air_magic= False
-        self.water_magic= False
-        self.earth_magic= False
-        self.scholar= False
-        self.tactics= False
-        self.artillery= False
-        self.learning= False
-        self.offense= False
-        self.armorer= False
-        self.intelligence= False
-        self.sorcery= False
-        self.resistance= False
-        self.first_aid= False
-        self.padding_28= False
-        self.padding_29= False
-        self.padding_30= False
-        self.padding_31= False
+    def create_default(cls):
+        return cls(
+            pathfinding= False,
+            archery= False,
+            logistics= False,
+            scouting= False,
+            diplomacy= False,
+            navigation= False,
+            leadership= False,
+            wisdom= False,
+            mysticism= False,
+            luck= False,
+            ballistics= False,
+            eagle_eye= False,
+            necromancy= False,
+            estates= False,
+            fire_magic= False,
+            air_magic= False,
+            water_magic= False,
+            earth_magic= False,
+            scholar= False,
+            tactics= False,
+            artillery= False,
+            learning= False,
+            offense= False,
+            armorer= False,
+            intelligence= False,
+            sorcery= False,
+            resistance= False,
+            first_aid= False,
+            padding_28= False,
+            padding_29= False,
+            padding_30= False,
+            padding_31= False
+        )
 
     def __init__(self, pathfinding: bool, archery: bool, logistics: bool, scouting: bool,
                  diplomacy: bool, navigation: bool, leadership: bool, wisdom: bool,

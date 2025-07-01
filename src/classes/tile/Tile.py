@@ -14,15 +14,19 @@ class TerrainType(Enum):
     ROCK = 9
 
 class Tile:
+
+    # alternative no-argument constructor
     @classmethod
-    def from_default(self):
-        self.terrain_type = TerrainType.WATER
-        self.terrain_sprite = 7
-        self.river_type = 0
-        self.river_sprite =  0
-        self.road_type = 0
-        self.road_sprite = 0
-        self.flags = Flags.from_default()
+    def create_default(cls):
+        return cls(
+            terrain_type = TerrainType.WATER,
+            terrain_sprite = 7,
+            river_type = 0,
+            river_sprite =  0,
+            road_type = 0,
+            road_sprite = 0,
+            flags = Flags.create_default()
+        )
 
     def __init__(self, terrain_type: TerrainType, terrain_sprite: int, river_type: int, river_sprite: int, road_type: int, road_sprite: int, flags: Flags):
         self.terrain_type = terrain_type

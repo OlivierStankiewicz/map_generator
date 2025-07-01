@@ -1,22 +1,26 @@
 class AllowedAlignments:
+
+    # alternative no-argument constructor
     @classmethod
-    def from_default(self):
-        self.castle = False
-        self.rampart = False
-        self.tower = False
-        self.inferno = False
-        self.necropolis = False
-        self.dungeon = False
-        self.stronghold = False
-        self.fortress = False
-        self.conflux = False
-        self.padding_9 = False
-        self.padding_10 = False
-        self.padding_11 = False
-        self.padding_12 = False
-        self.padding_13 = False
-        self.padding_14 = False
-        self.padding_15 = False
+    def create_default(cls):
+        return cls(
+            castle = False,
+            rampart = False,
+            tower = False,
+            inferno = False,
+            necropolis = False,
+            dungeon = False,
+            stronghold = False,
+            fortress = False,
+            conflux = False,
+            padding_9 = False,
+            padding_10 = False,
+            padding_11 = False,
+            padding_12 = False,
+            padding_13 = False,
+            padding_14 = False,
+            padding_15 = False
+        )
     
     def __init__(self, castle: bool, rampart: bool, tower: bool, inferno: bool, necropolis: bool,
                  dungeon: bool, stronghold: bool, fortress: bool, conflux: bool,
