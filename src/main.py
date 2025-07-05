@@ -24,7 +24,7 @@ if not filename:
 print("Chosen filename:", filename)
 
 print("Generating map representation...")
-map = json.dumps(generate_map().to_dict(), indent=2)
+map = json.dumps(generate_map(fully_random_terrain = False).to_dict(), indent=2)
 print("Map representation generated successfully")
 
 json_file_path = os.path.join(folder_path, f"{filename}.json")
