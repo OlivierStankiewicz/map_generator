@@ -8,7 +8,7 @@ from random import randint, choice
 
 def generate_tile(random_terrain_type: bool, random_terrain_sprite: bool) -> Tile:
     terrain_type = choice(list(TerrainType)) if random_terrain_type else TerrainType.WATER
-    terrain_sprite = randint(0, 32) if random_terrain_sprite else 22
+    terrain_sprite = randint(0, 32) if random_terrain_sprite else 22    # 0-32 works for water, not for all other terrain types, 22 works for all terrain types
     return Tile(
         terrain_type = terrain_type,
         terrain_sprite = terrain_sprite,
