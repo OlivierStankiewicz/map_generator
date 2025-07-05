@@ -1,5 +1,6 @@
 import os
 import sys
+import json
 # Ensure that imports are done from the level of the src directory
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
@@ -27,6 +28,7 @@ print("Chosen filename:", filename)
 print("Generating map representation...")
 map_instance = Map.create_default()
 map_representation = map_instance.to_dict()
+json_str = json.dumps(map_representation, indent=2)
 print("Map representation generated successfully")
 
 file_path = os.path.join(folder_path, f"{filename}.json")
@@ -34,7 +36,7 @@ file_path = os.path.join(folder_path, f"{filename}.json")
 print(f"Saving map representation to: {file_path}")
 try:
     with open(file_path, 'w', encoding='utf-8') as f:
-        f.write(str(map_representation))
+        f.write(json_str)
     print(f"File created successfully at: {file_path}")
 except Exception as e:
     print(f"Failed to create file: {e}")

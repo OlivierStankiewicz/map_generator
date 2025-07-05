@@ -25,12 +25,13 @@ if not new_filename:
     exit()
 print("Chosen new file name:", new_filename)
 
-new_file_path = os.path.join(output_folder, new_filename, ".h3m")
+new_file_path = os.path.join(output_folder, f'{new_filename}.h3m')
 
 print("Converting JSON to h3m...")
 try:
     os.system(f'h3mtxt.exe {input_file_path} {new_file_path}')
+    print("Conversion completed successfully.")
+    print(f"New file created at: {new_file_path}.h3m")
+
 except Exception as e:
     print(f"Failed to convert file: {e}")
-print("Conversion completed successfully.")
-print(f"New file created at: {new_file_path}.h3m")
