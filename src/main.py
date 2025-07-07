@@ -43,7 +43,7 @@ print("Converting JSON to h3m...")
 try:
     os.system(f'h3mtxt.exe {json_file_path} {h3m_file_path}')
     print("Conversion completed successfully.")
-    print(f"New file created at: {h3m_file_path}.h3m")
+    print(f"New file created at: {h3m_file_path}")
 
 except Exception as e:
     print(f"Failed to convert file: {e}")
