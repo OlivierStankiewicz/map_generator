@@ -73,4 +73,4 @@ map_generator/
 ---
 
 **Note:**  
-This project is under active development. More features and improvements are
+This project is under active development. More features and improvements are planned.
