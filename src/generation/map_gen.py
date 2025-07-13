@@ -10,13 +10,32 @@ from generation.tile_gen.tile_gen import generate_tile, generate_specific_terrai
 from generation.objects_template_gen import generate_objects_template
 from classes.tile.Tile import TerrainType
 
-def generate_random_terrain_random_sprite_map(fully_random_terrain: bool) -> Map:
+def generate_base_map() -> Map:
     return  Map(
         format= 28,
         basic_info= generate_basic_info(),
         players= [generate_player() for _ in range(8)],
         additional_info= generate_additional_info(),
-        tiles= [generate_tile(random_terrain_sprite= fully_random_terrain, random_terrain_type= fully_random_terrain) for _ in range(10368)],
+        tiles= [generate_tile(random_terrain_sprite= False, random_terrain_type= False) for _ in range(10368)],
+        objects_templates = [generate_objects_template()],
+        objects= [],
+        global_events= [],
+        padding= [  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    )
+
+def generate_random_terrain_random_sprite_map() -> Map:
+    return  Map(
+        format= 28,
+        basic_info= generate_basic_info(),
+        players= [generate_player() for _ in range(8)],
+        additional_info= generate_additional_info(),
+        tiles= [generate_tile(random_terrain_sprite= True, random_terrain_type= True) for _ in range(10368)],
         objects_templates = [generate_objects_template()],
         objects= [],
         global_events= [],

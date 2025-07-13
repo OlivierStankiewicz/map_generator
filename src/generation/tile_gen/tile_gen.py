@@ -13,8 +13,13 @@ def generate_tile(random_terrain_type: bool, random_terrain_sprite: bool) -> Til
         terrain_type = TerrainType.WATER
 
     if random_terrain_sprite:
-        sprite_min, sprite_max = get_terrain_type_sprite_range(terrain_type)
-        terrain_sprite = randint(sprite_min, sprite_max)    #wont work, not tuples anymore, they are lists of tuples
+        sprite_ranges = get_terrain_type_sprite_range(terrain_type)
+        allowed_sprites = []
+        for sprite_range in sprite_ranges:
+            sprite_min, sprite_max = sprite_range
+            allowed_sprites.extend(range(sprite_min, sprite_max + 1))
+        print(allowed_sprites)
+        terrain_sprite = choice(allowed_sprites)
     else:
         terrain_sprite = 22
         
