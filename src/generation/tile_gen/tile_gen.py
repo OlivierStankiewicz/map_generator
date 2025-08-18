@@ -7,6 +7,13 @@ from generation.tile_gen.flags_gen import generate_flags
 from random import randint, choice
 
 def generate_tile(random_terrain_type: bool, random_terrain_sprite: bool) -> Tile:
+    """
+    Generate a tile with either random terrain type and sprite or default ones.
+    
+    :param random_terrain_type: If True, randomly selects a terrain type.
+    :param random_terrain_sprite: If True, randomly selects a terrain sprite for the given terrain type.
+    :return: A Tile object with the specified or random terrain type and sprite.
+    """
     if random_terrain_type:
         terrain_type = choice(list(TerrainType))    
     else:
