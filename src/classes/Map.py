@@ -31,9 +31,19 @@ class Map:
             ]
         )
 
-    def __init__(self, format: int, basic_info: BasicInfo, players: list[Player],
-                 additional_info: AdditionalInfo, tiles: list[Tile], objects_templates: list[ObjectsTemplate],
-                 objects: list, global_events: list, padding: list[int]) -> None:
+    def __init__(
+            self, 
+            format: int, 
+            basic_info: BasicInfo, 
+            players: list[Player],
+            additional_info: AdditionalInfo, 
+            tiles: list[Tile], 
+            objects_templates: list[ObjectsTemplate],
+            objects: list, 
+            global_events: list, 
+            padding: list[int]
+        ) -> None:
+        
         self.format = format
         self.basic_info = basic_info
         self.players = players

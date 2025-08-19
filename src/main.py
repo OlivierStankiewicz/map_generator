@@ -26,7 +26,7 @@ if not filename:
 print("Chosen filename:", filename)
 
 print("Generating map representation...")
-map = MapGenerator.generate_all_terrain_all_sprite_map()
+map = MapGenerator.generate_map_with_terrain_constraints()
 json_map_representation = json.dumps(map.to_dict(), indent=2)
 print("Map representation generated successfully")
 

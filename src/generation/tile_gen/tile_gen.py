@@ -25,7 +25,6 @@ def generate_tile(random_terrain_type: bool, random_terrain_sprite: bool) -> Til
         for sprite_range in sprite_ranges:
             sprite_min, sprite_max = sprite_range
             allowed_sprites.extend(range(sprite_min, sprite_max + 1))
-        print(allowed_sprites)
         terrain_sprite = choice(allowed_sprites)
     else:
         terrain_sprite = 22
@@ -72,3 +71,4 @@ def get_terrain_type_sprite_range(terrain_type: TerrainType) -> list[tuple[int, 
         return [(0, 32)]
     elif terrain_type == TerrainType.ROCK:
         return [(0, 47), (49, 51), (255, 255)]      #needs to be checked, generating a full rock 255 map worked, last checked 52-58, none of them worked, more exist for sure, all terrains have to be tested, max number is 255
+    

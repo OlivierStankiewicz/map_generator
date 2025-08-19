@@ -85,30 +85,38 @@ class MapGenerator:
         Terrain constraints:
         - at least one of the opposite sides of a tile must border with a tile of the same terrain type (or border with the edge of the map)
         """
-        width, height = 144, 72
-        tiles = [[None for _ in range(width)] for _ in range(height)]
+        width, height, depth = 72, 72, 2  # set depth = 1 for surface only
+        tiles = [[[None for _ in range(width)] for _ in range(height)] for _ in range(depth)]
 
-        for y in range(height):
-            for x in range(width):
-                if tiles[y][x] is None:
-                    # Pick a random terrain
-                    terrain_tile = generate_tile(random_terrain_sprite=True, random_terrain_type=True)
-                    tiles[y][x] = terrain_tile
+        for z in range(depth):  # layer (0 = surface, 1 = underground)
+            y = 0
+            while y < height:
+                x = 0
+                while x < width:
+                    if depth == 1:
+                        # Always Rock when no underground
+                        terrain_type = TerrainType.ROCK
+                        terrain_sprite = 1
+                    else:
+                        # Random terrain for underground-enabled maps
+                        tile = generate_tile(random_terrain_type=True, random_terrain_sprite=False)
+                        terrain_type = TerrainType(tile.terrain_type)
+                        terrain_sprite = tile.terrain_sprite
 
-                    # Enforce horizontal pairing
-                    if x + 1 < width and tiles[y][x+1] is None:
-                        tiles[y][x+1] = generate_specific_terrain_and_sprite(
-                            terrain_tile.terrain_type, terrain_tile.sprite
-                        )
+                    # Generate a 2×2 block (respecting edges)
+                    for dy in range(2):
+                        for dx in range(2):
+                            ny, nx = y + dy, x + dx
+                            if ny < height and nx < width and tiles[z][ny][nx] is None:
+                                tiles[z][ny][nx] = generate_specific_terrain_and_sprite(
+                                    terrain_type=terrain_type, terrain_sprite=terrain_sprite
+                                )
 
-                    # Enforce vertical pairing
-                    elif y + 1 < height and tiles[y+1][x] is None:
-                        tiles[y+1][x] = generate_specific_terrain_and_sprite(
-                            terrain_tile.terrain_type, terrain_tile.sprite
-                        )
+                    x += 2  # move in 2-tile steps horizontally
+                y += 2  # move in 2-tile steps vertically
 
-        # Flatten the 2D list into a 1D list for the Map class
-        flat_tiles = [tile for row in tiles for tile in row]
+        # Flatten 3D list into 1D list for the Map class
+        flat_tiles = [tile for layer in tiles for row in layer for tile in row]
 
         return Map(
             format=28,
@@ -121,4 +129,3 @@ class MapGenerator:
             global_events=[],
             padding=[0] * 124
         )
-    
