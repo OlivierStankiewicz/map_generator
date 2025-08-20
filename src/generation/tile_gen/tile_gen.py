@@ -64,4 +64,4 @@ def get_terrain_type_sprite_range(terrain_type: TerrainType) -> list[tuple[int, 
     elif terrain_type == TerrainType.WATER:
         return [(0, 32)]
     elif terrain_type == TerrainType.ROCK:
-        return [(0, 47), (49, 51), (255, 255)]      #needs to be checked, generating a full rock 255 map worked, last checked 52-58, none of them worked, more exist for sure, all terrains have to be tested, max number is 255
+        return [(0, 47), (49, 51)]      #needs to be checked, generating a full rock 255 map worked, last checked 52-58, none of them worked, more exist for sure, all terrains have to be tested, max number is 255
