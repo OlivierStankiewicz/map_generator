@@ -52,7 +52,7 @@ def generate_specific_terrain_and_sprite(terrain_type: TerrainType, terrain_spri
 
 def get_terrain_type_sprite_range(terrain_type: TerrainType) -> list[tuple[int, int]]:
     if terrain_type == TerrainType.DIRT:
-        return [(0, 45)]
+        return [(0, 45), (127, 173), (255, 255)]
     elif terrain_type == TerrainType.SAND:
         return [(0, 23)]
     elif terrain_type == TerrainType.GRASS:

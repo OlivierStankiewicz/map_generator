@@ -76,6 +76,50 @@ class MapGenerator:
             global_events=[],
             padding=[0] * 124
         )
+    
+    @staticmethod
+    def generate_all_sprites_for_given_terrain_map(terrain_type) -> Map:
+        tiles = []
+        allowed_ranges = get_terrain_type_sprite_range(terrain_type)
+        for allowed_range in allowed_ranges:
+            sprite_min, sprite_max = allowed_range
+            for i in range(sprite_min, sprite_max + 1):
+                tiles.append(generate_specific_terrain_and_sprite(terrain_type, i))
+
+        for i in range(10368 - len(tiles)):
+            tiles.append(generate_tile(random_terrain_sprite=False, random_terrain_type=False))
+
+        return Map(
+            format=28,
+            basic_info=generate_basic_info(),
+            players=[generate_player() for _ in range(8)],
+            additional_info=generate_additional_info(),
+            tiles=tiles,
+            objects_templates=[generate_objects_template()],
+            objects=[],
+            global_events=[],
+            padding=[0] * 124
+        )
+    
+    @staticmethod
+    def generate_given_sprite_for_given_terrain_map(terrain_type, terrain_sprite) -> Map:
+        tiles = []
+        tiles.append(generate_specific_terrain_and_sprite(terrain_type, terrain_sprite))
+
+        for i in range(10368 - len(tiles)):
+            tiles.append(generate_tile(random_terrain_sprite=False, random_terrain_type=False))
+
+        return Map(
+            format=28,
+            basic_info=generate_basic_info(),
+            players=[generate_player() for _ in range(8)],
+            additional_info=generate_additional_info(),
+            tiles=tiles,
+            objects_templates=[generate_objects_template()],
+            objects=[],
+            global_events=[],
+            padding=[0] * 124
+        )
 
     @staticmethod
     def generate_map_with_terrain_constraints() -> Map:

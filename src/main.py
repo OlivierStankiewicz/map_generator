@@ -1,11 +1,11 @@
 from generation.map_gen import MapGenerator
+from classes.tile.Tile import TerrainType
 
 import os
+import json
 
 import tkinter as tk
 from tkinter import filedialog
-import os
-import json
 
 exe_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "h3mtxt.exe"))
 
@@ -26,7 +26,7 @@ if not filename:
 print("Chosen filename:", filename)
 
 print("Generating map representation...")
-map = MapGenerator.generate_map_with_terrain_constraints()
+map = MapGenerator.generate_all_sprites_for_given_terrain_map(terrain_type=TerrainType.DIRT)
 json_map_representation = json.dumps(map.to_dict(), indent=2)
 print("Map representation generated successfully")
 
