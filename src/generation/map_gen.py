@@ -81,6 +81,26 @@ def generate_all_terrain_all_sprite_map() -> Map:
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     )
 
+def upscale_map(map: list[list[TerrainType]]) -> list[list[TerrainType]]:
+    """
+    Upscale a map so that every tile expands to a 2x2 block of the same terrain type.
+    """
+    height = len(map)
+    width = len(map[0])
+    new_height = height * 2
+    new_width = width * 2
+    upscaled_map = [[None for _ in range(new_width)] for _ in range(new_height)]
+
+    for y in range(height):
+        for x in range(width):
+            terrain_type = map[y][x]
+            upscaled_map[2*y][2*x] = terrain_type
+            upscaled_map[2*y][2*x + 1] = terrain_type
+            upscaled_map[2*y + 1][2*x] = terrain_type
+            upscaled_map[2*y + 1][2*x + 1] = terrain_type
+
+    return upscaled_map
+
 def generate_perlin_noise_map(width=72, height=72, scale=10.0, octaves=2, persistence=0.5, lacunarity=2.0, seed=None) -> Map:
     """
     Generate a Map using Perlin noise to assign terrain types.
@@ -92,8 +112,11 @@ def generate_perlin_noise_map(width=72, height=72, scale=10.0, octaves=2, persis
     terrain_types = list(TerrainType)
     num_types = len(terrain_types)
 
-    for y in range(height):
-        for x in range(width):
+    small_width, small_height = width // 2, height // 2
+    map = [[None for _ in range(small_width)] for _ in range(small_height)]
+
+    for y in range(small_height):
+        for x in range(small_width):
             amplitude = 1.0
             frequency = 1.0
             value = 0.0
@@ -111,8 +134,13 @@ def generate_perlin_noise_map(width=72, height=72, scale=10.0, octaves=2, persis
 
             normalized = (value / max_amp + 1) / 2  # map [-1,1] -> [0,1]
             terrain_index = int(normalized * (num_types - 1))
-            terrain_type = terrain_types[terrain_index]
+            map[y][x] = terrain_types[terrain_index]
 
+    # Expand coarse map into 2x2 blocks
+    upscaled_map = upscale_map(map=map)
+    for y in range(height):
+        for x in range(width):
+            terrain_type = upscaled_map[y][x]
             tiles.append(generate_specific_terrain_and_sprite(terrain_type, 1))
 
     # underground
