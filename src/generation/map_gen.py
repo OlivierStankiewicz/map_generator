@@ -133,10 +133,62 @@ def generate_perlin_noise_map(width=72, height=72, scale=10.0, octaves=2, persis
                 frequency *= lacunarity
 
             normalized = (value / max_amp + 1) / 2  # map [-1,1] -> [0,1]
-            terrain_index = int(normalized * (num_types - 1))
+            terrain_index = round(normalized * (num_types - 1))
             map[y][x] = terrain_types[terrain_index]
 
-    # Expand coarse map into 2x2 blocks
+    # upscale map
+    upscaled_map = upscale_map(map=map)
+    for y in range(height):
+        for x in range(width):
+            terrain_type = upscaled_map[y][x]
+            tiles.append(generate_specific_terrain_and_sprite(terrain_type, 1))
+
+    # underground
+    for y in range(height):
+        for x in range(width):
+            tiles.append(generate_specific_terrain_and_sprite(TerrainType.ROCK, 1))
+
+    return Map(
+        format=28,
+        basic_info=generate_basic_info(),
+        players=[generate_player() for _ in range(8)],
+        additional_info=generate_additional_info(),
+        tiles=tiles,
+        objects_templates=[generate_objects_template()],
+        objects=[],
+        global_events=[],
+        padding=[0] * 124
+    )
+
+def generate_voronoi_map(width=72, height=72, num_seeds=20, seed=None) -> Map:
+    """
+    Generate a map using Voronoi regions to assign terrain types.
+    """
+    # useful info: http://pcg.wikidot.com/pcg-algorithm:voronoi-diagram
+    if seed is not None:
+        random.seed(seed)
+
+    tiles = []
+    terrain_types = list(TerrainType)
+    small_width, small_height = width // 2, height // 2
+
+    # generate seed points with random terrain types
+    seeds = []
+    for _ in range(num_seeds):
+        sx = random.randint(0, small_width - 1)
+        sy = random.randint(0, small_height - 1)
+        terrain_type = random.choice(terrain_types[:-1]) # exclude ROCK for now
+        seeds.append((sx, sy, terrain_type))
+
+    map = [[None for _ in range(small_width)] for _ in range(small_height)]
+
+    for y in range(small_height):
+        for x in range(small_width):
+            # find nearest seed
+            closest_seed = min(seeds, key=lambda s: (s[0] - x) ** 2 + (s[1] - y) ** 2)
+            map[y][x] = closest_seed[2]
+
+    # upscale map
     upscaled_map = upscale_map(map=map)
     for y in range(height):
         for x in range(width):

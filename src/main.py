@@ -1,4 +1,4 @@
-from generation.map_gen import generate_perlin_noise_map
+from generation.map_gen import generate_perlin_noise_map, generate_voronoi_map
 
 import os
 
@@ -24,7 +24,7 @@ if not filename:
 print("Chosen filename:", filename)
 
 print("Generating map representation...")
-map = generate_perlin_noise_map()
+map = generate_voronoi_map()
 json_map_representaiton = json.dumps(map.to_dict(), indent=2)
 print("Map representation generated successfully")
 

@@ -1,6 +1,8 @@
 import math
 import random
 
+# useful info: https://garagefarm.net/blog/perlin-noise-implementation-procedural-generation-and-simplex-noise
+
 # Permutation table (doubled to avoid overflow)
 p = [i for i in range(256)]
 random.shuffle(p)
@@ -49,4 +51,5 @@ def perlin(x, y):
     # Add blended results from all corners
     x1 = lerp(grad(aa, xf, yf), grad(ba, xf - 1, yf), u)
     x2 = lerp(grad(ab, xf, yf - 1), grad(bb, xf - 1, yf - 1), u)
+    
     return lerp(x1, x2, v)
