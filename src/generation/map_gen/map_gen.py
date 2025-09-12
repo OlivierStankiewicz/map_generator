@@ -1,20 +1,19 @@
-import sys
-import os
 import random
+from typing import Dict
 
-# Ensure that imports are done from the level of the src directory
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from classes.Map import Map
+from classes.tile.Tile import TerrainType
 from generation.basic_info_gen import generate_basic_info
 from generation.player_gen.player_gen import generate_player
 from generation.additional_info_gen.additional_info_gen import generate_additional_info
 from generation.tile_gen.tile_gen import generate_tile, generate_specific_terrain_and_sprite, get_terrain_type_sprite_range
 from generation.objects_template_gen import generate_objects_template
 from generation.pcg_algorithms.perlin import perlin
-from classes.tile.Tile import TerrainType
+from generation.pcg_algorithms.voronoi import voronoi
+from generation.map_gen.utils import upscale_map, smooth_map
 
 def generate_base_map() -> Map:
-    return  Map(
+    return Map(
         format= 28,
         basic_info= generate_basic_info(),
         players= [generate_player() for _ in range(8)],
@@ -23,17 +22,11 @@ def generate_base_map() -> Map:
         objects_templates = [generate_objects_template()],
         objects= [],
         global_events= [],
-        padding= [  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        padding= [0] * 124
     )
 
 def generate_random_terrain_random_sprite_map() -> Map:
-    return  Map(
+    return Map(
         format= 28,
         basic_info= generate_basic_info(),
         players= [generate_player() for _ in range(8)],
@@ -42,18 +35,12 @@ def generate_random_terrain_random_sprite_map() -> Map:
         objects_templates = [generate_objects_template()],
         objects= [],
         global_events= [],
-        padding= [  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        padding= [0] * 124
     )
 
 def generate_all_terrain_all_sprite_map() -> Map:
     tiles = []
-    for terrain_type in list(TerrainType):
+    for terrain_type in TerrainType:
         allowed_ranges = get_terrain_type_sprite_range(terrain_type)
         for allowed_range in allowed_ranges:
             sprite_min, sprite_max = allowed_range
@@ -72,34 +59,8 @@ def generate_all_terrain_all_sprite_map() -> Map:
         objects_templates = [generate_objects_template()],
         objects= [],
         global_events= [],
-        padding= [  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        padding= [0] * 124
     )
-
-def upscale_map(map: list[list[TerrainType]]) -> list[list[TerrainType]]:
-    """
-    Upscale a map so that every tile expands to a 2x2 block of the same terrain type.
-    """
-    height = len(map)
-    width = len(map[0])
-    new_height = height * 2
-    new_width = width * 2
-    upscaled_map = [[None for _ in range(new_width)] for _ in range(new_height)]
-
-    for y in range(height):
-        for x in range(width):
-            terrain_type = map[y][x]
-            upscaled_map[2*y][2*x] = terrain_type
-            upscaled_map[2*y][2*x + 1] = terrain_type
-            upscaled_map[2*y + 1][2*x] = terrain_type
-            upscaled_map[2*y + 1][2*x + 1] = terrain_type
-
-    return upscaled_map
 
 def generate_perlin_noise_map(width=72, height=72, scale=10.0, octaves=2, persistence=0.5, lacunarity=2.0, seed=None) -> Map:
     """
@@ -113,7 +74,7 @@ def generate_perlin_noise_map(width=72, height=72, scale=10.0, octaves=2, persis
     num_types = len(terrain_types)
 
     small_width, small_height = width // 2, height // 2
-    map = [[None for _ in range(small_width)] for _ in range(small_height)]
+    terrain_map = [[None for _ in range(small_width)] for _ in range(small_height)]
 
     for y in range(small_height):
         for x in range(small_width):
@@ -134,13 +95,13 @@ def generate_perlin_noise_map(width=72, height=72, scale=10.0, octaves=2, persis
 
             normalized = (value / max_amp + 1) / 2  # map [-1,1] -> [0,1]
             terrain_index = round(normalized * (num_types - 1))
-            map[y][x] = terrain_types[terrain_index]
+            terrain_map[y][x] = terrain_types[terrain_index]
 
     # upscale map
-    upscaled_map = upscale_map(map=map)
+    upscaled_terrain_map = upscale_map(map=terrain_map)
     for y in range(height):
         for x in range(width):
-            terrain_type = upscaled_map[y][x]
+            terrain_type = upscaled_terrain_map[y][x]
             tiles.append(generate_specific_terrain_and_sprite(terrain_type, 1))
 
     # underground
@@ -160,39 +121,26 @@ def generate_perlin_noise_map(width=72, height=72, scale=10.0, octaves=2, persis
         padding=[0] * 124
     )
 
-def generate_voronoi_map(width=72, height=72, num_seeds=20, seed=None) -> Map:
+def generate_voronoi_map(
+    terrain_values: Dict[TerrainType, int] = {
+        TerrainType.WATER: 1,
+        TerrainType.GRASS: 3,
+        TerrainType.SAND: 2,
+        TerrainType.DIRT: 3,
+    }, 
+    width: int = 72,
+    height: int = 72) -> Map:
     """
     Generate a map using Voronoi regions to assign terrain types.
     """
-    # useful info: http://pcg.wikidot.com/pcg-algorithm:voronoi-diagram
-    if seed is not None:
-        random.seed(seed)
-
     tiles = []
-    terrain_types = list(TerrainType)
-    small_width, small_height = width // 2, height // 2
-
-    # generate seed points with random terrain types
-    seeds = []
-    for _ in range(num_seeds):
-        sx = random.randint(0, small_width - 1)
-        sy = random.randint(0, small_height - 1)
-        terrain_type = random.choice(terrain_types[:-1]) # exclude ROCK for now
-        seeds.append((sx, sy, terrain_type))
-
-    map = [[None for _ in range(small_width)] for _ in range(small_height)]
-
-    for y in range(small_height):
-        for x in range(small_width):
-            # find nearest seed
-            closest_seed = min(seeds, key=lambda s: (s[0] - x) ** 2 + (s[1] - y) ** 2)
-            map[y][x] = closest_seed[2]
+    terrain_map = voronoi(terrain_values=terrain_values, height=height//2, width=width//2)
 
     # upscale map
-    upscaled_map = upscale_map(map=map)
+    upscaled_terrain_map = upscale_map(map=terrain_map)
     for y in range(height):
         for x in range(width):
-            terrain_type = upscaled_map[y][x]
+            terrain_type = upscaled_terrain_map[y][x]
             tiles.append(generate_specific_terrain_and_sprite(terrain_type, 1))
 
     # underground
@@ -211,3 +159,4 @@ def generate_voronoi_map(width=72, height=72, num_seeds=20, seed=None) -> Map:
         global_events=[],
         padding=[0] * 124
     )
+

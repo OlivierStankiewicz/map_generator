@@ -4,7 +4,7 @@ import random
 # useful info: https://garagefarm.net/blog/perlin-noise-implementation-procedural-generation-and-simplex-noise
 
 # Permutation table (doubled to avoid overflow)
-p = [i for i in range(256)]
+p = list(range(256))
 random.shuffle(p)
 p = p * 2
 

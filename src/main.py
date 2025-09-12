@@ -1,11 +1,11 @@
-from generation.map_gen import generate_perlin_noise_map, generate_voronoi_map
-
-import os
-
-import tkinter as tk
-from tkinter import filedialog
+import sys
 import os
 import json
+import tkinter as tk
+from tkinter import filedialog
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__))))
+from generation.map_gen.map_gen import generate_voronoi_map
 
 root = tk.Tk()
 root.withdraw()
