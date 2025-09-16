@@ -138,6 +138,7 @@ def generate_voronoi_map(
 
     # upscale map
     upscaled_terrain_map = upscale_map(map=terrain_map)
+    upscaled_terrain_map = smooth_map(terrain_map=upscaled_terrain_map)
     for y in range(height):
         for x in range(width):
             terrain_type = upscaled_terrain_map[y][x]
