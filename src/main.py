@@ -24,7 +24,7 @@ if not filename:
 print("Chosen filename:", filename)
 
 print("Generating map representation...")
-map = generate_voronoi_map()
+map = generate_voronoi_map(width=36, height=36)
 json_map_representaiton = json.dumps(map.to_dict(), indent=2)
 print("Map representation generated successfully")
 

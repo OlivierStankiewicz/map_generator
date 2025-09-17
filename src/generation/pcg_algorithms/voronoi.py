@@ -70,120 +70,155 @@ def generate_voronoi_regions(n: int, height: int, width: int) -> List[VoronoiReg
 
     return regions
 
-def voronoi(terrain_values: Dict[TerrainType, int], height: int, width: int, alpha: int = 5) -> List[List[TerrainType]]:
+def voronoi(terrain_weights: Dict[TerrainType, int], height: int, width: int, alpha: int = 5) -> List[List[TerrainType]]:
     """
     Generate a Voronoi map with specified dimensions and number of regions.
     Useful info: http://pcg.wikidot.com/pcg-algorithm:voronoi-diagram
     """
-    num_of_regions = sum(value * alpha for value in terrain_values.values())
+    num_of_regions = sum(weight * alpha for weight in terrain_weights.values())
     regions = generate_voronoi_regions(n=num_of_regions, height=height, width=width)
-    # print(f"Num of tiles: {sum([len(r.tiles) for r in regions])}")
 
-    sorted_terrains = sorted(terrain_values.items(), key=lambda kv: kv[1])
+    sorted_terrains = sorted(terrain_weights.items(), key=lambda kv: kv[1])
+    regions_for_terrain = {terrain: [] for terrain in terrain_weights} # list for storing current regions assigned to each terrain
+
+    # phase 1: pick initial seed regions for each terrain type
     
-    regions_for_terrain = {terrain: [] for terrain in terrain_values} # list for storing current regions assigned to each terrain
-
-    def print_regions_for_terrain():
-        for terrain, regions in regions_for_terrain.items():
-            print(f"{terrain.name}: {len(regions)} regions")
-
-    def set_initial_seeds() -> Dict[TerrainType, VoronoiRegion]:
-        seeds = {}
-        for terrain, value in terrain_values.items():
-            seed = random.choice([r for r in regions if r.terrain_type is None])
-            # ensure the chosen region has enough neighbors
-            while len(seed.neighbors) < value:
-                seed = random.choice(regions)
-            seed.terrain_type = terrain
-            regions_for_terrain[terrain].append(seed)
-            seeds[terrain] = seed
-
-        return seeds
+    def pick_seed(terrain: TerrainType, target_size: int) -> VoronoiRegion:
+        """
+        Pick initial seed region for a terrain, provided chosen region has enough neighbors.
+        """
+        seed = random.choice([r for r in regions if r.terrain_type is None])
+        # ensure the chosen region has enough neighbors
+        while len(seed.neighbors) < target_size:
+            seed = random.choice(regions)
+        seed.terrain_type = terrain
+        seed.iteration = 1
+        regions_for_terrain[terrain].append(seed)
+        
+        return seed
     
-    initial_seeds = set_initial_seeds()
+    seeds = {terrain: pick_seed(terrain, weight) for terrain, weight in terrain_weights.items()}
+    
+    # phase 2: expand from the seeds, assigning terrain types to neighboring regions
+    
+    def choose_initial_regions_next_to_seed(seed: VoronoiRegion, terrain: TerrainType, weight: int):
+        """
+        Grow a terrain outward from its seed region.
+        """
+        region = seed
+        for _ in range(weight - 1):
+            empty_neighbors = [n for n in region.neighbors if n.terrain_type is None]
+            if not empty_neighbors:
+                return
+            region = random.choice(empty_neighbors)
+            region.terrain_type = terrain
+            region.iteration = 1
+            regions_for_terrain[terrain].append(region)
+    
+    def get_oldest_region(terrain: TerrainType) -> List[VoronoiRegion]:
+        """
+        Return the oldest region of a given terrain type (the one with the highest iteration)
+        that still has neighbors with unassigned terrain.
+        """
+        candidates = [
+            r for r in regions_for_terrain[terrain]
+            if any(n.terrain_type is None for n in r.neighbors)
+        ]
+        if not candidates:
+            return []
+        max_iter = max(r.iteration for r in candidates)
+        return [r for r in candidates if r.iteration == max_iter]
+    
+    def expand_terrain(terrain: TerrainType, weight: int):
+        """
+        Expand terrain from its frontier into unassigned neighbors.
+        """
+        frontier = get_oldest_region(terrain)
+        for _ in range(weight):
+            if not frontier:
+                return
+            region = random.choice(frontier)
+            frontier.remove(region)
+
+            empty_neighbors = [n for n in region.neighbors if n.terrain_type is None]
+            if not empty_neighbors:
+                continue
+
+            new_region = random.choice(empty_neighbors)
+            new_region.terrain_type = terrain
+            new_region.iteration = region.iteration + 1
+            regions_for_terrain[terrain].append(new_region)
+            
     for i in range(alpha):
         # repeat alpha iterations for each terrain type    
-        for terrain, value in sorted_terrains:
+        for terrain, weight in sorted_terrains:
             if i == 0:
-                # pick one region at random with enough neighbors
-                region = initial_seeds[terrain]
-                region.iteration = 1
-                
-                # assign terrain type to neighboring regions
-                for _ in range(value - 1):
-                    neighbors_with_no_terrain = [n for n in region.neighbors if n.terrain_type is None]
-                    if not neighbors_with_no_terrain:
-                        break
-                    region = random.choice(neighbors_with_no_terrain)
-                    region.terrain_type = terrain
-                    region.iteration = 1
-                    regions_for_terrain[terrain].append(region)
+                choose_initial_regions_next_to_seed(seeds[terrain], terrain, weight)
             else:
-                def get_oldest_regions_list():
-                    """Return a list of the oldest regions with neighbors with no terrain assigned yet for the current terrain type."""
-                    regions_with_empty_neighbors = [
-                        r for r in regions_for_terrain[terrain]
-                        if any(n.terrain_type is None for n in r.neighbors)
-                    ]
-                    if not regions_with_empty_neighbors:
-                        return []
-                    max_iter = max(r.iteration for r in regions_with_empty_neighbors)
-                    return [r for r in regions_with_empty_neighbors if r.iteration == max_iter]
-                                    
-                oldest_regions = get_oldest_regions_list()
-                # assign given terrain type to the {value} of regions 
-                for _ in range(value):
-                    if not oldest_regions:
-                        break
-                    # pick one at random from the oldest regions (with max iterations)
-                    oldest = random.choice(oldest_regions)
-                    oldest_regions.remove(oldest)
-                    
-                    neighbors_with_no_terrain = [n for n in oldest.neighbors if n.terrain_type is None]
-                    if not neighbors_with_no_terrain:
-                        continue
-                    
-                    new_region = random.choice(neighbors_with_no_terrain)
-                    new_region.terrain_type = terrain
-                    new_region.iteration = oldest.iteration + 1
-                    regions_for_terrain[terrain].append(new_region)
-
+                expand_terrain(terrain, weight)        
+            
         print(f"After iteration {i + 1}:")
-        print_regions_for_terrain()
+        for terrain, regs in regions_for_terrain.items():
+                print(f"{terrain.name}: {len(regs)} regions")
 
-    # assign any unassigned regions to the terrain type with the highest value
-    unassigned = [r for r in regions if r.terrain_type is None]
-    # sort by number of neighbors that already have terrain, descending
-    unassigned.sort(key=lambda r: sum(1 for n in r.neighbors if n.terrain_type is not None), reverse=True)
-    for region in unassigned:
-        assigned_neighbors = [n for n in region.neighbors if n.terrain_type is not None]
-        if assigned_neighbors:
-            # pick neighbor with highest terrain value
-            best_neighbor = max(assigned_neighbors, key=lambda n: terrain_values[n.terrain_type])
-            region.terrain_type = best_neighbor.terrain_type
-        else:
-            # fallback: assign terrain with the highest value
-            region.terrain_type = max(terrain_values.items(), key=lambda kv: kv[1])[0]
+    # phase 3: fill the remaining unassigned regions
     
-    # build final map
+    def assign_unassigned_regions():
+        """
+        Assign leftover regions so that each terrain type approaches its target size,
+        preferring adjacency to the same terrain.
+        """
+        # expected number of regions per terrain
+        target_sizes = {t: w * alpha for t, w in terrain_weights.items()}
+        current_sizes = {t: len(regions_for_terrain[t]) for t in terrain_weights}
+
+        unassigned = [r for r in regions if r.terrain_type is None]
+        # prioritize regions with many assigned neighbors
+        unassigned.sort(
+            key=lambda r: sum(1 for n in r.neighbors if n.terrain_type),
+            reverse=True
+        )
+
+        for region in unassigned:
+            # candidates = terrains still under their target
+            under_quota = {t for t in terrain_weights if current_sizes[t] < target_sizes[t]}
+            
+            neighbors = [n for n in region.neighbors if n.terrain_type]
+            neighbor_types = [n.terrain_type for n in neighbors]
+
+            chosen_terrain = None
+
+            if neighbors:
+                # find the most frequent neighbor type that is still under quota
+                neighbor_counts = {t: neighbor_types.count(t) for t in set(neighbor_types)}
+                valid = [(t, c) for t, c in neighbor_counts.items() if t in under_quota]
+                if valid:
+                    chosen_terrain = max(valid, key=lambda x: x[1])[0]
+            
+            if not chosen_terrain and under_quota:
+                # fallback: pick any terrain still under quota, weighted by remaining deficit
+                deficits = {t: target_sizes[t] - current_sizes[t] for t in under_quota}
+                chosen_terrain = max(deficits, key=deficits.get)
+
+            if not chosen_terrain:
+                # absolute fallback: just copy the strongest neighbor or global max
+                if neighbors:
+                    chosen_terrain = max(neighbors, key=lambda n: terrain_weights[n.terrain_type]).terrain_type
+                else:
+                    chosen_terrain = max(terrain_weights, key=terrain_weights.get)
+
+            # assign and update
+            region.terrain_type = chosen_terrain
+            regions_for_terrain[chosen_terrain].append(region)
+            current_sizes[chosen_terrain] += 1
+
+    assign_unassigned_regions()
+    
+    # phase 4: build final map
+    
     voronoi_map = [[None for _ in range(width)] for _ in range(height)]
     for region in regions:
         for x, y in region.tiles:
             voronoi_map[y][x] = region.terrain_type
 
     return voronoi_map
-
-def main():
-    from classes.tile.Tile import TerrainType
-    terrain_values = {
-        TerrainType.WATER: 1,
-        TerrainType.GRASS: 3,
-        TerrainType.SAND: 2,
-        TerrainType.DIRT: 3,
-    }
-    voronoi_map = voronoi(terrain_values, 36, 36)
-    for row in voronoi_map:
-        print(" ".join(t.name[0] if t else '.' for t in row))
-
-if __name__ == "__main__":
-    main()

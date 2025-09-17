@@ -98,7 +98,7 @@ def generate_perlin_noise_map(width=72, height=72, scale=10.0, octaves=2, persis
             terrain_map[y][x] = terrain_types[terrain_index]
 
     # upscale map
-    upscaled_terrain_map = upscale_map(map=terrain_map)
+    upscaled_terrain_map = upscale_map(terrain_map=terrain_map)
     for y in range(height):
         for x in range(width):
             terrain_type = upscaled_terrain_map[y][x]
@@ -134,14 +134,14 @@ def generate_voronoi_map(
     Generate a map using Voronoi regions to assign terrain types.
     """
     tiles = []
-    terrain_map = voronoi(terrain_values=terrain_values, height=height//2, width=width//2)
+    terrain_map = voronoi(terrain_weights=terrain_values, height=height//2, width=width//2, alpha=3)
 
     # upscale map
-    upscaled_terrain_map = upscale_map(map=terrain_map)
-    upscaled_terrain_map = smooth_map(terrain_map=upscaled_terrain_map)
+    terrain_map = upscale_map(terrain_map=terrain_map)
+    terrain_map = smooth_map(terrain_map=terrain_map)
     for y in range(height):
         for x in range(width):
-            terrain_type = upscaled_terrain_map[y][x]
+            terrain_type = terrain_map[y][x]
             tiles.append(generate_specific_terrain_and_sprite(terrain_type, 1))
 
     # underground
