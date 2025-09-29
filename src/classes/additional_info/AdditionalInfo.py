@@ -6,6 +6,9 @@ from classes.additional_info.DisabledArtifacts import DisabledArtifacts
 from classes.additional_info.DisabledSpells import DisabledSpells
 from classes.additional_info.DisabledSkills import DisabledSkills
 
+from src.classes.additional_info.Rumors import Rumors
+
+
 class AdditionalInfo:
 
     # no-argument constructor
@@ -22,14 +25,14 @@ class AdditionalInfo:
             disabled_artifacts = DisabledArtifacts.create_default(),
             disabled_spells = DisabledSpells.create_default(),
             disabled_skills = DisabledSkills.create_default(),
-            rumors = [],
+            rumors = list[Rumors.create_default()],
             heroes_settings = []
         )
 
     def __init__(self, victory_condition: VictoryCondition, loss_condition: LossCondition, teams: Teams,
                  heroes_availability: HeroesAvailability, placeholder_heroes: list, custom_heroes: list,
                  reserved: list[int], disabled_artifacts: DisabledArtifacts, disabled_spells: DisabledSpells,
-                 disabled_skills: DisabledSkills, rumors: list, heroes_settings: list) -> None:
+                 disabled_skills: DisabledSkills, rumors: list[Rumors], heroes_settings: list) -> None:
         self.victory_condition = victory_condition
         self.loss_condition = loss_condition
         self.teams = teams
@@ -55,6 +58,6 @@ class AdditionalInfo:
             "disabled_artifacts": self.disabled_artifacts.to_dict(),
             "disabled_spells": self.disabled_spells.to_dict(),
             "disabled_skills": self.disabled_skills.to_dict(),
-            "rumors": self.rumors,
+            "rumors": self.to_dict(),
             "heroes_settings": self.heroes_settings
         }
