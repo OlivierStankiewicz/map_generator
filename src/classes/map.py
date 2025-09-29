@@ -4,6 +4,9 @@ from classes.additional_info.AdditionalInfo import AdditionalInfo
 from classes.tile.Tile import Tile
 from classes.ObjectsTemplate import ObjectsTemplate
 
+from src.classes.Objects.Objects import Objects
+
+
 # possible number of tiles: 10368 (72x72x2) / 36x36, / 108x108, / 144x144
 
 class Map:
@@ -18,7 +21,7 @@ class Map:
             additional_info= AdditionalInfo.create_default(),
             tiles= [Tile.create_default() for _ in range(10368)],
             objects_templates = [ObjectsTemplate.create_default()],
-            objects= [],
+            objects= [Objects.create_default()],
             global_events= [],
             padding= [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
