@@ -1,4 +1,4 @@
-from src.classes.Objects import Properties
+from src.classes.Objects.PropertiesBase import Properties
 from src.classes.Objects.Properties.Helpers.Creatures import Creatures
 
 

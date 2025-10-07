@@ -1,4 +1,5 @@
-from src.classes.Objects import Properties
+from src.classes.Objects.Properties.Helpers.PotentialSkills import PotentialSkills
+from src.classes.Objects.PropertiesBase import Properties
 
 
 class WitchHut(Properties):

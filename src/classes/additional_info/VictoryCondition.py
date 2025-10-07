@@ -1,4 +1,5 @@
 from src.classes.Enums.VictoryConditions import VictoryConditions
+from src.classes.additional_info.VictoryConditions.Details import Details
 
 
 class VictoryCondition:
@@ -11,11 +12,10 @@ class VictoryCondition:
             details=None # Details.create_default(), jeśli tryb normal - tego nie ma
         )
 
-    def __init__(self, type: int) -> None:
+    def __init__(self, type: VictoryConditions, details: Details) -> None:
         self.type = type
 
     def to_dict(self) -> dict:
         return {
-            "type": self.type
-
+            "type": self.type.value
         }

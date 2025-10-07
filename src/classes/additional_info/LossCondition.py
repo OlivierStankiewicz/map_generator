@@ -8,16 +8,16 @@ class LossCondition:
     @classmethod
     def create_default(cls) -> "LossCondition":
         return cls(
-            type=LossConditions.NORMAL
+            type=LossConditions.NORMAL,
         )
 
-    def __init__(self, type: int) -> None:
+    def __init__(self, type: LossConditions) -> None:
         self.type = type
         self.details = Details.get_type(type)
 
     def to_dict(self) -> dict:
         dict = {
-            "type": self.type
+            "type": self.type.value
         }
         dict.update(self.details.to_dict())
         return dict

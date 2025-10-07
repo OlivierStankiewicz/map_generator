@@ -161,3 +161,4 @@ class Hero(Enum):
     PADDING_157 = 157
     PADDING_158 = 158
     PADDING_159 = 159
+    RANDOM = 255

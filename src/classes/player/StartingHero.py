@@ -7,7 +7,7 @@ class StartingHero(Heroes):
     @classmethod
     def create_default(cls):
         return cls(
-            type=255,
+            type=255, # HEROES
             portrait= None, #jeśli typ = 255, tego w ogóle nie ma
             name= None #jeśli typ = 255, tego w ogóle nie ma
         )

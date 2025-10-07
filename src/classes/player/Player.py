@@ -1,7 +1,8 @@
-from AllowedAlignments import AllowedAlignments
-from StartingHero import StartingHero
+from src.classes.player.StartingHero import StartingHero
+from src.classes.player.AllowedAlignments import AllowedAlignments
 from src.classes.player.Heroes import Heroes
 from src.classes.player.MainTown import MainTown
+from src.classes.Enums.Behavior import Behavior
 
 
 class Player:
@@ -10,16 +11,16 @@ class Player:
     @classmethod
     def create_default(cls) -> "Player":
         return cls(
-            can_be_human = 0, # 1 - True, 0 - False, def 1
-            can_be_computer = 0, # 1 - True, 0 - False, def 1
-            behavior = 0, #Enums->Behaviors, def Behaviors.RANDOM
-            has_customized_alignments= 76, #0?
+            can_be_human = 1, # 1 - True, 0 - False, def 1
+            can_be_computer = 1, # 1 - True, 0 - False, def 1
+            behavior = Behavior.RANDOM.value, #Enums->Behaviors, def Behaviors.RANDOM
+            has_customized_alignments= 0, #moze miec inne wartosci ale idk jak
             allowed_alignments= AllowedAlignments.create_default(),
             allow_random_alignment= 0, #0?
             main_town = None, #MainTown.create_defaults(), def None
             has_random_heroes= 0, #0
-            starting_hero= StartingHero.create_default(),
-            num_nonspecific_placeholder_heroes= 0, # def: 0
+            starting_hero= 255, #StartingHero.create_default()
+            num_nonspecific_placeholder_heroes= 0, # def: 0 widzialem tez 1 i 255 ale idk
             heroes= []
         )
 
@@ -48,7 +49,7 @@ class Player:
             "allow_random_alignment": self.allow_random_alignment,
             "main_town": self.main_town,
             "has_random_heroes": self.has_random_heroes,
-            "starting_hero": self.starting_hero.to_dict(),
+            "starting_hero": self.starting_hero,
             "num_nonspecific_placeholder_heroes": self.num_nonspecific_placeholder_heroes,
-            "heroes": [hero for hero in self.heroes]
+            "heroes": [hero.to_dict() for hero in self.heroes]
         }
