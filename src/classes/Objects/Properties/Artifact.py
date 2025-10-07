@@ -1,5 +1,5 @@
 from src.classes.Objects.Properties.Helpers import Guardians
-from src.classes.Objects import Properties
+from src.classes.Objects.PropertiesBase import Properties
 
 
 class Artifact(Properties):

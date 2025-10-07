@@ -4,13 +4,13 @@ class BasicInfo:
     @classmethod
     def create_default(cls) -> "BasicInfo":
         return cls(
-            is_playable= 0,
+            is_playable= 1, # 0 1
             map_size= 72,
-            has_two_levels= 1,
+            has_two_levels= 1, # 0 1
             name= "",
             description= "",
-            difficulty= 1,
-            max_hero_level= 0
+            difficulty= 1, # 0 4
+            max_hero_level= 0 # max level
         )
     
     def __init__(self, is_playable: int, map_size: int, has_two_levels: int, name: str, description: str, difficulty: int, max_hero_level: int) -> None:

@@ -1,5 +1,5 @@
 from src.classes.Enums.Disposition import Disposition
-from src.classes.Objects import Properties
+from src.classes.Objects.PropertiesBase import Properties
 from src.classes.Objects.Properties.Helpers.MessageAndTreasures import MessageAndTreasures
 
 

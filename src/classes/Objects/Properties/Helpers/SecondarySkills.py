@@ -7,7 +7,7 @@ class SecondarySkills:
     def create_default(cls) -> "SecondarySkills":
         return cls(
             type=0,
-            level =0
+            level=0
         )
 
     def __init__(self, type: int, level: SkillsLevel) -> None:
@@ -17,5 +17,5 @@ class SecondarySkills:
     def to_dict(self) -> dict:
         return {
             "type": self.type,
-            "level": self.level
+            "level": self.level.value,
         }

@@ -3,7 +3,7 @@ class MainTown:
     @classmethod
     def create_default(cls) -> "MainTown":
         return cls(
-            generate_hero=0, # def: 1
+            generate_hero=1, # def: 1
             town_type=0,  # TownType
             x=0,
             y=0,

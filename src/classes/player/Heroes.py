@@ -4,7 +4,7 @@ class Heroes:
     @classmethod
     def create_default(cls):
         return cls(
-            type=255,
+            type=255, # Heroes type
             name= ""
         )
 

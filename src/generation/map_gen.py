@@ -2,7 +2,7 @@ import sys
 import os
 # Ensure that imports are done from the level of the src directory
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from classes.Map import Map
+from classes.map import Map
 from generation.basic_info_gen import generate_basic_info
 from generation.player_gen.player_gen import generate_player
 from generation.additional_info_gen.additional_info_gen import generate_additional_info

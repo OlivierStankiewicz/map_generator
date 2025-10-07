@@ -1,16 +1,3 @@
-from src.classes.Enums.VictoryConditions import VictoryConditions
-from src.classes.additional_info.VictoryConditions.AccumulateCreatures import AccumulateCreatures
-from src.classes.additional_info.VictoryConditions.AccumulateResources import AccumulateResources
-from src.classes.additional_info.VictoryConditions.AcquireArtifact import AcquireArtifact
-from src.classes.additional_info.VictoryConditions.BuildGrail import BuildGrail
-from src.classes.additional_info.VictoryConditions.CaptureTown import CaptureTown
-from src.classes.additional_info.VictoryConditions.DefeatHero import DefeatHero
-from src.classes.additional_info.VictoryConditions.DefeatMonster import DefeatMonster
-from src.classes.additional_info.VictoryConditions.FlagDwellings import FlagDwellings
-from src.classes.additional_info.VictoryConditions.FlagMines import FlagMines
-from src.classes.additional_info.VictoryConditions.TransportArtifact import TransportArtifact
-from src.classes.additional_info.VictoryConditions.UpgradeTown import UpgradeTown
-
 
 class Details:
 
@@ -31,30 +18,30 @@ class Details:
             'applies_to_computer': self.applies_to_computer
         }
 
-    def get_type(self, type: int):
-        if type == VictoryConditions.NORMAL:
-            return self.create_default()
-        elif type == VictoryConditions.ACQUIRE_ARTIFACT:
-            return AcquireArtifact.create_default()
-        elif type == VictoryConditions.ACCUMULATE_CREATURES:
-            return AccumulateCreatures.create_default()
-        elif type == VictoryConditions.ACCUMULATE_RESOURCES:
-            return AccumulateResources.create_default()
-        elif type == VictoryConditions.UPGRADE_TOWN:
-            return UpgradeTown.create_default()
-        elif type == VictoryConditions.BUILD_GRAIL:
-            return BuildGrail.create_default()
-        elif type == VictoryConditions.DEFEAT_HERO:
-            return DefeatHero.create_default()
-        elif type == VictoryConditions.CAPTURE_TOWN:
-            return CaptureTown.create_default()
-        elif type == VictoryConditions.DEFEAT_MONSTER:
-            return DefeatMonster.create_default()
-        elif type == VictoryConditions.FLAG_DWELLINGS:
-            return FlagDwellings.create_default()
-        elif type == VictoryConditions.FLAG_MINES:
-            return FlagMines.create_default()
-        elif type == VictoryConditions.TRANSPORT_ARTIFACT:
-            return TransportArtifact.create_default()
-        else:
-            raise Exception(f"Unknown type: {type}")
+    # def get_type(self, type: int):
+    #     if type == VictoryConditions.NORMAL:
+    #         return self.create_default()
+    #     elif type == VictoryConditions.ACQUIRE_ARTIFACT:
+    #         return AcquireArtifact.create_default()
+    #     elif type == VictoryConditions.ACCUMULATE_CREATURES:
+    #         return AccumulateCreatures.create_default()
+    #     elif type == VictoryConditions.ACCUMULATE_RESOURCES:
+    #         return AccumulateResources.create_default()
+    #     elif type == VictoryConditions.UPGRADE_TOWN:
+    #         return UpgradeTown.create_default()
+    #     elif type == VictoryConditions.BUILD_GRAIL:
+    #         return BuildGrail.create_default()
+    #     elif type == VictoryConditions.DEFEAT_HERO:
+    #         return DefeatHero.create_default()
+    #     elif type == VictoryConditions.CAPTURE_TOWN:
+    #         return CaptureTown.create_default()
+    #     elif type == VictoryConditions.DEFEAT_MONSTER:
+    #         return DefeatMonster.create_default()
+    #     elif type == VictoryConditions.FLAG_DWELLINGS:
+    #         return FlagDwellings.create_default()
+    #     elif type == VictoryConditions.FLAG_MINES:
+    #         return FlagMines.create_default()
+    #     elif type == VictoryConditions.TRANSPORT_ARTIFACT:
+    #         return TransportArtifact.create_default()
+    #     else:
+    #         raise Exception(f"Unknown type: {type}")
