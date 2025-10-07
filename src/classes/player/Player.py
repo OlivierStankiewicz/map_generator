@@ -19,7 +19,7 @@ class Player:
             allow_random_alignment= 0, #0?
             main_town = None, #MainTown.create_defaults(), def None
             has_random_heroes= 0, #0
-            starting_hero= 255, #StartingHero.create_default()
+            starting_hero= StartingHero.create_default(),
             num_nonspecific_placeholder_heroes= 0, # def: 0 widzialem tez 1 i 255 ale idk
             heroes= []
         )
@@ -49,7 +49,7 @@ class Player:
             "allow_random_alignment": self.allow_random_alignment,
             "main_town": self.main_town,
             "has_random_heroes": self.has_random_heroes,
-            "starting_hero": self.starting_hero,
+            "starting_hero": self.starting_hero.to_dict(),
             "num_nonspecific_placeholder_heroes": self.num_nonspecific_placeholder_heroes,
             "heroes": [hero.to_dict() for hero in self.heroes]
         }

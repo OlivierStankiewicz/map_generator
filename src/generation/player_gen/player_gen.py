@@ -3,6 +3,7 @@ import os
 
 from src.classes.Enums.Behavior import Behavior
 from src.classes.player.AllowedAlignments import AllowedAlignments
+from src.classes.player.StartingHero import StartingHero
 
 # Ensure that imports are done from the level of the src directory
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
@@ -20,7 +21,7 @@ def generate_player() -> Player:
         allow_random_alignment=0,  # 0?
         main_town=None,  # MainTown.create_defaults(), def None
         has_random_heroes=0,  # 0
-        starting_hero=255,  # StartingHero.create_default()
+        starting_hero=StartingHero.create_default(),
         num_nonspecific_placeholder_heroes=0,  # def: 0 widzialem tez 1 i 255 ale idk
         heroes=[]
     )
