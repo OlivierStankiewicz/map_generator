@@ -1,8 +1,11 @@
-from classes.BasicInfo import BasicInfo
-from classes.player.Player import Player
-from classes.additional_info.AdditionalInfo import AdditionalInfo
-from classes.tile.Tile import Tile
-from classes.ObjectsTemplate import ObjectsTemplate
+from src.classes.BasicInfo import BasicInfo
+from src.classes.player.Player import Player
+from src.classes.additional_info.AdditionalInfo import AdditionalInfo
+from src.classes.tile.Tile import Tile
+from src.classes.ObjectsTemplate import ObjectsTemplate
+
+from src.classes.Objects.Objects import Objects
+
 
 # possible number of tiles: 10368 (72x72x2) / 36x36, / 108x108, / 144x144
 
@@ -18,7 +21,7 @@ class Map:
             additional_info= AdditionalInfo.create_default(),
             tiles= [Tile.create_default() for _ in range(10368)],
             objects_templates = [ObjectsTemplate.create_default()],
-            objects= [],
+            objects= [Objects.create_default()],
             global_events= [],
             padding= [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -50,7 +53,7 @@ class Map:
             "additional_info": self.additional_info.to_dict(),
             "tiles": [tile.to_dict() for tile in self.tiles],
             "objects_templates": [template.to_dict() for template in self.objects_templates],
-            "objects": [obj for obj in self.objects],
+            "objects": [self.objects],
             "global_events": self.global_events,
             "padding": self.padding
         }

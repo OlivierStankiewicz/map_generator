@@ -9,9 +9,9 @@ class ObjectsTemplate:
             actionability= [0, 0, 0, 0, 0, 128],
             allowed_landscapes= [255, 0],
             landscape_group= [1, 0],
-            object_class= 71,
+            object_class= 71, #
             object_subclass= 0,
-            object_group= 2,
+            object_group= 2, #
             is_ground= 0,
             unknown= [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         )
