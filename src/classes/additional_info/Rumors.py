@@ -1,5 +1,3 @@
-
-
 class Rumors:
     @classmethod
     def create_default(cls) -> "Rumors":

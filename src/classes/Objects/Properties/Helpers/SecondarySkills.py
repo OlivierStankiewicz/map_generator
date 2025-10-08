@@ -1,5 +1,4 @@
-from src.classes.Enums.SkillsLevel import SkillsLevel
-
+from classes.Enums.SkillsLevel import SkillsLevel
 
 class SecondarySkills:
 

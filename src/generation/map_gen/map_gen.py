@@ -187,4 +187,3 @@ def generate_voronoi_map(
         global_events=[],
         padding=[0] * 124
     )
-

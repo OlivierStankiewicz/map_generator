@@ -1,7 +1,6 @@
-from src.classes.Objects.PropertiesBase import Properties
+from classes.Objects.PropertiesBase import PropertiesType
 
-
-class SpellScroll(Properties):
+class SpellScroll(PropertiesType):
     @classmethod
     def create_default(cls) -> 'SpellScroll':
         return cls(

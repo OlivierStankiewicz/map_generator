@@ -1,13 +1,11 @@
-from src.classes.additional_info.VictoryCondition import VictoryCondition
-from src.classes.additional_info.LossCondition import LossCondition
-from src.classes.additional_info.Teams import Teams
-from src.classes.additional_info.HeroesAvailability import HeroesAvailability
-from src.classes.additional_info.DisabledArtifacts import DisabledArtifacts
-from src.classes.additional_info.DisabledSpells import DisabledSpells
-from src.classes.additional_info.DisabledSkills import DisabledSkills
-
-from src.classes.additional_info.Rumors import Rumors
-
+from classes.additional_info.VictoryCondition import VictoryCondition
+from classes.additional_info.LossCondition import LossCondition
+from classes.additional_info.Teams import Teams
+from classes.additional_info.HeroesAvailability import HeroesAvailability
+from classes.additional_info.DisabledArtifacts import DisabledArtifacts
+from classes.additional_info.DisabledSpells import DisabledSpells
+from classes.additional_info.DisabledSkills import DisabledSkills
+from classes.additional_info.Rumors import Rumors
 
 class AdditionalInfo:
 

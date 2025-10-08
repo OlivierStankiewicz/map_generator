@@ -1,6 +1,4 @@
-from src.classes.Objects.PropertiesBase import Properties
-
-
+from classes.Objects.PropertiesBase import Properties
 
 class Grail(Properties):
 
@@ -11,7 +9,7 @@ class Grail(Properties):
             unknown= [0, 0, 0]
             )
 
-    def __int__(self, allowed_radius: int, unknown: list[int]) -> None:
+    def __init__(self, allowed_radius: int, unknown: list[int]) -> None:
         self.allowed_radius = allowed_radius
         self.unknown = unknown
 

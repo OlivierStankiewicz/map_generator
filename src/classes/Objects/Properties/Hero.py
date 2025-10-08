@@ -5,8 +5,8 @@ class Hero:
 
         )
 
-    def __init(self) -> None:
-        
+    def __init__(self) -> None:
+        return
 
     def to_dict(self) -> dict:
         return {

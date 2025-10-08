@@ -1,5 +1,4 @@
-from src.classes.Objects.Properties.Helpers.DetailsReward import Details
-
+from classes.Objects.Properties.Helpers.DetailsReward import Details
 
 class Reward:
     @classmethod

@@ -1,6 +1,5 @@
 from enum import Enum
 
-
 class LossConditions(Enum):
     NORMAL = 255
     LOSE_TOWN = 0

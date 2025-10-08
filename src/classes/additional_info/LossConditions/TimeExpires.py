@@ -1,5 +1,4 @@
-from src.classes.additional_info.LossConditions.Details import Details
-
+from classes.additional_info.LossConditions.Details import Details
 
 class TimeExpires(Details):
     @classmethod

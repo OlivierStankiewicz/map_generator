@@ -1,5 +1,4 @@
-from src.classes.Objects.PropertiesBase import Properties
-
+from classes.Objects.PropertiesBase import Properties
 
 class RandomDwellingPresetAlignment(Properties):
     @classmethod

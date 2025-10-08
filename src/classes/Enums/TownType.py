@@ -1,6 +1,5 @@
 from enum import Enum
 
-
 class TownType(Enum):
     CASTLE = 0
     RAMPART = 1

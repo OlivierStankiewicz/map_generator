@@ -1,11 +1,9 @@
-from src.classes.BasicInfo import BasicInfo
-from src.classes.player.Player import Player
-from src.classes.additional_info.AdditionalInfo import AdditionalInfo
-from src.classes.tile.Tile import Tile
-from src.classes.ObjectsTemplate import ObjectsTemplate
-
-from src.classes.Objects.Objects import Objects
-
+from classes.BasicInfo import BasicInfo
+from classes.player.Player import Player
+from classes.additional_info.AdditionalInfo import AdditionalInfo
+from classes.tile.Tile import Tile
+from classes.ObjectsTemplate import ObjectsTemplate
+from classes.Objects.Objects import Objects
 
 # possible number of tiles: 10368 (72x72x2) / 36x36, / 108x108, / 144x144
 

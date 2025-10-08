@@ -1,6 +1,5 @@
 from enum import Enum
 
-
 class ResourceType(Enum):
     WOOD = 0
     MERCURY = 1

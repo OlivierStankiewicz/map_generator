@@ -1,5 +1,4 @@
-from src.classes.additional_info.VictoryConditions.Details import Details
-
+from classes.additional_info.VictoryConditions.Details import Details
 
 class AccumulateCreatures(Details):
     @classmethod
@@ -18,10 +17,10 @@ class AccumulateCreatures(Details):
         self.count = count
 
     def to_dict(self) -> dict:
-        dict = super().to_dict()
-        dict.update({
+        _dict = super().to_dict()
+        _dict.update({
             "creature_type": self.creature_type,
             "count": self.count
         })
-        return dict
+        return _dict
 

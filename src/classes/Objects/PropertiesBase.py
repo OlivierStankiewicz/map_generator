@@ -1,15 +1,14 @@
-from src.classes.Enums.ObjectPropertiesType import ObjectPropertiesType
-
+from classes.Enums.ObjectPropertiesType import ObjectPropertiesType
 
 class Properties:
     @classmethod
     def create_default(cls) -> "Properties":
         return cls(
-            objectsPropertiesType= None
+            objects_properties_type= ObjectPropertiesType.ABANDONED_MINE
         )
 
-    def __init__(self, objectsPropertiesType: ObjectPropertiesType):
-        self.objectsPropertiesType = objectsPropertiesType
+    def __init__(self, objects_properties_type: ObjectPropertiesType):
+        self.objects_properties_type = objects_properties_type
 
     def to_dict(self) -> dict:
         return {}

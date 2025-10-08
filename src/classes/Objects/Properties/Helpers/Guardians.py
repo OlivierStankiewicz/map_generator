@@ -1,5 +1,4 @@
-from src.classes.Objects.Properties.Helpers.Creatures import Creatures
-
+from classes.Objects.Properties.Helpers.Creatures import Creatures
 
 class Guardians:
 

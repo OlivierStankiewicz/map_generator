@@ -1,6 +1,5 @@
 from enum import Enum
 
-
 class Behavior(Enum):
     RANDOM = 0
     WARRIOR = 1

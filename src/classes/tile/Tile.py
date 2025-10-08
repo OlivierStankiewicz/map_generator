@@ -1,5 +1,5 @@
 from enum import Enum
-from src.classes.tile.Flags import Flags
+from classes.tile.Flags import Flags
 
 class TerrainType(Enum):
     DIRT = 0

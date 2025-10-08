@@ -1,11 +1,11 @@
-from src.classes.Objects import Properties
-from src.classes.Objects.Properties.Helpers.AffectedPlayers import AffectedPlayers
-from src.classes.Objects.Properties.Helpers.BuildingsEvent import Buildings
-from src.classes.Objects.Properties.Helpers.Creatures import Creatures
-from src.classes.Objects.Properties.Helpers.PrimarySkills import PrimarySkills
-from src.classes.Objects.Properties.Helpers.Resources import Resources
-from src.classes.Objects.Properties.Helpers.SecondarySkills import SecondarySkills
-from src.classes.Objects.Properties.Helpers.Spells import Spells
+from classes.Objects import Properties
+from classes.Objects.Properties.Helpers.AffectedPlayers import AffectedPlayers
+from classes.Objects.Properties.Helpers.BuildingsEvent import Buildings
+from classes.Objects.Properties.Helpers.Creatures import Creatures
+from classes.Objects.Properties.Helpers.PrimarySkills import PrimarySkills
+from classes.Objects.Properties.Helpers.Resources import Resources
+from classes.Objects.Properties.Helpers.SecondarySkills import SecondarySkills
+from classes.Objects.Properties.Helpers.Spells import Spells
 
 
 class Events:

@@ -1,5 +1,4 @@
-from src.classes.Objects.Properties.Helpers.Resources import Resources
-
+from classes.Objects.Properties.Helpers.Resources import Resources
 
 class MessageAndTreasures:
     @classmethod

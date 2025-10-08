@@ -4,7 +4,7 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 from classes.tile.Tile import Tile, TerrainType
 from generation.tile_gen.flags_gen import generate_flags
-from random import randint, choice
+from random import choice
 
 def generate_tile(random_terrain_type: bool, random_terrain_sprite: bool) -> Tile:
     if random_terrain_type:

@@ -1,6 +1,5 @@
-from src.classes.Enums.VictoryConditions import VictoryConditions
-from src.classes.additional_info.VictoryConditions.Details import Details
-
+from classes.Enums.VictoryConditions import VictoryConditions
+from classes.additional_info.VictoryConditions.Details import Details
 
 class VictoryCondition:
 
@@ -9,7 +8,7 @@ class VictoryCondition:
     def create_default(cls) -> "VictoryCondition":
         return cls(
             type=VictoryConditions.NORMAL,
-            details=None # Details.create_default(), jeśli tryb normal - tego nie ma
+            details={} # Details.create_default(), if mode = normal - it doesn't exist
         )
 
     def __init__(self, type: VictoryConditions, details: Details) -> None:

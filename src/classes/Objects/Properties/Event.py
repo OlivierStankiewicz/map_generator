@@ -1,11 +1,10 @@
-from src.classes.Objects.PropertiesBase import Properties
-from src.classes.Objects.Properties.Helpers.AffectedPlayers import AffectedPlayers
-from src.classes.Objects.Properties.Helpers.Creatures import Creatures
-from src.classes.Objects.Properties.Helpers.PrimarySkills import PrimarySkills
-from src.classes.Objects.Properties.Helpers.Resources import Resources
-from src.classes.Objects.Properties.Helpers.SecondarySkills import SecondarySkills
-from src.classes.Objects.Properties.Helpers.Spells import Spells
-
+from classes.Objects.PropertiesBase import Properties
+from classes.Objects.Properties.Helpers.AffectedPlayers import AffectedPlayers
+from classes.Objects.Properties.Helpers.Creatures import Creatures
+from classes.Objects.Properties.Helpers.PrimarySkills import PrimarySkills
+from classes.Objects.Properties.Helpers.Resources import Resources
+from classes.Objects.Properties.Helpers.SecondarySkills import SecondarySkills
+from classes.Objects.Properties.Helpers.Spells import Spells
 
 class Event(Properties):
     @classmethod
@@ -28,7 +27,7 @@ class Event(Properties):
             unknown2 = [0, 0, 0, 0]
         )
 
-    def __int__(self, experience: int, spell_points: int, morale: int, luck: int, resources: Resources,
+    def __init__(self, experience: int, spell_points: int, morale: int, luck: int, resources: Resources,
                 primary_skills: PrimarySkills, secondary_skills: list[SecondarySkills], artifacts: list[int], spells: list[int],
                 creatures: list[Creatures], unknown: list[int], affected_players: AffectedPlayers,
                 applies_to_computer: int, remove_after_first_visit: int, unknown2: list[int]) -> None:
@@ -58,8 +57,8 @@ class Event(Properties):
             'primary_skills': self.primary_skills.to_dict(),
             'secondary_skills': [secondary_skill.to_dict() for secondary_skill in self.secondary_skills],
             'artifacts': self.artifacts,
-            'spells': [spell for spell in self.spells],
-            'creatures': [creature for creature in self.creatures],
+            'spells': self.spells,
+            'creatures': self.creatures,
             'unknown': self.unknown,
             'affected_players': self.affected_players.to_dict(),
             'applies_to_computer': self.applies_to_computer,

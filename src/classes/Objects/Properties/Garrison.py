@@ -1,6 +1,5 @@
-from src.classes.Objects.PropertiesBase import Properties
-from src.classes.Objects.Properties.Helpers.Creatures import Creatures
-
+from classes.Objects.PropertiesBase import Properties
+from classes.Objects.Properties.Helpers.Creatures import Creatures
 
 class Garrison(Properties):
     @classmethod
@@ -13,7 +12,7 @@ class Garrison(Properties):
             unknown2= [0, 0, 0, 0, 0, 0, 0, 0]
         )
 
-    def __int__(self, owner: int, unknown: list, creatures: list[Creatures], can_remove_units: int, unknown2: list) -> None:
+    def __init__(self, owner: int, unknown: list, creatures: list[Creatures], can_remove_units: int, unknown2: list) -> None:
         self.owner = owner
         self.unknown = unknown
         self.creatures = creatures

@@ -1,5 +1,5 @@
-from src.classes.Objects.Properties.Helpers.IsBuilt import IsBuilt
-from src.classes.Objects.Properties.Helpers.IsDisabled import IsDisabled
+from classes.Objects.Properties.Helpers.IsBuilt import IsBuilt
+from classes.Objects.Properties.Helpers.IsDisabled import IsDisabled
 
 
 class Buildings:

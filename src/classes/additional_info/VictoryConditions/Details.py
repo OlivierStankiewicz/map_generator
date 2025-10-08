@@ -1,4 +1,3 @@
-
 class Details:
 
     @classmethod

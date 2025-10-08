@@ -1,6 +1,5 @@
 from Details import Details
 
-
 class AccumulateResources(Details):
     @classmethod
     def create_default(cls) -> "AccumulateResources":

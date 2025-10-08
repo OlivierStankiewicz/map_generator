@@ -1,10 +1,10 @@
 from typing import TYPE_CHECKING
-from src.classes.Enums.LossConditions import LossConditions
+from classes.Enums.LossConditions import LossConditions
 
 if TYPE_CHECKING:
-    from src.classes.additional_info.LossConditions.LoseHero import LoseHero
-    from src.classes.additional_info.LossConditions.LoseTown import LoseTown
-    from src.classes.additional_info.LossConditions.TimeExpires import TimeExpires
+    from classes.additional_info.LossConditions.LoseHero import LoseHero
+    from classes.additional_info.LossConditions.LoseTown import LoseTown
+    from classes.additional_info.LossConditions.TimeExpires import TimeExpires
 
 class Details:
 
@@ -19,14 +19,14 @@ class Details:
         return {}
 
     @classmethod
-    def get_type(self, type: LossConditions):
+    def get_type(cls, type: LossConditions):
         if type == LossConditions.NORMAL:
-            return self.create_default()
+            return Details.create_default()
         elif type == LossConditions.LOSE_TOWN:
             return LoseTown.create_default()
         elif type == LossConditions.LOSE_HERO:
             # Lazy import inside the method
-            from src.classes.additional_info.LossConditions.LoseHero import LoseHero
+            from classes.additional_info.LossConditions.LoseHero import LoseHero
             return LoseHero.create_default()
         elif type == LossConditions.TIME_EXPIRES:
             return TimeExpires.create_default()

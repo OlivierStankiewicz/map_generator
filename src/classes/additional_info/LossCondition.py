@@ -1,6 +1,5 @@
-from src.classes.Enums.LossConditions import LossConditions
-from src.classes.additional_info.LossConditions.Details import Details
-
+from classes.Enums.LossConditions import LossConditions
+from classes.additional_info.LossConditions.Details import Details
 
 class LossCondition:
 
@@ -16,8 +15,8 @@ class LossCondition:
         self.details = Details.get_type(type)
 
     def to_dict(self) -> dict:
-        dict = {
+        _dict = {
             "type": self.type.value
         }
-        dict.update(self.details.to_dict())
-        return dict
+        _dict.update(self.details.to_dict())
+        return _dict

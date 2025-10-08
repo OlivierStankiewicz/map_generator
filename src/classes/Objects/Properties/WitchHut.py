@@ -1,6 +1,5 @@
-from src.classes.Objects.Properties.Helpers.PotentialSkills import PotentialSkills
-from src.classes.Objects.PropertiesBase import Properties
-
+from classes.Objects.Properties.Helpers.PotentialSkills import PotentialSkills
+from classes.Objects.PropertiesBase import Properties
 
 class WitchHut(Properties):
     @classmethod

@@ -1,11 +1,10 @@
-from src.classes.Objects.PropertiesBase import Properties
-
+from classes.Objects.PropertiesBase import Properties
 
 class Sign(Properties):
     @classmethod
     def create_default(cls) -> 'Sign':
         return cls(
-            message= None,
+            message= '',
             unknown= []
         )
 

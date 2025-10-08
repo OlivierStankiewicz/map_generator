@@ -1,6 +1,6 @@
-from src.classes.Enums.ObjectPropertiesType import ObjectPropertiesType
-from src.classes.Objects.PropertiesBase import Properties
-from src.classes.Objects.Properties.Helpers.PotentialResources import PotentialResources
+from classes.Enums.ObjectPropertiesType import ObjectPropertiesType
+from classes.Objects.PropertiesBase import Properties
+from classes.Objects.Properties.Helpers.PotentialResources import PotentialResources
 
 
 class AbandonedMine(Properties):

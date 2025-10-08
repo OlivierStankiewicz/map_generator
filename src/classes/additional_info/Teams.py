@@ -4,8 +4,8 @@ class Teams:
     @classmethod
     def create_default(cls) -> "Teams":
         return cls(
-            num_teams=None,
-            team_for_player=None #tablica int
+            num_teams=0,
+            team_for_player=[] # int array
         )
 
     def __init__(self, num_teams: int, team_for_player: list[int]) -> None:

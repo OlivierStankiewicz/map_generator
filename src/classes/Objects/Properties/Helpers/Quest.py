@@ -1,5 +1,4 @@
-from src.classes.Objects.Properties.Helpers.DetailsQuest import Details
-
+from classes.Objects.Properties.Helpers.DetailsQuest import Details
 
 class Quest:
     @classmethod
@@ -8,9 +7,9 @@ class Quest:
             type= 0,
             details= Details.create_default(),
             deadline= 0,
-            proposal= None,
-            progress= None,
-            completion= None
+            proposal= '',
+            progress= '',
+            completion= ''
         )
 
     def __init__(self, type: int,

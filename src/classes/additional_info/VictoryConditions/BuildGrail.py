@@ -1,5 +1,4 @@
-from src.classes.additional_info.VictoryConditions.Details import Details
-
+from classes.additional_info.VictoryConditions.Details import Details
 
 class BuildGrail(Details):
     @classmethod

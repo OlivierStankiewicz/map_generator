@@ -1,6 +1,5 @@
 from enum import Enum
 
-
 class VictoryConditions(Enum):
     NORMAL = 255
     ACQUIRE_ARTIFACT = 0

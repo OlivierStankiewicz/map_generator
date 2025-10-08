@@ -1,7 +1,6 @@
-from src.classes.Objects.PropertiesBase import Properties
-from src.classes.Objects.Properties.Helpers.Quest import Quest
-from src.classes.Objects.Properties.Helpers.Reward import Reward
-
+from classes.Objects.PropertiesBase import Properties
+from classes.Objects.Properties.Helpers.Quest import Quest
+from classes.Objects.Properties.Helpers.Reward import Reward
 
 class SeersHut(Properties):
     @classmethod

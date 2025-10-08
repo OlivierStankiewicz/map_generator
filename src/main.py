@@ -25,7 +25,7 @@ print("Chosen filename:", filename)
 
 print("Generating map representation...")
 map = generate_voronoi_map()
-json_map_representaiton = json.dumps(map.to_dict(), indent=2)
+json_map_representation = json.dumps(map.to_dict(), indent=2)
 print("Map representation generated successfully")
 
 json_file_path = os.path.join(folder_path, f"{filename}.json")
@@ -34,7 +34,7 @@ h3m_file_path = os.path.join(folder_path, f"{filename}.h3m")
 print(f"Saving map representation to: {json_file_path}")
 try:
     with open(json_file_path, 'w', encoding='utf-8') as f:
-        f.write(json_map_representaiton)
+        f.write(json_map_representation)
     print(f"File created successfully at: {json_file_path}")
 except Exception as e:
     print(f"Failed to create file: {e}")
