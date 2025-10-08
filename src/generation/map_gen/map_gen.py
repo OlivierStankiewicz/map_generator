@@ -134,7 +134,7 @@ def generate_voronoi_map(
     Generate a map using Voronoi regions to assign terrain types.
     """
     tiles = []
-    terrain_map = voronoi(terrain_weights=terrain_values, height=height//2, width=width//2, alpha=3)
+    terrain_map = voronoi(terrain_weights=terrain_values, height=height//2, width=width//2)
 
     # upscale map
     terrain_map = upscale_map(terrain_map=terrain_map)

@@ -165,52 +165,22 @@ def voronoi(terrain_weights: Dict[TerrainType, int], height: int, width: int, al
     
     def assign_unassigned_regions():
         """
-        Assign leftover regions so that each terrain type approaches its target size,
-        preferring adjacency to the same terrain.
+        Assign leftover regions based on neighbor majority or terrain weights.
         """
-        # expected number of regions per terrain
-        target_sizes = {t: w * alpha for t, w in terrain_weights.items()}
-        current_sizes = {t: len(regions_for_terrain[t]) for t in terrain_weights}
-
         unassigned = [r for r in regions if r.terrain_type is None]
-        # prioritize regions with many assigned neighbors
         unassigned.sort(
             key=lambda r: sum(1 for n in r.neighbors if n.terrain_type),
             reverse=True
         )
-
         for region in unassigned:
-            # candidates = terrains still under their target
-            under_quota = {t for t in terrain_weights if current_sizes[t] < target_sizes[t]}
-            
             neighbors = [n for n in region.neighbors if n.terrain_type]
-            neighbor_types = [n.terrain_type for n in neighbors]
-
-            chosen_terrain = None
-
             if neighbors:
-                # find the most frequent neighbor type that is still under quota
-                neighbor_counts = {t: neighbor_types.count(t) for t in set(neighbor_types)}
-                valid = [(t, c) for t, c in neighbor_counts.items() if t in under_quota]
-                if valid:
-                    chosen_terrain = max(valid, key=lambda x: x[1])[0]
-            
-            if not chosen_terrain and under_quota:
-                # fallback: pick any terrain still under quota, weighted by remaining deficit
-                deficits = {t: target_sizes[t] - current_sizes[t] for t in under_quota}
-                chosen_terrain = max(deficits, key=deficits.get)
-
-            if not chosen_terrain:
-                # absolute fallback: just copy the strongest neighbor or global max
-                if neighbors:
-                    chosen_terrain = max(neighbors, key=lambda n: terrain_weights[n.terrain_type]).terrain_type
-                else:
-                    chosen_terrain = max(terrain_weights, key=terrain_weights.get)
-
-            # assign and update
-            region.terrain_type = chosen_terrain
-            regions_for_terrain[chosen_terrain].append(region)
-            current_sizes[chosen_terrain] += 1
+                # pick neighbor with highest terrain weight
+                best_neighbor = max(neighbors, key=lambda n: terrain_weights[n.terrain_type])
+                region.terrain_type = best_neighbor.terrain_type
+            else:
+                # fallback: assign terrain with the highest weight
+                region.terrain_type = max(terrain_weights, key=terrain_weights.get)
 
     assign_unassigned_regions()
     
