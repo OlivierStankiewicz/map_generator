@@ -62,6 +62,33 @@ def generate_all_terrain_all_sprite_map() -> Map:
         padding= [0] * 124
     )
 
+def generate_sprite_comparison_map(terrain_type: TerrainType, compared_range: list[int], compared_sprite_num: int) -> Map:
+    tiles = []
+    sprite_min, sprite_max = compared_range
+    for i in range(sprite_min, sprite_max + 1):
+        tiles.append(generate_specific_terrain_and_sprite(terrain_type, i))
+
+    for i in range(72 - len(tiles)):
+        tiles.append(generate_tile(random_terrain_sprite=False, random_terrain_type=False))
+
+    for i in range(len(compared_range)):
+        tiles.append(generate_specific_terrain_and_sprite(terrain_type, compared_sprite_num))
+
+    for i in range(10368 - len(tiles)):
+        tiles.append(generate_tile(random_terrain_sprite=False, random_terrain_type=False))
+
+    return Map(
+        format= 28,
+        basic_info= generate_basic_info(),
+        players= [generate_player() for _ in range(8)],
+        additional_info= generate_additional_info(),
+        tiles= tiles,
+        objects_templates = [generate_objects_template()],
+        objects= [],
+        global_events= [],
+        padding= [0] * 124
+    )
+
 def generate_perlin_noise_map(width=72, height=72, scale=10.0, octaves=2, persistence=0.5, lacunarity=2.0, seed=None) -> Map:
     """
     Generate a Map using Perlin noise to assign terrain types.

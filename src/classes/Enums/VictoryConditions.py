@@ -1,0 +1,16 @@
+from enum import Enum
+
+
+class VictoryConditions(Enum):
+    NORMAL = 255
+    ACQUIRE_ARTIFACT = 0
+    ACCUMULATE_CREATURES = 1
+    ACCUMULATE_RESOURCES = 2
+    UPGRADE_TOWN = 3
+    BUILD_GRAIL = 4
+    DEFEAT_HERO = 5
+    CAPTURE_TOWN = 6
+    DEFEAT_MONSTER = 7
+    FLAG_DWELLINGS = 8
+    FLAG_MINES = 9
+    TRANSPORT_ARTIFACT = 10

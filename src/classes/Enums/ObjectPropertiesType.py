@@ -1,0 +1,27 @@
+from enum import Enum
+
+
+class ObjectPropertiesType(Enum):
+    ABANDONED_MINE = 0
+    ARTIFACT = 1
+    EVENT = 2
+    GARRISON = 3
+    GENERIC_NO_PROPERTIES = 4
+    GRAIL = 5
+    HERO = 6
+    MONSTER = 7
+    PANDORAS_BOX = 8
+    PLACEHOLDER_HERO = 9
+    QUEST_GUARD = 10
+    RANDOM_DWELLING = 11
+    RANDOM_DWELLING_PRESET_ALIGNMENT = 12
+    RANDOM_DWELLING_PRESET_LEVEL = 13
+    RESOURCE = 14
+    SCHOLAR = 15
+    SEERS_HUT = 16
+    SHRINE = 17
+    SIGN = 18
+    SPELL_SCROLL = 19
+    TOWN = 20
+    TRIVIAL_OWNED_OBJECT = 21
+    WITCH_HUT = 22
