@@ -1,4 +1,5 @@
 from classes.additional_info.VictoryConditions.Details import Details
+from classes.Enums.VictoryConditions import VictoryConditions
 
 class TransportArtifact(Details):
     @classmethod
@@ -13,7 +14,7 @@ class TransportArtifact(Details):
         )
 
     def __init__(self, allow_normal_win: int, applies_to_computer: int, artifact_type:int, x: int, y: int, z: int) -> None:
-        super().__init__(allow_normal_win, applies_to_computer)
+        super().__init__(allow_normal_win, applies_to_computer, VictoryConditions.TRANSPORT_ARTIFACT)
         self.artifact_type = artifact_type
         self.x = x
         self.y = y

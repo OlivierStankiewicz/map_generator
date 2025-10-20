@@ -51,7 +51,7 @@ class Map:
             "additional_info": self.additional_info.to_dict(),
             "tiles": [tile.to_dict() for tile in self.tiles],
             "objects_templates": [template.to_dict() for template in self.objects_templates],
-            "objects": [self.objects],
+            "objects": [obj.to_dict() for obj in self.objects],
             "global_events": self.global_events,
             "padding": self.padding
         }

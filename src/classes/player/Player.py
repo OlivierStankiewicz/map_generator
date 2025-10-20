@@ -39,16 +39,21 @@ class Player:
         self.heroes = heroes
 
     def to_dict(self) -> dict:
-        return {
+        result = {
             "can_be_human": self.can_be_human,
             "can_be_computer": self.can_be_computer,
             "behavior": self.behavior,
             "has_customized_alignments": self.has_customized_alignments,
             "allowed_alignments": self.allowed_alignments.to_dict(),
             "allow_random_alignment": self.allow_random_alignment,
-            # "main_town": self.main_town.to_dict() if self.main_town else None,
             "has_random_heroes": self.has_random_heroes,
             "starting_hero": self.starting_hero.to_dict(),
             "num_nonspecific_placeholder_heroes": self.num_nonspecific_placeholder_heroes,
             "heroes": [hero.to_dict() for hero in self.heroes]
         }
+        
+        # Dodaj main_town tylko jeœli nie jest None
+        if self.main_town is not None:
+            result["main_town"] = self.main_town.to_dict()
+            
+        return result

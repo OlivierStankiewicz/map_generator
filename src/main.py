@@ -25,7 +25,18 @@ print("Chosen filename:", filename)
 
 print("Generating map representation...")
 map = generate_voronoi_map()
-json_map_representation = json.dumps(map.to_dict(), indent=2)
+
+def filter_none_values(obj):
+    """Recursively remove keys with None values from dictionaries"""
+    if isinstance(obj, dict):
+        return {k: filter_none_values(v) for k, v in obj.items() if v is not None}
+    elif isinstance(obj, list):
+        return [filter_none_values(item) for item in obj if item is not None]
+    else:
+        return obj
+
+map_dict = filter_none_values(map.to_dict())
+json_map_representation = json.dumps(map_dict, indent=2)
 print("Map representation generated successfully")
 
 json_file_path = os.path.join(folder_path, f"{filename}.json")

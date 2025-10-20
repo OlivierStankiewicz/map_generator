@@ -1,4 +1,5 @@
 from classes.additional_info.VictoryConditions.Details import Details
+from classes.Enums.VictoryConditions import VictoryConditions
 
 class FlagMines(Details):
 
@@ -10,7 +11,7 @@ class FlagMines(Details):
         )
 
     def __init__(self, allow_normal_win: int, applies_to_computer: int) -> None:
-        super().__init__(allow_normal_win, applies_to_computer)
+        super().__init__(allow_normal_win, applies_to_computer, VictoryConditions.FLAG_MINES)
 
     def to_dict(self) -> dict:
         return super().to_dict()

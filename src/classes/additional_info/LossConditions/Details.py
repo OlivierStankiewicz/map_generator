@@ -10,18 +10,23 @@ class Details:
 
     @classmethod
     def create_default(cls) -> "Details":
-        return cls()
+        return cls(
+            loseCondition_type=LossConditions.NORMAL
+        )
 
-    def __init__(self) -> None:
-        return
+    def __init__(self, loseCondition_type: LossConditions) -> None:
+        self.loseCondition_type = loseCondition_type
 
     def to_dict(self) -> dict:
-        return {}
+        dict = {}
+        if self.loseCondition_type != LossConditions.NORMAL:
+            dict['loseCondition_type'] = self.get_type(self.loseCondition_type).to_dict()
+        return dict
 
     @classmethod
     def get_type(cls, type: LossConditions):
         if type == LossConditions.NORMAL:
-            return Details.create_default()
+            return cls.create_default()
         elif type == LossConditions.LOSE_TOWN:
             return LoseTown.create_default()
         elif type == LossConditions.LOSE_HERO:

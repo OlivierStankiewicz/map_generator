@@ -1,7 +1,7 @@
 import random
 from typing import Dict
 
-from classes.Map import Map
+from classes.map import Map
 from classes.tile.Tile import TerrainType
 from generation.basic_info_gen import generate_basic_info
 from generation.player_gen.player_gen import generate_player

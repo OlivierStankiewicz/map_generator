@@ -13,6 +13,7 @@ class VictoryCondition:
 
     def __init__(self, type: VictoryConditions, details: Details) -> None:
         self.type = type
+        self.details = Details.create_default()
 
     def to_dict(self) -> dict:
         return {

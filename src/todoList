@@ -1,0 +1,37 @@
+Klasy ca³kowicie puste (wymagaj¹ pe³nej implementacji):
+1. Hero (Objects/Properties/Hero.py)
+Status: Kompletnie pusta
+Potrzebne: Wszystkie pola bohatera (nazwa, poziom, umiejêtnoœci, artefakty, zaklêcia, statystyki)
+2. CreatureType (Enums/CreatureType.py)
+Status: Kompletnie pusty enum
+Potrzebne: Lista wszystkich typów stworów z Heroes 3
+3. ArtifactType (Enums/ArtifactType.py)
+Status: Kompletnie pusty enum
+Potrzebne: Lista wszystkich artefaktów z Heroes 3
+Klasy prawie puste (wymagaj¹ uzupe³nienia):
+
+4. Details (LossConditions/Details.py)+-+-+-+-+-+-+-++-+-+-+-+-+
+Status: Brak implementacji
+Potrzebne: Szczegó³y warunków przegranej
+
+5. LoseHero (LossConditions/LoseHero.py)+++++++
+Status: Identyczna z Details - prawdopodobnie b³¹d copy-paste
+Potrzebne: Implementacja specyficzna dla utraty bohatera
+
+Klasy wymagaj¹ce rozszerzenia:
+6. Properties (Objects/PropertiesBase.py)+++++
+Status: Ma bazow¹ implementacjê, ale to_dict() zwraca pusty s³ownik
+Potrzebne: W³aœciwa serializacja w³aœciwoœci obiektów
+
+7. Scholar (Objects/Properties/Scholar.py)
+Uwaga: Metoda to_dict() jest niekompletna (brak zamkniêcia s³ownika)
+8. Town (Objects/Properties/Town.py)
+Status: Rozpoczêta implementacja, ale niekompletna
+Potrzebne: Dokoñczenie wszystkich pól miasta
+Priorytetowa lista do implementacji:
+Hero - najwa¿niejsza klasa dla funkcjonalnoœci gry
+CreatureType - potrzebne do Monster i innych klas
+ArtifactType - potrzebne do Artifact i innych klas
+LoseHero/Details (LossConditions) - poprawienie b³êdów copy-paste
+Scholar - dokoñczenie to_dict()
+Properties - poprawa serializacji bazowej

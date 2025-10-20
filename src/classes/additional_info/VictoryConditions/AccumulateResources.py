@@ -1,4 +1,5 @@
-from Details import Details
+from classes.additional_info.VictoryConditions.Details import Details
+from classes.Enums.VictoryConditions import VictoryConditions
 
 class AccumulateResources(Details):
     @classmethod
@@ -12,7 +13,7 @@ class AccumulateResources(Details):
 
     def __init__(self, allow_normal_win: int, applies_to_computer: int, resource_type: int,
                  amount: int) -> None:
-        super().__init__(allow_normal_win, applies_to_computer)
+        super().__init__(allow_normal_win, applies_to_computer, VictoryConditions.ACCUMULATE_RESOURCES)
         self.resource_type = resource_type
         self.amount = amount
 

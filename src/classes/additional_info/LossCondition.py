@@ -12,7 +12,7 @@ class LossCondition:
 
     def __init__(self, type: LossConditions) -> None:
         self.type = type
-        self.details = Details.get_type(type)
+        self.details = Details.create_default()
 
     def to_dict(self) -> dict:
         _dict = {

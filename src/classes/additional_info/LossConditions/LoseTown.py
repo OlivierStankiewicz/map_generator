@@ -1,4 +1,5 @@
 from classes.additional_info.LossConditions.Details import Details
+from classes.Enums.LossConditions import LossConditions
 
 class LoseTown(Details):
     @classmethod
@@ -10,10 +11,10 @@ class LoseTown(Details):
         )
 
     def __init__(self, x: int, y: int, z: int) -> None:
-        super().__init__()
         self.x = x
         self.y = y
         self.z = z
+        super().__init__(LossConditions.LOSE_TOWN)
 
     def to_dict(self) -> dict:
         return {

@@ -23,7 +23,7 @@ class AdditionalInfo:
             disabled_artifacts = DisabledArtifacts.create_default(),
             disabled_spells = DisabledSpells.create_default(),
             disabled_skills = DisabledSkills.create_default(),
-            rumors = list[Rumors.create_default()],
+            rumors = [Rumors.create_default()],
             heroes_settings = [] #?
         )
 

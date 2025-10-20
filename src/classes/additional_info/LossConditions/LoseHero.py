@@ -1,34 +1,24 @@
-from typing import TYPE_CHECKING
+from classes.additional_info.LossConditions.Details import Details
 from classes.Enums.LossConditions import LossConditions
 
-if TYPE_CHECKING:
-    from classes.additional_info.LossConditions.LoseHero import LoseHero
-    from classes.additional_info.LossConditions.LoseTown import LoseTown
-    from classes.additional_info.LossConditions.TimeExpires import TimeExpires
-
-class Details:
-
+class LoseHero(Details):
     @classmethod
-    def create_default(cls) -> "Details":
-        return cls()
+    def create_default(cls) -> "LoseHero":
+        return cls(
+            x=0,
+            y=0,
+            z=0
+        )
 
-    def __init__(self) -> None:
-        return
+    def __init__(self, x: int, y: int, z: int) -> None:
+        self.x = x
+        self.y = y
+        self.z = z
+        super().__init__(LossConditions.LOSE_HERO)
 
     def to_dict(self) -> dict:
-        return {}
-
-    @classmethod
-    def get_type(self, type: int):
-        if type == LossConditions.NORMAL:
-            return self.create_default()
-        elif type == LossConditions.LOSE_TOWN:
-            return LoseTown.create_default()
-        elif type == LossConditions.LOSE_HERO:
-            # Lazy import inside the method
-            from classes.additional_info.LossConditions.LoseHero import LoseHero
-            return LoseHero.create_default()
-        elif type == LossConditions.TIME_EXPIRES:
-            return TimeExpires.create_default()
-        else:
-            raise Exception(f"Unknown type: {type}")
+        return {
+            'x': self.x,
+            'y': self.y,
+            'z': self.z,
+        }
