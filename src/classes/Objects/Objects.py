@@ -19,7 +19,7 @@ class Objects:
         self.y = y
         self.z = z
         self.template_idx = template_idx
-        self.unknown = unknown
+        self.unknown = [0, 0, 0, 0, 0]
         self.properties = properties
 
     def to_dict(self) -> dict:

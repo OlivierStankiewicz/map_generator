@@ -1,0 +1,120 @@
+{
+  "def": "AVCcasx0.def",
+  "passability": [255, 255, 255, 143, 7, 7],
+  "actionability": [0, 0, 0, 0, 0, 32],
+  "allowed_landscapes": [255, 0],
+  "landscape_group": [255, 0],
+  "object_class": 98, // TOWN
+  "object_subclass": 0,
+  "object_group": 1, // Town
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVCramx0.def",
+  "passability": [255, 255, 255, 143, 7, 7],
+  "actionability": [0, 0, 0, 0, 0, 32],
+  "allowed_landscapes": [255, 0],
+  "landscape_group": [255, 0],
+  "object_class": 98, // TOWN
+  "object_subclass": 1,
+  "object_group": 1, // Town
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVCtowx0.def",
+  "passability": [255, 255, 255, 143, 7, 7],
+  "actionability": [0, 0, 0, 0, 0, 32],
+  "allowed_landscapes": [255, 0],
+  "landscape_group": [255, 0],
+  "object_class": 98, // TOWN
+  "object_subclass": 2,
+  "object_group": 1, // Town
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVCinfx0.def",
+  "passability": [255, 255, 255, 143, 7, 7],
+  "actionability": [0, 0, 0, 0, 0, 32],
+  "allowed_landscapes": [255, 0],
+  "landscape_group": [255, 0],
+  "object_class": 98, // TOWN
+  "object_subclass": 3,
+  "object_group": 1, // Town
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVCnecx0.def",
+  "passability": [255, 255, 255, 143, 7, 7],
+  "actionability": [0, 0, 0, 0, 0, 32],
+  "allowed_landscapes": [255, 0],
+  "landscape_group": [255, 0],
+  "object_class": 98, // TOWN
+  "object_subclass": 4,
+  "object_group": 1, // Town
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVCdunx0.def",
+  "passability": [255, 255, 255, 143, 7, 7],
+  "actionability": [0, 0, 0, 0, 0, 32],
+  "allowed_landscapes": [255, 0],
+  "landscape_group": [255, 0],
+  "object_class": 98, // TOWN
+  "object_subclass": 5,
+  "object_group": 1, // Town
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVCstrx0.def",
+  "passability": [255, 255, 255, 143, 7, 7],
+  "actionability": [0, 0, 0, 0, 0, 32],
+  "allowed_landscapes": [255, 0],
+  "landscape_group": [255, 0],
+  "object_class": 98, // TOWN
+  "object_subclass": 6,
+  "object_group": 1, // Town
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVCftrx0.def",
+  "passability": [255, 255, 255, 143, 7, 7],
+  "actionability": [0, 0, 0, 0, 0, 32],
+  "allowed_landscapes": [255, 0],
+  "landscape_group": [255, 0],
+  "object_class": 98, // TOWN
+  "object_subclass": 7,
+  "object_group": 1, // Town
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "avchforx.def",
+  "passability": [255, 255, 255, 143, 7, 7],
+  "actionability": [0, 0, 0, 0, 0, 32],
+  "allowed_landscapes": [255, 0],
+  "landscape_group": [255, 0],
+  "object_class": 98, // TOWN
+  "object_subclass": 8,
+  "object_group": 1, // Town
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVCranx0.def",
+  "passability": [255, 255, 255, 143, 7, 7],
+  "actionability": [0, 0, 0, 0, 0, 32],
+  "allowed_landscapes": [255, 0],
+  "landscape_group": [255, 0],
+  "object_class": 77, // RANDOM_TOWN
+  "object_subclass": 0,
+  "object_group": 1, // Town
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+}

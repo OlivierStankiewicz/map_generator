@@ -7,10 +7,13 @@ from generation.basic_info_gen import generate_basic_info
 from generation.player_gen.player_gen import generate_player
 from generation.additional_info_gen.additional_info_gen import generate_additional_info
 from generation.tile_gen.tile_gen import generate_tile, generate_specific_terrain_and_sprite, get_terrain_type_sprite_range
-from generation.objects_template_gen import generate_objects_template
 from generation.pcg_algorithms.perlin import perlin
 from generation.pcg_algorithms.voronoi import voronoi
 from generation.map_gen.utils import upscale_map, smooth_map
+
+from generation.object_gen.object_template_helper import ObjectTemplateHelper, TownParams
+from generation.object_gen.objects_template_gen import generate_objects_template_and_objects
+
 
 def generate_base_map() -> Map:
     return Map(
@@ -19,7 +22,7 @@ def generate_base_map() -> Map:
         players= [generate_player() for _ in range(8)],
         additional_info= generate_additional_info(),
         tiles= [generate_tile(random_terrain_sprite= False, random_terrain_type= False) for _ in range(10368)],
-        objects_templates = [generate_objects_template()],
+        objects_templates = [generate_objects_template_and_objects()],
         objects= [],
         global_events= [],
         padding= [0] * 124
@@ -32,7 +35,7 @@ def generate_random_terrain_random_sprite_map() -> Map:
         players= [generate_player() for _ in range(8)],
         additional_info= generate_additional_info(),
         tiles= [generate_tile(random_terrain_sprite= True, random_terrain_type= True) for _ in range(10368)],
-        objects_templates = [generate_objects_template()],
+        objects_templates = [generate_objects_template_and_objects()],
         objects= [],
         global_events= [],
         padding= [0] * 124
@@ -56,7 +59,7 @@ def generate_all_terrain_all_sprite_map() -> Map:
         players= [generate_player() for _ in range(8)],
         additional_info= generate_additional_info(),
         tiles= tiles,
-        objects_templates = [generate_objects_template()],
+        objects_templates = [generate_objects_template_and_objects()],
         objects= [],
         global_events= [],
         padding= [0] * 124
@@ -83,7 +86,7 @@ def generate_sprite_comparison_map(terrain_type: TerrainType, compared_range: li
         players= [generate_player() for _ in range(8)],
         additional_info= generate_additional_info(),
         tiles= tiles,
-        objects_templates = [generate_objects_template()],
+        objects_templates = [generate_objects_template_and_objects()],
         objects= [],
         global_events= [],
         padding= [0] * 124
@@ -142,7 +145,7 @@ def generate_perlin_noise_map(width=72, height=72, scale=10.0, octaves=2, persis
         players=[generate_player() for _ in range(8)],
         additional_info=generate_additional_info(),
         tiles=tiles,
-        objects_templates=[generate_objects_template()],
+        objects_templates=[generate_objects_template_and_objects()],
         objects=[],
         global_events=[],
         padding=[0] * 124
@@ -176,14 +179,17 @@ def generate_voronoi_map(
         for x in range(width):
             tiles.append(generate_specific_terrain_and_sprite(TerrainType.ROCK, 1))
 
+    obj = ObjectTemplateHelper(tiles, TownParams(5, 3, 30))
+    objects_templates, objects = obj.initData()
+
     return Map(
         format=28,
         basic_info=generate_basic_info(),
         players=[generate_player() for _ in range(8)],
         additional_info=generate_additional_info(),
         tiles=tiles,
-        objects_templates=[generate_objects_template()],
-        objects=[],
+        objects_templates=objects_templates,
+        objects=objects,
         global_events=[],
         padding=[0] * 124
     )

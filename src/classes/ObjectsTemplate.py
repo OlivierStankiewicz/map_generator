@@ -28,7 +28,7 @@ class ObjectsTemplate:
         self.object_subclass = object_subclass
         self.object_group = object_group
         self.is_ground = is_ground
-        self.unknown = unknown
+        self.unknown = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
     def to_dict(self) -> dict:
         return {
