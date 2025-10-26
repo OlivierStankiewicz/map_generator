@@ -1,3 +1,6 @@
 __pycache__/
 **/tempCodeRunnerFile.py
 generated_maps/
+.idea/
+.venv/
+venv/
