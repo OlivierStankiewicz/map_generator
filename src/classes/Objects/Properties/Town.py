@@ -5,7 +5,7 @@ from classes.Objects.Properties.Helpers.Events import Events
 from classes.Objects.Properties.Helpers.Garrison import Garrison
 from classes.Objects.Properties.Helpers.MayNotHaveSpell import MayNotHaveSpell
 from classes.Objects.Properties.Helpers.MustHaveSpell import MustHaveSpell
-from classes.Objects.PropertiesBase import PropertiesType
+from classes.Objects.PropertiesBase import Properties
 
 class Town(Properties):
     @classmethod

@@ -15,7 +15,7 @@ from classes.Objects.Properties.Town import Town
 from classes.ObjectsTemplate import ObjectsTemplate
 from classes.tile.Tile import Tile, TerrainType
 from generation.object_gen.json_parser import read_object_templates_from_json
-from generation.object_gen.voronoi_city_placement import generate_city_positions
+from generation.object_gen.voronoi_city_placement import generate_city_positions, generate_city_positions_with_fields
 
 @dataclass
 class TownParams:
@@ -23,6 +23,7 @@ class TownParams:
     player_cities: int
     neutral_cities: int
     min_distance: int
+    total_regions: int
 
 class ObjectTemplateHelper:
     def __init__(self, tiles: list[Tile], townParams: TownParams):
@@ -41,6 +42,7 @@ class ObjectTemplateHelper:
 
         ### params ###
         self.townParams = townParams
+        self.city_field_mapping = []  # Lista do przechowywania mapowania miast do pól
 
 
     def get_dwellings(self, dwellings):
@@ -57,10 +59,13 @@ class ObjectTemplateHelper:
         self.objectTemplates.append(ObjectsTemplate("AVLholg0.def", [255, 255, 255, 255, 255, 255], [0, 0, 0, 0, 0, 0], [4, 0], [4, 0], 124, 0, 0, 1, []))
 
 
-    # czy colidery siÄ™ nie nakÅ‚adajÄ… (passability), czy jest dojÅ›cie do actionability, czy nie jest to tile z wodÄ…
-    # lub +- 1 kratka od wody (z wyjÄ…tkiem ship wreckÃ³w)
-    # nie tyczy siÄ™ obiektÃ³w wodnych, dla nich trzeba zrobiÄ‡ inny validator
     def validate_placement(self, template: ObjectsTemplate, x: int, y: int) -> bool:
+        # Sprawdz czy pozycja jest w granicach mapy
+        if x < 0 or x >= self.map_format or y < 0 or y >= self.map_format:
+            print(f"Pozycja ({x}, {y}) jest poza granicami mapy {self.map_format}x{self.map_format}")
+            return False
+        
+        print(f"Pozycja ({x}, {y}) jest w granicach mapy {self.map_format}x{self.map_format} - OK")
         return True
 
 
@@ -93,51 +98,103 @@ class ObjectTemplateHelper:
         elif tile_type == TerrainType.LAVA:
             return getTownType([0, 0, 0, 1, 0, 0, 0, 0, 0])
         else:
-            raise Exception("Incorrect terrain type (probably water/rock)")
+            raise Exception(f"Nieobslugiwany typ terenu: {tile_type}")
 
 
     def generate_cities(self):
-        # TODO niepowtarzanie templatÃ³w
-        # TODO dodaÄ‡ generowanie podziemi
-        # TODO przydzielanie do graczy
-        result = generate_city_positions(self.map_format, self.townParams.player_cities, self.townParams.neutral_cities, self.townParams.min_distance)
+        # Generuj pozycje miast i wszystkich regionów
+        result = generate_city_positions_with_fields(
+            self.map_format, 
+            self.townParams.player_cities, 
+            self.townParams.neutral_cities, 
+            self.townParams.min_distance,
+            self.townParams.total_regions
+        )
 
-        positions = result.cities
+        city_positions = result["cities"]
+        all_regions = result["all_regions"]  # Lista wszystkich regionów Voronoi
+        city_to_fields = result["city_to_fields"]  # Mapowanie miasto -> 3 pola
+        fields_info = result["fields_info"]  # Szczegolowe informacje o polach
 
         cities = []
         cities_templates = []
         id = self.id
         absod_id = self.absod_id
 
-        # try:
-        for pos in positions:
-            id = id + 1
-            absod_id = absod_id + 1
-            x = pos.x
-            y = pos.y
-            town_template = self.towns[self.get_town_type(x, y)]
+        try:
+            # Twórz miasta na podstawie pozycji
+            for i, pos in enumerate(city_positions):
+                id = id + 1
+                absod_id = absod_id + 1
+                x = int(pos.x)
+                y = int(pos.y)
+                town_template = self.towns[self.get_town_type(x, y)]
 
-            if self.validate_placement(town_template, x, y):
-                cities_templates.append(town_template)
-                cities.append(Objects(x, y, 0, id, [],
-                                     Town(absod_id, 0, None, None, Formation.SPREAD, None,1,
-                                          MustHaveSpell.create_default(), MayNotHaveSpell.create_default(), [], 255, [])))
-            else:
-                raise Exception(f"Incorrect position of the city ({x},{y})")
+                if self.validate_placement(town_template, x, y):
+                    cities_templates.append(town_template)
+                    cities.append(Objects(x, y, 0, id, [],
+                                         Town(absod_id, 0, None, None, Formation.SPREAD, None,1,
+                                              MustHaveSpell.create_default(), MayNotHaveSpell.create_default(), [], 255, [])))
 
-        self.objectTemplates.extend(cities_templates)
-        self.objects.extend(cities)
-        # except Exception as ex:
-        #     print(ex)
-        #     print("Generating cities again...")
-        #     self.generate_cities()
+                    # Zapisz mapowanie miasta do pól
+                    city_type = "Gracz" if pos.is_player_city else "Neutralne"
+                    city_number = i + 1
+                    assigned_fields = city_to_fields.get(i, [])
+
+                    field_info = f"Miasto {city_number} ({city_type}) - pola {assigned_fields}"
+                    self.city_field_mapping.append(field_info)
+                else:
+                    raise Exception(f"Incorrect position of the city ({x},{y})")
+
+            # Dodaj szczegolowe informacje o polach
+            self.city_field_mapping.append("")  # Pusta linia dla separacji
+            self.city_field_mapping.append("=== SZCZEGOLOWE INFORMACJE O POLACH ===")
+
+            for field in fields_info:
+                status = f"przypisane do miasta {field.assigned_to_city}" if field.assigned_to_city else "niezalezne"
+                centroid_str = f"({field.centroid[0]:.2f}, {field.centroid[1]:.2f})"
+                boundary_count = len(field.boundary)
+
+                info = f"Pole {field.field_id}: centrum {centroid_str}, powierzchnia {field.area} tiles, krawedzi {boundary_count}, {status}"
+                self.city_field_mapping.append(info)
+
+                # Dodaj informacje o rasteryzowanych krawêdziach (dyskretne punkty grid'a)
+                if hasattr(field, 'boundary_raster') and field.boundary_raster:
+                    raster_count = len(field.boundary_raster)
+                    self.city_field_mapping.append(f"    Punkty krawedzi na gridzie: {raster_count} punktow")
+
+                    # Pokaz pierwsze kilka punktow rasteryzowanych dla sprawdzenia
+                    if raster_count <= 50:  # Pokaz wszystkie jesli niewiele
+                        raster_str = ", ".join([f"({p[0]},{p[1]})" for p in field.boundary_raster[:15]])
+                        if raster_count > 15:
+                            raster_str += f"... (i {raster_count - 15} wiecej)"
+                        self.city_field_mapping.append(f"    Grid punkty: {raster_str}")
+                    else:
+                        # Dla du¿ych pól pokaz tylko pierwsze i ostatnie punkty
+                        first_points = ", ".join([f"({p[0]},{p[1]})" for p in field.boundary_raster[:8]])
+                        last_points = ", ".join([f"({p[0]},{p[1]})" for p in field.boundary_raster[-3:]])
+                        self.city_field_mapping.append(f"    Grid punkty: {first_points}...{last_points} (lacznie {raster_count})")
+
+                # Opcjonalnie: dodaj pierwsze kilka punktow krawedzi float dla sprawdzenia
+                if field.boundary and len(field.boundary) <= 10:  # Pokaz krawedzie tylko dla malych pol
+                    boundary_str = ", ".join([f"({p[0]:.1f},{p[1]:.1f})" for p in field.boundary[:5]])
+                    if len(field.boundary) > 5:
+                        boundary_str += "..."
+                    self.city_field_mapping.append(f"    Krawedzie float: {boundary_str}")
+
+            self.objectTemplates.extend(cities_templates)
+            self.objects.extend(cities)
+        except Exception as ex:
+            print(ex)
+            print("Generating cities again...")
+            self.generate_cities()
 
 
     def initData(self):
         self.create_default_object_template()
         self.generate_cities()
 
-        return self.objectTemplates, self.objects
+        return self.objectTemplates, self.objects, self.city_field_mapping
 
 
 if __name__ == "__main__":
