@@ -7,11 +7,10 @@ class VictoryCondition:
     @classmethod
     def create_default(cls) -> "VictoryCondition":
         return cls(
-            type=VictoryConditions.NORMAL,
-            details={} # Details.create_default(), if mode = normal - it doesn't exist
+            type=VictoryConditions.NORMAL # Details.create_default(), if mode = normal - it doesn't exist
         )
 
-    def __init__(self, type: VictoryConditions, details: Details) -> None:
+    def __init__(self, type: VictoryConditions) -> None:
         self.type = type
         self.details = Details.create_default()
 

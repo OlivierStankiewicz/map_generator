@@ -1,5 +1,7 @@
 from classes.additional_info.VictoryConditions.Details import Details
 from classes.Enums.VictoryConditions import VictoryConditions
+from classes.Enums.CreatureType import CreatureType
+
 
 class AccumulateCreatures(Details):
     @classmethod
@@ -11,7 +13,7 @@ class AccumulateCreatures(Details):
             count=0
         )
 
-    def __init__(self, allow_normal_win: int, applies_to_computer: int, creature_type: int,
+    def __init__(self, allow_normal_win: int, applies_to_computer: int, creature_type: CreatureType,
                  count: int) -> None:
         super().__init__(allow_normal_win, applies_to_computer, VictoryConditions.ACCUMULATE_CREATURES)
         self.creature_type = creature_type
@@ -20,7 +22,7 @@ class AccumulateCreatures(Details):
     def to_dict(self) -> dict:
         _dict = super().to_dict()
         _dict.update({
-            "creature_type": self.creature_type,
+            "creature_type": self.creature_type.value,
             "count": self.count
         })
         return _dict

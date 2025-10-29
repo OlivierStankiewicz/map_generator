@@ -1,5 +1,7 @@
 from classes.additional_info.VictoryConditions.Details import Details
 from classes.Enums.VictoryConditions import VictoryConditions
+from classes.Enums.ResourceType import ResourceType
+
 
 class AccumulateResources(Details):
     @classmethod
@@ -7,11 +9,11 @@ class AccumulateResources(Details):
         return cls(
             allow_normal_win=0,
             applies_to_computer=0,
-            resource_type=0, #ResourceType.?
+            resource_type=ResourceType.WOOD,
             amount=0
         )
 
-    def __init__(self, allow_normal_win: int, applies_to_computer: int, resource_type: int,
+    def __init__(self, allow_normal_win: int, applies_to_computer: int, resource_type: ResourceType,
                  amount: int) -> None:
         super().__init__(allow_normal_win, applies_to_computer, VictoryConditions.ACCUMULATE_RESOURCES)
         self.resource_type = resource_type
@@ -20,7 +22,7 @@ class AccumulateResources(Details):
     def to_dict(self) -> dict:
         dict = super().to_dict()
         dict.update({
-            "resource_type": self.resource_type,
+            "resource_type": self.resource_type.value,
             "amount": self.amount
         })
         return dict
