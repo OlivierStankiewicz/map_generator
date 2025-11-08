@@ -1,6 +1,9 @@
 from typing import List, Dict, Tuple
 
 from classes.tile.Tile import TerrainType
+from generation.tile_gen.tile_gen import SpriteType, get_terrain_type_sprite_type_range
+from generation.map_gen.sprite_type_dict import patterns as sprite_type_dict
+from random import randint
 
 def print_map(terrain_map: List[List[TerrainType]]):
     """
@@ -129,3 +132,42 @@ def upscale_map(terrain_map: List[List[TerrainType]]) -> List[List[TerrainType]]
     print_map(upscaled_map)
     
     return upscaled_map
+
+def choose_sprite(terrain_map, x, y) -> int:
+    #! handle border sprites later
+    if x == 0 or y == 0 or x == len(terrain_map[0]) - 1 or y == len(terrain_map) - 1:
+        return 1
+
+    terrain_type = terrain_map[y][x]
+    #! handle other terrain types later
+    if terrain_type != TerrainType.GRASS:
+        return 1
+
+    neighbors = [[terrain_map[i][j] for j in range(x-1, x+2)] for i in range(y-1, y+2)]
+    neighbors_string = convert_neighbors_to_string(neighbors)
+
+    # print("Neighbors string:", neighbors_string)
+    if neighbors_string not in sprite_type_dict:
+        print("No matching sprite type for neighbors string:", neighbors_string)
+        return 1
+
+    allowed_sprite_ranges = get_terrain_type_sprite_type_range(terrain_type, sprite_type_dict[neighbors_string])
+    if allowed_sprite_ranges["special"] and randint(1, 10) == 1:
+        return randint(allowed_sprite_ranges["special"][0], allowed_sprite_ranges["special"][1])
+        
+    return randint(allowed_sprite_ranges["standard"][0], allowed_sprite_ranges["standard"][1])
+    
+    
+def convert_neighbors_to_string(neighbors: list[list[TerrainType]]) -> str:
+    sand_group = {TerrainType.SAND, TerrainType.ROCK, TerrainType.WATER}
+
+    result = ""
+    for row in neighbors:
+        for terrain in row:
+            if terrain == neighbors[1][1]:
+                result += "N"
+            elif terrain in sand_group:
+                result += "X"
+            else:
+                result += "Y"
+    return result

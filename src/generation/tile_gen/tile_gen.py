@@ -5,6 +5,39 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')
 from classes.tile.Tile import Tile, TerrainType
 from generation.tile_gen.flags_gen import generate_flags
 from random import choice
+from random import randint, choice
+from enum import Enum
+
+class SpriteType(Enum):
+    SAND_OUTER_CORNER = 0
+    SAND_EDGE_VERTICAL = 1
+    SAND_EDGE_HORIZONTAL = 2
+    SAND_INNER_CORNER = 3
+    SAND_OUTER_CORNER_NEXT_TO_HALF_WATER = 4
+    SAND_INNER_CORNER_NEXT_TO_HALF_WATER = 5
+    SAND_CONNECTOR = 6
+    CENTER = 7
+    SAND = 8
+    DIRT_OUTER_CORNER = 9
+    DIRT_EDGE_VERTICAL = 10
+    DIRT_EDGE_HORIZONTAL = 11
+    DIRT_INNER_CORNER = 12
+    DIRT_OUTER_CORNER_NEXT_TO_HALF_WATER = 13
+    DIRT_INNER_CORNER_NEXT_TO_HALF_WATER = 14
+    DIRT_CONNECTOR = 15
+    DIRT = 16
+    MIXED_CONNECTOR = 17
+    MIXED_OUTER_CORNER_VERTICAL_SAND = 18   # SAND CONNECTION IS VERTICAL
+    MIXED_OUTER_CORNER_HORIZONTAL_SAND = 19 # SAND CONNECTION IS HORIZONTAL
+    MIXED_EDGE_HORIZONTAL = 20              # NATIVE TERRAIN EDGE IS HORIZONTAL
+    MIXED_EDGE_VERTICAL = 21                # NATIVE TERRAIN EDGE IS VERTICAL
+    MIXED_OUTER_CORNER_VERTICAL_DIRT = 22   # DIRT CONNECTION IS VERTICAL
+    MIXED_OUTER_CORNER_HORIZONTAL_DIRT = 23 # DIRT CONNECTION IS HORIZONTAL
+    MIXED_OUTER_CORNER_NEXT_TO_HALF_WATER = 24
+    MIXED_INNER_CORNER_NEXT_TO_HALF_WATER = 25
+    MIXED_CONNECTOR_BETWEEN_HALF_WATERS = 26
+    MIXED_OUTER_CORNER_DIAGONAL_SAND = 27
+
 
 def generate_tile(random_terrain_type: bool, random_terrain_sprite: bool) -> Tile:
     if random_terrain_type:
@@ -13,12 +46,9 @@ def generate_tile(random_terrain_type: bool, random_terrain_sprite: bool) -> Til
         terrain_type = TerrainType.WATER
 
     if random_terrain_sprite:
-        sprite_ranges = get_terrain_type_sprite_range(terrain_type)
-        allowed_sprites = []
-        for sprite_range in sprite_ranges:
-            sprite_min, sprite_max = sprite_range
-            allowed_sprites.extend(range(sprite_min, sprite_max + 1))
-        print(allowed_sprites)
+        sprite_range = get_terrain_type_sprite_range(terrain_type) 
+        sprite_min, sprite_max = sprite_range
+        allowed_sprites = range(sprite_min, sprite_max + 1)
         terrain_sprite = choice(allowed_sprites)
     else:
         terrain_sprite = 22
@@ -44,24 +74,84 @@ def generate_specific_terrain_and_sprite(terrain_type: TerrainType, terrain_spri
         flags = generate_flags()
     )
 
-def get_terrain_type_sprite_range(terrain_type: TerrainType) -> list[tuple[int, int]]:
+def get_terrain_type_sprite_range(terrain_type: TerrainType) -> tuple[int, int]:
     if terrain_type == TerrainType.DIRT:
-        return [(0, 45)]
+        return (0, 45)
     elif terrain_type == TerrainType.SAND:
-        return [(0, 23)]
+        return (0, 23)
     elif terrain_type == TerrainType.GRASS:
-        return [(0, 78)]
+        return (0, 78)
     elif terrain_type == TerrainType.SNOW:
-        return [(0, 78)]
+        return (0, 78)
     elif terrain_type == TerrainType.SWAMP:
-        return [(0, 78)]
+        return (0, 78)
     elif terrain_type == TerrainType.ROUGH:
-        return [(0, 78)]
+        return (0, 78)
     elif terrain_type == TerrainType.SUBTERRANEAN:
-        return [(0, 78)]
+        return (0, 78)
     elif terrain_type == TerrainType.LAVA:
-        return [(0, 78)]
+        return (0, 78)
     elif terrain_type == TerrainType.WATER:
-        return [(0, 32)]
+        return (0, 32)
     elif terrain_type == TerrainType.ROCK:
-        return [(0, 47), (49, 53), (60, 60), (62, 63)]
+        return (0, 47)
+
+def get_terrain_type_sprite_type_range(terrain_type: TerrainType, sprite_type: SpriteType) -> dict[str, tuple]:
+    sprite_groups = {
+        TerrainType.DIRT: {
+            SpriteType.SAND_OUTER_CORNER: { "standard": (0, 3), "special": () },
+            SpriteType.SAND_EDGE_VERTICAL: { "standard": (4, 7), "special": () },
+            SpriteType.SAND_EDGE_HORIZONTAL: { "standard": (8, 11), "special": () },
+            SpriteType.SAND_INNER_CORNER: { "standard": (12, 15), "special": () },
+            SpriteType.SAND_OUTER_CORNER_NEXT_TO_HALF_WATER: { "standard": (16, 17), "special": () },
+            SpriteType.SAND_INNER_CORNER_NEXT_TO_HALF_WATER: { "standard": (18, 19), "special": () },
+            SpriteType.SAND_CONNECTOR: { "standard": (20, 20), "special": () },
+            SpriteType.CENTER: { "standard": (21, 28), "special": (29, 44) },
+            SpriteType.SAND: { "standard": (45, 45), "special": () }
+        },
+
+        TerrainType.SAND: {
+            SpriteType.SAND_OUTER_CORNER: { "standard": (0, 7), "special": (8, 23) },
+            SpriteType.SAND_EDGE_VERTICAL: { "standard": (0, 7), "special": (8, 23) },
+            SpriteType.SAND_EDGE_HORIZONTAL: { "standard": (0, 7), "special": (8, 23) },
+            SpriteType.SAND_INNER_CORNER: { "standard": (0, 7), "special": (8, 23) },
+            SpriteType.SAND_OUTER_CORNER_NEXT_TO_HALF_WATER: { "standard": (0, 7), "special": (8, 23) },
+            SpriteType.SAND_INNER_CORNER_NEXT_TO_HALF_WATER: { "standard": (0, 7), "special": (8, 23) },
+            SpriteType.SAND_CONNECTOR: { "standard": (0, 7), "special": (8, 23) },
+            SpriteType.CENTER: { "standard": (0, 7), "special": (8, 23) },
+            SpriteType.SAND: { "standard": (0, 7), "special": (8, 23) }
+        },
+
+        TerrainType.GRASS: {
+            SpriteType.SAND_OUTER_CORNER: { "standard": (20, 23), "special": () },
+            SpriteType.SAND_EDGE_VERTICAL: { "standard": (24, 27), "special": () },
+            SpriteType.SAND_EDGE_HORIZONTAL: { "standard": (28, 31), "special": () },
+            SpriteType.SAND_INNER_CORNER: { "standard": (32, 35), "special": () },
+            SpriteType.SAND_OUTER_CORNER_NEXT_TO_HALF_WATER: { "standard": (36, 37), "special": () },
+            SpriteType.SAND_INNER_CORNER_NEXT_TO_HALF_WATER: { "standard": (38, 39), "special": () },
+            SpriteType.SAND_CONNECTOR: { "standard": (42, 42), "special": () },
+            SpriteType.CENTER: { "standard": (49, 56), "special": (57, 72) },
+            SpriteType.SAND: { "standard": (74, 74), "special": () },
+            SpriteType.DIRT_OUTER_CORNER: { "standard": (0, 3), "special": () },
+            SpriteType.DIRT_EDGE_VERTICAL: { "standard": (4, 7), "special": () },
+            SpriteType.DIRT_EDGE_HORIZONTAL: { "standard": (8, 11), "special": () },
+            SpriteType.DIRT_INNER_CORNER: { "standard": (12, 15), "special": () } ,
+            SpriteType.DIRT_OUTER_CORNER_NEXT_TO_HALF_WATER: { "standard": (16, 17), "special": () },
+            SpriteType.DIRT_INNER_CORNER_NEXT_TO_HALF_WATER: { "standard": (18, 19), "special": () },
+            SpriteType.DIRT_CONNECTOR: { "standard": (40, 40), "special": () },
+            SpriteType.DIRT: { "standard": (73, 73), "special": () },
+            SpriteType.MIXED_CONNECTOR: { "standard": (41, 41), "special": () },
+            SpriteType.MIXED_OUTER_CORNER_VERTICAL_SAND: { "standard": (47, 47), "special": () },
+            SpriteType.MIXED_OUTER_CORNER_HORIZONTAL_SAND: { "standard": (48, 48), "special": () },
+            SpriteType.MIXED_EDGE_HORIZONTAL: { "standard": (45, 45), "special": () },
+            SpriteType.MIXED_EDGE_VERTICAL: { "standard": (46, 46), "special": () },
+            SpriteType.MIXED_OUTER_CORNER_VERTICAL_DIRT: { "standard": (43, 43), "special": () },
+            SpriteType.MIXED_OUTER_CORNER_HORIZONTAL_DIRT: { "standard": (44, 44), "special": () },
+            SpriteType.MIXED_OUTER_CORNER_NEXT_TO_HALF_WATER: { "standard": (76, 76), "special": () },
+            SpriteType.MIXED_INNER_CORNER_NEXT_TO_HALF_WATER: { "standard": (75, 75), "special": () },
+            SpriteType.MIXED_CONNECTOR_BETWEEN_HALF_WATERS: { "standard": (77, 77), "special": () },
+            SpriteType.MIXED_OUTER_CORNER_DIAGONAL_SAND: { "standard": (78, 78), "special": () }
+        }
+    }
+    
+    return sprite_groups[terrain_type][sprite_type]

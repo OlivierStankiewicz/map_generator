@@ -1,5 +1,6 @@
 __pycache__/
 **/tempCodeRunnerFile.py
+.vscode/
 generated_maps/
 .idea/
 .venv/
