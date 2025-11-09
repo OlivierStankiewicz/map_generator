@@ -145,20 +145,22 @@ def choose_sprite(terrain_map, x, y) -> Tuple[int, bool, bool]:
     ).
     """    
     #! handle border sprites later
-    if x == 0 or y == 0 or x == len(terrain_map[0]) - 1 or y == len(terrain_map) - 1:
-        return 1, False, False
+    # if x == 0 or y == 0 or x == len(terrain_map[0]) - 1 or y == len(terrain_map) - 1:
+    #     print("Border tile at position:", (x, y))
+    #     return 1, False, False
 
     terrain_type = terrain_map[y][x]
     #! handle other terrain types later
     if terrain_type != TerrainType.GRASS:
+        print("Non-grass terrain type at position:", (x, y))
         return 1, False, False
 
-    neighbors = [[terrain_map[i][j] for j in range(x-1, x+2)] for i in range(y-1, y+2)]
+    neighbors = get_neighbors(terrain_map, x, y)
     neighbors_string = convert_neighbors_to_string(neighbors)
 
     # print("Neighbors string:", neighbors_string)
     if neighbors_string not in dirt_based_terrain_types_patterns:
-        print("No matching sprite type for neighbors string:", neighbors_string)
+        print("No matching sprite type for neighbors string:", neighbors_string, "at position:", (x, y))
         return 1, False, False
 
     sprite_entry = dirt_based_terrain_types_patterns[neighbors_string]
@@ -172,6 +174,33 @@ def choose_sprite(terrain_map, x, y) -> Tuple[int, bool, bool]:
 
     return sprite, x_terrain_flip, y_terrain_flip
 
+def get_neighbors(terrain_map: List[List[TerrainType]], x: int, y: int) -> List[List[TerrainType]]:
+    """
+    Get the 3x3 grid of neighbors around the tile at (x, y).
+    """
+    neighbors = [[None for _ in range(3)] for _ in range(3)]
+    for dy in range(-1, 2):
+        for dx in range(-1, 2):
+            nx, ny = x + dx, y + dy
+            if 0 <= ny < len(terrain_map) and 0 <= nx < len(terrain_map[0]):
+                neighbors[dy + 1][dx + 1] = terrain_map[ny][nx]
+
+    rows = neighbors
+    cols = list(zip(*rows))
+    
+    empty_col, empty_row = None, None
+    for i in range(3):
+        if all(tile is None for tile in rows[i]):
+            empty_row = i
+        if all(tile is None for tile in cols[i]):
+            empty_col = i
+    if empty_row is not None:
+        neighbors[empty_row] = neighbors[1]
+    if empty_col is not None:
+        for i in range(3):
+            neighbors[i][empty_col] = neighbors[i][1]
+    
+    return neighbors
 
 def convert_neighbors_to_string(neighbors: list[list[TerrainType]]) -> str:
     sand_group = {TerrainType.SAND, TerrainType.ROCK, TerrainType.WATER}
