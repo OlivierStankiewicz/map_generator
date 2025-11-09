@@ -6,8 +6,6 @@ from tkinter import filedialog
 import os
 import json
 
-from classes.tile.Tile import TerrainType
-
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__))))
 from generation.map_gen.map_gen import generate_voronoi_map
 

@@ -2,7 +2,9 @@ from typing import List, Dict, Tuple
 
 from classes.tile.Tile import TerrainType
 from generation.tile_gen.tile_gen import SpriteType, get_terrain_type_sprite_type_range
-from generation.map_gen.sprite_type_dict import patterns as sprite_type_dict
+from generation.map_gen.sprite_type_dict import dirt_based_terrain_types_patterns
+sprite_type_dict: Dict[str, Tuple[SpriteType, bool, bool]]
+
 from random import randint
 
 def print_map(terrain_map: List[List[TerrainType]]):
@@ -133,31 +135,44 @@ def upscale_map(terrain_map: List[List[TerrainType]]) -> List[List[TerrainType]]
     
     return upscaled_map
 
-def choose_sprite(terrain_map, x, y) -> int:
+def choose_sprite(terrain_map, x, y) -> Tuple[int, bool, bool]:
+    """
+    Choose an appropriate sprite number for the tile at (x, y) based on its neighbors.
+    Returns a tuple of (
+        sprite_number - number of the chosen sprite,
+        x_terrain - whether the sprite needs to be flipped in x direction (flag terrain_x)
+        y_terrain - whether the sprite needs to be flipped in y direction (flag terrain_y
+    ).
+    """    
     #! handle border sprites later
     if x == 0 or y == 0 or x == len(terrain_map[0]) - 1 or y == len(terrain_map) - 1:
-        return 1
+        return 1, False, False
 
     terrain_type = terrain_map[y][x]
     #! handle other terrain types later
     if terrain_type != TerrainType.GRASS:
-        return 1
+        return 1, False, False
 
     neighbors = [[terrain_map[i][j] for j in range(x-1, x+2)] for i in range(y-1, y+2)]
     neighbors_string = convert_neighbors_to_string(neighbors)
 
     # print("Neighbors string:", neighbors_string)
-    if neighbors_string not in sprite_type_dict:
+    if neighbors_string not in dirt_based_terrain_types_patterns:
         print("No matching sprite type for neighbors string:", neighbors_string)
-        return 1
+        return 1, False, False
 
-    allowed_sprite_ranges = get_terrain_type_sprite_type_range(terrain_type, sprite_type_dict[neighbors_string])
-    if allowed_sprite_ranges["special"] and randint(1, 10) == 1:
-        return randint(allowed_sprite_ranges["special"][0], allowed_sprite_ranges["special"][1])
-        
-    return randint(allowed_sprite_ranges["standard"][0], allowed_sprite_ranges["standard"][1])
+    sprite_entry = dirt_based_terrain_types_patterns[neighbors_string]
+    sprite_type, x_terrain_flip, y_terrain_flip = sprite_entry
     
-    
+    allowed_sprite_ranges = get_terrain_type_sprite_type_range(terrain_type, sprite_type)
+    if allowed_sprite_ranges["special"] and randint(1, 10) == 1: # 10% chance to pick a special sprite (rare one)
+        sprite = randint(allowed_sprite_ranges["special"][0], allowed_sprite_ranges["special"][1])
+    else:
+        sprite = randint(allowed_sprite_ranges["standard"][0], allowed_sprite_ranges["standard"][1])
+
+    return sprite, x_terrain_flip, y_terrain_flip
+
+
 def convert_neighbors_to_string(neighbors: list[list[TerrainType]]) -> str:
     sand_group = {TerrainType.SAND, TerrainType.ROCK, TerrainType.WATER}
 
@@ -170,4 +185,6 @@ def convert_neighbors_to_string(neighbors: list[list[TerrainType]]) -> str:
                 result += "X"
             else:
                 result += "Y"
+        result += "\n"
+    result = result.strip()
     return result

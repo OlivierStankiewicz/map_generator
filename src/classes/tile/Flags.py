@@ -13,8 +13,11 @@ class Flags:
             coast = False,
             unknown = False
         )
-    
-    def __init__(self, terrain_x: bool, terrain_y: bool, river_x: bool, river_y: bool, road_x: bool, road_y: bool, coast: bool, unknown: bool) -> None:
+
+    def __init__(self, terrain_x: bool = False, terrain_y: bool = False, 
+                 river_x: bool = False, river_y: bool = False,
+                 road_x: bool = False, road_y: bool = False,
+                 coast: bool = False, unknown: bool = False) -> None:
         self.terrain_x = terrain_x
         self.terrain_y = terrain_y
         self.river_x = river_x

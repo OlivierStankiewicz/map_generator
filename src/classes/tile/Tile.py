@@ -28,7 +28,10 @@ class Tile:
             flags = Flags.create_default()
         )
 
-    def __init__(self, terrain_type: TerrainType, terrain_sprite: int, river_type: int, river_sprite: int, road_type: int, road_sprite: int, flags: Flags) -> None:
+    def __init__(self, terrain_type: TerrainType = TerrainType.WATER, terrain_sprite: int = 22,
+                 river_type: int = 0, river_sprite: int = 0,
+                 road_type: int = 0, road_sprite: int = 0,
+                 flags: Flags = Flags.create_default()) -> None:
         self.terrain_type = terrain_type.value
         self.terrain_sprite = terrain_sprite
         self.river_type = river_type
