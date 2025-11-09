@@ -1,3 +1,17 @@
+'''
+N - NATIVE (SAME TYPE AS MIDDLE)
+A - ANY TERRAIN
+S - SAND
+D - DIRT
+W - WATER
+X - SAND/ROCK/WATER
+Y - DIRT/GRASS/SNOW/SWAMP/ROUGH/SUBTERRANEAN/LAVA
+_! - Z WYŁĄCZENIEM NATIVE TYPE
+
+TO WSZYSTKO JEST DLA N=GRASS
+JEŚLI JEST INNE OZNACZENIE NIŻ N, TO ZNACZY ŻE NIE MOŻE BYĆ N
+'''
+
 from generation.tile_gen.tile_gen import SpriteType
 
 dirt_based_terrain_types_patterns = {
@@ -17,6 +31,8 @@ dirt_based_terrain_types_patterns = {
     "NNN\nNNX\nNNX": (SpriteType.SAND_EDGE_VERTICAL, True, False),
     "XNN\nXNN\nNNN": (SpriteType.SAND_EDGE_VERTICAL, False, False),
     "NNX\nNNX\nNNN": (SpriteType.SAND_EDGE_VERTICAL, True, False),
+    "NNY\nNNX\nNNX": (SpriteType.SAND_EDGE_VERTICAL, False, False),
+    "YNN\nXNN\nXNN": (SpriteType.SAND_EDGE_VERTICAL, True, False),
     
     # SAND_EDGE_HORIZONTAL
     "XXX\nNNN\nNNN": (SpriteType.SAND_EDGE_HORIZONTAL, False, False),
@@ -26,11 +42,11 @@ dirt_based_terrain_types_patterns = {
     "NXX\nNNN\nNNN": (SpriteType.SAND_EDGE_HORIZONTAL, False, False),
     "NNN\nNNN\nNXX": (SpriteType.SAND_EDGE_HORIZONTAL, False, True),
     
-    # SAND_INNER_CORNER
-    "NNN\nNNN\nNNX": (SpriteType.SAND_INNER_CORNER, False, False),
-    "NNN\nNNN\nXNN": (SpriteType.SAND_INNER_CORNER, True, False),
-    "NNX\nNNN\nNNN": (SpriteType.SAND_INNER_CORNER, False, True),
-    "XNN\nNNN\nNNN": (SpriteType.SAND_INNER_CORNER, True, True),
+    # SAND_INNER_CORNER_NEXT_TO_HALF_WATER
+    "NNN\nNNN\nNNX": (SpriteType.SAND_INNER_CORNER_NEXT_TO_HALF_WATER, False, False),
+    "NNN\nNNN\nXNN": (SpriteType.SAND_INNER_CORNER_NEXT_TO_HALF_WATER, True, False),
+    "NNX\nNNN\nNNN": (SpriteType.SAND_INNER_CORNER_NEXT_TO_HALF_WATER, False, True),
+    "XNN\nNNN\nNNN": (SpriteType.SAND_INNER_CORNER_NEXT_TO_HALF_WATER, True, True),
     
     # SAND_OUTER_CORNER_NEXT_TO_HALF_WATER
     "XXN\nXNN\nNNN": (SpriteType.SAND_OUTER_CORNER_NEXT_TO_HALF_WATER, False, False),
@@ -80,11 +96,11 @@ dirt_based_terrain_types_patterns = {
     "NYY\nNNN\nNNN": (SpriteType.DIRT_EDGE_HORIZONTAL, False, False),
     "NNN\nNNN\nNYY": (SpriteType.DIRT_EDGE_HORIZONTAL, False, True),
     
-    # DIRT_INNER_CORNER
-    "NNN\nNNN\nNNY": (SpriteType.DIRT_INNER_CORNER, False, False),
-    "NNN\nNNN\nYNN": (SpriteType.DIRT_INNER_CORNER, True, False),
-    "NNY\nNNN\nNNN": (SpriteType.DIRT_INNER_CORNER, False, True),
-    "YNN\nNNN\nNNN": (SpriteType.DIRT_INNER_CORNER, True, True),
+    # DIRT_INNER_CORNER_NEXT_TO_HALF_WATER
+    "NNN\nNNN\nNNY": (SpriteType.DIRT_INNER_CORNER_NEXT_TO_HALF_WATER, False, False),
+    "NNN\nNNN\nYNN": (SpriteType.DIRT_INNER_CORNER_NEXT_TO_HALF_WATER, True, False),
+    "NNY\nNNN\nNNN": (SpriteType.DIRT_INNER_CORNER_NEXT_TO_HALF_WATER, False, True),
+    "YNN\nNNN\nNNN": (SpriteType.DIRT_INNER_CORNER_NEXT_TO_HALF_WATER, True, True),
     
     # DIRT_OUTER_CORNER_NEXT_TO_HALF_WATER
     "YYN\nYNN\nNNN": (SpriteType.DIRT_OUTER_CORNER_NEXT_TO_HALF_WATER, False, False),
@@ -175,8 +191,6 @@ dirt_based_terrain_types_patterns = {
     "XXN\nYNN\nYNN": (SpriteType.MIXED_OUTER_CORNER_HORIZONTAL_SAND, True, True),
     
     # MIXED_EDGE_VERTICAL
-    "NNY\nNNX\nNNX": (SpriteType.MIXED_EDGE_VERTICAL, False, False),
-    "YNN\nXNN\nXNN": (SpriteType.MIXED_EDGE_VERTICAL, True, False),
     "NNX\nNNX\nNNY": (SpriteType.MIXED_EDGE_VERTICAL, False, True),
     "XNN\nXNN\nYNN": (SpriteType.MIXED_EDGE_VERTICAL, True, True),
 
@@ -212,6 +226,11 @@ dirt_based_terrain_types_patterns = {
     "XNN\nYNN\nYYY": (SpriteType.MIXED_OUTER_CORNER_HORIZONTAL_DIRT, True, False),
     "YYY\nNNY\nNNX": (SpriteType.MIXED_OUTER_CORNER_HORIZONTAL_DIRT, False, True),
     "YYY\nYNN\nXNN": (SpriteType.MIXED_OUTER_CORNER_HORIZONTAL_DIRT, True, True),
+
+    "NNY\nNNY\nNNX": (SpriteType.MIXED_OUTER_CORNER_HORIZONTAL_DIRT, False, False),
+    "YNN\nYNN\nXNN": (SpriteType.MIXED_OUTER_CORNER_HORIZONTAL_DIRT, True, False),
+    "NNX\nNNY\nNNY": (SpriteType.MIXED_OUTER_CORNER_HORIZONTAL_DIRT, False, True),
+    "XNN\nYNN\nYNN": (SpriteType.MIXED_OUTER_CORNER_HORIZONTAL_DIRT, True, True),
     
     "NNX\nNNY\nNNY": (SpriteType.MIXED_OUTER_CORNER_HORIZONTAL_DIRT, False, False),
     "XNN\nYNN\nYNN": (SpriteType.MIXED_OUTER_CORNER_HORIZONTAL_DIRT, True, False),
