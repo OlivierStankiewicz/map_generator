@@ -83,18 +83,6 @@
   "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 },
 {
-  "def": "avrcgn00.def",
-  "passability": [255, 255, 255, 255, 63, 63],
-  "actionability": [0, 0, 0, 0, 0, 192],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 218, // RANDOM_DWELLING_FACTION
-  "object_subclass": 0,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
   "def": "AVGcent0.def",
   "passability": [255, 255, 255, 255, 255, 63],
   "actionability": [0, 0, 0, 0, 0, 128],
@@ -174,18 +162,6 @@
   "landscape_group": [255, 0],
   "object_class": 17, // CREATURE_GENERATOR1
   "object_subclass": 24,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "avrcgn01.def",
-  "passability": [255, 255, 255, 255, 63, 63],
-  "actionability": [0, 0, 0, 0, 0, 192],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 218, // RANDOM_DWELLING_FACTION
-  "object_subclass": 1,
   "object_group": 0, // Terrain
   "is_ground": 0,
   "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -275,18 +251,6 @@
   "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 },
 {
-  "def": "avrcgn02.def",
-  "passability": [255, 255, 255, 255, 63, 63],
-  "actionability": [0, 0, 0, 0, 0, 192],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 218, // RANDOM_DWELLING_FACTION
-  "object_subclass": 2,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
   "def": "AVGimp0.def",
   "passability": [255, 255, 255, 255, 255, 63],
   "actionability": [0, 0, 0, 0, 0, 128],
@@ -371,18 +335,6 @@
   "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 },
 {
-  "def": "avrcgn03.def",
-  "passability": [255, 255, 255, 255, 63, 63],
-  "actionability": [0, 0, 0, 0, 0, 192],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 218, // RANDOM_DWELLING_FACTION
-  "object_subclass": 3,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
   "def": "AVGskel0.def",
   "passability": [255, 255, 255, 255, 255, 63],
   "actionability": [0, 0, 0, 0, 0, 128],
@@ -461,18 +413,6 @@
   "allowed_landscapes": [255, 1],
   "landscape_group": [255, 0],
   "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 4,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "avrcgn04.def",
-  "passability": [255, 255, 255, 255, 63, 63],
-  "actionability": [0, 0, 0, 0, 0, 192],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 218, // RANDOM_DWELLING_FACTION
   "object_subclass": 4,
   "object_group": 0, // Terrain
   "is_ground": 0,
@@ -563,18 +503,6 @@
   "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 },
 {
-  "def": "avrcgn05.def",
-  "passability": [255, 255, 255, 255, 63, 63],
-  "actionability": [0, 0, 0, 0, 0, 192],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 218, // RANDOM_DWELLING_FACTION
-  "object_subclass": 5,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
   "def": "AVGgobl0.def",
   "passability": [255, 255, 255, 255, 255, 63],
   "actionability": [0, 0, 0, 0, 0, 128],
@@ -654,18 +582,6 @@
   "landscape_group": [255, 0],
   "object_class": 17, // CREATURE_GENERATOR1
   "object_subclass": 1,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "avrcgn06.def",
-  "passability": [255, 255, 255, 255, 63, 63],
-  "actionability": [0, 0, 0, 0, 0, 192],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 218, // RANDOM_DWELLING_FACTION
-  "object_subclass": 6,
   "object_group": 0, // Terrain
   "is_ground": 0,
   "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -755,18 +671,6 @@
   "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 },
 {
-  "def": "avrcgn07.def",
-  "passability": [255, 255, 255, 255, 63, 63],
-  "actionability": [0, 0, 0, 0, 0, 192],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 218, // RANDOM_DWELLING_FACTION
-  "object_subclass": 7,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
   "def": "AVGpixie.def",
   "passability": [255, 255, 255, 255, 255, 63],
   "actionability": [0, 0, 0, 0, 0, 128],
@@ -846,18 +750,6 @@
   "landscape_group": [255, 0],
   "object_class": 17, // CREATURE_GENERATOR1
   "object_subclass": 61,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "avrcgn08.def",
-  "passability": [255, 255, 255, 255, 63, 63],
-  "actionability": [0, 0, 0, 0, 0, 192],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 218, // RANDOM_DWELLING_FACTION
-  "object_subclass": 8,
   "object_group": 0, // Terrain
   "is_ground": 0,
   "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]

@@ -1,0 +1,204 @@
+{
+  "def": "avrcgn00.def",
+  "passability": [255, 255, 255, 255, 63, 63],
+  "actionability": [0, 0, 0, 0, 0, 192],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [255, 0],
+  "object_class": 218, // RANDOM_DWELLING_FACTION
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "avrcgn01.def",
+  "passability": [255, 255, 255, 255, 63, 63],
+  "actionability": [0, 0, 0, 0, 0, 192],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [255, 0],
+  "object_class": 218, // RANDOM_DWELLING_FACTION
+  "object_subclass": 1,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "avrcgn02.def",
+  "passability": [255, 255, 255, 255, 63, 63],
+  "actionability": [0, 0, 0, 0, 0, 192],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [255, 0],
+  "object_class": 218, // RANDOM_DWELLING_FACTION
+  "object_subclass": 2,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "avrcgn03.def",
+  "passability": [255, 255, 255, 255, 63, 63],
+  "actionability": [0, 0, 0, 0, 0, 192],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [255, 0],
+  "object_class": 218, // RANDOM_DWELLING_FACTION
+  "object_subclass": 3,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "avrcgn04.def",
+  "passability": [255, 255, 255, 255, 63, 63],
+  "actionability": [0, 0, 0, 0, 0, 192],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [255, 0],
+  "object_class": 218, // RANDOM_DWELLING_FACTION
+  "object_subclass": 4,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "avrcgn05.def",
+  "passability": [255, 255, 255, 255, 63, 63],
+  "actionability": [0, 0, 0, 0, 0, 192],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [255, 0],
+  "object_class": 218, // RANDOM_DWELLING_FACTION
+  "object_subclass": 5,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "avrcgn06.def",
+  "passability": [255, 255, 255, 255, 63, 63],
+  "actionability": [0, 0, 0, 0, 0, 192],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [255, 0],
+  "object_class": 218, // RANDOM_DWELLING_FACTION
+  "object_subclass": 6,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "avrcgn07.def",
+  "passability": [255, 255, 255, 255, 63, 63],
+  "actionability": [0, 0, 0, 0, 0, 192],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [255, 0],
+  "object_class": 218, // RANDOM_DWELLING_FACTION
+  "object_subclass": 7,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "avrcgn08.def",
+  "passability": [255, 255, 255, 255, 63, 63],
+  "actionability": [0, 0, 0, 0, 0, 192],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [255, 0],
+  "object_class": 218, // RANDOM_DWELLING_FACTION
+  "object_subclass": 8,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "avrcgen0.def",
+  "passability": [255, 255, 255, 255, 63, 63],
+  "actionability": [0, 0, 0, 0, 0, 192],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [255, 0],
+  "object_class": 216, // RANDOM_DWELLING
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "avrcgen1.def",
+  "passability": [255, 255, 255, 255, 63, 63],
+  "actionability": [0, 0, 0, 0, 0, 192],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [255, 0],
+  "object_class": 217, // RANDOM_DWELLING_LVL
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "avrcgen2.def",
+  "passability": [255, 255, 255, 255, 63, 63],
+  "actionability": [0, 0, 0, 0, 0, 192],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [255, 0],
+  "object_class": 217, // RANDOM_DWELLING_LVL
+  "object_subclass": 1,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "avrcgen3.def",
+  "passability": [255, 255, 255, 255, 63, 63],
+  "actionability": [0, 0, 0, 0, 0, 192],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [255, 0],
+  "object_class": 217, // RANDOM_DWELLING_LVL
+  "object_subclass": 2,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "avrcgen4.def",
+  "passability": [255, 255, 255, 255, 63, 63],
+  "actionability": [0, 0, 0, 0, 0, 192],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [255, 0],
+  "object_class": 217, // RANDOM_DWELLING_LVL
+  "object_subclass": 3,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "avrcgen5.def",
+  "passability": [255, 255, 255, 255, 63, 63],
+  "actionability": [0, 0, 0, 0, 0, 192],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [255, 0],
+  "object_class": 217, // RANDOM_DWELLING_LVL
+  "object_subclass": 4,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "avrcgen6.def",
+  "passability": [255, 255, 255, 255, 63, 63],
+  "actionability": [0, 0, 0, 0, 0, 192],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [255, 0],
+  "object_class": 217, // RANDOM_DWELLING_LVL
+  "object_subclass": 5,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "avrcgen7.def",
+  "passability": [255, 255, 255, 255, 63, 63],
+  "actionability": [0, 0, 0, 0, 0, 192],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [255, 0],
+  "object_class": 217, // RANDOM_DWELLING_LVL
+  "object_subclass": 6,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+}

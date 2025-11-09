@@ -4,9 +4,9 @@ class RandomDwellingPresetAlignment(Properties):
     @classmethod
     def create_default(cls) -> "RandomDwellingPresetAlignment":
         return cls(
-            owner= 0,
+            owner= 255,
             min_level = 0,
-            max_level = 0
+            max_level = 6
         )
 
     def __init__(self, owner: int,

@@ -1,0 +1,216 @@
+{
+  "def": "ah00_e.def",
+  "passability": [255, 255, 255, 255, 255, 191],
+  "actionability": [0, 0, 0, 0, 0, 64],
+  "allowed_landscapes": [255, 0],
+  "landscape_group": [255, 0],
+  "object_class": 34, // HERO
+  "object_subclass": 0,
+  "object_group": 3, // Hero
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "ah01_e.def",
+  "passability": [255, 255, 255, 255, 255, 191],
+  "actionability": [0, 0, 0, 0, 0, 64],
+  "allowed_landscapes": [255, 0],
+  "landscape_group": [255, 0],
+  "object_class": 34, // HERO
+  "object_subclass": 1,
+  "object_group": 3, // Hero
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "ah02_e.def",
+  "passability": [255, 255, 255, 255, 255, 191],
+  "actionability": [0, 0, 0, 0, 0, 64],
+  "allowed_landscapes": [255, 0],
+  "landscape_group": [255, 0],
+  "object_class": 34, // HERO
+  "object_subclass": 2,
+  "object_group": 3, // Hero
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "ah03_e.def",
+  "passability": [255, 255, 255, 255, 255, 191],
+  "actionability": [0, 0, 0, 0, 0, 64],
+  "allowed_landscapes": [255, 0],
+  "landscape_group": [255, 0],
+  "object_class": 34, // HERO
+  "object_subclass": 3,
+  "object_group": 3, // Hero
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "ah04_e.def",
+  "passability": [255, 255, 255, 255, 255, 191],
+  "actionability": [0, 0, 0, 0, 0, 64],
+  "allowed_landscapes": [255, 0],
+  "landscape_group": [255, 0],
+  "object_class": 34, // HERO
+  "object_subclass": 4,
+  "object_group": 3, // Hero
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "ah05_e.def",
+  "passability": [255, 255, 255, 255, 255, 191],
+  "actionability": [0, 0, 0, 0, 0, 64],
+  "allowed_landscapes": [255, 0],
+  "landscape_group": [255, 0],
+  "object_class": 34, // HERO
+  "object_subclass": 5,
+  "object_group": 3, // Hero
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "ah06_e.def",
+  "passability": [255, 255, 255, 255, 255, 191],
+  "actionability": [0, 0, 0, 0, 0, 64],
+  "allowed_landscapes": [255, 0],
+  "landscape_group": [255, 0],
+  "object_class": 34, // HERO
+  "object_subclass": 6,
+  "object_group": 3, // Hero
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "ah07_e.def",
+  "passability": [255, 255, 255, 255, 255, 191],
+  "actionability": [0, 0, 0, 0, 0, 64],
+  "allowed_landscapes": [255, 0],
+  "landscape_group": [255, 0],
+  "object_class": 34, // HERO
+  "object_subclass": 7,
+  "object_group": 3, // Hero
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "ah08_e.def",
+  "passability": [255, 255, 255, 255, 255, 191],
+  "actionability": [0, 0, 0, 0, 0, 64],
+  "allowed_landscapes": [255, 0],
+  "landscape_group": [255, 0],
+  "object_class": 34, // HERO
+  "object_subclass": 8,
+  "object_group": 3, // Hero
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "ah09_e.def",
+  "passability": [255, 255, 255, 255, 255, 191],
+  "actionability": [0, 0, 0, 0, 0, 64],
+  "allowed_landscapes": [255, 0],
+  "landscape_group": [255, 0],
+  "object_class": 34, // HERO
+  "object_subclass": 9,
+  "object_group": 3, // Hero
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "ah10_e.def",
+  "passability": [255, 255, 255, 255, 255, 191],
+  "actionability": [0, 0, 0, 0, 0, 64],
+  "allowed_landscapes": [255, 0],
+  "landscape_group": [255, 0],
+  "object_class": 34, // HERO
+  "object_subclass": 10,
+  "object_group": 3, // Hero
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "ah11_e.def",
+  "passability": [255, 255, 255, 255, 255, 191],
+  "actionability": [0, 0, 0, 0, 0, 64],
+  "allowed_landscapes": [255, 0],
+  "landscape_group": [255, 0],
+  "object_class": 34, // HERO
+  "object_subclass": 11,
+  "object_group": 3, // Hero
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "ah12_e.def",
+  "passability": [255, 255, 255, 255, 255, 191],
+  "actionability": [0, 0, 0, 0, 0, 64],
+  "allowed_landscapes": [255, 0],
+  "landscape_group": [255, 0],
+  "object_class": 34, // HERO
+  "object_subclass": 12,
+  "object_group": 3, // Hero
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "ah13_e.def",
+  "passability": [255, 255, 255, 255, 255, 191],
+  "actionability": [0, 0, 0, 0, 0, 64],
+  "allowed_landscapes": [255, 0],
+  "landscape_group": [255, 0],
+  "object_class": 34, // HERO
+  "object_subclass": 13,
+  "object_group": 3, // Hero
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "ah14_e.def",
+  "passability": [255, 255, 255, 255, 255, 191],
+  "actionability": [0, 0, 0, 0, 0, 64],
+  "allowed_landscapes": [255, 0],
+  "landscape_group": [255, 0],
+  "object_class": 34, // HERO
+  "object_subclass": 14,
+  "object_group": 3, // Hero
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "ah15_e.def",
+  "passability": [255, 255, 255, 255, 255, 191],
+  "actionability": [0, 0, 0, 0, 0, 64],
+  "allowed_landscapes": [255, 0],
+  "landscape_group": [255, 0],
+  "object_class": 34, // HERO
+  "object_subclass": 15,
+  "object_group": 3, // Hero
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "ahrandom.def",
+  "passability": [255, 255, 255, 255, 255, 191],
+  "actionability": [0, 0, 0, 0, 0, 64],
+  "allowed_landscapes": [255, 0],
+  "landscape_group": [255, 0],
+  "object_class": 70, // RANDOM_HERO
+  "object_subclass": 0,
+  "object_group": 3, // Hero
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AHplace.def",
+  "passability": [255, 255, 255, 255, 255, 191],
+  "actionability": [0, 0, 0, 0, 0, 64],
+  "allowed_landscapes": [255, 0],
+  "landscape_group": [255, 0],
+  "object_class": 214, // HERO_PLACEHOLDER
+  "object_subclass": 0,
+  "object_group": 3, // Hero
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+}

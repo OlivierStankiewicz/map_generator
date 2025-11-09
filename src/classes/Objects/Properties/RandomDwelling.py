@@ -10,7 +10,7 @@ class RandomDwelling(Properties):
             town_absord_id = 0,
             alignment = Alignment.create_default(),
             min_level = 0,
-            max_level = 0
+            max_level = 6
         )
 
     def __init__(self, owner: int,

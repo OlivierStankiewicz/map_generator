@@ -113,7 +113,7 @@ class VoronoiCityPlacer:
         Generate city seeds using Poisson disk sampling for minimum distance.
         Enhanced version with better distance guarantees.
         
-        Cities can be placed near map edges - minimum distance only applies between cities.
+        Cities are placed to maximize distance between them.
         """
         seeds = []
         max_attempts = num_cities * 100  # More attempts for better results
@@ -125,31 +125,30 @@ class VoronoiCityPlacer:
         # print(f"Generating {num_cities} cities with min distance {min_distance}...")
         
         while len(seeds) < num_cities and attempts < max_attempts:
-            # Generate candidate position - prefer edges for better distribution
-            x, y = self.generate_edge_preferred_position(edge_margin)
+            # For each new seed, try to place it as far as possible from existing seeds
+            best_candidate = None
+            best_min_distance = -1
             
-            # Check distance to existing seeds
-            valid = True
-            for sx, sy in seeds:
-                distance = math.sqrt((x - sx)**2 + (y - sy)**2)
-                if distance < min_distance:
-                    valid = False
-                    break
+            # Try multiple candidate positions
+            for _ in range(20):  # Number of candidates to try
+                x = random.randint(edge_margin, self.map_width - edge_margin)
+                y = random.randint(edge_margin, self.map_height - edge_margin)
+                
+                # Calculate minimum distance to existing seeds
+                min_distance_to_seeds = float('inf')
+                for sx, sy in seeds:
+                    distance = math.sqrt((x - sx)**2 + (y - sy)**2)
+                    min_distance_to_seeds = min(min_distance_to_seeds, distance)
+                
+                # If this is a valid position and better than our current best
+                if min_distance_to_seeds >= min_distance and min_distance_to_seeds > best_min_distance:
+                    best_candidate = (x, y)
+                    best_min_distance = min_distance_to_seeds
             
-            if valid:
-                seeds.append((x, y))
-                # print(f"  Placed city {len(seeds)} at ({x}, {y})")
+            if best_candidate is not None:
+                seeds.append(best_candidate)
             
             attempts += 1
-            
-            # Progress indicator for long searches
-            # if attempts % (num_cities * 10) == 0:
-            #     print(f"  Attempt {attempts}/{max_attempts}, placed {len(seeds)}/{num_cities}")
-        
-        # If we couldn't place all cities with min_distance
-        # if len(seeds) < num_cities:
-        #     print(f"Warning: Could only place {len(seeds)}/{num_cities} cities with distance {min_distance}")
-        #     print(f"Consider reducing city count or minimum distance")
         
         return seeds
     
@@ -679,210 +678,224 @@ class VoronoiCityPlacer:
         
         return regions
     
-    def _recalculate_voronoi(self, regions: List[VoronoiRegion]) -> List[VoronoiRegion]:
-        """Recalculate Voronoi diagram with current seed positions."""
-        # Clear existing tiles
-        for region in regions:
-            region.tiles = []
-            region.neighbors = set()
+    def _create_voronoi_region(self, x: int, y: int, region_id: int = None) -> VoronoiRegion:
+        """Create a new Voronoi region with the given seed position."""
+        region = VoronoiRegion(x, y)
+        if region_id is not None:
+            region.region_id = region_id
+        return region
+    
+    def _generate_regions_around_cities(self, city_positions: List[Tuple[int, int]], total_regions: int) -> List[VoronoiRegion]:
+        """
+        Generate additional region seeds around city positions.
+        These will be used to create terrain variation.
+        """
+        all_seeds = []
+        used_positions = set()
         
-        # Reassign tiles to closest seeds
-        for y in range(self.map_height):
-            for x in range(self.map_width):
-                closest_region = min(
-                    regions, 
-                    key=lambda r: (r.seed_x - x)**2 + (r.seed_y - y)**2
-                )
-                closest_region.tiles.append((x, y))
+        # First add the city positions
+        for x, y in city_positions:
+            all_seeds.append((x, y))
+            used_positions.add((x, y))
         
-        # Recalculate neighbors
-        self._find_neighbors(regions)
+        # Then add additional seeds around each city
+        additional_seeds_per_city = max(2, (total_regions - len(city_positions)) // len(city_positions))
+        
+        for city_x, city_y in city_positions:
+            seeds_added = 0
+            max_radius = 15  # Maximum radius to search for positions
+            current_radius = 5  # Start with a smaller radius
+            
+            while seeds_added < additional_seeds_per_city and current_radius <= max_radius:
+                # Try positions at current radius
+                for attempt in range(8):  # Try 8 different angles
+                    angle = 2 * math.pi * (attempt / 8)
+                    dx = int(current_radius * math.cos(angle))
+                    dy = int(current_radius * math.sin(angle))
+                    
+                    x = city_x + dx
+                    y = city_y + dy
+                    
+                    # Ensure position is within map bounds and not already used
+                    if (0 <= x < self.map_width and 0 <= y < self.map_height and 
+                        (x, y) not in used_positions):
+                        
+                        # Check minimum distance to existing seeds
+                        min_distance = min(math.sqrt((x - sx)**2 + (y - sy)**2) 
+                                        for sx, sy in all_seeds)
+                        
+                        if min_distance >= 5:  # Minimum distance between region seeds
+                            all_seeds.append((x, y))
+                            used_positions.add((x, y))
+                            seeds_added += 1
+                            
+                            if seeds_added >= additional_seeds_per_city:
+                                break
+                
+                current_radius += 3  # Incrementally increase radius if needed
+        
+        # Create Voronoi regions from seeds
+        regions = []
+        for i, (x, y) in enumerate(all_seeds):
+            region = self._create_voronoi_region(x, y, region_id=i+1)
+            regions.append(region)
         
         return regions
-    
-    def _find_neighbors(self, regions: List[VoronoiRegion]):
-        """Find neighboring regions for each region."""
-        # Create ownership map
-        ownership = {}
-        for region in regions:
-            for x, y in region.tiles:
-                ownership[(x, y)] = region
-        
-        # Find neighbors by checking adjacent tiles
-        for region in regions:
-            for x, y in region.tiles:
-                for dx, dy in [(0, 1), (1, 0), (-1, 0), (0, -1)]:
-                    nx, ny = x + dx, y + dy
-                    if (nx, ny) in ownership:
-                        neighbor = ownership[(nx, ny)]
-                        if neighbor != region:
-                            region.neighbors.add(neighbor)
-    
-    def place_cities_with_voronoi(self, 
-                                 player_cities: int, 
-                                 neutral_cities: int,
-                                 min_distance: int = 20,
-                                 max_attempts: int = 3,
-                                 max_attempts_per_attempt: int = 10,
-                                 return_edges: bool = False,
-                                 return_tile_centers: bool = True,
-                                 include_region_boundaries: bool = False) -> VoronoiResult:
+
+    def generate_city_positions_with_fields(self, 
+                                          player_cities: int, 
+                                          neutral_cities: int,
+                                          min_distance: int = 20,
+                                          total_regions: int = None) -> Dict:
         """
-        Main function to place cities using Voronoi diagrams with distance constraints.
+        Generate city positions using old distance-based placement,
+        but with multiple terrain regions and adjacent region selection.
         
         Args:
             player_cities: Number of player cities
-            neutral_cities: Number of neutral cities  
-            min_distance: Minimum distance between cities (default 20)
-            max_attempts: Number of attempts if placement fails
-            return_edges: Whether to calculate and return Voronoi edges
-        
-        Returns:
-            VoronoiResult: Cities with their Voronoi regions, safety radii, and optionally edges
+            neutral_cities: Number of neutral cities
+            min_distance: Minimum distance between cities
+            total_regions: Total number of regions to generate (if None, will use 3x cities)
         """
         total_cities = player_cities + neutral_cities
         
-        # Validate if this many cities can fit
-        can_fit, message, max_recommended = True, "", total_cities  # self.validate_city_count(total_cities, min_distance)
-        # print(f"City count validation: {message}")
+        if total_regions is None:
+            total_regions = total_cities * 3  # Default to 3 regions per city
         
-        if not can_fit:
-            # print(f"Reducing city count from {total_cities} to {max_recommended}")
-            # Proportionally reduce both types
-            ratio = max_recommended / total_cities
-            player_cities = max(1, int(player_cities * ratio))
-            neutral_cities = max(0, max_recommended - player_cities)
-            total_cities = player_cities + neutral_cities
-            # print(f"New counts: {player_cities} players + {neutral_cities} neutrals = {total_cities} total")
+        # Step 1: Generate city positions using distance-based placement
+        city_seeds = self.generate_seeds_with_minimum_distance(total_cities, min_distance)
         
-        best_cities = None
-        best_min_distance = 0
-        
-        for attempt in range(max_attempts):
-            for at in range(max_attempts_per_attempt):
-                print(f"\n--- Attempt {attempt + 1}/{max_attempts} ---")
-                print(f"--- Attempt per attempt {at + 1}/{max_attempts_per_attempt} ---")
-                
-                # Try with current min_distance, reduce if needed
-                current_min_distance = max(15, min_distance - attempt * 5)
-                # print(f"Trying with minimum distance: {current_min_distance}")
-                
-                # Step 1: Generate seeds with minimum distance
-                seeds = self.generate_seeds_with_minimum_distance(total_cities, current_min_distance)
-                
-                if len(seeds) < total_cities:
-                    # print(f"Failed to place all cities, continuing with {len(seeds)}")
-                    continue
-                
-                # Step 2: Create initial Voronoi regions
-                regions = []
-                for i, (x, y) in enumerate(seeds):
-                    region = VoronoiRegion(x, y)
-                    regions.append(region)
-                
-                # Assign tiles to regions
-                regions = self._recalculate_voronoi(regions)
-                
-                # Step 3: Apply Lloyd's relaxation for better distribution
-                regions = self.lloyd_relaxation(regions, iterations=2)  # Fewer iterations to preserve distances
-                
-                # Step 4: Calculate safety radii and create city objects
-                cities = []
-                for i, region in enumerate(regions):
-                    safety_radius, region_area = self.calculate_region_properties(region)
-
-                    is_player = i < player_cities
-                    player_id = i if is_player else None
-
-                    # City coordinates: optionally return tile centers (float)
-                    cx = region.seed_x + (0.5 if return_tile_centers else 0)
-                    cy = region.seed_y + (0.5 if return_tile_centers else 0)
-
-                    region_boundary = None
-                    if include_region_boundaries:
-                        region_boundary = self._region_boundary_polygon(region)
-
-                    city = CityWithVoronoi(
-                        x=cx,
-                        y=cy,
-                        is_player_city=is_player,
-                        player_id=player_id,
-                        voronoi_region=region,
-                        safety_radius=safety_radius,
-                        region_area=region_area,
-                        region_boundary=region_boundary
-                    )
-                    cities.append(city)
-                
-                # Validate actual distances achieved
-                actual_min_distance = self._calculate_minimum_distance(cities)
-                print(f"Achieved minimum distance: {actual_min_distance:.1f}")
-                
-                if actual_min_distance >= current_min_distance * 0.8:  # Allow 20% tolerance
-                    if actual_min_distance > best_min_distance:
-                        best_cities = cities
-                        best_min_distance = actual_min_distance
-                        # print(f"New best result: {actual_min_distance:.1f}")
-                        
-                    if actual_min_distance >= min_distance * 0.9:  # Good enough
-                        break
-        
-        if best_cities is None:
+        if len(city_seeds) < total_cities:
             raise RuntimeError(f"Could not place {total_cities} cities with minimum distance {min_distance}")
         
-        # Calculate edges if requested
-        edges = []
-        if return_edges:
-            # print("Calculating Voronoi edges...")
-            regions = [city.voronoi_region for city in best_cities]
-            edges = self.calculate_voronoi_edges(regions)
-            # print(f"Found {len(edges)} edges between regions")
+        # Step 2: Generate additional region seeds around cities
+        all_regions = self._generate_regions_around_cities(city_seeds, total_regions)
         
-        print(f"\nFinal result: {len(best_cities)} cities with min distance {best_min_distance:.1f}")
-        return VoronoiResult(
-            cities=best_cities,
-            edges=edges,
-            min_distance_achieved=best_min_distance
-        )
-    
-    def _calculate_minimum_distance(self, cities: List[CityWithVoronoi]) -> float:
-        """Calculate minimum distance between any two cities."""
-        min_distance = float('inf')
-        for i, city1 in enumerate(cities):
-            for city2 in cities[i+1:]:
-                distance = math.sqrt((city1.x - city2.x)**2 + (city1.y - city2.y)**2)
-                min_distance = min(min_distance, distance)
-        return min_distance
-    
-    def validate_placement(self, cities: List[CityWithVoronoi]) -> Tuple[bool, List[str]]:
-        """
-        Validate that city placement meets safety requirements.
+        # Step 3: Assign tiles to regions
+        ownership = [[None for _ in range(self.map_width)] for _ in range(self.map_height)]
         
-        Returns:
-            Tuple[bool, List[str]]: (is_valid, list_of_problems)
-        """
-        problems = []
+        for y in range(self.map_height):
+            for x in range(self.map_width):
+                closest_region = min(all_regions, 
+                                   key=lambda r: (r.seed_x - x) ** 2 + (r.seed_y - y) ** 2)
+                closest_region.tiles.append((x, y))
+                ownership[y][x] = closest_region
         
-        for i, city1 in enumerate(cities):
-            # Check if city is within map bounds with safety margin
-            if (city1.x - city1.safety_radius < 0 or 
-                city1.x + city1.safety_radius >= self.map_width or
-                city1.y - city1.safety_radius < 0 or 
-                city1.y + city1.safety_radius >= self.map_height):
-                problems.append(f"City {i} safety zone extends beyond map boundaries")
+        # Step 4: Create city objects and assign fields
+        cities = []
+        city_to_fields = {}
+        used_regions = set()
+        
+        for i, (city_x, city_y) in enumerate(city_seeds):
+            # Find the region containing this city
+            city_region = min(all_regions, 
+                            key=lambda r: (r.seed_x - city_x) ** 2 + (r.seed_y - city_y) ** 2)
             
-            # Check distances to other cities
-            for j, city2 in enumerate(cities[i+1:], i+1):
-                distance = math.sqrt((city1.x - city2.x)**2 + (city1.y - city2.y)**2)
-                required_distance = city1.safety_radius + city2.safety_radius
-                
-                if distance < required_distance:
-                    problems.append(
-                        f"Cities {i} and {j} safety zones overlap "
-                        f"(distance: {distance:.1f}, required: {required_distance})"
-                    )
+            # This region becomes the main field for the city
+            main_region_id = city_region.region_id
+            used_regions.add(main_region_id)
+            
+            # Find adjacent regions for additional fields
+            adjacent_regions = self.find_adjacent_regions(city_region, all_regions, used_regions)
+            
+            # Sort adjacent regions by distance to city
+            adjacent_regions.sort(key=lambda r: 
+                                (r.seed_x - city_x) ** 2 + (r.seed_y - city_y) ** 2)
+            
+            # Select up to 2 additional fields
+            selected_fields = [main_region_id]
+            for adj_region in adjacent_regions[:2]:  # Take up to 2 closest adjacent regions
+                selected_fields.append(adj_region.region_id)
+                used_regions.add(adj_region.region_id)
+            
+            # Create city object
+            is_player = i < player_cities
+            player_id = i if is_player else None
+            
+            city = CityWithVoronoi(
+                x=float(city_x),
+                y=float(city_y),
+                is_player_city=is_player,
+                player_id=player_id,
+                voronoi_region=city_region,
+                safety_radius=min_distance // 2,
+                region_area=len(city_region.tiles)
+            )
+            cities.append(city)
+            
+            # Store field assignments
+            city_to_fields[i] = selected_fields
         
-        return len(problems) == 0, problems
+        # Step 5: Create detailed field information
+        fields_info = []
+        for region in all_regions:
+            # Calculate region properties
+            centroid = self._calculate_region_centroid(region)
+            boundary = self._region_boundary_polygon(region)
+            boundary_raster = self._rasterize_boundary_edges(boundary)
+            
+            # Find if region is assigned to a city
+            assigned_city = None
+            for city_id, fields in city_to_fields.items():
+                if region.region_id in fields:
+                    assigned_city = city_id + 1  # +1 for 1-based city IDs
+                    break
+            
+            field_info = FieldInfo(
+                field_id=region.region_id,
+                centroid=centroid,
+                boundary=boundary,
+                boundary_raster=boundary_raster,
+                area=len(region.tiles),
+                seed_position=(region.seed_x, region.seed_y),
+                assigned_to_city=assigned_city
+            )
+            fields_info.append(field_info)
+        
+        # Calculate city boundaries
+        city_boundaries = self._generate_city_area_boundaries(all_regions, city_to_fields)
+        
+        return {
+            "cities": cities,
+            "all_regions": all_regions,
+            "city_to_fields": city_to_fields,
+            "fields_info": fields_info,
+            "city_boundaries": city_boundaries
+        }
+    
+    def _generate_city_area_boundaries(self, all_regions: List[VoronoiRegion],
+                                     city_to_fields: Dict[int, List[int]]) -> Dict[int, List[Tuple[int, int]]]:
+        """Generate external boundaries for each city's total area (all fields)."""
+        city_boundaries = {}
+        
+        for city_id, field_ids in city_to_fields.items():
+            # Collect all tiles belonging to this city
+            city_tiles = set()
+            
+            for field_id in field_ids:
+                region = next((r for r in all_regions if r.region_id == field_id), None)
+                if region:
+                    city_tiles.update(region.tiles)
+            
+            # Find boundary tiles (tiles with neighbors outside city area)
+            boundary_tiles = []
+            
+            for x, y in city_tiles:
+                is_boundary = False
+                
+                for dx, dy in [(-1,0), (1,0), (0,-1), (0,1)]:
+                    nx, ny = x + dx, y + dy
+                    
+                    if (nx, ny) not in city_tiles:
+                        is_boundary = True
+                        break
+                
+                if is_boundary:
+                    boundary_tiles.append((x, y))
+            
+            city_boundaries[city_id] = boundary_tiles
+        
+        return city_boundaries
 
 
 def quick_city_placement(map_width: int, 
@@ -992,20 +1005,126 @@ def generate_city_positions(map_format: int, player_cities: int, neutral_cities:
 # 16,0 16,3 14,6 14,1 16,1 13,9 16,1 14,9 15,0 14,0 16,1 13,6 15,6 15,8 16,1 14,8 15,0 14,0 14,1 14,6
 
 
+def generate_city_area_boundaries(all_regions: List[VoronoiRegion], 
+                                 city_to_fields: Dict[int, List[int]], 
+                                 placer: 'VoronoiCityPlacer') -> Dict[int, List[Tuple[int, int]]]:
+    """
+    Generate external boundaries for entire city areas (all 3 fields together).
+    
+    Args:
+        all_regions: List of all Voronoi regions
+        city_to_fields: Mapping city_id -> list of fields
+        placer: Instance of VoronoiCityPlacer with helper methods
+        
+    Returns:
+        Dict[city_id, List[boundary_points]] - external boundaries for each city
+    """
+    city_boundaries = {}
+    
+    for city_id, fields_list in city_to_fields.items():
+        # Zbierz wszystkie tiles nale��ce do tego miasta
+        city_tiles = set()
+        
+        for field_id in fields_list:
+            # Znajd� region o tym ID
+            region = next((r for r in all_regions if r.region_id == field_id), None)
+            if region:
+                city_tiles.update(region.tiles)
+        
+        # Teraz znajd� zewn�trzne kraw�dzie tego obszaru
+        boundary_tiles = []
+        
+        for tile_x, tile_y in city_tiles:
+            # sprawd� czy tile jest na kraw�dzi (ma s�siada nie nale��cego do miasta)
+            is_boundary = False
+            
+            # Sprawd� wszystkich 8 s�siad�w
+            for dx in [-1, 0, 1]:
+                for dy in [-1, 0, 1]:
+                    if dx == 0 and dy == 0:
+                        continue
+                        
+                    neighbor_x, neighbor_y = tile_x + dx, tile_y + dy
+                    
+                    # Je�li s�siad jest poza map� lub nie nale�y do tego miasta
+                    if ((neighbor_x, neighbor_y) not in city_tiles):
+                        is_boundary = True
+                        break
+                        
+                if is_boundary:
+                    break
+            
+            if is_boundary:
+                boundary_tiles.append((tile_x, tile_y))
+        
+        city_boundaries[city_id] = boundary_tiles
+    
+    return city_boundaries
+
+
+def distance(a: VoronoiRegion, b: VoronoiRegion) -> float:
+    """Odległość euklidesowa między punktami nasiennymi regionów."""
+    return math.hypot(a.seed_x - b.seed_x, a.seed_y - b.seed_y)
+
+
+def can_select_with_distance(regions: List[VoronoiRegion], n: int, min_dist: float) -> List[VoronoiRegion] | None:
+    """Próbuje wybrać n regionów z minimalnym odstępem min_dist.
+       Jeśli się uda – zwraca wybrane regiony, jeśli nie – None."""
+    selected = [regions[0]]
+    for region in regions[1:]:
+        if all(distance(region, s) >= min_dist for s in selected):
+            selected.append(region)
+            if len(selected) == n:
+                return selected
+    return None
+
+
+def select_regions_max_min_dist(all_regions: List[VoronoiRegion], n: int) -> List[VoronoiRegion]:
+    """Zwraca listę n regionów o maksymalnej minimalnej odległości między punktami nasiennymi."""
+    if n >= len(all_regions):
+        return all_regions.copy()
+
+    regions = sorted(all_regions, key=lambda r: (r.seed_x, r.seed_y))
+
+    # Ustalenie maksymalnego możliwego dystansu
+    max_possible = max(
+        distance(a, b)
+        for i, a in enumerate(regions)
+        for b in regions[i + 1 :]
+    )
+
+    low, high = 0.0, max_possible
+    best_dist = 0.0
+    best_selection: List[VoronoiRegion] = []
+
+    # Binary search po odległości
+    while high - low > 1e-3:
+        mid = (low + high) / 2
+        selection = can_select_with_distance(regions, n, mid)
+        if selection:
+            best_dist = mid
+            best_selection = selection
+            low = mid
+        else:
+            high = mid
+
+    return best_selection
+
+
 def generate_city_positions_with_fields(map_format: int, player_cities: int, neutral_cities: int,
                                        min_distance: int, total_regions: int):
     """
-    Generuje pozycje miast oraz wszystkie regiony Voronoi, gdzie kazde miasto ma 3 pola.
+    Generate city positions and all Voronoi regions, where each city has 3 fields.
     
     Args:
-        map_format: Rozmiar mapy
-        player_cities: Liczba miast graczy  
-        neutral_cities: Liczba miast neutralnych
-        min_distance: Minimalna odleglosc miedzy miastami
-        total_regions: Calkowita liczba regionow do wygenerowania
+        map_format: Map size
+        player_cities: Number of player cities  
+        neutral_cities: Number of neutral cities
+        min_distance: Minimum distance between cities
+        total_regions: Total number of regions to generate
         
     Returns:
-        dict: Zawiera 'cities', 'all_regions', 'city_to_fields'
+        dict: Contains 'cities', 'all_regions', 'city_to_fields'
     """
     print(f"\n=== GENEROWANIE {total_regions} REGIONOW DLA {player_cities + neutral_cities} MIAST ===")
     
@@ -1046,75 +1165,113 @@ def generate_city_positions_with_fields(map_format: int, player_cities: int, neu
     if total_cities > len(all_regions):
         raise Exception(f"Zbyt malo regionow ({len(all_regions)}) dla liczby miast ({total_cities})")
     
-    # Wybierz regiony dla miast (np. te z najwiekszymi obszarami)
-    regions_with_size = [(region, len(region.tiles)) for region in all_regions]
-    regions_with_size.sort(key=lambda x: x[1], reverse=True)  # Sortuj po rozmiarze malejaco
-    
-    city_regions = [region for region, _ in regions_with_size[:total_cities]]
-    
-    # Krok 3: Przypisz ka�demu miastu 3 pola (regiony) - musza byc sasiednie
-    city_to_fields = {}
-    used_regions = set()
-    
-    for i, city_region in enumerate(city_regions):
-        # Miasto zajmuje swoj glowny region
-        main_region_id = city_region.region_id
-        used_regions.add(main_region_id)
-        
-        # Znajdz sasiednie regiony do glownego regionu miasta
-        adjacent_regions = placer.find_adjacent_regions(city_region, all_regions, used_regions)
-        
-        # Jesli nie ma wystarczajaco sasiadow, sprobuj znalezc sasiadow sasiadow
-        selected_regions = []
-        current_regions = [city_region]  # Zaczynamy od glownego regionu
-        
-        for attempt in range(2):  # Maksymalnie 2 dodatkowe pola
-            if len(selected_regions) >= 2:
+    # Wybieramy pozycje miast maksymalizujac wzajemne odleglosci
+    selected = select_regions_max_min_dist(all_regions, n=player_cities + neutral_cities)
+    print("Wybrane punkty:")
+    for r in selected:
+        print(r.seed_x, r.seed_y)
+
+    city_regions = [region for region in selected[:total_cities]]
+
+    # Krok 3: Przypisz kazdemu miastu 3 pola (regiony) - musza tworzyc spojny komponent sasiadujacych regionow
+    # Jesli dla jakiegokolwiek miasta nie da sie znalezc 3 przylegajacych do siebie pol, powtorz caly proces generacji
+    max_regen_attempts = 6
+    city_to_fields = None
+
+    for regen in range(max_regen_attempts):
+        # Zresetuj przypisania
+        used_regions = set()
+        candidate_city_to_fields: Dict[int, List[int]] = {}
+        failure = False
+
+        # Dla kazdego miasta probujemy znalezc spojny komponent o wielkosci >= 3
+        for i, city_region in enumerate(city_regions):
+            # Lista kandydatow dla regionu glownym: najpierw preferowane, potem inne regiony posortowane po odleglosci
+            candidates = [city_region] + [r for r in sorted(all_regions, key=lambda r: distance(r, city_region)) if r.region_id not in used_regions and r.region_id != city_region.region_id]
+
+            found = False
+            for cand in candidates:
+                if cand.region_id in used_regions:
+                    continue
+
+                # BFS po grafie sasiadujacych regionow (pomijamy juz uzyte regiony)
+                comp_ids = set()
+                stack = [cand]
+                while stack:
+                    r = stack.pop()
+                    if r.region_id in comp_ids or r.region_id in used_regions:
+                        continue
+                    comp_ids.add(r.region_id)
+                    neighbours = placer.find_adjacent_regions(r, all_regions, used_regions)
+                    for n in neighbours:
+                        if n.region_id not in comp_ids:
+                            stack.append(n)
+
+                # Jezeli komponent ma co najmniej 3 regiony, wybierz dwa najblizsze do kandydata
+                if len(comp_ids) >= 3:
+                    comp_regions = [r for r in all_regions if r.region_id in comp_ids and r.region_id != cand.region_id]
+                    comp_regions.sort(key=lambda r: (r.seed_x - cand.seed_x) ** 2 + (r.seed_y - cand.seed_y) ** 2)
+                    additional = comp_regions[:2]
+                    assigned = [cand.region_id] + [r.region_id for r in additional]
+                    candidate_city_to_fields[i] = assigned
+                    used_regions.update(assigned)
+                    found = True
+                    break
+
+            if not found:
+                # Nie znaleziono spojnego komponentu dla tego miasta w tej rundzie - oznacz porazke i powtorz cala generacje
+                failure = True
                 break
-                
-            # Znajdz wszystkich sasiadow aktualnie wybranych regionow
-            candidates = []
-            for current_region in current_regions:
-                adjacent = placer.find_adjacent_regions(current_region, all_regions, used_regions)
-                for adj_region in adjacent:
-                    if adj_region not in candidates and adj_region.region_id not in [r.region_id for r in selected_regions]:
-                        candidates.append(adj_region)
-            
-            if not candidates:
-                print(f"  Ostrzezenie: Miasto {i+1} nie ma wystarczajaco sasiadujacych regionow")
-                break
-            
-            # Wybierz najbli�szy sasiadujacy region (jako backup jesli wszystkie sa sasiadami)
-            if len(candidates) == 1:
-                chosen = candidates[0]
-            else:
-                # Jesli mamy wiele kandydatow, wybierz najblizszy
-                distances = []
-                for candidate in candidates:
-                    dist = math.sqrt((candidate.seed_x - city_region.seed_x)**2 + 
-                                   (candidate.seed_y - city_region.seed_y)**2)
-                    distances.append((candidate, dist))
-                distances.sort(key=lambda x: x[1])
-                chosen = distances[0][0]
-            
-            selected_regions.append(chosen)
-            current_regions.append(chosen)  # Dodaj do listy regionow od ktorych szukamy dalej
-            used_regions.add(chosen.region_id)
-        
-        # Przypisz pola do miasta (glowny region + wybrane sasiednie)
-        assigned_fields = [main_region_id]
-        for region in selected_regions:
-            assigned_fields.append(region.region_id)
-        
-        city_to_fields[i] = assigned_fields
-        
-        print(f"  Miasto {i+1}: region glowny {main_region_id}, dodatkowe sasiednie {[r.region_id for r in selected_regions]}")
+
+        if not failure:
+            city_to_fields = candidate_city_to_fields
+            break
+
+        # Jesli nie udalo sie, powtorz generacje regionow (losuj inne punkty)
+        print(f"Nie udalo sie przypisac spojnych pol dla wszystkich miast - powtarzam generacje ({regen+1}/{max_regen_attempts})")
+        # Regeneruj ziarna regionow i przemapuj tiles
+        all_region_seeds = placer.generate_seeds_with_minimum_distance(total_regions, region_min_distance)
+        if len(all_region_seeds) < total_regions:
+            print(f"Uwaga: Udalo sie wygenerowac tylko {len(all_region_seeds)}/{total_regions} regionow podczas powtorzenia")
+            total_regions = len(all_region_seeds)
+
+        all_regions = []
+        for i_s, (sx, sy) in enumerate(all_region_seeds):
+            region = VoronoiRegion(sx, sy)
+            region.region_id = i_s + 1
+            all_regions.append(region)
+
+        # Przypisz tiles do nowych regionow
+        for y in range(map_format):
+            for x in range(map_format):
+                closest_region = min(all_regions, key=lambda r: (r.seed_x - x) ** 2 + (r.seed_y - y) ** 2)
+                closest_region.tiles.append((x, y))
+
+        # Wybrac nowe punkty miast (maksymalizujac dystanse)
+        selected = select_regions_max_min_dist(all_regions, n=player_cities + neutral_cities)
+        city_regions = [region for region in selected[:total_cities]]
+
+    if city_to_fields is None:
+        raise Exception(f"Nie udalo sie przypisac 3 przylegajacych pol dla kazdego miasta po {max_regen_attempts} probach")
+
+    # Wypisz przypisania pol do miast
+    for i, assigned in city_to_fields.items():
+        print(f"  Miasto {i+1}: pola {assigned}")
+        print(f"  Miasto {i+1}: pola ({all_regions[assigned[0] - 1].seed_x}, {all_regions[assigned[0] - 1].seed_y}), "
+              f"({all_regions[assigned[1] - 1].seed_x}, {all_regions[assigned[1] - 1].seed_y}), "
+              f"({all_regions[assigned[2] - 1].seed_x}, {all_regions[assigned[2] - 1].seed_y})")
     
     # Krok 4: Utworz obiekty miast
     cities = []
     for i, city_region in enumerate(city_regions):
         is_player = i < player_cities
         player_id = i + 1 if is_player else None
+        rest_of_tiles = []
+
+        rest_of_tiles.extend(all_regions[city_to_fields[i][1] - 1].tiles)
+        rest_of_tiles.extend(all_regions[city_to_fields[i][2] - 1].tiles)
+
+        city_region.tiles.extend(rest_of_tiles)
         
         city = CityWithVoronoi(
             x=float(city_region.seed_x),
@@ -1164,15 +1321,20 @@ def generate_city_positions_with_fields(map_format: int, player_cities: int, neu
     # Sortuj pola po ID dla lepszej czytelnosci
     fields_info.sort(key=lambda f: f.field_id)
     
+    # Wygeneruj obram�wki dla ca�ych obszar�w miast
+    city_boundaries = generate_city_area_boundaries(all_regions, city_to_fields, placer)
+    
     print(f"Wygenerowano {len(cities)} miast z {len(all_regions)} regionami")
     print(f"Przypisania pol do miast:")
     for i, fields in city_to_fields.items():
         city_type = "Gracz" if i < player_cities else "Neutralne"
-        print(f"  Miasto {i+1} ({city_type}): pola {fields}")
+        boundary_count = len(city_boundaries.get(i, []))
+        print(f"  Miasto {i+1} ({city_type}): pola {fields}, obramowka {boundary_count} punktow")
     
     return {
         "cities": cities,
         "all_regions": all_regions, 
         "city_to_fields": city_to_fields,
-        "fields_info": fields_info
+        "fields_info": fields_info,
+        "city_boundaries": city_boundaries
     }

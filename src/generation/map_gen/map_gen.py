@@ -1,6 +1,9 @@
 import random
 from typing import Dict
 
+from classes.Objects.Objects import Objects
+from classes.Objects.Properties.Helpers.Alignment import Alignment
+from classes.Objects.Properties.RandomDwelling import RandomDwelling
 from classes.map import Map
 from classes.tile.Tile import TerrainType
 from generation.basic_info_gen import generate_basic_info
@@ -151,87 +154,14 @@ def generate_perlin_noise_map(width=72, height=72, scale=10.0, octaves=2, persis
         padding=[0] * 124
     )
 
-def generate_voronoi_test_map(width: int = 72, height: int = 72) -> Map:
-    """
-    Generate a test map with all tiles as DIRT and Voronoi boundaries as WATER.
-    """
-    # Zaczynamy z bazow¹ map¹ wype³nion¹ dirt
-    tiles = []
-    
-    # Stwórz podstawow¹ mapê z dirt
-    for y in range(height):
-        for x in range(width):
-            tiles.append(generate_specific_terrain_and_sprite(TerrainType.DIRT, 1))
-
-    # underground layer
-    for y in range(height):
-        for x in range(width):
-            tiles.append(generate_specific_terrain_and_sprite(TerrainType.ROCK, 1))
-
-    # Wygeneruj regiony Voronoi i informacje o krawêdziach
-    total_cities = 5 + 3  # 8 miast
-    total_regions = total_cities * 5  # 40 regionów (pól)
-
-    obj = ObjectTemplateHelper(tiles, TownParams(5, 3, 30, total_regions))
-    
-    # Pobierz informacje o polach przed inicjalizacja miast
-    from generation.object_gen.voronoi_city_placement import generate_city_positions_with_fields
-    
-    result = generate_city_positions_with_fields(
-        72,  # map_format
-        5,   # player_cities
-        3,   # neutral_cities
-        30,  # min_distance
-        total_regions
-    )
-    
-    fields_info = result["fields_info"]
-    
-    # Teraz zmodyfikuj tiles - ustaw water na wszystkich punktach krawêdzi
-    print("\n=== GENERATING TEST MAP WITH VORONOI BOUNDARIES ===")
-    
-    boundary_points_count = 0
-    for field in fields_info:
-        if hasattr(field, 'boundary_raster') and field.boundary_raster:
-            for point_x, point_y in field.boundary_raster:
-                # Check if point is within map bounds
-                if 0 <= point_x < width and 0 <= point_y < height:
-                    # Calculate index in tiles array (surface layer)
-                    tile_index = point_y * width + point_x
-                    if tile_index < len(tiles):
-                        # Replace tile with water
-                        tiles[tile_index] = generate_specific_terrain_and_sprite(TerrainType.WATER, 1)
-                        boundary_points_count += 1
-    
-    print(f"Converted {boundary_points_count} points to water boundaries")
-    print(f"Test map: {len(fields_info)} Voronoi fields with boundaries")
-    
-    # Teraz wygeneruj miasta
-    objects_templates, objects, city_field_mapping = obj.initData()
-
-    # Wyswietl mapowanie miast do pol
-    print("\n=== MAPOWANIE MIAST DO POL ===")
-    for city_info in city_field_mapping:
-        print(f"{city_info}")
-
-    return Map(
-        format=28,
-        basic_info=generate_basic_info(),
-        players=[generate_player() for _ in range(8)],
-        additional_info=generate_additional_info(),
-        tiles=tiles,
-        objects_templates=objects_templates,
-        objects=objects,
-        global_events=[],
-        padding=[0] * 124
-    )
-
 def generate_voronoi_map(
     terrain_values: Dict[TerrainType, int] = {
-        TerrainType.WATER: 1,
+        TerrainType.SNOW: 2,
         TerrainType.GRASS: 3,
-        TerrainType.SAND: 2,
-        TerrainType.DIRT: 3,
+        TerrainType.LAVA: 2,
+        TerrainType.DIRT: 2,
+        TerrainType.SWAMP: 2,
+        TerrainType.ROUGH: 2
     }, 
     width: int = 72,
     height: int = 72) -> Map:
@@ -240,6 +170,7 @@ def generate_voronoi_map(
     """
     tiles = []
     terrain_map = voronoi(terrain_weights=terrain_values, height=height//2, width=width//2)
+    # terrain_map.
 
     # upscale map
     terrain_map = upscale_map(terrain_map=terrain_map)
@@ -254,13 +185,17 @@ def generate_voronoi_map(
         for x in range(width):
             tiles.append(generate_specific_terrain_and_sprite(TerrainType.ROCK, 1))
 
-    # Parametry: 5 miast graczy + 3 neutralne = 8 miast
-    # Chcemy 5x wiêcej pól ni¿ miast: 8 miast * 5 = 40 pól
-    # Ka¿de miasto bêdzie mia³o 3 pola
-    total_cities = 5 + 3  # 8 miast
-    total_regions = total_cities * 5  # 40 regionów (pól)
+    for i in tiles:
+        if i.terrain_type == TerrainType.DIRT:
+            print(f"{i.terrain_type}")
 
-    obj = ObjectTemplateHelper(tiles, TownParams(5, 3, 30, total_regions))
+    # Parametry: 5 miast graczy + 3 neutralne = 8 miast
+    # Chcemy 5x wi?cej p?l ni? miast: 8 miast * 5 = 40 p?l
+    # Ka?de miasto b?dzie mia?o 3 pola
+    total_cities = 5 + 3  # 8 miast
+    total_regions = total_cities * 4  # 32 regiony (p?l)
+
+    obj = ObjectTemplateHelper(tiles=tiles, townParams=TownParams(5, 3, 30, total_regions), numberOfPlayers=8)
     objects_templates, objects, city_field_mapping = obj.initData()
 
     # Wyswietl mapowanie miast do pol
