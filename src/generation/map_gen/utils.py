@@ -1,10 +1,11 @@
 from typing import List, Dict, Tuple
 
 from classes.tile.Tile import TerrainType
-from generation.tile_gen.tile_gen import SpriteType, get_terrain_type_sprite_type_range
+from generation.tile_gen.tile_gen import SpriteType, SpriteTypeRock, get_terrain_type_sprite_type_range
 from generation.map_gen.sprite_type_dict import dirt_based_terrain_sprite_mappings
 from generation.map_gen.sprite_type_water import water_sprite_mappings
 from generation.map_gen.sprite_type_dirt import dirt_sprite_mappings
+from generation.map_gen.sprite_type_rock import rock_sprite_mappings
 
 sprite_type_dict: Dict[str, Tuple[SpriteType, bool, bool]]
 
@@ -147,17 +148,14 @@ def choose_sprite(terrain_map, x, y) -> Tuple[int, bool, bool]:
         y_terrain - whether the sprite needs to be flipped in y direction (flag terrain_y
     ).
     """
-    dirt_based_group_without_dirt = {TerrainType.GRASS, TerrainType.SNOW, TerrainType.SWAMP, TerrainType.ROUGH, TerrainType.SUBTERRANEAN, TerrainType.LAVA}
-
     terrain_type = terrain_map[y][x]
-    #! handle other terrain types later
-    if terrain_type == TerrainType.ROCK:
-        return 1, False, False
-
+    sprite, x_terrain_flip, y_terrain_flip = 1, False, False
+    
     # handle dirt sprites
     if terrain_type == TerrainType.DIRT:
         neighbors = get_neighbors(terrain_map, x, y)
         neighbors_string = convert_dirt_neighbors_to_string(neighbors)
+        
         sand_inner_corner_conflicting = ["NNN\nNNN\nNNX", "NNN\nNNN\nXNN", "NNX\nNNN\nNNN", "XNN\nNNN\nNNN"]
         if neighbors_string in sand_inner_corner_conflicting:
             conflict_resolution = resolve_sand_inner_corner_conflict(neighbors_string, terrain_map, x, y)
@@ -193,6 +191,7 @@ def choose_sprite(terrain_map, x, y) -> Tuple[int, bool, bool]:
     if terrain_type == TerrainType.WATER:
         neighbors = get_neighbors(terrain_map, x, y)
         neighbors_string = convert_water_neighbors_to_string(neighbors)
+        
         sand_inner_corner_conflicting = ["NNN\nNNN\nNNA", "NNN\nNNN\nANN", "NNA\nNNN\nNNN", "ANN\nNNN\nNNN"]
         if neighbors_string in sand_inner_corner_conflicting:
             conflict_resolution = resolve_sand_inner_corner_conflict_water(neighbors_string, terrain_map, x, y)
@@ -208,6 +207,28 @@ def choose_sprite(terrain_map, x, y) -> Tuple[int, bool, bool]:
         
         return sprite, x_terrain_flip, y_terrain_flip
 
+    # handle rock sprites
+    if terrain_type == TerrainType.ROCK:
+        neighbors = get_neighbors(terrain_map, x, y)
+        neighbors_string = convert_water_neighbors_to_string(neighbors)
+       
+        inner_corner_conflicting = ["NNN\nNNN\nNNA", "NNN\nNNN\nANN", "NNA\nNNN\nNNN", "ANN\nNNN\nNNN"]
+        if neighbors_string in inner_corner_conflicting:
+            print("Rock inner corner conflict at:", (x, y))
+            conflict_resolution = resolve_sand_inner_corner_conflict_rock(neighbors_string, terrain_map, x, y)
+            if conflict_resolution:
+                sprite_type, x_terrain_flip, y_terrain_flip = conflict_resolution
+            else:
+                sprite_type, x_terrain_flip, y_terrain_flip = rock_sprite_mappings[neighbors_string]
+        else:
+            sprite_type, x_terrain_flip, y_terrain_flip = rock_sprite_mappings[neighbors_string]
+        
+        allowed_sprite_ranges = get_terrain_type_sprite_type_range(terrain_type, sprite_type)
+        sprite = randint(allowed_sprite_ranges["standard"][0], allowed_sprite_ranges["standard"][1])
+        
+        return sprite, x_terrain_flip, y_terrain_flip
+    
+    # handle dirt based terrain sprites
     neighbors = get_neighbors(terrain_map, x, y)
     neighbors_string = convert_neighbors_to_string(neighbors)
 
@@ -358,6 +379,28 @@ def resolve_sand_inner_corner_conflict_water(neighbors_string: str, terrain_map:
         if terrain_map[y][x-2] == terrain_map[y][x] and terrain_map[y-2][x] == terrain_map[y][x]:
             return SpriteType.SAND_INNER_CORNER, True, True
 
+    return None
+
+def resolve_sand_inner_corner_conflict_rock(neighbors_string: str, terrain_map: list[list[TerrainType]], x, y) -> tuple[SpriteType, bool, bool] | None:
+    if neighbors_string == "NNN\nNNN\nNNA" and y < len(terrain_map) - 2 and x < len(terrain_map[0]) - 2:
+        if terrain_map[y][x+2] == terrain_map[y][x] and terrain_map[y+2][x] == terrain_map[y][x]:
+            print("Resolved to UPPER_LEFT_INNER_CORNER_NEXT_TO_HALF_WATER")
+            return SpriteTypeRock.UPPER_LEFT_INNER_CORNER_NEXT_TO_HALF_WATER, False, False
+            
+    elif neighbors_string == "NNN\nNNN\nANN" and y < len(terrain_map) - 2 and x > 1:
+        if terrain_map[y][x-2] == terrain_map[y][x] and terrain_map[y+2][x] == terrain_map[y][x]:
+            print("Resolved to UPPER_RIGHT_INNER_CORNER_NEXT_TO_HALF_WATER")
+            return SpriteTypeRock.UPPER_RIGHT_INNER_CORNER_NEXT_TO_HALF_WATER, False, False
+
+    elif neighbors_string == "NNA\nNNN\nNNN" and y > 1 and x < len(terrain_map[0]) - 2:
+        if terrain_map[y][x+2] == terrain_map[y][x] and terrain_map[y-2][x] == terrain_map[y][x]:
+            print("Resolved to LOWER_LEFT_INNER_CORNER_NEXT_TO_HALF_WATER")
+            return SpriteTypeRock.LOWER_LEFT_INNER_CORNER_NEXT_TO_HALF_WATER, False, False
+    
+    elif neighbors_string == "ANN\nNNN\nNNN" and y > 1 and x > 1:
+        if terrain_map[y][x-2] == terrain_map[y][x] and terrain_map[y-2][x] == terrain_map[y][x]:
+            print("Resolved to LOWER_RIGHT_INNER_CORNER_NEXT_TO_HALF_WATER")
+            return SpriteTypeRock.LOWER_RIGHT_INNER_CORNER_NEXT_TO_HALF_WATER, False, False
     return None
 
 def resolve_dirt_inner_corner_conflict(neighbors_string: str, terrain_map: list[list[TerrainType]], x, y) -> tuple[SpriteType, bool, bool] | None:

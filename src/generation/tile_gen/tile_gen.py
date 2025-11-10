@@ -38,7 +38,31 @@ class SpriteType(Enum):
     MIXED_INNER_CORNER_NEXT_TO_HALF_WATER = 25
     MIXED_CONNECTOR_BETWEEN_HALF_WATERS = 26
     MIXED_OUTER_CORNER_DIAGONAL_SAND = 27
-
+    
+class SpriteTypeRock(Enum):
+    CENTER = 0
+    UPPER_LEFT_OUTER_CORNER = 1
+    UPPER_RIGHT_OUTER_CORNER = 2
+    LOWER_LEFT_OUTER_CORNER = 3
+    LOWER_RIGHT_OUTER_CORNER = 4
+    LEFT_VERTICAL = 5
+    RIGHT_VERTICAL = 6
+    UPPER_HORIZONTAL = 7
+    LOWER_HORIZONTAL = 8
+    UPPER_LEFT_INNER_CORNER = 9
+    UPPER_RIGHT_INNER_CORNER = 10
+    LOWER_LEFT_INNER_CORNER = 11
+    LOWER_RIGHT_INNER_CORNER = 12
+    UPPER_LEFT_OUTER_CORNER_NEXT_TO_HALF_WATER = 13
+    UPPER_RIGHT_OUTER_CORNER_NEXT_TO_HALF_WATER = 14
+    LOWER_LEFT_OUTER_CORNER_NEXT_TO_HALF_WATER = 15
+    LOWER_RIGHT_OUTER_CORNER_NEXT_TO_HALF_WATER = 16
+    UPPER_LEFT_INNER_CORNER_NEXT_TO_HALF_WATER = 17
+    UPPER_RIGHT_INNER_CORNER_NEXT_TO_HALF_WATER = 18
+    LOWER_LEFT_INNER_CORNER_NEXT_TO_HALF_WATER = 19
+    LOWER_RIGHT_INNER_CORNER_NEXT_TO_HALF_WATER = 20
+    
+    
 def generate_random_tile(random_terrain_type: bool, random_terrain_sprite: bool) -> Tile:
     if random_terrain_type:
         terrain_type = choice(list(TerrainType))    
@@ -104,18 +128,6 @@ def get_terrain_type_sprite_range(terrain_type: TerrainType) -> tuple[int, int]:
 
 def get_terrain_type_sprite_type_range(terrain_type: TerrainType, sprite_type: SpriteType) -> dict[str, tuple]:
     sprite_groups = {
-        TerrainType.DIRT: {
-            SpriteType.SAND_OUTER_CORNER: { "standard": (0, 3), "special": () },
-            SpriteType.SAND_EDGE_VERTICAL: { "standard": (4, 7), "special": () },
-            SpriteType.SAND_EDGE_HORIZONTAL: { "standard": (8, 11), "special": () },
-            SpriteType.SAND_INNER_CORNER: { "standard": (12, 15), "special": () },
-            SpriteType.SAND_OUTER_CORNER_NEXT_TO_HALF_WATER: { "standard": (16, 17), "special": () },
-            SpriteType.SAND_INNER_CORNER_NEXT_TO_HALF_WATER: { "standard": (18, 19), "special": () },
-            SpriteType.SAND_CONNECTOR: { "standard": (20, 20), "special": () },
-            SpriteType.CENTER: { "standard": (21, 28), "special": (29, 44) },
-            SpriteType.SAND: { "standard": (45, 45), "special": () }
-        },
-
         TerrainType.SAND: {
             SpriteType.CENTER: { "standard": (0, 7), "special": (8, 23) }
         },
@@ -128,6 +140,42 @@ def get_terrain_type_sprite_type_range(terrain_type: TerrainType, sprite_type: S
             SpriteType.SAND_OUTER_CORNER_NEXT_TO_HALF_WATER: { "standard": (16, 17), "special": () },
             SpriteType.SAND_INNER_CORNER_NEXT_TO_HALF_WATER: { "standard": (18, 19), "special": () },
             SpriteType.CENTER: { "standard": (20, 32), "special": () },
+        },
+        
+        TerrainType.ROCK: {
+            SpriteTypeRock.CENTER: { "standard": (0, 7), "special": () },
+            SpriteTypeRock.UPPER_LEFT_OUTER_CORNER: { "standard": (8, 9), "special": () },
+            SpriteTypeRock.UPPER_RIGHT_OUTER_CORNER: { "standard": (10, 11), "special": () },
+            SpriteTypeRock.LOWER_LEFT_OUTER_CORNER: { "standard": (12, 13), "special": () },
+            SpriteTypeRock.LOWER_RIGHT_OUTER_CORNER: { "standard": (14, 15), "special": () },
+            SpriteTypeRock.LEFT_VERTICAL: { "standard": (16, 17), "special": () },
+            SpriteTypeRock.RIGHT_VERTICAL: { "standard": (18, 19), "special": () },
+            SpriteTypeRock.UPPER_HORIZONTAL: { "standard": (20, 21), "special": () },
+            SpriteTypeRock.LOWER_HORIZONTAL: { "standard": (22, 23), "special": () },
+            SpriteTypeRock.UPPER_LEFT_INNER_CORNER: { "standard": (24, 25), "special": () },
+            SpriteTypeRock.UPPER_RIGHT_INNER_CORNER: { "standard": (26, 27), "special": () },
+            SpriteTypeRock.LOWER_LEFT_INNER_CORNER: { "standard": (28, 29), "special": () },
+            SpriteTypeRock.LOWER_RIGHT_INNER_CORNER: { "standard": (30, 31), "special": () },
+            SpriteTypeRock.UPPER_LEFT_OUTER_CORNER_NEXT_TO_HALF_WATER: { "standard": (32, 33), "special": () },
+            SpriteTypeRock.UPPER_RIGHT_OUTER_CORNER_NEXT_TO_HALF_WATER: { "standard": (34, 35), "special": () },
+            SpriteTypeRock.LOWER_LEFT_OUTER_CORNER_NEXT_TO_HALF_WATER: { "standard": (36, 37), "special": () },
+            SpriteTypeRock.LOWER_RIGHT_OUTER_CORNER_NEXT_TO_HALF_WATER: { "standard": (38, 39), "special": () },
+            SpriteTypeRock.UPPER_LEFT_INNER_CORNER_NEXT_TO_HALF_WATER: { "standard": (40, 41), "special": () },
+            SpriteTypeRock.UPPER_RIGHT_INNER_CORNER_NEXT_TO_HALF_WATER: { "standard": (42, 43), "special": () },
+            SpriteTypeRock.LOWER_LEFT_INNER_CORNER_NEXT_TO_HALF_WATER: { "standard": (44, 45), "special": () },
+            SpriteTypeRock.LOWER_RIGHT_INNER_CORNER_NEXT_TO_HALF_WATER: { "standard": (46, 47), "special": () }
+        },
+        
+        TerrainType.DIRT: {
+            SpriteType.SAND_OUTER_CORNER: { "standard": (0, 3), "special": () },
+            SpriteType.SAND_EDGE_VERTICAL: { "standard": (4, 7), "special": () },
+            SpriteType.SAND_EDGE_HORIZONTAL: { "standard": (8, 11), "special": () },
+            SpriteType.SAND_INNER_CORNER: { "standard": (12, 15), "special": () },
+            SpriteType.SAND_OUTER_CORNER_NEXT_TO_HALF_WATER: { "standard": (16, 17), "special": () },
+            SpriteType.SAND_INNER_CORNER_NEXT_TO_HALF_WATER: { "standard": (18, 19), "special": () },
+            SpriteType.SAND_CONNECTOR: { "standard": (20, 20), "special": () },
+            SpriteType.CENTER: { "standard": (21, 28), "special": (29, 44) },
+            SpriteType.SAND: { "standard": (45, 45), "special": () }
         },
 
         "dirt_based_terrain_without_dirt": {

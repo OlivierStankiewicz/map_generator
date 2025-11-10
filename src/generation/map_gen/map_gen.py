@@ -39,7 +39,7 @@ def generate_random_terrain_random_sprite_map() -> Map:
 
 def generate_all_terrain_all_sprite_map() -> Map:
     tiles = []
-    for terrain_type in list(TerrainType):
+    for terrain_type in TerrainType:
         allowed_range = get_terrain_type_sprite_range(terrain_type)
         sprite_min, sprite_max = allowed_range
         for i in range(sprite_min, sprite_max + 1):

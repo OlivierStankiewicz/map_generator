@@ -29,7 +29,7 @@ print("Chosen filename:", filename)
 print("Generating map representation...")
 
 terrain_values = {
-    TerrainType.WATER: 5,
+    TerrainType.WATER: 1,
     TerrainType.GRASS: 1,
     TerrainType.SNOW: 1,
     TerrainType.SWAMP: 1,
@@ -38,9 +38,9 @@ terrain_values = {
     TerrainType.LAVA: 1,
     TerrainType.SAND: 1,
     TerrainType.DIRT: 1,
+    TerrainType.ROCK: 5,
 }
-# map = generate_voronoi_map(terrain_values)
-map = generate_one_terrain_all_sprite_map(TerrainType.ROCK)
+map = generate_voronoi_map(terrain_values)
 
 def filter_none_values(obj):
     """Recursively remove keys with None values from dictionaries"""
