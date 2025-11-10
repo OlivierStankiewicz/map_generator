@@ -7,7 +7,7 @@ import os
 import json
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__))))
-from generation.map_gen.map_gen import generate_voronoi_map
+from generation.map_gen.map_gen import generate_voronoi_map, generate_one_terrain_all_sprite_map
 from classes.tile.Tile import TerrainType
 
 root = tk.Tk()
@@ -29,18 +29,18 @@ print("Chosen filename:", filename)
 print("Generating map representation...")
 
 terrain_values = {
-        TerrainType.WATER: 1,
-        TerrainType.GRASS: 1,
-        TerrainType.SNOW: 1,
-        TerrainType.SWAMP: 1,
-        TerrainType.ROUGH: 1,
-        TerrainType.SUBTERRANEAN: 1,
-        TerrainType.LAVA: 1,
-        TerrainType.SAND: 1,
-        TerrainType.DIRT: 1,
-
-    }
-map = generate_voronoi_map(terrain_values)
+    TerrainType.WATER: 5,
+    TerrainType.GRASS: 1,
+    TerrainType.SNOW: 1,
+    TerrainType.SWAMP: 1,
+    TerrainType.ROUGH: 1,
+    TerrainType.SUBTERRANEAN: 1,
+    TerrainType.LAVA: 1,
+    TerrainType.SAND: 1,
+    TerrainType.DIRT: 1,
+}
+# map = generate_voronoi_map(terrain_values)
+map = generate_one_terrain_all_sprite_map(TerrainType.ROCK)
 
 def filter_none_values(obj):
     """Recursively remove keys with None values from dictionaries"""

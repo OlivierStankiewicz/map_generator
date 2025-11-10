@@ -119,6 +119,16 @@ def get_terrain_type_sprite_type_range(terrain_type: TerrainType, sprite_type: S
         TerrainType.SAND: {
             SpriteType.CENTER: { "standard": (0, 7), "special": (8, 23) }
         },
+        
+        TerrainType.WATER: {
+            SpriteType.SAND_OUTER_CORNER: { "standard": (0, 3), "special": () },
+            SpriteType.SAND_EDGE_VERTICAL: { "standard": (4, 7), "special": () },
+            SpriteType.SAND_EDGE_HORIZONTAL: { "standard": (8, 11), "special": () },
+            SpriteType.SAND_INNER_CORNER: { "standard": (12, 15), "special": () },
+            SpriteType.SAND_OUTER_CORNER_NEXT_TO_HALF_WATER: { "standard": (16, 17), "special": () },
+            SpriteType.SAND_INNER_CORNER_NEXT_TO_HALF_WATER: { "standard": (18, 19), "special": () },
+            SpriteType.CENTER: { "standard": (20, 32), "special": () },
+        },
 
         "dirt_based_terrain_without_dirt": {
             SpriteType.SAND_OUTER_CORNER: { "standard": (20, 23), "special": () },
