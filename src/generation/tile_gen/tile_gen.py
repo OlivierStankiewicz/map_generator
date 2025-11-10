@@ -120,7 +120,7 @@ def get_terrain_type_sprite_type_range(terrain_type: TerrainType, sprite_type: S
             SpriteType.CENTER: { "standard": (0, 7), "special": (8, 23) }
         },
 
-        TerrainType.GRASS: {
+        "dirt_based_terrain_without_dirt": {
             SpriteType.SAND_OUTER_CORNER: { "standard": (20, 23), "special": () },
             SpriteType.SAND_EDGE_VERTICAL: { "standard": (24, 27), "special": () },
             SpriteType.SAND_EDGE_HORIZONTAL: { "standard": (28, 31), "special": () },
@@ -151,5 +151,9 @@ def get_terrain_type_sprite_type_range(terrain_type: TerrainType, sprite_type: S
             SpriteType.MIXED_OUTER_CORNER_DIAGONAL_SAND: { "standard": (78, 78), "special": () }
         }
     }
+
+    dirt_based_group_without_dirt = {TerrainType.GRASS, TerrainType.SNOW, TerrainType.SWAMP, TerrainType.ROUGH, TerrainType.SUBTERRANEAN, TerrainType.LAVA}
+    if terrain_type in dirt_based_group_without_dirt:
+        terrain_type = "dirt_based_terrain_without_dirt"
     
     return sprite_groups[terrain_type][sprite_type]

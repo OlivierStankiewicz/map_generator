@@ -145,10 +145,11 @@ def choose_sprite(terrain_map, x, y) -> Tuple[int, bool, bool]:
     ).
     """
 
+    dirt_based_group_without_dirt = {TerrainType.GRASS, TerrainType.SNOW, TerrainType.SWAMP, TerrainType.ROUGH, TerrainType.SUBTERRANEAN, TerrainType.LAVA}
+
     terrain_type = terrain_map[y][x]
     #! handle other terrain types later
-    if terrain_type != TerrainType.GRASS and terrain_type != TerrainType.SAND:
-        print("Non-grass terrain type at position:", (x, y))
+    if terrain_type not in dirt_based_group_without_dirt and terrain_type != TerrainType.SAND:
         return 1, False, False
 
     # handle sand sprites
