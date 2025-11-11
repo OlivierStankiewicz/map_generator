@@ -39,28 +39,27 @@ class SpriteType(Enum):
     MIXED_CONNECTOR_BETWEEN_HALF_WATERS = 26
     MIXED_OUTER_CORNER_DIAGONAL_SAND = 27
     
-class SpriteTypeRock(Enum):
-    CENTER = 0
-    UPPER_LEFT_OUTER_CORNER = 1
-    UPPER_RIGHT_OUTER_CORNER = 2
-    LOWER_LEFT_OUTER_CORNER = 3
-    LOWER_RIGHT_OUTER_CORNER = 4
-    LEFT_VERTICAL = 5
-    RIGHT_VERTICAL = 6
-    UPPER_HORIZONTAL = 7
-    LOWER_HORIZONTAL = 8
-    UPPER_LEFT_INNER_CORNER = 9
-    UPPER_RIGHT_INNER_CORNER = 10
-    LOWER_LEFT_INNER_CORNER = 11
-    LOWER_RIGHT_INNER_CORNER = 12
-    UPPER_LEFT_OUTER_CORNER_NEXT_TO_HALF_WATER = 13
-    UPPER_RIGHT_OUTER_CORNER_NEXT_TO_HALF_WATER = 14
-    LOWER_LEFT_OUTER_CORNER_NEXT_TO_HALF_WATER = 15
-    LOWER_RIGHT_OUTER_CORNER_NEXT_TO_HALF_WATER = 16
-    UPPER_LEFT_INNER_CORNER_NEXT_TO_HALF_WATER = 17
-    UPPER_RIGHT_INNER_CORNER_NEXT_TO_HALF_WATER = 18
-    LOWER_LEFT_INNER_CORNER_NEXT_TO_HALF_WATER = 19
-    LOWER_RIGHT_INNER_CORNER_NEXT_TO_HALF_WATER = 20
+    # rock
+    UPPER_LEFT_OUTER_CORNER = 28
+    UPPER_RIGHT_OUTER_CORNER = 29
+    LOWER_LEFT_OUTER_CORNER = 30
+    LOWER_RIGHT_OUTER_CORNER = 31
+    LEFT_VERTICAL = 32
+    RIGHT_VERTICAL = 33
+    UPPER_HORIZONTAL = 34
+    LOWER_HORIZONTAL = 35
+    UPPER_LEFT_INNER_CORNER = 36
+    UPPER_RIGHT_INNER_CORNER = 37
+    LOWER_LEFT_INNER_CORNER = 38
+    LOWER_RIGHT_INNER_CORNER = 39
+    UPPER_LEFT_OUTER_CORNER_NEXT_TO_HALF_WATER = 40
+    UPPER_RIGHT_OUTER_CORNER_NEXT_TO_HALF_WATER = 41
+    LOWER_LEFT_OUTER_CORNER_NEXT_TO_HALF_WATER = 42
+    LOWER_RIGHT_OUTER_CORNER_NEXT_TO_HALF_WATER = 43
+    UPPER_LEFT_INNER_CORNER_NEXT_TO_HALF_WATER = 44
+    UPPER_RIGHT_INNER_CORNER_NEXT_TO_HALF_WATER = 45
+    LOWER_LEFT_INNER_CORNER_NEXT_TO_HALF_WATER = 46
+    LOWER_RIGHT_INNER_CORNER_NEXT_TO_HALF_WATER = 47    
     
     
 def generate_random_tile(random_terrain_type: bool, random_terrain_sprite: bool) -> Tile:
@@ -143,27 +142,27 @@ def get_terrain_type_sprite_type_range(terrain_type: TerrainType, sprite_type: S
         },
         
         TerrainType.ROCK: {
-            SpriteTypeRock.CENTER: { "standard": (0, 7), "special": () },
-            SpriteTypeRock.UPPER_LEFT_OUTER_CORNER: { "standard": (8, 9), "special": () },
-            SpriteTypeRock.UPPER_RIGHT_OUTER_CORNER: { "standard": (10, 11), "special": () },
-            SpriteTypeRock.LOWER_LEFT_OUTER_CORNER: { "standard": (12, 13), "special": () },
-            SpriteTypeRock.LOWER_RIGHT_OUTER_CORNER: { "standard": (14, 15), "special": () },
-            SpriteTypeRock.LEFT_VERTICAL: { "standard": (16, 17), "special": () },
-            SpriteTypeRock.RIGHT_VERTICAL: { "standard": (18, 19), "special": () },
-            SpriteTypeRock.UPPER_HORIZONTAL: { "standard": (20, 21), "special": () },
-            SpriteTypeRock.LOWER_HORIZONTAL: { "standard": (22, 23), "special": () },
-            SpriteTypeRock.UPPER_LEFT_INNER_CORNER: { "standard": (24, 25), "special": () },
-            SpriteTypeRock.UPPER_RIGHT_INNER_CORNER: { "standard": (26, 27), "special": () },
-            SpriteTypeRock.LOWER_LEFT_INNER_CORNER: { "standard": (28, 29), "special": () },
-            SpriteTypeRock.LOWER_RIGHT_INNER_CORNER: { "standard": (30, 31), "special": () },
-            SpriteTypeRock.UPPER_LEFT_OUTER_CORNER_NEXT_TO_HALF_WATER: { "standard": (32, 33), "special": () },
-            SpriteTypeRock.UPPER_RIGHT_OUTER_CORNER_NEXT_TO_HALF_WATER: { "standard": (34, 35), "special": () },
-            SpriteTypeRock.LOWER_LEFT_OUTER_CORNER_NEXT_TO_HALF_WATER: { "standard": (36, 37), "special": () },
-            SpriteTypeRock.LOWER_RIGHT_OUTER_CORNER_NEXT_TO_HALF_WATER: { "standard": (38, 39), "special": () },
-            SpriteTypeRock.UPPER_LEFT_INNER_CORNER_NEXT_TO_HALF_WATER: { "standard": (40, 41), "special": () },
-            SpriteTypeRock.UPPER_RIGHT_INNER_CORNER_NEXT_TO_HALF_WATER: { "standard": (42, 43), "special": () },
-            SpriteTypeRock.LOWER_LEFT_INNER_CORNER_NEXT_TO_HALF_WATER: { "standard": (44, 45), "special": () },
-            SpriteTypeRock.LOWER_RIGHT_INNER_CORNER_NEXT_TO_HALF_WATER: { "standard": (46, 47), "special": () }
+            SpriteType.CENTER: { "standard": (0, 7), "special": () },
+            SpriteType.UPPER_LEFT_OUTER_CORNER: { "standard": (8, 9), "special": () },
+            SpriteType.UPPER_RIGHT_OUTER_CORNER: { "standard": (10, 11), "special": () },
+            SpriteType.LOWER_LEFT_OUTER_CORNER: { "standard": (12, 13), "special": () },
+            SpriteType.LOWER_RIGHT_OUTER_CORNER: { "standard": (14, 15), "special": () },
+            SpriteType.LEFT_VERTICAL: { "standard": (16, 17), "special": () },
+            SpriteType.RIGHT_VERTICAL: { "standard": (18, 19), "special": () },
+            SpriteType.UPPER_HORIZONTAL: { "standard": (20, 21), "special": () },
+            SpriteType.LOWER_HORIZONTAL: { "standard": (22, 23), "special": () },
+            SpriteType.UPPER_LEFT_INNER_CORNER: { "standard": (24, 25), "special": () },
+            SpriteType.UPPER_RIGHT_INNER_CORNER: { "standard": (26, 27), "special": () },
+            SpriteType.LOWER_LEFT_INNER_CORNER: { "standard": (28, 29), "special": () },
+            SpriteType.LOWER_RIGHT_INNER_CORNER: { "standard": (30, 31), "special": () },
+            SpriteType.UPPER_LEFT_OUTER_CORNER_NEXT_TO_HALF_WATER: { "standard": (32, 33), "special": () },
+            SpriteType.UPPER_RIGHT_OUTER_CORNER_NEXT_TO_HALF_WATER: { "standard": (34, 35), "special": () },
+            SpriteType.LOWER_LEFT_OUTER_CORNER_NEXT_TO_HALF_WATER: { "standard": (36, 37), "special": () },
+            SpriteType.LOWER_RIGHT_OUTER_CORNER_NEXT_TO_HALF_WATER: { "standard": (38, 39), "special": () },
+            SpriteType.UPPER_LEFT_INNER_CORNER_NEXT_TO_HALF_WATER: { "standard": (40, 41), "special": () },
+            SpriteType.UPPER_RIGHT_INNER_CORNER_NEXT_TO_HALF_WATER: { "standard": (42, 43), "special": () },
+            SpriteType.LOWER_LEFT_INNER_CORNER_NEXT_TO_HALF_WATER: { "standard": (44, 45), "special": () },
+            SpriteType.LOWER_RIGHT_INNER_CORNER_NEXT_TO_HALF_WATER: { "standard": (46, 47), "special": () }
         },
         
         TerrainType.DIRT: {

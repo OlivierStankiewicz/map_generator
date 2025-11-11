@@ -38,7 +38,7 @@ terrain_values = {
     TerrainType.LAVA: 1,
     TerrainType.SAND: 1,
     TerrainType.DIRT: 1,
-    TerrainType.ROCK: 5,
+    TerrainType.ROCK: 1,
 }
 map = generate_voronoi_map(terrain_values)
 
