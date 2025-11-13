@@ -43,6 +43,9 @@ water_sprite_mappings = {
     "NNA\nNNN\nNNN": (SpriteType.SAND_INNER_CORNER_NEXT_TO_HALF_WATER, False, True),
     "ANN\nNNN\nNNN": (SpriteType.SAND_INNER_CORNER_NEXT_TO_HALF_WATER, True, True),
     
+    "ANN\nNNN\nNNA": (SpriteType.SAND_INNER_CORNER_NEXT_TO_HALF_WATER, True, True), # special case for half water
+    "NNA\nNNN\nANN": (SpriteType.SAND_INNER_CORNER_NEXT_TO_HALF_WATER, False, True),
+    
     # SAND_OUTER_CORNER_NEXT_TO_HALF_WATER
     "AAN\nANN\nNNN": (SpriteType.SAND_OUTER_CORNER_NEXT_TO_HALF_WATER, False, False),
     "NAA\nNNA\nNNN": (SpriteType.SAND_OUTER_CORNER_NEXT_TO_HALF_WATER, True, False),

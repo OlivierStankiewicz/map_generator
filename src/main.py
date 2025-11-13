@@ -29,16 +29,14 @@ print("Chosen filename:", filename)
 print("Generating map representation...")
 
 terrain_values = {
-    TerrainType.WATER: 1,
-    TerrainType.GRASS: 1,
-    TerrainType.SNOW: 1,
-    TerrainType.SWAMP: 1,
-    TerrainType.ROUGH: 1,
-    TerrainType.SUBTERRANEAN: 1,
-    TerrainType.LAVA: 1,
-    TerrainType.SAND: 1,
-    TerrainType.DIRT: 1,
-    TerrainType.ROCK: 1,
+    TerrainType.WATER: 2,
+    TerrainType.GRASS: 3,
+    TerrainType.SNOW: 2,
+    TerrainType.SWAMP: 3,
+    # TerrainType.ROUGH: 1,
+    # TerrainType.LAVA: 1,
+    # TerrainType.SAND: 1,
+    TerrainType.DIRT: 3,
 }
 map = generate_voronoi_map(terrain_values)
 
