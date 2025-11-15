@@ -1,4 +1,4 @@
-from typing import List, Dict, Tuple
+from typing import List, Dict, Tuple, cast
 
 from classes.tile.Tile import TerrainType
 from generation.map_gen.sprite_handlers.DirtSpriteHandler import DirtSpriteHandler
@@ -154,5 +154,5 @@ def choose_sprite(terrain_map, x, y) -> Tuple[int, bool, bool]:
         TerrainType.ROCK: RockSpriteHandler,
     }
     
-    sprite_handler: SpriteHandler = terrain_type_to_class.get(terrain_type, lambda: DirtBasedSpriteHandler(terrain_type))()
+    sprite_handler = cast(SpriteHandler, terrain_type_to_class.get(terrain_type, lambda: DirtBasedSpriteHandler(terrain_type))())
     return sprite_handler.choose_sprite(terrain_map, x, y)
