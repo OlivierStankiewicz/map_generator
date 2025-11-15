@@ -1,7 +1,7 @@
 from generation.map_gen.sprite_handlers.SpriteHandler import SpriteHandler
 from classes.tile.Tile import TerrainType
 from generation.tile_gen.tile_gen import SpriteType, get_terrain_type_sprite_type_range
-from generation.map_gen.sprite_type_rock import rock_sprite_mappings
+from generation.map_gen.sprite_mappings.sprite_type_rock import rock_sprite_mappings
 from random import randint
 
 class RockSpriteHandler(SpriteHandler):

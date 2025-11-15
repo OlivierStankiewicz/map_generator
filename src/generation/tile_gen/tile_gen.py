@@ -138,7 +138,7 @@ def get_terrain_type_sprite_type_range(terrain_type: TerrainType, sprite_type: S
             SpriteType.SAND_INNER_CORNER: { "standard": (12, 15), "special": () },
             SpriteType.SAND_OUTER_CORNER_NEXT_TO_HALF_WATER: { "standard": (16, 17), "special": () },
             SpriteType.SAND_INNER_CORNER_NEXT_TO_HALF_WATER: { "standard": (18, 19), "special": () },
-            SpriteType.CENTER: { "standard": (20, 32), "special": () },
+            SpriteType.CENTER: { "standard": (21, 32), "special": () },
         },
         
         TerrainType.ROCK: {
