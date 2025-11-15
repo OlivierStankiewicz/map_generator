@@ -28,6 +28,11 @@ dirt_based_terrain_sprite_mappings = {
     "XXY\nNNX\nNNX": (SpriteType.SAND_OUTER_CORNER, True, False),
     "XNN\nXNN\nYXX": (SpriteType.SAND_OUTER_CORNER, False, True),
     "NNX\nNNX\nXXY": (SpriteType.SAND_OUTER_CORNER, True, True),
+
+    "NXX\nXNN\nXNN": (SpriteType.SAND_OUTER_CORNER, False, False),
+    "XXN\nNNX\nNNX": (SpriteType.SAND_OUTER_CORNER, True, False),
+    "XNN\nXNN\nNXX": (SpriteType.SAND_OUTER_CORNER, False, True),
+    "NNX\nNNX\nXXN": (SpriteType.SAND_OUTER_CORNER, True, True),
     
     # SAND_EDGE_VERTICAL
     "XNN\nXNN\nXNN": (SpriteType.SAND_EDGE_VERTICAL, False, False),
@@ -100,11 +105,6 @@ dirt_based_terrain_sprite_mappings = {
     "YYY\nNNY\nNNY": (SpriteType.DIRT_OUTER_CORNER, True, False),
     "YNN\nYNN\nYYY": (SpriteType.DIRT_OUTER_CORNER, False, True),
     "NNY\nNNY\nYYY": (SpriteType.DIRT_OUTER_CORNER, True, True),
-    
-    "NXX\nXNN\nXNN": (SpriteType.DIRT_OUTER_CORNER, False, False),
-    "XXN\nNNX\nNNX": (SpriteType.DIRT_OUTER_CORNER, True, False),
-    "XNN\nXNN\nNXX": (SpriteType.DIRT_OUTER_CORNER, False, True),
-    "NNX\nNNX\nXXN": (SpriteType.DIRT_OUTER_CORNER, True, True),
     
     # DIRT_EDGE_VERTICAL
     "YNN\nYNN\nYNN": (SpriteType.DIRT_EDGE_VERTICAL, False, False),
