@@ -4,11 +4,10 @@ class Shrine(Properties):
     @classmethod
     def create_default(cls) -> 'Shrine':
         return cls(
-            spell= 255,
-            unknown= []
+            spell= 255
         )
 
-    def __init__(self, spell: int, unknown: list[int]) -> None:
+    def __init__(self, spell: int) -> None:
         self.spell = spell
         self.unknown = [0, 0, 0]
 

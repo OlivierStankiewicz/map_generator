@@ -28,7 +28,7 @@ class Quest:
     def to_dict(self) -> dict:
         return {
             "type": self.type,
-            "details": self.details,
+            "details": self.details.to_dict(),
             "deadline": self.deadline,
             "proposal": self.proposal,
             "progress": self.progress,

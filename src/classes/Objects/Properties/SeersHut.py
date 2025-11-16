@@ -7,14 +7,13 @@ class SeersHut(Properties):
     def create_default(cls) -> "SeersHut":
         return cls(
             quest=Quest.create_default(),
-            reward= Reward.create_default(),
-            unknown=[]
+            reward= Reward.create_default()
         )
 
-    def __init__(self, quest: Quest, reward: Reward, unknown: list[int]) -> None:
+    def __init__(self, quest: Quest, reward: Reward) -> None:
         self.quest = quest
         self.reward = reward
-        self.unknown = unknown
+        self.unknown = [0, 0]
 
     def to_dict(self) -> dict:
         return {

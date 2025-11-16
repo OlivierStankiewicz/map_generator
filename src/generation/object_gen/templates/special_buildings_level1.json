@@ -1,0 +1,204 @@
+{
+  "def": "AVSaxis0.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 128],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [255, 0],
+  "object_class": 61, // STAR_AXIS
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVSgzbo0.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 128],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [255, 0],
+  "object_class": 100, // LEARNING_STONE
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVSidol0.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 128],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [255, 0],
+  "object_class": 38, // IDOL_OF_FORTUNE
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AvSMarl.def",
+  "passability": [255, 255, 255, 255, 255, 63],
+  "actionability": [0, 0, 0, 0, 0, 128],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [255, 0],
+  "object_class": 23, // MARLETTO_TOWER
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVSmerc0.def",
+  "passability": [255, 255, 255, 255, 255, 31],
+  "actionability": [0, 0, 0, 0, 0, 64],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [255, 0],
+  "object_class": 51, // MERCENARY_CAMP
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVSschm0.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 128],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [255, 0],
+  "object_class": 47, // SCHOOL_OF_MAGIC
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVSwtch0.def",
+  "passability": [255, 255, 255, 255, 255, 191],
+  "actionability": [0, 0, 0, 0, 0, 64],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [255, 0],
+  "object_class": 113, // WITCH_HUT
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "adcfra.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 128],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [53, 0],
+  "object_class": 12, // CAMPFIRE
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVXhutm0.def",
+  "passability": [255, 255, 255, 255, 255, 191],
+  "actionability": [0, 0, 0, 0, 0, 64],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [255, 0],
+  "object_class": 37, // HUT_OF_MAGI
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVXl1sh0.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 128],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [255, 0],
+  "object_class": 88, // SHRINE_OF_MAGIC_INCANTATION
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AvXRedW.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 128],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [191, 0],
+  "object_class": 58, // REDWOOD_OBSERVATORY
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVXrlly0.def",
+  "passability": [255, 255, 255, 255, 255, 63],
+  "actionability": [0, 0, 0, 0, 0, 128],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [255, 0],
+  "object_class": 64, // RALLY_FLAG
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVXschl0.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 128],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [255, 0],
+  "object_class": 81, // SCHOLAR
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVXseeb0.def",
+  "passability": [255, 255, 255, 255, 255, 191],
+  "actionability": [0, 0, 0, 0, 0, 64],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [255, 0],
+  "object_class": 83, // SEER_HUT
+  "object_subclass": 2,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVXseer0.def",
+  "passability": [255, 255, 255, 255, 255, 191],
+  "actionability": [0, 0, 0, 0, 0, 64],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [255, 0],
+  "object_class": 83, // SEER_HUT
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVXseey0.def",
+  "passability": [255, 255, 255, 255, 255, 191],
+  "actionability": [0, 0, 0, 0, 0, 64],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [255, 0],
+  "object_class": 83, // SEER_HUT
+  "object_subclass": 1,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVXwelr0.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 128],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [226, 0],
+  "object_class": 49, // MAGIC_WELL
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+}

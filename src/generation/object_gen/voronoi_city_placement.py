@@ -12,7 +12,7 @@ import os
 
 # Import the existing Voronoi implementation
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'pcg_algorithms')))
-from voronoi import VoronoiRegion, generate_voronoi_regions
+from voronoi import VoronoiRegion
 
 @dataclass
 class FieldInfo:
@@ -1062,6 +1062,33 @@ def generate_city_area_boundaries(all_regions: List[VoronoiRegion],
     return city_boundaries
 
 
+def get_region_tiles(all_regions: List[VoronoiRegion], region_id: Optional[int] = None, seed: Optional[Tuple[int, int]] = None) -> List[Tuple[int, int]]:
+    """
+    Zwraca listę kafelków (tiles) należących do danego regionu Voronoi.
+
+    Można znaleźć region po `region_id` lub po pozycji ziarna `seed` (x, y).
+
+    Args:
+        all_regions: lista obiektów `VoronoiRegion` wygenerowanych wcześniej
+        region_id: opcjonalne ID regionu (pole.region_id)
+        seed: opcjonalny tuple (x, y) pozycji ziarna regionu
+
+    Returns:
+        Lista tupli (x, y) kafelków należących do regionu. Zwraca pustą listę, jeśli nie znaleziono regionu.
+    """
+    if region_id is None and seed is None:
+        raise ValueError("Trzeba podać albo region_id, albo seed=(x,y)")
+
+    for region in all_regions:
+        if region_id is not None and getattr(region, 'region_id', None) == region_id:
+            return list(region.tiles) if getattr(region, 'tiles', None) else []
+
+        if seed is not None and (getattr(region, 'seed_x', None), getattr(region, 'seed_y', None)) == seed:
+            return list(region.tiles) if getattr(region, 'tiles', None) else []
+
+    return []
+
+
 def distance(a: VoronoiRegion, b: VoronoiRegion) -> float:
     """Odległość euklidesowa między punktami nasiennymi regionów."""
     return math.hypot(a.seed_x - b.seed_x, a.seed_y - b.seed_y)
@@ -1141,8 +1168,7 @@ def generate_city_positions_with_fields(map_format: int, player_cities: int, neu
         print(f"Uwaga: Udalo sie wygenerowac tylko {len(all_region_seeds)}/{total_regions} regionow")
         total_regions = len(all_region_seeds)
     
-    # Wygeneruj regiony Voronoi dla wszystkich pozycji
-    from generation.pcg_algorithms.voronoi import generate_voronoi_regions
+    # Wygeneruj regiony Voronoi dla wszystkich pozycjigenerate_voronoi_regions
     all_regions = []
     
     for i, (x, y) in enumerate(all_region_seeds):

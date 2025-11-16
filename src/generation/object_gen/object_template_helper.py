@@ -14,7 +14,10 @@ from classes.Objects.Properties.Helpers.SecondarySkills import SecondarySkills
 from classes.Objects.Properties.Helpers.Spells import Spells
 from classes.Objects.Properties.Hero import Hero
 from classes.Objects.Properties.RandomDwellingPresetAlignment import RandomDwellingPresetAlignment
+from classes.Objects.Properties.Scholar import Scholar
+from classes.Objects.Properties.SeersHut import SeersHut
 from classes.Objects.Properties.Shrine import Shrine
+from classes.Objects.Properties.WitchHut import WitchHut
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..')))
 
@@ -30,7 +33,7 @@ from classes.Objects.Properties.Helpers.Alignment import Alignment
 from classes.ObjectsTemplate import ObjectsTemplate
 from classes.tile.Tile import Tile, TerrainType
 from generation.object_gen.json_parser import read_object_templates_from_json, read_object_from_json
-from generation.object_gen.voronoi_city_placement import generate_city_positions, generate_city_positions_with_fields
+from generation.object_gen.voronoi_city_placement import generate_city_positions, generate_city_positions_with_fields, get_region_tiles
 
 
 @dataclass
@@ -68,6 +71,7 @@ class ObjectTemplateHelper:
         ### params ###
         self.townParams = townParams
         self.numberOfPlayers = numberOfPlayers
+        self.occ = []
 
 
     def initData(self):
@@ -94,6 +98,9 @@ class ObjectTemplateHelper:
         # warstwa 4 budowle specjalne
         self.generate_special_building(result)
 
+        self.occ.sort()
+        for i in self.occ:
+            print(i)
 
         return self.objectTemplates, self.objects, self.city_field_mapping
 
@@ -181,7 +188,7 @@ class ObjectTemplateHelper:
                 # print((tile_x, tile_y), actionable)
 
                 # Jeśli kafelek, który obiekt by zajmował, leży poza mapą -> invalid
-                if not (0 <= tile_x < self.map_format and 0 <= tile_y < self.map_format - 2):
+                if not (0 <= tile_x < self.map_format - 2 and 2 <= tile_y < self.map_format - 2):
                     if passable or actionable:
                         # obiekt wychodzi poza mapę
                         return False
@@ -241,6 +248,7 @@ class ObjectTemplateHelper:
 
         # Najpierw sprobuj preferowana pozycje
         if validation_function(template, preferred_x, preferred_y):
+            self.occ.append((preferred_x, preferred_y))
             return preferred_x, preferred_y
 
         # Sprobuj pozycje w coraz wiekszych okreslach wokol preferowanej pozycji
@@ -254,6 +262,7 @@ class ObjectTemplateHelper:
                         if validation_function(template, new_x, new_y):
                             # print(
                             #     f"Znaleziono alternatywna pozycje ({new_x}, {new_y}) zamiast ({preferred_x}, {preferred_y})")
+                            self.occ.append((new_x, new_y))
                             return new_x, new_y
 
         # print(f"Nie znaleziono alternatywnej pozycji dla ({preferred_x}, {preferred_y}) w promieniu {max_offset}")
@@ -486,10 +495,59 @@ class ObjectTemplateHelper:
         self.generate_special_building_level3(result)
         self.generate_special_building_level2(result)
         self.generate_special_building_level1_5(result)
-        self.generate_special_building_level1()
+        self.generate_special_building_level1(result)
 
-    def generate_special_building_level1(self):
-        pass
+    def generate_special_building_level1(self, result):
+        fields_info = result['fields_info']
+        special_buildings = read_object_templates_from_json("special_buildings_level1")
+
+        all_regions = result['all_regions']
+        city_to_fields = result['city_to_fields']
+        # tiles_of_5 = get_region_tiles(all_regions, region_id=5)
+
+        buildings_templates = []
+        buildings = []
+
+        id = self.id
+        absod_id = self.absod_id
+
+        for _, city_fields in city_to_fields.items():
+            for field in city_fields:
+                for _ in range(randint(2, 3)):
+                    r = randint(0, len(special_buildings) - 1)
+                    template = special_buildings[r]
+
+                    pos_x, pos_y = sample(get_region_tiles(all_regions, region_id=field), k=1)[0]
+
+                    final_x, final_y = self.find_alternative_position(template, pos_x, pos_y,
+                                                                      max_offset=10)
+
+                    if final_x is not None and final_y is not None:
+                        id = id + 1
+
+                        if r == 6:
+                            object = Objects(final_x, final_y, 0, id, [], WitchHut.create_default())
+                        elif r == 9:
+                            object = Objects(final_x, final_y, 0, id, [], Shrine.create_default())
+                        elif r == 12:
+                            object = Objects(final_x, final_y, 0, id, [], Scholar.create_default())
+                        elif 13 <= r <= 15:
+                            object = Objects(final_x, final_y, 0, id, [], SeersHut.create_default())
+                        else:
+                            object = Objects(final_x, final_y, 0, id, [], None)
+                        print(f"Lv1 ({final_x, final_y})")
+                        buildings_templates.append(template)
+                        buildings.append(object)
+
+                        self.mark_object_tiles_as_occupied(template, final_x, final_y, 3)
+
+        self.objectTemplates.extend(buildings_templates)
+        self.objects.extend(buildings)
+
+        self.id = id
+        self.absod_id = absod_id
+
+
 
     def generate_special_building_level1_5(self, result):
         special_buildings = [(i,j) for i,j in zip(read_object_templates_from_json("special_buildings_level1.5"), read_object_from_json("special_buildings_level1.5"))]
@@ -520,26 +578,27 @@ class ObjectTemplateHelper:
 
                 object_class = []
                 for pos_x, pos_y in chosen_boundary_raster:
-                    num: int = pos_x + pos_y * self.map_format
-                    tile_type: int = self.tiles[num].terrain_type
-                    if tile_type < 8:
-                        tmp = sample(buildings_obj[tile_type], k=len(chosen_boundary_raster))
-                        for template, object in tmp:
+                    test_template = ObjectsTemplate.create_default()
+                    test_template.passability = [255, 255, 255, 248, 248, 240]
+                    final_x, final_y = self.find_alternative_position(test_template, pos_x, pos_y,
+                                                                      max_offset=10)
+                    if final_x is not None and final_y is not None:
+                        num: int = final_x + final_y * self.map_format
+                        tile_type: int = self.tiles[num].terrain_type
+                        if tile_type < 8:
+                            template, object = sample(buildings_obj[tile_type], k=1)[0]
                             if template.object_class not in object_class:
-                                final_x, final_y = self.find_alternative_position(template, pos_x, pos_y,
-                                                                                  max_offset=5)
-                                if final_x is not None and final_y is not None:
-                                    id = id + 1
+                                id = id + 1
 
-                                    object.template_idx = id
-                                    object.x = final_x
-                                    object.y = final_y
+                                object.template_idx = id
+                                object.x = final_x
+                                object.y = final_y
+                                print(f"Lv1.5 ({final_x, final_y})")
+                                buildings_templates.append(template)
+                                buildings.append(object)
 
-                                    buildings_templates.append(template)
-                                    buildings.append(object)
-
-                                    self.mark_object_tiles_as_occupied(template, final_x, final_y, 3)
-                                    # object_class.append(l[0].object_class)
+                                self.mark_object_tiles_as_occupied(template, final_x, final_y, 3)
+                                # object_class.append(l[0].object_class)
 
         self.objectTemplates.extend(buildings_templates)
         self.objects.extend(buildings)
@@ -568,8 +627,8 @@ class ObjectTemplateHelper:
             chosen_boundary_raster = choices(boundary_raster, k=randint(2, 3))
             for pos_x, pos_y in chosen_boundary_raster:
                 test_template = ObjectsTemplate.create_default()
-                test_template.passability = [255, 255, 249, 240, 240, 248]
-                final_x, final_y = self.find_alternative_position(test_template, int(pos_x), int(pos_y), max_offset=5)
+                test_template.passability = [255, 255, 248, 240, 240, 248]
+                final_x, final_y = self.find_alternative_position(test_template, int(pos_x), int(pos_y), max_offset=510)
 
                 if final_x is not None and final_y is not None:
                     tile_type_idx: int = TerrainType(self.tiles[final_y * self.map_format + final_x].terrain_type).value
@@ -585,17 +644,15 @@ class ObjectTemplateHelper:
                     else:
                         building = Objects(final_x, final_y, 0, id, [], None)
 
-                    print(r, building)
-
                     id = id + 1
                     building.template_idx = id
 
                     template = special_buildings_templates[r]
-
+                    print(f"Lv2 ({final_x, final_y})")
                     buildings_templates.append(template)
                     buildings.append(building)
 
-                    self.mark_object_tiles_as_occupied(template, final_x, final_y, 2)
+                    self.mark_object_tiles_as_occupied(template, final_x, final_y, 4)
 
         self.objectTemplates.extend(buildings_templates)
         self.objects.extend(buildings)
@@ -627,7 +684,7 @@ class ObjectTemplateHelper:
             r = randint(0, len(special_buildings_templates) - 1)
             template = special_buildings_templates[r]
 
-            final_x, final_y = self.find_alternative_position(template, int(pos_x), int(pos_y), max_offset=5)
+            final_x, final_y = self.find_alternative_position(template, int(pos_x), int(pos_y), max_offset=10)
 
             if final_x is not None and final_y is not None:
                 id = id + 1
@@ -645,11 +702,11 @@ class ObjectTemplateHelper:
                     building = Objects(final_x, final_y, 0, id, [], None)
 
                 building.template_idx = id
-
+                print(f"Lv3 ({final_x, final_y})")
                 buildings_templates.append(template)
                 buildings.append(building)
 
-                self.mark_object_tiles_as_occupied(template, final_x, final_y, 3)
+                self.mark_object_tiles_as_occupied(template, final_x, final_y, 4)
 
         self.objectTemplates.extend(buildings_templates)
         self.objects.extend(buildings)
