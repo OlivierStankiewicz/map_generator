@@ -2,12 +2,19 @@ import os
 import sys
 from copy import copy
 from dataclasses import dataclass
-from random import randint
+from random import randint, choices, sample
 from math import sqrt
 
 from shiboken6.Shiboken import Object
 
+from classes.Objects.Properties.Helpers.Artifacts import Artifacts
+from classes.Objects.Properties.Helpers.Creatures import Creatures
+from classes.Objects.Properties.Helpers.PrimarySkills import PrimarySkills
+from classes.Objects.Properties.Helpers.SecondarySkills import SecondarySkills
+from classes.Objects.Properties.Helpers.Spells import Spells
+from classes.Objects.Properties.Hero import Hero
 from classes.Objects.Properties.RandomDwellingPresetAlignment import RandomDwellingPresetAlignment
+from classes.Objects.Properties.Shrine import Shrine
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..')))
 
@@ -22,7 +29,7 @@ from classes.Objects.Properties.RandomDwelling import RandomDwelling
 from classes.Objects.Properties.Helpers.Alignment import Alignment
 from classes.ObjectsTemplate import ObjectsTemplate
 from classes.tile.Tile import Tile, TerrainType
-from generation.object_gen.json_parser import read_object_templates_from_json
+from generation.object_gen.json_parser import read_object_templates_from_json, read_object_from_json
 from generation.object_gen.voronoi_city_placement import generate_city_positions, generate_city_positions_with_fields
 
 
@@ -44,16 +51,19 @@ class ObjectTemplateHelper:
         self.objects: list[Objects] = []
 
         self.towns = read_object_templates_from_json("towns")
-        self.dwellings_random = read_object_templates_from_json(
-            "random_dwellings")  # 0-8 RANDOM_DWELLING_PRESET_ALIGNMENT; 9 RANDOM_DWELLING; 10 - 16 RANDOM_DWELLING_PRESET_LEVEL
+        self.dwellings_random = read_object_templates_from_json("random_dwellings")  # 0-8 RANDOM_DWELLING_PRESET_ALIGNMENT; 9 RANDOM_DWELLING; 10 - 16 RANDOM_DWELLING_PRESET_LEVEL
         self.dwellings = read_object_templates_from_json("dwellings")
+        self.heroes = read_object_templates_from_json("heroes")
+        self.heroes_specification = read_object_from_json("heroes_specification")
 
         self.map_format = int(sqrt(len(self.tiles) / 2))
 
         # Tablica dwuwymiarowa do sledzenia zajetych miejsc na mapie
         # True = miejsce zajete/nieprzejezdne, False = miejsce wolne/przejezdne
         self.occupied_tiles = [[False for _ in range(self.map_format)] for _ in range(self.map_format)]
+        self.occupied_tiles_excluding_landscape = [[False for _ in range(self.map_format)] for _ in range(self.map_format)]
         self.city_field_mapping = []  # Lista do przechowywania mapowania miast do p�l
+        self.final_city_positions: list[tuple[int, int, int]] = [] # TownType.value, pos_x, pos_y
 
         ### params ###
         self.townParams = townParams
@@ -70,9 +80,20 @@ class ObjectTemplateHelper:
             self.townParams.total_regions
         )
 
+        # test = ObjectsTemplate.create_default()
+        # test.passability = [255, 255, 255, 255, 255, 254]
+        # test.actionability = [0, 0, 0, 0, 0, 0]
+        # self.mark_object_tiles_as_occupied(test, 0, 0, 3)
+
         self.create_default_object_template()
+        # warstwa 2 zamki i bohaterowie
         self.generate_cities_precise_positioning(result)
+        self.generate_heroes_positioning()
+        # warstwa 3 budynki do rekrutacji
         self.generate_dwelling_precise_positioning(result)
+        # warstwa 4 budowle specjalne
+        self.generate_special_building(result)
+
 
         return self.objectTemplates, self.objects, self.city_field_mapping
 
@@ -82,45 +103,40 @@ class ObjectTemplateHelper:
             ObjectsTemplate("AVLholg0.def", [255, 255, 255, 255, 255, 255], [0, 0, 0, 0, 0, 0], [4, 0], [4, 0], 124, 0,
                             0, 1, []))
 
-    def mark_object_tiles_as_occupied(self, template: ObjectsTemplate, x: int, y: int):
+    def mark_object_tiles_as_occupied(self, template: ObjectsTemplate, x: int, y: int, offset: int = 0):
         """
         Oznacza kafelki obiektu jako zajete na podstawie passability i actionability.
-        
+
         Args:
             template: Template obiektu zawierajacy passability i actionability
             x, y: Pozycja obiektu na mapie (lewy gorny rog)
+            offset: obwodka na okolo obiektu, w ktorej nie chcemy aby stawiany byl inny obiekty (poza krajobrazem)
         """
-        if not template.passability or not template.actionability:
+        if not template.passability:
             return
 
-        # ObjectTemplate ma 6 rzedow i 8 kolumn (6x8 matrix)
-        # A[5][7] to prawy dolny rog
         rows = 6
         cols = 8
 
         for row in range(rows):
             for col in range(cols):
-                tile_x = x + col
-                tile_y = y + row
+                tile_x = x - 7 + col
+                tile_y = y - 5 + row
 
-                # Sprawdz czy kafelek jest w granicach mapy
-                if 0 <= tile_x < self.map_format and 0 <= tile_y < self.map_format:
-                    # Pobierz bity passability i actionability dla tego kafelka
-                    if row < len(template.passability) and col < 8:
-                        # Passability: 1 = przejezdne, 0 = nieprzejezdne
-                        passable = bool((template.passability[row] >> col) & 1)
+                passable = bool(not (template.passability[row] >> (7 - col)) & 1)
+                actionable = bool((template.actionability[row] >> (7 - col)) & 1)
 
-                        # Actionability: podobnie jak passability
-                        actionable = False
-                        if row < len(template.actionability):
-                            actionable = bool((template.actionability[row] >> col) & 1)
+                # Oznacz kafelek jako zajety jesli jest nieprzejezdny lub akcjonowalny
+                if passable or actionable:
+                    self.occupied_tiles_excluding_landscape[tile_y][tile_x] = True
+                    # oznaczaj obszar z offsetem w macierzy glównej
+                    for dy in range(-offset, offset + 1):
+                        for dx in range(-offset, offset + 1):
+                            nx = tile_x + dx
+                            ny = tile_y + dy
+                            if 0 <= nx < self.map_format and 0 <= ny < self.map_format:
+                                self.occupied_tiles[ny][nx] = True
 
-                        # Oznacz kafelek jako zajety jesli jest nieprzejezdny lub akcjonowalny
-                        # (akcjonowalne kafelki sa traktowane jako nieprzejezdne w grze)
-                        if not passable or actionable:
-                            self.occupied_tiles[tile_y][tile_x] = True
-
-        print(f"Oznaczono kafelki obiektu na pozycji ({x}, {y}) jako zajete")
 
     def get_occupied_tiles_count(self) -> int:
         """Zwraca liczbe zajetych kafelkow na mapie"""
@@ -144,53 +160,87 @@ class ObjectTemplateHelper:
         print(f"  Procent zajetosci: {occupation_percentage:.2f}%")
 
     def validate_placement(self, template: ObjectsTemplate, x: int, y: int) -> bool:
-        # Sprawdz czy pozycja jest w granicach mapy
+        # Sprawdz czy pozycja jest w granicach mapy (główny punkt)
         if x < 0 or x >= self.map_format or y < 0 or y >= self.map_format:
-            print(f"Pozycja ({x}, {y}) jest poza granicami mapy {self.map_format}x{self.map_format}")
             return False
 
-        # Sprawdz kolizje z juz zajetymi kafelkami na podstawie passability/actionability
-        if template.passability and template.actionability:
-            rows = 6
-            cols = 8
+        if not template.passability:
+            return False
 
-            for row in range(rows):
-                for col in range(cols):
-                    tile_x = x + col
-                    tile_y = y + row
+        rows = 6
+        cols = 8
 
-                    # Sprawdz czy kafelek jest w granicach mapy
-                    if 0 <= tile_x < self.map_format and 0 <= tile_y < self.map_format:
-                        # Pobierz bity passability i actionability dla tego kafelka
-                        if row < len(template.passability) and col < 8:
-                            passable = bool((template.passability[row] >> col) & 1)
-                            actionable = False
-                            if row < len(template.actionability):
-                                actionable = bool((template.actionability[row] >> col) & 1)
+        for row in range(rows):
+            for col in range(cols):
+                tile_x = x - 7 + col
+                tile_y = y - 5 + row
 
-                            # Sprawdz kolizje tylko dla kafelkow ktore beda zajete przez obiekt
-                            if not passable or actionable:
-                                if self.occupied_tiles[tile_y][tile_x]:
-                                    print(f"Pozycja ({x}, {y}) - kolizja na kafelku ({tile_x}, {tile_y})")
-                                    return False
+                passable = bool(not (template.passability[row] >> (7 - col)) & 1)
+                # print((tile_x, tile_y), passable)
+                actionable = bool((template.actionability[row] >> (7 - col)) & 1)
+                # print((tile_x, tile_y), actionable)
 
-        # Sprawdz, czy na glownej pozycji nie ma juz obiektu (dodatkowa ochrona)
-        for obj in self.objects:
-            if obj.x == x and obj.y == y:
-                print(f"Pozycja ({x}, {y}) jest juz zajeta przez obiekt {obj}")
-                return False
+                # Jeśli kafelek, który obiekt by zajmował, leży poza mapą -> invalid
+                if not (0 <= tile_x < self.map_format and 0 <= tile_y < self.map_format - 2):
+                    if passable or actionable:
+                        # obiekt wychodzi poza mapę
+                        return False
+                    continue
 
-        print(f"Pozycja ({x}, {y}) jest w granicach mapy {self.map_format}x{self.map_format} - OK")
+                if passable or actionable:
+                    if self.occupied_tiles[tile_y][tile_x]:
+                        # print(f"Pozycja ({x}, {y}) - kolizja na kafelku ({tile_x}, {tile_y})")
+                        return False
+
+        return True
+
+    def validate_placement_for_landscape(self, template: ObjectsTemplate, x: int, y: int) -> bool:
+        # Sprawdz czy pozycja jest w granicach mapy (główny punkt)
+        if x < 0 or x >= self.map_format or y < 0 or y >= self.map_format:
+            return False
+
+        if not template.passability:
+            return False
+
+        rows = 6
+        cols = 8
+
+        for row in range(rows):
+            for col in range(cols):
+                tile_x = x - 7 + col
+                tile_y = y - 5 + row
+
+                passable = bool(not (template.passability[row] >> (7 - col)) & 1)
+                # print((tile_x, tile_y), passable)
+                actionable = bool((template.actionability[row] >> (7 - col)) & 1)
+                # print((tile_x, tile_y), actionable)
+
+                # Jeśli kafelek, który obiekt by zajmował, leży poza mapą -> invalid
+                if not (0 <= tile_x < self.map_format and 0 <= tile_y < self.map_format):
+                    if passable or actionable:
+                        # obiekt wychodzi poza mapę
+                        return False
+                    continue
+
+                if passable or actionable:
+                    if self.occupied_tiles_excluding_landscape[tile_y][tile_x]:
+                        # print(f"Pozycja ({x}, {y}) - kolizja na kafelku ({tile_x}, {tile_y})")
+                        return False
+
         return True
 
     def find_alternative_position(self, template: ObjectsTemplate, preferred_x: int, preferred_y: int,
-                                  max_offset: int = 3) -> tuple:
+                                  max_offset: int = 3, validation_function = None) -> tuple:
         """
         Znajduje alternatywna pozycje dla obiektu w poblizu preferowanej pozycji.
         Zwraca (x, y) jesli znajdzie wolne miejsce, lub (None, None) jesli nie.
         """
+        # Default validation function
+        if validation_function is None:
+            validation_function = self.validate_placement
+
         # Najpierw sprobuj preferowana pozycje
-        if self.validate_placement(template, preferred_x, preferred_y):
+        if validation_function(template, preferred_x, preferred_y):
             return preferred_x, preferred_y
 
         # Sprobuj pozycje w coraz wiekszych okreslach wokol preferowanej pozycji
@@ -201,12 +251,12 @@ class ObjectTemplateHelper:
                         new_x = preferred_x + dx
                         new_y = preferred_y + dy
 
-                        if self.validate_placement(template, new_x, new_y):
-                            print(
-                                f"Znaleziono alternatywna pozycje ({new_x}, {new_y}) zamiast ({preferred_x}, {preferred_y})")
+                        if validation_function(template, new_x, new_y):
+                            # print(
+                            #     f"Znaleziono alternatywna pozycje ({new_x}, {new_y}) zamiast ({preferred_x}, {preferred_y})")
                             return new_x, new_y
 
-        print(f"Nie znaleziono alternatywnej pozycji dla ({preferred_x}, {preferred_y}) w promieniu {max_offset}")
+        # print(f"Nie znaleziono alternatywnej pozycji dla ({preferred_x}, {preferred_y}) w promieniu {max_offset}")
         return None, None
 
     def get_town_type(self, x: int, y: int) -> int:
@@ -291,8 +341,6 @@ class ObjectTemplateHelper:
                 city_x = int(precise_city_x)  # For grid validation
                 city_y = int(precise_city_y)  # For grid validation
 
-                id = id + 1
-                absod_id = absod_id + 1
                 town_type_index = self.get_town_type(city_x, city_y)
                 town_template = self.towns[town_type_index]
 
@@ -300,42 +348,20 @@ class ObjectTemplateHelper:
                 final_city_x, final_city_y = self.find_alternative_position(town_template, city_x, city_y, max_offset=5)
 
                 if final_city_x is not None and final_city_y is not None:
+                    id = id + 1
+                    absod_id = absod_id + 1
+
                     cities_templates.append(town_template)
                     cities.append(Objects(final_city_x, final_city_y, 0, id, [],
-                                          Town(absod_id, 0, None, None, Formation.SPREAD, None, 1,
+                                          Town(absod_id, 255, None, None, Formation.SPREAD, None, 1,
                                                MustHaveSpell.create_default(), MayNotHaveSpell.create_default(), [],
                                                255, [])))
+                    self.final_city_positions.append((town_type_index, final_city_x, final_city_y))
 
                     # Oznacz kafelki miasta jako zajete
                     tmp: ObjectsTemplate = copy(town_template)
                     tmp.passability = [7 for _ in range(6)]
-                    self.mark_object_tiles_as_occupied(tmp, final_city_x, final_city_y)
-
-                    # Save city to fields mapping
-            #         city_type = "Gracz" if pos.is_player_city else "Neutralne"
-            #         city_number = i + 1
-            #
-            #         field_info = f"Miasto {city_number} ({city_type}) - pola {assigned_fields}, precyzyjne centrum ({final_city_x:.1f}, {final_city_y:.1f})"
-            #         if final_city_x != city_x or final_city_y != city_y:
-            #             field_info += f" (przesuniete z {precise_city_x:.1f}, {precise_city_y:.1f})"
-            #         self.city_field_mapping.append(field_info)
-            #     else:
-            #         print(f"UWAGA: Nie mozna umiescic miasta {i+1} - brak miejsca w poblizu pozycji ({city_x},{city_y})")
-            #
-            # # Add detailed field information
-            # self.city_field_mapping.append("")  # Empty line for separation
-            # self.city_field_mapping.append("=== PRECISE POSITIONING FIELD INFO ===")
-            #
-            # for field in fields_info:
-            #     status = f"przypisane do miasta {field.assigned_to_city}" if field.assigned_to_city else "niezalezne"
-            #     centroid_str = f"({field.centroid[0]:.2f}, {field.centroid[1]:.2f})"
-            #     precise_centroid_x = round(field.centroid[0] * 2) / 2
-            #     precise_centroid_y = round(field.centroid[1] * 2) / 2
-            #     precise_str = f"precyzyjny ({precise_centroid_x:.1f}, {precise_centroid_y:.1f})"
-            #     boundary_count = len(field.boundary)
-            #
-            #     info = f"Pole {field.field_id}: centrum {centroid_str} -> {precise_str}, powierzchnia {field.area} tiles, {status}"
-            #     self.city_field_mapping.append(info)
+                    self.mark_object_tiles_as_occupied(tmp, final_city_x, final_city_y, 3)
 
             self.objectTemplates.extend(cities_templates)
             self.objects.extend(cities)
@@ -394,11 +420,8 @@ class ObjectTemplateHelper:
                     dwelling_x = int(precise_dwelling_x)  # For grid validation
                     dwelling_y = int(precise_dwelling_y)  # For grid validation
 
-                    id = id + 1
-                    absod_id = absod_id + 1
-
                     # Use template for random dwelling odpowiadaj�cego typowi miasta
-                    town_type_index = self.get_city_type(i)
+                    town_type_index, _, _ = self.final_city_positions[i]
                     dwelling_template = self.dwellings_random[town_type_index] if town_type_index < len(
                         self.dwellings_random) else self.dwellings_random[0]
 
@@ -407,25 +430,232 @@ class ObjectTemplateHelper:
                                                                                         dwelling_y, max_offset=3)
 
                     if final_dwelling_x is not None and final_dwelling_y is not None:
+                        id = id + 1
+                        absod_id = absod_id + 1
                         dwelling_templates.append(dwelling_template)
                         dwellings.append(Objects(final_dwelling_x, final_dwelling_y, 0, id, [],
                                                  RandomDwellingPresetAlignment.create_default()))
 
                         # Oznacz kafelki dwelling jako zajete
-                        self.mark_object_tiles_as_occupied(dwelling_template, final_dwelling_x, final_dwelling_y)
-
-                    #     position_info = f"({final_dwelling_x:.1f}, {final_dwelling_y:.1f})"
-                    #     if final_dwelling_x != dwelling_x or final_dwelling_y != dwelling_y:
-                    #         position_info += f" (przesuniete z {precise_dwelling_x:.1f}, {precise_dwelling_y:.1f})"
-                    #
-                    #     print(
-                    #         f"Precise RandomDwelling typu {TownType(town_type_index).name} for city {city_number} on field {additional_field_id} at {position_info}")
-                    # else:
-                    #     print(
-                    #         f"UWAGA: Nie mozna umiescic RandomDwelling dla miasta {city_number} na polu {additional_field_id} - brak miejsca")
+                        self.mark_object_tiles_as_occupied(dwelling_template, final_dwelling_x, final_dwelling_y, 2)
 
         self.objectTemplates.extend(dwelling_templates)
         self.objects.extend(dwellings)
 
-    # def generate_heroes_positioning(self):
-    #     for city in self.ob
+        self.id = id
+        self.absod_id = absod_id
+
+
+    def generate_heroes_positioning(self):
+        heroes = []
+        heroes_templates = []
+        id = self.id
+        absod_id = self.absod_id
+
+        for i, (city, pos_x, pos_y) in enumerate(self.final_city_positions):
+            a = randint(0, 1)
+            # print(f"Hero city {i}: {city} ({pos_x}, {pos_y}): {city * 2 + a}")
+            heroTemplate = self.heroes[city * 2 + a]
+            hero: Objects = self.heroes_specification[(city * 2 + a) * 8 + randint(0, 7)]
+
+            final_x, final_y = self.find_alternative_position(heroTemplate, pos_x, pos_y, max_offset=5, validation_function=self.validate_placement_for_landscape)
+
+            if final_x is not None and final_y is not None:
+                id = id + 1
+                absod_id = absod_id + 1
+
+                hero.x = final_x
+                hero.y = final_y
+                hero.template_idx = id
+                hero.properties['absod_id'] = absod_id
+                hero.properties['owner'] = i
+
+                heroes_templates.append(heroTemplate)
+                heroes.append(hero)
+
+                self.mark_object_tiles_as_occupied(heroTemplate, final_x, final_y)
+
+        self.objectTemplates.extend(heroes_templates)
+        self.objects.extend(heroes)
+
+        self.id = id
+        self.absod_id = absod_id
+
+
+    def generate_special_building(self, result):
+        self.generate_special_building_level3(result)
+        self.generate_special_building_level2(result)
+        self.generate_special_building_level1_5(result)
+        self.generate_special_building_level1()
+
+    def generate_special_building_level1(self):
+        pass
+
+    def generate_special_building_level1_5(self, result):
+        special_buildings = [(i,j) for i,j in zip(read_object_templates_from_json("special_buildings_level1.5"), read_object_from_json("special_buildings_level1.5"))]
+        default_special_building = special_buildings[:2]
+        dirt_building = default_special_building + special_buildings[2:15]
+        sand_building = default_special_building + special_buildings[15:25]
+        grass_building = default_special_building + special_buildings[25:41]
+        snow_building = default_special_building + special_buildings[41:52]
+        swamp_building = default_special_building + special_buildings[52:65]
+        rough_building = default_special_building + special_buildings[65:76]
+        subterranean_building = default_special_building + special_buildings[76:85]
+        lava_building = default_special_building + special_buildings[85:]
+        buildings_obj = [dirt_building, sand_building, grass_building, snow_building, swamp_building, rough_building, subterranean_building, lava_building]
+
+        buildings_templates = []
+        buildings = []
+
+        id = self.id
+        absod_id = self.absod_id
+
+        city_to_fields = result['city_to_fields']
+        fields_info = result['fields_info']
+
+        for _, city_fields in city_to_fields.items():
+            for field_number in city_fields[1:2]:
+                boundary_raster = fields_info[field_number - 1].boundary_raster
+                chosen_boundary_raster = choices(boundary_raster, k=randint(2, 3))
+
+                object_class = []
+                for pos_x, pos_y in chosen_boundary_raster:
+                    num: int = pos_x + pos_y * self.map_format
+                    tile_type: int = self.tiles[num].terrain_type
+                    if tile_type < 8:
+                        tmp = sample(buildings_obj[tile_type], k=len(chosen_boundary_raster))
+                        for template, object in tmp:
+                            if template.object_class not in object_class:
+                                final_x, final_y = self.find_alternative_position(template, pos_x, pos_y,
+                                                                                  max_offset=5)
+                                if final_x is not None and final_y is not None:
+                                    id = id + 1
+
+                                    object.template_idx = id
+                                    object.x = final_x
+                                    object.y = final_y
+
+                                    buildings_templates.append(template)
+                                    buildings.append(object)
+
+                                    self.mark_object_tiles_as_occupied(template, final_x, final_y, 3)
+                                    # object_class.append(l[0].object_class)
+
+        self.objectTemplates.extend(buildings_templates)
+        self.objects.extend(buildings)
+
+        self.id = id
+        self.absod_id = absod_id
+
+
+        #         # trzeba upewnc sie, ze wylowowane obiekty, nawet jezeli sa z roznych terrain type, maja byc roznego typu
+        #         # tzn. nie chce miec ore mine z dirtu i z sand itp
+
+
+
+    def generate_special_building_level2(self, result):
+        special_buildings_templates = read_object_templates_from_json("special_buildings_level2")
+        terrain_buildings_partition = [(20, 27), (28, 30), (31, 36), (37, 40), (41, 44), (45, 49), (50, 50), (51, 52)]
+        empty_regions = self.get_regions_without_cities(result)
+        fields_info = result['fields_info']
+
+        buildings = []
+        buildings_templates = []
+        id = self.id
+
+        for region in empty_regions:
+            boundary_raster = fields_info[region].boundary_raster
+            chosen_boundary_raster = choices(boundary_raster, k=randint(2, 3))
+            for pos_x, pos_y in chosen_boundary_raster:
+                test_template = ObjectsTemplate.create_default()
+                test_template.passability = [255, 255, 249, 240, 240, 248]
+                final_x, final_y = self.find_alternative_position(test_template, int(pos_x), int(pos_y), max_offset=5)
+
+                if final_x is not None and final_y is not None:
+                    tile_type_idx: int = TerrainType(self.tiles[final_y * self.map_format + final_x].terrain_type).value
+                    if tile_type_idx >= 8:
+                        continue
+                    lowest, highest = terrain_buildings_partition[tile_type_idx]
+                    r = randint(lowest, highest + 20)
+                    if r > highest:
+                        r = r - highest - 1
+
+                    if r == 6:
+                        building = Objects(final_x, final_y, 0, id, [], Shrine.create_default())
+                    else:
+                        building = Objects(final_x, final_y, 0, id, [], None)
+
+                    print(r, building)
+
+                    id = id + 1
+                    building.template_idx = id
+
+                    template = special_buildings_templates[r]
+
+                    buildings_templates.append(template)
+                    buildings.append(building)
+
+                    self.mark_object_tiles_as_occupied(template, final_x, final_y, 2)
+
+        self.objectTemplates.extend(buildings_templates)
+        self.objects.extend(buildings)
+
+        self.id = id
+
+
+    def get_regions_without_cities(self, result):
+        tmp = []
+        city_to_fields = result['city_to_fields']
+        for i in city_to_fields.items():
+            tmp.extend(i[1])
+
+        return [i - 1 for i in range(1, len(result['fields_info'])) if i not in tmp]
+
+    def generate_special_building_level3(self, result):
+        special_buildings_templates = read_object_templates_from_json("special_buildings_level3")
+        empty_regions = self.get_regions_without_cities(result)
+        fields_info = result['fields_info']
+
+        buildings = []
+        buildings_templates = []
+        id = self.id
+        absod_id = self.absod_id
+
+        for region in empty_regions:
+            pos_x, pos_y = fields_info[region].centroid
+
+            r = randint(0, len(special_buildings_templates) - 1)
+            template = special_buildings_templates[r]
+
+            final_x, final_y = self.find_alternative_position(template, int(pos_x), int(pos_y), max_offset=5)
+
+            if final_x is not None and final_y is not None:
+                id = id + 1
+
+                if r == 0:  # Prison
+                    hero = Hero.create_default()
+                    hero.type = randint(0, 1)
+                    hero.absod_id = absod_id
+                    absod_id = absod_id + 1
+
+                    building = Objects(final_x, final_y, 0, id, [], hero)
+                elif r == 3:
+                    building = Objects(final_x, final_y, 0, id, [], Shrine.create_default())
+                else:
+                    building = Objects(final_x, final_y, 0, id, [], None)
+
+                building.template_idx = id
+
+                buildings_templates.append(template)
+                buildings.append(building)
+
+                self.mark_object_tiles_as_occupied(template, final_x, final_y, 3)
+
+        self.objectTemplates.extend(buildings_templates)
+        self.objects.extend(buildings)
+
+        self.id = id
+        self.absod_id = absod_id
+
+
+

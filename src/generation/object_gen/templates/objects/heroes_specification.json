@@ -1,0 +1,2735 @@
+{
+  "x": 71,
+  "y": 3,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 2,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670023,
+    "owner": 0, // Red
+    "type": 2, // Edric
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 1
+{
+  "x": 69,
+  "y": 3,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 2,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670026,
+    "owner": 0, // Red
+    "type": 3, // Sylvia
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 2
+{
+  "x": 66,
+  "y": 3,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 2,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670027,
+    "owner": 0, // Red
+    "type": 6, // Christian
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 3
+{
+  "x": 63,
+  "y": 3,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 2,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670028,
+    "owner": 0, // Red
+    "type": 7, // Tyris
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 4
+{
+  "x": 60,
+  "y": 3,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 2,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670029,
+    "owner": 0, // Red
+    "type": 1, // Valeska
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 5
+{
+  "x": 57,
+  "y": 3,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 2,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670030,
+    "owner": 0, // Red
+    "type": 144, // Sir Mullich
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 6
+{
+  "x": 54,
+  "y": 3,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 2,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670031,
+    "owner": 0, // Red
+    "type": 0, // Orrin
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 7
+{
+  "x": 50,
+  "y": 3,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 2,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670032,
+    "owner": 0, // Red
+    "type": 5, // Sorsha
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 8
+{
+  "x": 71,
+  "y": 5,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 3,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670033,
+    "owner": 1, // Blue
+    "type": 13, // Sanya
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 9
+{
+  "x": 69,
+  "y": 5,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 3,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670034,
+    "owner": 1, // Blue
+    "type": 11, // Adelaide
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 10
+{
+  "x": 66,
+  "y": 5,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 3,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670035,
+    "owner": 1, // Blue
+    "type": 9, // Adela
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 11
+{
+  "x": 63,
+  "y": 5,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 3,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670036,
+    "owner": 1, // Blue
+    "type": 12, // Ingham
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 12
+{
+  "x": 60,
+  "y": 5,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 3,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670037,
+    "owner": 1, // Blue
+    "type": 8, // Rion
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 13
+{
+  "x": 57,
+  "y": 5,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 3,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670038,
+    "owner": 1, // Blue
+    "type": 10, // Cuthbert
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 14
+{
+  "x": 54,
+  "y": 5,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 3,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670039,
+    "owner": 1, // Blue
+    "type": 15, // Caitlin
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 15
+{
+  "x": 50,
+  "y": 5,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 3,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670040,
+    "owner": 1, // Blue
+    "type": 14, // Loynis
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 16
+{
+  "x": 71,
+  "y": 7,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 4,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670041,
+    "owner": 2, // Tan
+    "type": 23, // Kyrre
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 17
+{
+  "x": 69,
+  "y": 7,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 4,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670042,
+    "owner": 2, // Tan
+    "type": 20, // Thorgrim
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 18
+{
+  "x": 66,
+  "y": 7,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 4,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670043,
+    "owner": 2, // Tan
+    "type": 18, // Jenova
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 19
+{
+  "x": 63,
+  "y": 7,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 4,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670044,
+    "owner": 2, // Tan
+    "type": 19, // Ryland
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 20
+{
+  "x": 60,
+  "y": 7,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 4,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670045,
+    "owner": 2, // Tan
+    "type": 17, // Ufretin
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 21
+{
+  "x": 57,
+  "y": 7,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 4,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670046,
+    "owner": 2, // Tan
+    "type": 22, // Clancy
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 22
+{
+  "x": 54,
+  "y": 7,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 4,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670047,
+    "owner": 2, // Tan
+    "type": 16, // Mephala
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 23
+{
+  "x": 50,
+  "y": 7,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 4,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670048,
+    "owner": 2, // Tan
+    "type": 21, // Ivor
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 24
+{
+  "x": 71,
+  "y": 9,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 5,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670050,
+    "owner": 3, // Green
+    "type": 29, // Melodia
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 25
+{
+  "x": 69,
+  "y": 9,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 5,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670051,
+    "owner": 3, // Green
+    "type": 31, // Aeris
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 26
+{
+  "x": 66,
+  "y": 9,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 5,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670052,
+    "owner": 3, // Green
+    "type": 30, // Alagar
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 27
+{
+  "x": 63,
+  "y": 9,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 5,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670053,
+    "owner": 3, // Green
+    "type": 27, // Gem
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 28
+{
+  "x": 60,
+  "y": 9,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 5,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670054,
+    "owner": 3, // Green
+    "type": 24, // Coronius
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 29
+{
+  "x": 57,
+  "y": 9,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 5,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670055,
+    "owner": 3, // Green
+    "type": 28, // Malcom
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 30
+{
+  "x": 54,
+  "y": 9,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 5,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670056,
+    "owner": 3, // Green
+    "type": 26, // Elleshar
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 31
+{
+  "x": 50,
+  "y": 9,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 5,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670057,
+    "owner": 3, // Green
+    "type": 25, // Uland
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 32
+{
+  "x": 71,
+  "y": 11,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 6,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670058,
+    "owner": 4, // Orange
+    "type": 32, // Piquedram
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 33
+{
+  "x": 69,
+  "y": 11,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 6,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670059,
+    "owner": 4, // Orange
+    "type": 33, // Thane
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 34
+{
+  "x": 66,
+  "y": 11,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 6,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670060,
+    "owner": 4, // Orange
+    "type": 36, // Torosar
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 35
+{
+  "x": 63,
+  "y": 11,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 6,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670061,
+    "owner": 4, // Orange
+    "type": 34, // Josephine
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 36
+{
+  "x": 60,
+  "y": 11,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 6,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670062,
+    "owner": 4, // Orange
+    "type": 35, // Neela
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 37
+{
+  "x": 57,
+  "y": 11,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 6,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670063,
+    "owner": 4, // Orange
+    "type": 39, // Iona
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 38
+{
+  "x": 54,
+  "y": 11,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 6,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670064,
+    "owner": 4, // Orange
+    "type": 37, // Fafner
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 39
+{
+  "x": 50,
+  "y": 11,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 6,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670066,
+    "owner": 4, // Orange
+    "type": 38, // Rissa
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 40
+{
+  "x": 71,
+  "y": 13,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 7,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670067,
+    "owner": 5, // Purple
+    "type": 42, // Serena
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 41
+{
+  "x": 69,
+  "y": 13,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 7,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670068,
+    "owner": 5, // Purple
+    "type": 40, // Astral
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 42
+{
+  "x": 66,
+  "y": 13,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 7,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670069,
+    "owner": 5, // Purple
+    "type": 46, // Cyra
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 43
+{
+  "x": 63,
+  "y": 13,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 7,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670070,
+    "owner": 5, // Purple
+    "type": 45, // Solmyr
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 44
+{
+  "x": 60,
+  "y": 13,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 7,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670071,
+    "owner": 5, // Purple
+    "type": 44, // Theodorus
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 45
+{
+  "x": 57,
+  "y": 13,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 7,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670072,
+    "owner": 5, // Purple
+    "type": 43, // Daremyth
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 46
+{
+  "x": 54,
+  "y": 13,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 7,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670073,
+    "owner": 5, // Purple
+    "type": 47, // Aine
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 47
+{
+  "x": 50,
+  "y": 13,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 7,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670074,
+    "owner": 5, // Purple
+    "type": 41, // Halon
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 48
+{
+  "x": 71,
+  "y": 15,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 8,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670075,
+    "owner": 6, // Teal
+    "type": 50, // Marius
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 49
+{
+  "x": 69,
+  "y": 15,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 8,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670076,
+    "owner": 6, // Teal
+    "type": 51, // Ignatius
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 50
+{
+  "x": 66,
+  "y": 15,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 8,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670077,
+    "owner": 6, // Teal
+    "type": 48, // Fiona
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 51
+{
+  "x": 63,
+  "y": 15,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 8,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670078,
+    "owner": 6, // Teal
+    "type": 49, // Rashka
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 52
+{
+  "x": 60,
+  "y": 15,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 8,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670079,
+    "owner": 6, // Teal
+    "type": 53, // Calh
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 53
+{
+  "x": 57,
+  "y": 15,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 8,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670080,
+    "owner": 6, // Teal
+    "type": 55, // Nymus
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 54
+{
+  "x": 54,
+  "y": 15,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 8,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670081,
+    "owner": 6, // Teal
+    "type": 52, // Octavia
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 55
+{
+  "x": 50,
+  "y": 15,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 8,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670082,
+    "owner": 6, // Teal
+    "type": 54, // Pyre
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 56
+{
+  "x": 71,
+  "y": 17,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 9,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670083,
+    "owner": 7, // Pink
+    "type": 58, // Axsis
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 57
+{
+  "x": 69,
+  "y": 17,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 9,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670084,
+    "owner": 7, // Pink
+    "type": 56, // Ayden
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 58
+{
+  "x": 66,
+  "y": 17,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 9,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670085,
+    "owner": 7, // Pink
+    "type": 62, // Zydar
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 59
+{
+  "x": 63,
+  "y": 17,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 9,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670086,
+    "owner": 7, // Pink
+    "type": 60, // Calid
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 60
+{
+  "x": 60,
+  "y": 17,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 9,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670087,
+    "owner": 7, // Pink
+    "type": 57, // Xyron
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 61
+{
+  "x": 57,
+  "y": 17,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 9,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670088,
+    "owner": 7, // Pink
+    "type": 59, // Olema
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 62
+{
+  "x": 54,
+  "y": 17,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 9,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670089,
+    "owner": 7, // Pink
+    "type": 63, // Xarfax
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 63
+{
+  "x": 50,
+  "y": 17,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 9,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670090,
+    "owner": 7, // Pink
+    "type": 61, // Ash
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+
+// Object 0
+{
+  "x": 61,
+  "y": 25,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 2,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670091,
+    "owner": 0, // Red
+    "type": 67, // Charna
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 1
+{
+  "x": 59,
+  "y": 25,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 2,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670092,
+    "owner": 0, // Red
+    "type": 69, // Isra
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 2
+{
+  "x": 56,
+  "y": 25,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 2,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670093,
+    "owner": 0, // Red
+    "type": 66, // Moandor
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 3
+{
+  "x": 54,
+  "y": 25,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 2,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670094,
+    "owner": 0, // Red
+    "type": 65, // Vokial
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 4
+{
+  "x": 51,
+  "y": 25,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 2,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670095,
+    "owner": 0, // Red
+    "type": 70, // Clavius
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 5
+{
+  "x": 48,
+  "y": 25,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 2,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670096,
+    "owner": 0, // Red
+    "type": 68, // Tamika
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 6
+{
+  "x": 46,
+  "y": 25,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 2,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670097,
+    "owner": 0, // Red
+    "type": 64, // Straker
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 7
+{
+  "x": 43,
+  "y": 25,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 2,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670098,
+    "owner": 0, // Red
+    "type": 71, // Galthran
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 8
+{
+  "x": 61,
+  "y": 27,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 3,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670099,
+    "owner": 1, // Blue
+    "type": 74, // Sandro
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 9
+{
+  "x": 59,
+  "y": 27,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 3,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670100,
+    "owner": 1, // Blue
+    "type": 72, // Septienna
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 10
+{
+  "x": 56,
+  "y": 27,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 3,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670101,
+    "owner": 1, // Blue
+    "type": 73, // Aislinn
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 11
+{
+  "x": 54,
+  "y": 27,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 3,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670102,
+    "owner": 1, // Blue
+    "type": 79, // Nagash
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 12
+{
+  "x": 51,
+  "y": 27,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 3,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670103,
+    "owner": 1, // Blue
+    "type": 75, // Nimbus
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 13
+{
+  "x": 48,
+  "y": 27,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 3,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670104,
+    "owner": 1, // Blue
+    "type": 78, // Vidomina
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 14
+{
+  "x": 46,
+  "y": 27,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 3,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670105,
+    "owner": 1, // Blue
+    "type": 76, // Thant
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 15
+{
+  "x": 43,
+  "y": 27,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 3,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670106,
+    "owner": 1, // Blue
+    "type": 77, // Xsi
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 16
+{
+  "x": 61,
+  "y": 29,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 4,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670107,
+    "owner": 2, // Tan
+    "type": 80, // Lorelei
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 17
+{
+  "x": 59,
+  "y": 29,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 4,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670108,
+    "owner": 2, // Tan
+    "type": 85, // Gunnar
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 18
+{
+  "x": 56,
+  "y": 29,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 4,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670109,
+    "owner": 2, // Tan
+    "type": 81, // Arlach
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 19
+{
+  "x": 54,
+  "y": 29,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 4,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670110,
+    "owner": 2, // Tan
+    "type": 83, // Ajit
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 20
+{
+  "x": 51,
+  "y": 29,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 4,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670111,
+    "owner": 2, // Tan
+    "type": 84, // Damacon
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 21
+{
+  "x": 48,
+  "y": 29,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 4,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670112,
+    "owner": 2, // Tan
+    "type": 86, // Synca
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 22
+{
+  "x": 46,
+  "y": 29,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 4,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670113,
+    "owner": 2, // Tan
+    "type": 87, // Shakti
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 23
+{
+  "x": 43,
+  "y": 29,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 4,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670114,
+    "owner": 2, // Tan
+    "type": 82, // Dace
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 24
+{
+  "x": 61,
+  "y": 31,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 5,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670115,
+    "owner": 3, // Green
+    "type": 92, // Geon
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 25
+{
+  "x": 59,
+  "y": 31,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 5,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670116,
+    "owner": 3, // Green
+    "type": 89, // Jaegar
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 26
+{
+  "x": 56,
+  "y": 31,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 5,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670117,
+    "owner": 3, // Green
+    "type": 95, // Darkstorm
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 27
+{
+  "x": 54,
+  "y": 31,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 5,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670118,
+    "owner": 3, // Green
+    "type": 88, // Alamar
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 28
+{
+  "x": 51,
+  "y": 31,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 5,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670119,
+    "owner": 3, // Green
+    "type": 90, // Malekith
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 29
+{
+  "x": 48,
+  "y": 31,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 5,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670120,
+    "owner": 3, // Green
+    "type": 93, // Deemer
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 30
+{
+  "x": 46,
+  "y": 31,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 5,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670121,
+    "owner": 3, // Green
+    "type": 91, // Jeddite
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 31
+{
+  "x": 43,
+  "y": 31,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 5,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670122,
+    "owner": 3, // Green
+    "type": 94, // Sephinroth
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 32
+{
+  "x": 61,
+  "y": 33,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 6,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670123,
+    "owner": 4, // Orange
+    "type": 96, // Yog
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 33
+{
+  "x": 59,
+  "y": 33,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 6,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670124,
+    "owner": 4, // Orange
+    "type": 99, // Shiva
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 34
+{
+  "x": 56,
+  "y": 33,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 6,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670125,
+    "owner": 4, // Orange
+    "type": 102, // Crag Hack
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 35
+{
+  "x": 54,
+  "y": 33,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 6,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670126,
+    "owner": 4, // Orange
+    "type": 103, // Tyraxor
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 36
+{
+  "x": 51,
+  "y": 33,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 6,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670127,
+    "owner": 4, // Orange
+    "type": 101, // Krellion
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 37
+{
+  "x": 48,
+  "y": 33,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 6,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670128,
+    "owner": 4, // Orange
+    "type": 97, // Gurnisson
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 38
+{
+  "x": 46,
+  "y": 33,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 6,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670129,
+    "owner": 4, // Orange
+    "type": 100, // Gretchin
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 39
+{
+  "x": 43,
+  "y": 33,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 6,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670130,
+    "owner": 4, // Orange
+    "type": 98, // Jabarkas
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 40
+{
+  "x": 61,
+  "y": 35,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 7,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670131,
+    "owner": 5, // Purple
+    "type": 108, // Zubin
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 41
+{
+  "x": 59,
+  "y": 35,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 7,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670132,
+    "owner": 5, // Purple
+    "type": 110, // Oris
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 42
+{
+  "x": 56,
+  "y": 35,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 7,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670133,
+    "owner": 5, // Purple
+    "type": 104, // Gird
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 43
+{
+  "x": 54,
+  "y": 35,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 7,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670134,
+    "owner": 5, // Purple
+    "type": 109, // Gundula
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 44
+{
+  "x": 51,
+  "y": 35,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 7,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670135,
+    "owner": 5, // Purple
+    "type": 105, // Vey
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 45
+{
+  "x": 48,
+  "y": 35,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 7,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670136,
+    "owner": 5, // Purple
+    "type": 107, // Terek
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 46
+{
+  "x": 46,
+  "y": 35,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 7,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670137,
+    "owner": 5, // Purple
+    "type": 106, // Dessa
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 47
+{
+  "x": 43,
+  "y": 35,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 7,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670138,
+    "owner": 5, // Purple
+    "type": 111, // Saurug
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 48
+{
+  "x": 61,
+  "y": 37,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 8,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670139,
+    "owner": 6, // Teal
+    "type": 115, // Tazar
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 49
+{
+  "x": 59,
+  "y": 37,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 8,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670140,
+    "owner": 6, // Teal
+    "type": 118, // Gerwulf
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 50
+{
+  "x": 56,
+  "y": 37,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 8,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670141,
+    "owner": 6, // Teal
+    "type": 116, // Alkin
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 51
+{
+  "x": 54,
+  "y": 37,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 8,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670142,
+    "owner": 6, // Teal
+    "type": 114, // Wystan
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 52
+{
+  "x": 51,
+  "y": 37,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 8,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670143,
+    "owner": 6, // Teal
+    "type": 119, // Broghild
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 53
+{
+  "x": 48,
+  "y": 37,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 8,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670144,
+    "owner": 6, // Teal
+    "type": 117, // Korbac
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 54
+{
+  "x": 46,
+  "y": 37,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 8,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670145,
+    "owner": 6, // Teal
+    "type": 113, // Drakon
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 55
+{
+  "x": 43,
+  "y": 37,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 8,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670146,
+    "owner": 6, // Teal
+    "type": 112, // Bron
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 56
+{
+  "x": 61,
+  "y": 39,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 9,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670147,
+    "owner": 7, // Pink
+    "type": 122, // Voy
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 57
+{
+  "x": 59,
+  "y": 39,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 9,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670148,
+    "owner": 7, // Pink
+    "type": 126, // Andra
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 58
+{
+  "x": 56,
+  "y": 39,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 9,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670149,
+    "owner": 7, // Pink
+    "type": 120, // Mirlanda
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 59
+{
+  "x": 54,
+  "y": 39,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 9,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670150,
+    "owner": 7, // Pink
+    "type": 125, // Styg
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 60
+{
+  "x": 51,
+  "y": 39,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 9,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670151,
+    "owner": 7, // Pink
+    "type": 121, // Rosic
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 61
+{
+  "x": 48,
+  "y": 39,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 9,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670152,
+    "owner": 7, // Pink
+    "type": 127, // Tiva
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 62
+{
+  "x": 46,
+  "y": 39,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 9,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670153,
+    "owner": 7, // Pink
+    "type": 123, // Verdish
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 63
+{
+  "x": 43,
+  "y": 39,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 9,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670154,
+    "owner": 7, // Pink
+    "type": 124, // Merist
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+{
+  "x": 61,
+  "y": 26,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 2,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670155,
+    "owner": 7, // Pink
+    "type": 129, // Thunar
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 1
+{
+  "x": 59,
+  "y": 26,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 2,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670156,
+    "owner": 7, // Pink
+    "type": 128, // Pasis
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 2
+{
+  "x": 57,
+  "y": 26,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 2,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670157,
+    "owner": 7, // Pink
+    "type": 131, // Lacus
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 3
+{
+  "x": 54,
+  "y": 26,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 2,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670158,
+    "owner": 7, // Pink
+    "type": 134, // Fiur
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 4
+{
+  "x": 51,
+  "y": 26,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 2,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670159,
+    "owner": 7, // Pink
+    "type": 130, // Ignissa
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 5
+{
+  "x": 48,
+  "y": 26,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 2,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670160,
+    "owner": 7, // Pink
+    "type": 132, // Monere
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 6
+{
+  "x": 45,
+  "y": 26,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 2,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670161,
+    "owner": 7, // Pink
+    "type": 133, // Erdamon
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 7
+{
+  "x": 42,
+  "y": 26,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 2,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670162,
+    "owner": 7, // Pink
+    "type": 135, // Kalt
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 8
+{
+  "x": 61,
+  "y": 29,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 3,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670163,
+    "owner": 6, // Teal
+    "type": 143, // Grindan
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 9
+{
+  "x": 59,
+  "y": 29,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 3,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670164,
+    "owner": 6, // Teal
+    "type": 139, // Labetha
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 10
+{
+  "x": 57,
+  "y": 29,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 3,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670165,
+    "owner": 6, // Teal
+    "type": 141, // Aenain
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 11
+{
+  "x": 54,
+  "y": 29,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 3,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670166,
+    "owner": 6, // Teal
+    "type": 142, // Gelare
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 12
+{
+  "x": 51,
+  "y": 29,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 3,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670167,
+    "owner": 6, // Teal
+    "type": 138, // Ciele
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 13
+{
+  "x": 48,
+  "y": 29,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 3,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670168,
+    "owner": 6, // Teal
+    "type": 140, // Inteus
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 14
+{
+  "x": 45,
+  "y": 29,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 3,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670169,
+    "owner": 6, // Teal
+    "type": 137, // Brissa
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+},
+// Object 15
+{
+  "x": 42,
+  "y": 29,
+  "z": 0,
+  // ObjectClass: 34 (HERO)
+  // ObjectPropertiesType: 6 (HERO)
+  "template_idx": 3,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "absod_id": 3230670170,
+    "owner": 6, // Teal
+    "type": 136, // Luna
+    "formation": 0, // Spread
+    "patrol_radius": 255,
+    "gender": 255, // Default
+    "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  }
+}

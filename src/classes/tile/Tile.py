@@ -29,7 +29,7 @@ class Tile:
         )
 
     def __init__(self, terrain_type: TerrainType, terrain_sprite: int, river_type: int, river_sprite: int, road_type: int, road_sprite: int, flags: Flags) -> None:
-        self.terrain_type = terrain_type.value
+        self.terrain_type = TerrainType(terrain_type).value
         self.terrain_sprite = terrain_sprite
         self.river_type = river_type
         self.river_sprite =  river_sprite

@@ -3,6 +3,8 @@ import os
 import re
 import sys
 
+from classes.Objects.Objects import Objects
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__))))
 
 from classes.ObjectsTemplate import ObjectsTemplate
@@ -83,14 +85,48 @@ def json_to_objectTemplate(data):
         objectTempltes.append(obj)
     return objectTempltes
 
+def json_to_objects(data):
+    objects = []
+    for row in data:
+        try:
+            obj = Objects(
+                row['x'],
+                row['y'],
+                row['z'],
+                row['template_idx'],
+                row['unknown'],
+                row['properties']
+            )
+        except:
+            obj = Objects(
+                row['x'],
+                row['y'],
+                row['z'],
+                row['template_idx'],
+                row['unknown'],
+                None
+            )
+        objects.append(obj)
+    return objects
+
 def read_object_templates_from_json(filename):
     path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f"templates\\{filename}.json")
     data = load_json_with_comments(path)
     return json_to_objectTemplate(data)
 
+def read_object_from_json(filename):
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f"templates\\objects\\{filename}.json")
+    data = load_json_with_comments(path)
+    return json_to_objects(data)
+
+def read_object_and_template_from_json(filename):
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f"templates\\{filename}.json")
+    data = load_json_with_comments(path)
+    return json_to_objects(data)
+
 if __name__ == "__main__":
     path = "templates\\towns.json"
     filename = "towns"
-    r = read_object_templates_from_json(filename)
+    r = read_object_and_template_from_json(filename)
 
     print("✅ Wygenerowano")

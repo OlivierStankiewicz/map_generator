@@ -189,13 +189,12 @@ def generate_voronoi_map(
         if i.terrain_type == TerrainType.DIRT:
             print(f"{i.terrain_type}")
 
-    # Parametry: 5 miast graczy + 3 neutralne = 8 miast
-    # Chcemy 5x wi?cej p?l ni? miast: 8 miast * 5 = 40 p?l
-    # Ka?de miasto b?dzie mia?o 3 pola
-    total_cities = 5 + 3  # 8 miast
+    player_cities = 4
+    neutral_cities = 2
+    total_cities = player_cities + neutral_cities
     total_regions = total_cities * 4  # 32 regiony (p?l)
 
-    obj = ObjectTemplateHelper(tiles=tiles, townParams=TownParams(5, 3, 30, total_regions), numberOfPlayers=8)
+    obj = ObjectTemplateHelper(tiles=tiles, townParams=TownParams(4, 2, 30, total_regions), numberOfPlayers=8)
     objects_templates, objects, city_field_mapping = obj.initData()
 
     # Wyswietl mapowanie miast do pol

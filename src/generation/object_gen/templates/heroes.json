@@ -191,6 +191,30 @@
   "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 },
 {
+  "def": "ah16_e.def",
+  "passability": [255, 255, 255, 255, 255, 191],
+  "actionability": [0, 0, 0, 0, 0, 64],
+  "allowed_landscapes": [255, 0],
+  "landscape_group": [255, 0],
+  "object_class": 34, // HERO
+  "object_subclass": 16,
+  "object_group": 3, // Hero
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "ah17_e.def",
+  "passability": [255, 255, 255, 255, 255, 191],
+  "actionability": [0, 0, 0, 0, 0, 64],
+  "allowed_landscapes": [255, 0],
+  "landscape_group": [255, 0],
+  "object_class": 34, // HERO
+  "object_subclass": 17,
+  "object_group": 3, // Hero
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
   "def": "ahrandom.def",
   "passability": [255, 255, 255, 255, 255, 191],
   "actionability": [0, 0, 0, 0, 0, 64],

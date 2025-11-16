@@ -23,11 +23,14 @@ class Objects:
         self.properties = properties
 
     def to_dict(self) -> dict:
-        return {
+        dict = {
             "x": self.x,
             "y": self.y,
             "z": self.z,
             "template_idx": self.template_idx,
             "unknown": self.unknown,
-            "properties": self.properties.to_dict()
         }
+        if self.properties is not None:
+            dict["properties"] = self.properties if self.properties.__class__ == {}.__class__ else self.properties.to_dict()
+
+        return dict

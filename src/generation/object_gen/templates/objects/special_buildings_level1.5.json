@@ -1,0 +1,1313 @@
+{
+  "x": 6,
+  "y": 17,
+  "z": 0,
+  // ObjectClass: 78 (REFUGEE_CAMP)
+  // ObjectPropertiesType: 4 (GENERIC_NO_PROPERTIES)
+  "template_idx": 37,
+  "unknown": [0, 0, 0, 0, 0]
+},
+// Object 36
+{
+  "x": 7,
+  "y": 11,
+  "z": 0,
+  // ObjectClass: 32 (GARDEN_OF_REVELATION)
+  // ObjectPropertiesType: 4 (GENERIC_NO_PROPERTIES)
+  "template_idx": 38,
+  "unknown": [0, 0, 0, 0, 0]
+},
+{
+  "x": 43,
+  "y": 26,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 0 (ABANDONED_MINE)
+  "template_idx": 90,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "potential_resources": {
+      "wood": false,
+      "mercury": true,
+      "ore": true,
+      "sulfur": true,
+      "crystal": true,
+      "gems": true,
+      "gold": true,
+      "unknown": false
+    },
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 89
+{
+  "x": 44,
+  "y": 19,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 91,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 90
+{
+  "x": 49,
+  "y": 21,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 92,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 91
+{
+  "x": 48,
+  "y": 18,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 93,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 92
+{
+  "x": 46,
+  "y": 25,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 94,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 93
+{
+  "x": 45,
+  "y": 23,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 95,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 94
+{
+  "x": 44,
+  "y": 21,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 96,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 95
+{
+  "x": 41,
+  "y": 24,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 97,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 97
+{
+  "x": 65,
+  "y": 34,
+  "z": 0,
+  // ObjectClass: 14 (SWAN_POND)
+  // ObjectPropertiesType: 4 (GENERIC_NO_PROPERTIES)
+  "template_idx": 99,
+  "unknown": [0, 0, 0, 0, 0]
+},
+// Object 98
+{
+  "x": 65,
+  "y": 32,
+  "z": 0,
+  // ObjectClass: 30 (FOUNTAIN_OF_FORTUNE)
+  // ObjectPropertiesType: 4 (GENERIC_NO_PROPERTIES)
+  "template_idx": 100,
+  "unknown": [0, 0, 0, 0, 0]
+},
+// Object 99
+{
+  "x": 69,
+  "y": 46,
+  "z": 0,
+  // ObjectClass: 28 (FAERIE_RING)
+  // ObjectPropertiesType: 4 (GENERIC_NO_PROPERTIES)
+  "template_idx": 101,
+  "unknown": [0, 0, 0, 0, 0]
+},
+// Object 100
+{
+  "x": 67,
+  "y": 49,
+  "z": 0,
+  // ObjectClass: 55 (MYSTICAL_GARDEN)
+  // ObjectPropertiesType: 4 (GENERIC_NO_PROPERTIES)
+  "template_idx": 102,
+  "unknown": [0, 0, 0, 0, 0]
+},
+// Object 106
+{
+  "x": 52,
+  "y": 49,
+  "z": 0,
+  // ObjectClass: 91 (SIGN)
+  // ObjectPropertiesType: 18 (SIGN)
+  "template_idx": 108,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "message": "",
+    "unknown": [0, 0, 0, 0]
+  }
+},
+{
+  "x": 69,
+  "y": 16,
+  "z": 0,
+  // ObjectClass: 220 (ABANDONED_MINE)
+  // ObjectPropertiesType: 0 (ABANDONED_MINE)
+  "template_idx": 55,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "potential_resources": {
+      "wood": false,
+      "mercury": true,
+      "ore": true,
+      "sulfur": true,
+      "crystal": true,
+      "gems": true,
+      "gold": true,
+      "unknown": false
+    },
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 55
+{
+  "x": 67,
+  "y": 17,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 56,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 56
+{
+  "x": 65,
+  "y": 15,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 57,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 57
+{
+  "x": 61,
+  "y": 17,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 58,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 58
+{
+  "x": 60,
+  "y": 19,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 59,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 59
+{
+  "x": 61,
+  "y": 21,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 60,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 60
+{
+  "x": 57,
+  "y": 22,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 61,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 61
+{
+  "x": 58,
+  "y": 24,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 62,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 67
+{
+  "x": 62,
+  "y": 38,
+  "z": 0,
+  // ObjectClass: 22 (CORPSE)
+  // ObjectPropertiesType: 4 (GENERIC_NO_PROPERTIES)
+  "template_idx": 68,
+  "unknown": [0, 0, 0, 0, 0]
+},
+// Object 68
+{
+  "x": 62,
+  "y": 39,
+  "z": 0,
+  // ObjectClass: 91 (SIGN)
+  // ObjectPropertiesType: 18 (SIGN)
+  "template_idx": 69,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "message": "",
+    "unknown": [0, 0, 0, 0]
+  }
+},
+// Object 125
+{
+  "x": 57,
+  "y": 24,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 0 (ABANDONED_MINE)
+  "template_idx": 123,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "potential_resources": {
+      "wood": false,
+      "mercury": true,
+      "ore": true,
+      "sulfur": true,
+      "crystal": true,
+      "gems": true,
+      "gold": true,
+      "unknown": false
+    },
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 126
+{
+  "x": 70,
+  "y": 56,
+  "z": 0,
+  // ObjectClass: 220 (ABANDONED_MINE)
+  // ObjectPropertiesType: 0 (ABANDONED_MINE)
+  "template_idx": 124,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "potential_resources": {
+      "wood": false,
+      "mercury": true,
+      "ore": true,
+      "sulfur": true,
+      "crystal": true,
+      "gems": true,
+      "gold": true,
+      "unknown": false
+    },
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 127
+{
+  "x": 65,
+  "y": 57,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 125,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 128
+{
+  "x": 65,
+  "y": 62,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 126,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 129
+{
+  "x": 68,
+  "y": 59,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 127,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 130
+{
+  "x": 71,
+  "y": 61,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 128,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 131
+{
+  "x": 68,
+  "y": 63,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 129,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 132
+{
+  "x": 71,
+  "y": 65,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 130,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 133
+{
+  "x": 67,
+  "y": 66,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 131,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 134
+{
+  "x": 60,
+  "y": 56,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 132,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 135
+{
+  "x": 62,
+  "y": 57,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 133,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 137
+{
+  "x": 57,
+  "y": 51,
+  "z": 0,
+  // ObjectClass: 14 (SWAN_POND)
+  // ObjectPropertiesType: 4 (GENERIC_NO_PROPERTIES)
+  "template_idx": 135,
+  "unknown": [0, 0, 0, 0, 0]
+},
+// Object 138
+{
+  "x": 59,
+  "y": 53,
+  "z": 0,
+  // ObjectClass: 30 (FOUNTAIN_OF_FORTUNE)
+  // ObjectPropertiesType: 4 (GENERIC_NO_PROPERTIES)
+  "template_idx": 136,
+  "unknown": [0, 0, 0, 0, 0]
+},
+// Object 139
+{
+  "x": 56,
+  "y": 53,
+  "z": 0,
+  // ObjectClass: 28 (FAERIE_RING)
+  // ObjectPropertiesType: 4 (GENERIC_NO_PROPERTIES)
+  "template_idx": 137,
+  "unknown": [0, 0, 0, 0, 0]
+},
+// Object 140
+{
+  "x": 61,
+  "y": 61,
+  "z": 0,
+  // ObjectClass: 55 (MYSTICAL_GARDEN)
+  // ObjectPropertiesType: 4 (GENERIC_NO_PROPERTIES)
+  "template_idx": 138,
+  "unknown": [0, 0, 0, 0, 0]
+},
+// Object 146
+{
+  "x": 58,
+  "y": 66,
+  "z": 0,
+  // ObjectClass: 91 (SIGN)
+  // ObjectPropertiesType: 18 (SIGN)
+  "template_idx": 144,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "message": "",
+    "unknown": [0, 0, 0, 0]
+  }
+},
+{
+  "x": 50,
+  "y": 3,
+  "z": 0,
+  // ObjectClass: 39 (LEAN_TO)
+  // ObjectPropertiesType: 4 (GENERIC_NO_PROPERTIES)
+  "template_idx": 65,
+  "unknown": [0, 0, 0, 0, 0]
+},
+// Object 65
+{
+  "x": 49,
+  "y": 3,
+  "z": 0,
+  // ObjectClass: 220 (ABANDONED_MINE)
+  // ObjectPropertiesType: 0 (ABANDONED_MINE)
+  "template_idx": 66,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "potential_resources": {
+      "wood": false,
+      "mercury": true,
+      "ore": true,
+      "sulfur": true,
+      "crystal": true,
+      "gems": true,
+      "gold": true,
+      "unknown": false
+    },
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 66
+{
+  "x": 47,
+  "y": 6,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 67,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 67
+{
+  "x": 48,
+  "y": 7,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 68,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 68
+{
+  "x": 48,
+  "y": 9,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 69,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 69
+{
+  "x": 45,
+  "y": 7,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 70,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 70
+{
+  "x": 45,
+  "y": 9,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 71,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 71
+{
+  "x": 45,
+  "y": 11,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 72,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 72
+{
+  "x": 44,
+  "y": 12,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 73,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 79
+{
+  "x": 48,
+  "y": 19,
+  "z": 0,
+  // ObjectClass: 58 (REDWOOD_OBSERVATORY)
+  // ObjectPropertiesType: 4 (GENERIC_NO_PROPERTIES)
+  "template_idx": 80,
+  "unknown": [0, 0, 0, 0, 0]
+},
+// Object 80
+{
+  "x": 50,
+  "y": 19,
+  "z": 0,
+  // ObjectClass: 91 (SIGN)
+  // ObjectPropertiesType: 18 (SIGN)
+  "template_idx": 81,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "message": "",
+    "unknown": [0, 0, 0, 0]
+  }
+},
+{
+  "x": 70,
+  "y": 70,
+  "z": 0,
+  // ObjectClass: 220 (ABANDONED_MINE)
+  // ObjectPropertiesType: 0 (ABANDONED_MINE)
+  "template_idx": 122,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "potential_resources": {
+      "wood": false,
+      "mercury": true,
+      "ore": true,
+      "sulfur": true,
+      "crystal": true,
+      "gems": true,
+      "gold": true,
+      "unknown": false
+    },
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 123
+{
+  "x": 59,
+  "y": 58,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 123,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 124
+{
+  "x": 59,
+  "y": 53,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 124,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 125
+{
+  "x": 54,
+  "y": 58,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 125,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 126
+{
+  "x": 57,
+  "y": 55,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 126,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 127
+{
+  "x": 59,
+  "y": 62,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 127,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 128
+{
+  "x": 64,
+  "y": 64,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 128,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 129
+{
+  "x": 65,
+  "y": 66,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 129,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 131
+{
+  "x": 60,
+  "y": 67,
+  "z": 0,
+  // ObjectClass: 14 (SWAN_POND)
+  // ObjectPropertiesType: 4 (GENERIC_NO_PROPERTIES)
+  "template_idx": 131,
+  "unknown": [0, 0, 0, 0, 0]
+},
+// Object 132
+{
+  "x": 62,
+  "y": 69,
+  "z": 0,
+  // ObjectClass: 30 (FOUNTAIN_OF_FORTUNE)
+  // ObjectPropertiesType: 4 (GENERIC_NO_PROPERTIES)
+  "template_idx": 132,
+  "unknown": [0, 0, 0, 0, 0]
+},
+// Object 133
+{
+  "x": 66,
+  "y": 68,
+  "z": 0,
+  // ObjectClass: 28 (FAERIE_RING)
+  // ObjectPropertiesType: 4 (GENERIC_NO_PROPERTIES)
+  "template_idx": 133,
+  "unknown": [0, 0, 0, 0, 0]
+},
+// Object 134
+{
+  "x": 62,
+  "y": 67,
+  "z": 0,
+  // ObjectClass: 55 (MYSTICAL_GARDEN)
+  // ObjectPropertiesType: 4 (GENERIC_NO_PROPERTIES)
+  "template_idx": 134,
+  "unknown": [0, 0, 0, 0, 0]
+},
+// Object 138
+{
+  "x": 51,
+  "y": 61,
+  "z": 0,
+  // ObjectClass: 91 (SIGN)
+  // ObjectPropertiesType: 18 (SIGN)
+  "template_idx": 138,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "message": "",
+    "unknown": [0, 0, 0, 0]
+  }
+},
+{
+  "x": 59,
+  "y": 31,
+  "z": 0,
+  // ObjectClass: 220 (ABANDONED_MINE)
+  // ObjectPropertiesType: 0 (ABANDONED_MINE)
+  "template_idx": 106,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "potential_resources": {
+      "wood": false,
+      "mercury": true,
+      "ore": true,
+      "sulfur": true,
+      "crystal": true,
+      "gems": true,
+      "gold": true,
+      "unknown": false
+    },
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 108
+{
+  "x": 55,
+  "y": 29,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 107,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 109
+{
+  "x": 55,
+  "y": 25,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 108,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 110
+{
+  "x": 58,
+  "y": 25,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 109,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 111
+{
+  "x": 57,
+  "y": 27,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 110,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 112
+{
+  "x": 59,
+  "y": 29,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 111,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 113
+{
+  "x": 68,
+  "y": 32,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 112,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 114
+{
+  "x": 63,
+  "y": 29,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 113,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 115
+{
+  "x": 66,
+  "y": 29,
+  "z": 0,
+  // ObjectClass: 105 (WAGON)
+  // ObjectPropertiesType: 4 (GENERIC_NO_PROPERTIES)
+  "template_idx": 114,
+  "unknown": [0, 0, 0, 0, 0]
+},
+// Object 119
+{
+  "x": 59,
+  "y": 35,
+  "z": 0,
+  // ObjectClass: 22 (CORPSE)
+  // ObjectPropertiesType: 4 (GENERIC_NO_PROPERTIES)
+  "template_idx": 118,
+  "unknown": [0, 0, 0, 0, 0]
+},
+// Object 120
+{
+  "x": 57,
+  "y": 35,
+  "z": 0,
+  // ObjectClass: 91 (SIGN)
+  // ObjectPropertiesType: 18 (SIGN)
+  "template_idx": 119,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "message": "",
+    "unknown": [0, 0, 0, 0]
+  }
+},
+{
+  "x": 58,
+  "y": 27,
+  "z": 0,
+  // ObjectClass: 220 (ABANDONED_MINE)
+  // ObjectPropertiesType: 0 (ABANDONED_MINE)
+  "template_idx": 88,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "potential_resources": {
+      "wood": false,
+      "mercury": true,
+      "ore": true,
+      "sulfur": true,
+      "crystal": true,
+      "gems": true,
+      "gold": true,
+      "unknown": false
+    },
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 87
+{
+  "x": 59,
+  "y": 26,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 89,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 88
+{
+  "x": 59,
+  "y": 29,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 90,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 89
+{
+  "x": 61,
+  "y": 30,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 91,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 90
+{
+  "x": 63,
+  "y": 32,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 92,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 91
+{
+  "x": 59,
+  "y": 32,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 93,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 92
+{
+  "x": 63,
+  "y": 34,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 94,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 93
+{
+  "x": 59,
+  "y": 34,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 95,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 98
+{
+  "x": 58,
+  "y": 36,
+  "z": 0,
+  // ObjectClass: 91 (SIGN)
+  // ObjectPropertiesType: 18 (SIGN)
+  "template_idx": 100,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "message": "",
+    "unknown": [0, 0, 0, 0]
+  }
+},
+{
+  "x": 62,
+  "y": 39,
+  "z": 0,
+  // ObjectClass: 220 (ABANDONED_MINE)
+  // ObjectPropertiesType: 0 (ABANDONED_MINE)
+  "template_idx": 75,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "potential_resources": {
+      "wood": false,
+      "mercury": true,
+      "ore": true,
+      "sulfur": true,
+      "crystal": true,
+      "gems": true,
+      "gold": true,
+      "unknown": false
+    },
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 77
+{
+  "x": 67,
+  "y": 40,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 76,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 78
+{
+  "x": 61,
+  "y": 43,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 77,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 79
+{
+  "x": 66,
+  "y": 43,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 78,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 80
+{
+  "x": 61,
+  "y": 46,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 79,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 81
+{
+  "x": 66,
+  "y": 47,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 80,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 82
+{
+  "x": 60,
+  "y": 50,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 81,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 83
+{
+  "x": 65,
+  "y": 50,
+  "z": 0,
+  // ObjectClass: 53 (MINE)
+  // ObjectPropertiesType: 21 (TRIVIAL_OWNED_OBJECT)
+  "template_idx": 82,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "owner": 255,
+    "unknown": [0, 0, 0]
+  }
+},
+// Object 86
+{
+  "x": 65,
+  "y": 54,
+  "z": 0,
+  // ObjectClass: 91 (SIGN)
+  // ObjectPropertiesType: 18 (SIGN)
+  "template_idx": 85,
+  "unknown": [0, 0, 0, 0, 0],
+  "properties": {
+    "message": "",
+    "unknown": [0, 0, 0, 0]
+  }
+}

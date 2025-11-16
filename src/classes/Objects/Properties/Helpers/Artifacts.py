@@ -2,25 +2,25 @@ class Artifacts(object):
     @classmethod
     def create_default(cls) -> 'Artifacts':
         return cls(
-            head = 0,
-            shoulders = 0,
-            neck = 0,
-            right_hand = 0,
-            left_hand = 0,
-            torso = 0,
-            right_ring = 0,
-            left_ring = 0,
-            feet = 0,
-            misc1 = 0,
-            misc2 = 0,
-            misc3 = 0,
-            misc4 = 0,
-            misc5 = 0,
-            war_machine1 = 0,
-            war_machine2 = 0,
-            war_machine3 = 0,
-            war_machine4 = 0,
-            spellbook = 0,
+            head = 65535,
+            shoulders = 65535,
+            neck = 65535,
+            right_hand = 65535,
+            left_hand = 65535,
+            torso = 65535,
+            right_ring = 65535,
+            left_ring = 65535,
+            feet = 65535,
+            misc1 = 65535,
+            misc2 = 65535,
+            misc3 = 65535,
+            misc4 = 65535,
+            misc5 = 65535,
+            war_machine1 = 65535,
+            war_machine2 = 65535,
+            war_machine3 = 65535,
+            war_machine4 = 65535,
+            spellbook = 65535,
             backpack = []
         )
 
@@ -84,5 +84,7 @@ class Artifacts(object):
             'war_machine1' : self.war_machine1,
             'war_machine2' : self.war_machine2,
             'war_machine3' : self.war_machine3,
+            'war_machine4' : self.war_machine4,
+            'spellbook' : self.spellbook,
             'backpack' : self.backpack
         }
