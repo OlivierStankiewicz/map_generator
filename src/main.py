@@ -3,22 +3,24 @@ import os
 import json
 import tkinter as tk
 from tkinter import filedialog
+import os
+import json
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__))))
-from generation.map_gen.map_gen import generate_voronoi_map
+from generation.map_gen.map_gen import generate_voronoi_map, generate_one_terrain_all_sprite_map
+from classes.tile.Tile import TerrainType
+
 root = tk.Tk()
 root.withdraw()
 
 print("Choose a folder to save the file")
-# folder_path = filedialog.askdirectory(title="Select a folder to save the file")
-folder_path = "C:/Users/macie/Desktop/inżynierka/tmp"
+folder_path = filedialog.askdirectory(title="Select a folder to save the file")
 if not folder_path:
     print("No folder selected. Exiting...")
     exit()
 print("Chosen folder:", folder_path)
 
-# filename = input("Enter the file name (without extension): ").strip()
-filename = "test"
+filename = input("Enter the file name (without extension): ").strip()
 if not filename:
     print("No filename provided. Exiting...")
     exit()
@@ -26,7 +28,18 @@ print("Chosen filename:", filename)
 
 print("Generating map representation...")
 
-map = generate_voronoi_map()
+terrain_values = {
+    TerrainType.WATER: 2,
+    TerrainType.GRASS: 3,
+    TerrainType.SNOW: 2,
+    TerrainType.SWAMP: 3,
+    TerrainType.ROUGH: 1,
+    TerrainType.LAVA: 1,
+    TerrainType.SAND: 1,
+    TerrainType.DIRT: 3,
+    TerrainType.ROCK: 2,
+}
+map = generate_voronoi_map(terrain_values)
 
 def filter_none_values(obj):
     """Recursively remove keys with None values from dictionaries"""

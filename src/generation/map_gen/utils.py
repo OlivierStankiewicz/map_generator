@@ -1,6 +1,12 @@
-from typing import List, Dict, Tuple
+from typing import List, Dict, Tuple, cast
 
 from classes.tile.Tile import TerrainType
+from generation.map_gen.sprite_handlers.DirtSpriteHandler import DirtSpriteHandler
+from generation.map_gen.sprite_handlers.SandSpriteHandler import SandSpriteHandler
+from generation.map_gen.sprite_handlers.WaterSpriteHandler import WaterSpriteHandler
+from generation.map_gen.sprite_handlers.RockSpriteHandler import RockSpriteHandler
+from generation.map_gen.sprite_handlers.DirtBasedSpriteHandler import DirtBasedSpriteHandler
+from generation.map_gen.sprite_handlers.SpriteHandler import SpriteHandler
 
 def print_map(terrain_map: List[List[TerrainType]]):
     """
@@ -129,3 +135,24 @@ def upscale_map(terrain_map: List[List[TerrainType]]) -> List[List[TerrainType]]
     print_map(upscaled_map)
     
     return upscaled_map
+
+def choose_sprite(terrain_map, x, y) -> Tuple[int, bool, bool]:
+    """
+    Choose an appropriate sprite number for the tile at (x, y) based on its neighbors.
+    Returns a tuple of (
+        sprite_number - number of the chosen sprite,
+        x_terrain - whether the sprite needs to be flipped in x direction (flag terrain_x)
+        y_terrain - whether the sprite needs to be flipped in y direction (flag terrain_y
+    ).
+    """
+    terrain_type = terrain_map[y][x]
+
+    terrain_type_to_class = {
+        TerrainType.DIRT: DirtSpriteHandler,
+        TerrainType.SAND: SandSpriteHandler,
+        TerrainType.WATER: WaterSpriteHandler,
+        TerrainType.ROCK: RockSpriteHandler,
+    }
+    
+    sprite_handler = cast(SpriteHandler, terrain_type_to_class.get(terrain_type, lambda: DirtBasedSpriteHandler(terrain_type))())
+    return sprite_handler.choose_sprite(terrain_map, x, y)

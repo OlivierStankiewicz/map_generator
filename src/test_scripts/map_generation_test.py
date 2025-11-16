@@ -1,13 +1,12 @@
 import os
 import sys
 import json
-# Ensure that imports are done from the level of the src directory
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
 import tkinter as tk
 from tkinter import filedialog
-import os
-from classes.map import Map
+
+# Ensure that imports are done from the level of the src directory
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from classes.Map import Map
 
 root = tk.Tk()
 root.withdraw()

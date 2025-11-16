@@ -725,8 +725,8 @@
   },
   "tiles": [
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 0,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -743,8 +743,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 1,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -761,8 +761,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 2,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -779,8 +779,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 3,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -797,8 +797,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 4,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -815,8 +815,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 5,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -833,8 +833,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 6,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -851,8 +851,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 7,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -869,8 +869,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 8,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -887,8 +887,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 9,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -905,8 +905,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 10,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -923,8 +923,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 11,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -941,8 +941,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 12,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -959,8 +959,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 13,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -977,8 +977,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 14,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -995,8 +995,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 15,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1013,8 +1013,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 16,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1031,8 +1031,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 17,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1049,8 +1049,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 18,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1067,8 +1067,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 19,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1085,8 +1085,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 20,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1103,8 +1103,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 21,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1121,7 +1121,7 @@
       }
     },
     {
-      "terrain_type": 8,
+      "terrain_type": 2,
       "terrain_sprite": 22,
       "river_type": 0,
       "river_sprite": 0,
@@ -1139,8 +1139,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 23,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1157,8 +1157,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 24,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1175,8 +1175,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 25,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1193,8 +1193,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 26,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1211,8 +1211,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 27,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1229,8 +1229,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 28,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1247,8 +1247,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 29,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1265,8 +1265,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 30,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1283,8 +1283,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 31,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1301,8 +1301,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 32,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1319,8 +1319,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 33,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1337,8 +1337,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 34,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1355,8 +1355,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 35,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1373,8 +1373,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 36,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1391,8 +1391,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 37,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1409,8 +1409,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 38,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1427,8 +1427,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 39,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1445,8 +1445,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 40,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1463,8 +1463,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 41,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1481,8 +1481,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 42,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1499,8 +1499,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 43,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1517,8 +1517,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 44,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1535,8 +1535,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 45,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1553,8 +1553,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 46,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1571,8 +1571,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 47,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1589,8 +1589,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 48,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1607,8 +1607,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 49,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1625,8 +1625,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 50,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1643,8 +1643,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 51,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1661,8 +1661,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 52,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1679,8 +1679,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 53,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1697,8 +1697,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 54,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1715,8 +1715,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 55,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1733,8 +1733,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 56,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1751,8 +1751,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 57,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1769,8 +1769,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 58,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1787,8 +1787,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 59,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1805,8 +1805,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 60,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1823,8 +1823,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 61,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1841,8 +1841,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 62,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1859,8 +1859,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 63,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1877,8 +1877,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 64,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1895,8 +1895,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 65,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1913,8 +1913,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 66,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1931,8 +1931,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 67,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1949,8 +1949,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 68,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1967,8 +1967,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 69,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -1985,8 +1985,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 70,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -2003,8 +2003,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 71,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -2021,8 +2021,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 72,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -2039,8 +2039,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 73,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -2057,8 +2057,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 74,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -2075,8 +2075,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 75,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -2093,8 +2093,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 76,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -2111,8 +2111,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 77,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
@@ -2129,8 +2129,8 @@
       }
     },
     {
-      "terrain_type": 8,
-      "terrain_sprite": 22,
+      "terrain_type": 2,
+      "terrain_sprite": 78,
       "river_type": 0,
       "river_sprite": 0,
       "road_type": 0,
