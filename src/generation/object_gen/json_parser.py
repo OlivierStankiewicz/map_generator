@@ -9,8 +9,6 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__))))
 
 from classes.ObjectsTemplate import ObjectsTemplate
 
-
-
 def split_objects(content: str):
     """Dzieli tekst na fragmenty odpowiadające pojedynczym obiektom JSON"""
     objs = []

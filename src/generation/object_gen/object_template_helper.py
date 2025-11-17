@@ -5,7 +5,9 @@ from dataclasses import dataclass
 from random import randint, choices, sample
 from math import sqrt
 
-from shiboken6.Shiboken import Object
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..')))
+
+from classes.Objects.Objects import Objects
 
 from classes.Objects.Properties.Helpers.Artifacts import Artifacts
 from classes.Objects.Properties.Helpers.Creatures import Creatures
@@ -18,11 +20,6 @@ from classes.Objects.Properties.Scholar import Scholar
 from classes.Objects.Properties.SeersHut import SeersHut
 from classes.Objects.Properties.Shrine import Shrine
 from classes.Objects.Properties.WitchHut import WitchHut
-
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..')))
-
-from classes.Objects.Objects import Objects
-
 from classes.Enums.Formation import Formation
 from classes.Enums.TownType import TownType
 from classes.Objects.Properties.Helpers.MayNotHaveSpell import MayNotHaveSpell
@@ -46,7 +43,7 @@ class TownParams:
 
 
 class ObjectTemplateHelper:
-    def __init__(self, tiles: list[Tile], townParams: TownParams, numberOfPlayers: int):
+    def __init__(self, tiles: list[Tile], town_params: TownParams, number_of_players: int):
         self.id = 1
         self.absod_id = 0
         self.tiles: list[Tile] = tiles
@@ -69,19 +66,19 @@ class ObjectTemplateHelper:
         self.final_city_positions: list[tuple[int, int, int]] = [] # TownType.value, pos_x, pos_y
 
         ### params ###
-        self.townParams = townParams
-        self.numberOfPlayers = numberOfPlayers
+        self.town_params = town_params
+        self.number_of_players = number_of_players
         self.occ = []
 
 
-    def initData(self):
+    def init_data(self):
         # Generate positions and all regions
         result = generate_city_positions_with_fields(
             self.map_format,
-            self.townParams.player_cities,
-            self.townParams.neutral_cities,
-            self.townParams.min_distance,
-            self.townParams.total_regions
+            self.town_params.player_cities,
+            self.town_params.neutral_cities,
+            self.town_params.min_distance,
+            self.town_params.total_regions
         )
 
         # test = ObjectsTemplate.create_default()

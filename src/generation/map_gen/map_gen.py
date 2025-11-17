@@ -7,7 +7,7 @@ from classes.Objects.Properties.RandomDwelling import RandomDwelling
 from classes.Map import Map
 from classes.tile.Flags import Flags
 
-from classes.tile.Tile import TerrainType
+from classes.tile.Tile import RiverType, RoadType, TerrainType
 from generation.basic_info_gen import generate_basic_info
 from generation.player_gen.player_gen import generate_player
 from generation.additional_info_gen.additional_info_gen import generate_additional_info
@@ -18,6 +18,7 @@ from generation.map_gen.utils import upscale_map, smooth_map, choose_sprite
 
 from generation.object_gen.object_template_helper import ObjectTemplateHelper, TownParams
 from generation.object_gen.objects_template_gen import generate_objects_template_and_objects
+from generation.empty_spaces_gen.empty_spaces_gen import gen_empty_spaces_mask
 
 
 def generate_base_map() -> Map:
@@ -26,7 +27,7 @@ def generate_base_map() -> Map:
         basic_info= generate_basic_info(),
         players= [generate_player() for _ in range(8)],
         additional_info= generate_additional_info(),
-        tiles= [generate_tile(random_terrain_sprite= False, random_terrain_type= False) for _ in range(10368)],
+        tiles= [generate_random_tile(random_terrain_sprite= False, random_terrain_type= False) for _ in range(10368)],
         objects_templates = [generate_objects_template_and_objects()],
         objects= [],
         global_events= [],
@@ -39,7 +40,7 @@ def generate_random_terrain_random_sprite_map() -> Map:
         basic_info= generate_basic_info(),
         players= [generate_player() for _ in range(8)],
         additional_info= generate_additional_info(),
-        tiles= [generate_tile(random_terrain_sprite= True, random_terrain_type= True) for _ in range(10368)],
+        tiles= [generate_random_tile(random_terrain_sprite= True, random_terrain_type= True) for _ in range(10368)],
         objects_templates = [generate_objects_template_and_objects()],
         objects= [],
         global_events= [],
@@ -131,9 +132,22 @@ def generate_voronoi_map(
     total_cities = player_cities + neutral_cities
     total_regions = total_cities * 4  # 32 regiony (p?l)
 
-    obj = ObjectTemplateHelper(tiles=tiles, townParams=TownParams(4, 2, 30, total_regions), numberOfPlayers=8)
-    objects_templates, objects, city_field_mapping = obj.initData()
+    obj = ObjectTemplateHelper(tiles=tiles, town_params=TownParams(4, 2, 30, total_regions), number_of_players=8)
+    objects_templates, objects, city_field_mapping = obj.init_data()
 
+    # reserve empty spaces for roads
+    empty_spaces_mask = gen_empty_spaces_mask(
+        width=width,
+        height=height,
+        terrain_map=terrain_map,
+        objects=objects
+    )
+    for y in range(height):
+        for x in range(width):
+            if empty_spaces_mask[y][x]:
+                idx = y * width + x  # surface tiles are stored row-major at start of tiles list
+                tiles[idx].road_type = RoadType.GRAVEL.value
+                
     # Wyswietl mapowanie miast do pol
     print("\n=== MAPOWANIE MIAST DO POL ===")
     for city_info in city_field_mapping:
