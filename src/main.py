@@ -7,7 +7,7 @@ import os
 import json
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__))))
-from generation.map_gen.map_gen import generate_voronoi_map, generate_one_terrain_all_sprite_map
+from generation.map_gen.map_gen import generate_voronoi_map
 from classes.tile.Tile import TerrainType
 
 root = tk.Tk()
@@ -37,7 +37,6 @@ terrain_values = {
     TerrainType.LAVA: 1,
     TerrainType.SAND: 1,
     TerrainType.DIRT: 3,
-    TerrainType.ROCK: 2,
 }
 map = generate_voronoi_map(terrain_values)
 

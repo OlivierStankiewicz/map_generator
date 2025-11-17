@@ -1,15 +1,7 @@
 '''
 N - NATIVE (SAME TYPE AS MIDDLE)
-A - ANY TERRAIN
-S - SAND
-D - DIRT
-W - WATER
 X - SAND/ROCK/WATER
-Y - DIRT/GRASS/SNOW/SWAMP/ROUGH/SUBTERRANEAN/LAVA
-_! - Z WYŁĄCZENIEM NATIVE TYPE
-
-TO WSZYSTKO JEST DLA N=GRASS
-JEŚLI JEST INNE OZNACZENIE NIŻ N, TO ZNACZY ŻE NIE MOŻE BYĆ N
+Y - DIRT/GRASS/SNOW/SWAMP/ROUGH/SUBTERRANEAN/LAVA (DIRT BASED TYPES)
 '''
 
 from generation.tile_gen.tile_gen import SpriteType
@@ -105,6 +97,11 @@ dirt_based_terrain_sprite_mappings = {
     "YYY\nNNY\nNNY": (SpriteType.DIRT_OUTER_CORNER, True, False),
     "YNN\nYNN\nYYY": (SpriteType.DIRT_OUTER_CORNER, False, True),
     "NNY\nNNY\nYYY": (SpriteType.DIRT_OUTER_CORNER, True, True),
+
+    "NYY\nYNN\nYNN": (SpriteType.DIRT_OUTER_CORNER, False, False),
+    "YYN\nNNY\nNNY": (SpriteType.DIRT_OUTER_CORNER, True, False),
+    "YNN\nYNN\nNYY": (SpriteType.DIRT_OUTER_CORNER, False, True),
+    "NNY\nNNY\nYYN": (SpriteType.DIRT_OUTER_CORNER, True, True),
     
     # DIRT_EDGE_VERTICAL
     "YNN\nYNN\nYNN": (SpriteType.DIRT_EDGE_VERTICAL, False, False),

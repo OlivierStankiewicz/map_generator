@@ -13,6 +13,11 @@ water_sprite_mappings = {
     "ANN\nANN\nAAA": (SpriteType.SAND_OUTER_CORNER, False, True),
     "NNA\nNNA\nAAA": (SpriteType.SAND_OUTER_CORNER, True, True),
     
+    "NAA\nANN\nANN": (SpriteType.SAND_OUTER_CORNER, False, False),
+    "AAN\nNNA\nNNA": (SpriteType.SAND_OUTER_CORNER, True, False),
+    "ANN\nANN\nNAA": (SpriteType.SAND_OUTER_CORNER, False, True),
+    "NNA\nNNA\nAAN": (SpriteType.SAND_OUTER_CORNER, True, True),
+    
     # SAND_EDGE_VERTICAL
     "ANN\nANN\nANN": (SpriteType.SAND_EDGE_VERTICAL, False, False),
     "NNA\nNNA\nNNA": (SpriteType.SAND_EDGE_VERTICAL, True, False),

@@ -13,6 +13,16 @@ dirt_sprite_mappings = {
     "XNN\nXNN\nXXX": (SpriteType.SAND_OUTER_CORNER, False, True),
     "NNX\nNNX\nXXX": (SpriteType.SAND_OUTER_CORNER, True, True),
     
+    "YXX\nXNN\nXNN": (SpriteType.SAND_OUTER_CORNER, False, False),    
+    "XXY\nNNX\nNNX": (SpriteType.SAND_OUTER_CORNER, True, False),
+    "XNN\nXNN\nYXX": (SpriteType.SAND_OUTER_CORNER, False, True),
+    "NNX\nNNX\nXXY": (SpriteType.SAND_OUTER_CORNER, True, True),
+
+    "NXX\nXNN\nXNN": (SpriteType.SAND_OUTER_CORNER, False, False),
+    "XXN\nNNX\nNNX": (SpriteType.SAND_OUTER_CORNER, True, False),
+    "XNN\nXNN\nNXX": (SpriteType.SAND_OUTER_CORNER, False, True),
+    "NNX\nNNX\nXXN": (SpriteType.SAND_OUTER_CORNER, True, True),
+    
     # SAND_EDGE_VERTICAL
     "XNN\nXNN\nXNN": (SpriteType.SAND_EDGE_VERTICAL, False, False),
     "NNX\nNNX\nNNX": (SpriteType.SAND_EDGE_VERTICAL, True, False),
