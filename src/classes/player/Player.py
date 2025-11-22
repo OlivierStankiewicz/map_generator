@@ -52,7 +52,7 @@ class Player:
             "heroes": [hero.to_dict() for hero in self.heroes]
         }
         
-        # Dodaj main_town tylko jeúli nie jest None
+        # Dodaj main_town tylko je≈õli nie jest None
         if self.main_town is not None:
             result["main_town"] = self.main_town.to_dict()
             

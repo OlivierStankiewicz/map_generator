@@ -19,5 +19,5 @@ class StartingHero(Heroes):
         return {
             "type": self.type,
             "portrait": self.portrait,
-            # "name": self.name
+            "name": self.name
         }

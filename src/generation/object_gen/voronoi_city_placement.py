@@ -122,7 +122,7 @@ class VoronoiCityPlacer:
         # Small margin from edges to avoid placement exactly on border
         edge_margin = 3  # Just enough to avoid edge artifacts
         
-        # print(f"Generating {num_cities} cities with min distance {min_distance}...")
+        # # print(f"Generating {num_cities} cities with min distance {min_distance}...")
         
         while len(seeds) < num_cities and attempts < max_attempts:
             # For each new seed, try to place it as far as possible from existing seeds
@@ -966,29 +966,29 @@ def get_city_limits_for_map(map_width: int, map_height: int, min_distance: int =
 def generate_city_positions(map_format: int, player_cities: int, neutral_cities: int,
                             min_distance: int):
     """Test the new edge calculation functionality."""
-    print("\n=== TESTING VORONOI EDGES ===")
+    # print("\n=== TESTING VORONOI EDGES ===")
 
     # Small test case to visualize edges
     placer = VoronoiCityPlacer(map_format, map_format)
     result = placer.place_cities_with_voronoi(player_cities, neutral_cities, min_distance, return_edges=True)
 
-    print(f"\nPlacement results:")
-    print(f"Cities: {len(result.cities)}")
-    print(f"Edges: {len(result.edges)}")
-    print(f"Min distance: {result.min_distance_achieved:.1f}")
+    # print(f"\nPlacement results:")
+    # print(f"Cities: {len(result.cities)}")
+    # print(f"Edges: {len(result.edges)}")
+    # print(f"Min distance: {result.min_distance_achieved:.1f}")
 
-    print("\nCity positions:")
-    for i, city in enumerate(result.cities):
-        city_type = f"Player {city.player_id}" if city.is_player_city else f"Neutral {i - sum(1 for c in result.cities[:i] if c.is_player_city) + 1}"
+    # print("\nCity positions:")
+    # for i, city in enumerate(result.cities):
+    #     city_type = f"Player {city.player_id}" if city.is_player_city else f"Neutral {i - sum(1 for c in result.cities[:i] if c.is_player_city) + 1}"
         # city.x and city.y may be floats (tile centers)
-        print(f"  {city_type}: ({city.x:5.2f}, {city.y:5.2f}) - Region size: {city.region_area}")
-        if city.region_boundary is not None:
-            print(f"    Boundary points: {len(city.region_boundary)}")
+        # print(f"  {city_type}: ({city.x:5.2f}, {city.y:5.2f}) - Region size: {city.region_area}")
+        # if city.region_boundary is not None:
+            # print(f"    Boundary points: {len(city.region_boundary)}")
 
-    print("\nVoronoi edges:")
-    for i, edge in enumerate(result.edges):
-        print(f"  Edge {i + 1}: {edge.region1_seed} <-> {edge.region2_seed}")
-        print(f"    Boundary length: {edge.length:.1f} points")
+    # print("\nVoronoi edges:")
+    # for i, edge in enumerate(result.edges):
+        # print(f"  Edge {i + 1}: {edge.region1_seed} <-> {edge.region2_seed}")
+        # print(f"    Boundary length: {edge.length:.1f} points")
 
     return result
 
@@ -1153,10 +1153,10 @@ def generate_city_positions_with_fields(map_format: int, player_cities: int, neu
     Returns:
         dict: Contains 'cities', 'all_regions', 'city_to_fields'
     """
-    print(f"\n=== GENEROWANIE {total_regions} REGIONOW DLA {player_cities + neutral_cities} MIAST ===")
+    # print(f"\n=== GENEROWANIE {total_regions} REGIONOW DLA {player_cities + neutral_cities} MIAST ===")
     
     # Krok 1: Wygeneruj wszystkie regiony Voronoi
-    print(f"Tworzenie VoronoiCityPlacer z rozmiarem mapy: {map_format}x{map_format}")
+    # print(f"Tworzenie VoronoiCityPlacer z rozmiarem mapy: {map_format}x{map_format}")
     placer = VoronoiCityPlacer(map_format, map_format)
     
     # Wygeneruj pozycje dla wszystkich region�w (nie tylko miast)
@@ -1165,7 +1165,7 @@ def generate_city_positions_with_fields(map_format: int, player_cities: int, neu
     all_region_seeds = placer.generate_seeds_with_minimum_distance(total_regions, region_min_distance)
     
     if len(all_region_seeds) < total_regions:
-        print(f"Uwaga: Udalo sie wygenerowac tylko {len(all_region_seeds)}/{total_regions} regionow")
+        # print(f"Uwaga: Udalo sie wygenerowac tylko {len(all_region_seeds)}/{total_regions} regionow")
         total_regions = len(all_region_seeds)
     
     # Wygeneruj regiony Voronoi dla wszystkich pozycjigenerate_voronoi_regions
@@ -1193,9 +1193,9 @@ def generate_city_positions_with_fields(map_format: int, player_cities: int, neu
     
     # Wybieramy pozycje miast maksymalizujac wzajemne odleglosci
     selected = select_regions_max_min_dist(all_regions, n=player_cities + neutral_cities)
-    print("Wybrane punkty:")
-    for r in selected:
-        print(r.seed_x, r.seed_y)
+    # print("Wybrane punkty:")
+    # for r in selected:
+        # print(r.seed_x, r.seed_y)
 
     city_regions = [region for region in selected[:total_cities]]
 
@@ -1254,11 +1254,11 @@ def generate_city_positions_with_fields(map_format: int, player_cities: int, neu
             break
 
         # Jesli nie udalo sie, powtorz generacje regionow (losuj inne punkty)
-        print(f"Nie udalo sie przypisac spojnych pol dla wszystkich miast - powtarzam generacje ({regen+1}/{max_regen_attempts})")
+        # print(f"Nie udalo sie przypisac spojnych pol dla wszystkich miast - powtarzam generacje ({regen+1}/{max_regen_attempts})")
         # Regeneruj ziarna regionow i przemapuj tiles
         all_region_seeds = placer.generate_seeds_with_minimum_distance(total_regions, region_min_distance)
         if len(all_region_seeds) < total_regions:
-            print(f"Uwaga: Udalo sie wygenerowac tylko {len(all_region_seeds)}/{total_regions} regionow podczas powtorzenia")
+            # print(f"Uwaga: Udalo sie wygenerowac tylko {len(all_region_seeds)}/{total_regions} regionow podczas powtorzenia")
             total_regions = len(all_region_seeds)
 
         all_regions = []
@@ -1281,11 +1281,11 @@ def generate_city_positions_with_fields(map_format: int, player_cities: int, neu
         raise Exception(f"Nie udalo sie przypisac 3 przylegajacych pol dla kazdego miasta po {max_regen_attempts} probach")
 
     # Wypisz przypisania pol do miast
-    for i, assigned in city_to_fields.items():
-        print(f"  Miasto {i+1}: pola {assigned}")
-        print(f"  Miasto {i+1}: pola ({all_regions[assigned[0] - 1].seed_x}, {all_regions[assigned[0] - 1].seed_y}), "
-              f"({all_regions[assigned[1] - 1].seed_x}, {all_regions[assigned[1] - 1].seed_y}), "
-              f"({all_regions[assigned[2] - 1].seed_x}, {all_regions[assigned[2] - 1].seed_y})")
+    # for i, assigned in city_to_fields.items():
+        # print(f"  Miasto {i+1}: pola {assigned}")
+        # print(f"  Miasto {i+1}: pola ({all_regions[assigned[0] - 1].seed_x}, {all_regions[assigned[0] - 1].seed_y}), "
+        #       f"({all_regions[assigned[1] - 1].seed_x}, {all_regions[assigned[1] - 1].seed_y}), "
+        #       f"({all_regions[assigned[2] - 1].seed_x}, {all_regions[assigned[2] - 1].seed_y})")
     
     # Krok 4: Utworz obiekty miast
     cities = []
@@ -1350,12 +1350,12 @@ def generate_city_positions_with_fields(map_format: int, player_cities: int, neu
     # Wygeneruj obram�wki dla ca�ych obszar�w miast
     city_boundaries = generate_city_area_boundaries(all_regions, city_to_fields, placer)
     
-    print(f"Wygenerowano {len(cities)} miast z {len(all_regions)} regionami")
-    print(f"Przypisania pol do miast:")
+    # print(f"Wygenerowano {len(cities)} miast z {len(all_regions)} regionami")
+    # print(f"Przypisania pol do miast:")
     for i, fields in city_to_fields.items():
         city_type = "Gracz" if i < player_cities else "Neutralne"
         boundary_count = len(city_boundaries.get(i, []))
-        print(f"  Miasto {i+1} ({city_type}): pola {fields}, obramowka {boundary_count} punktow")
+        # print(f"  Miasto {i+1} ({city_type}): pola {fields}, obramowka {boundary_count} punktow")
     
     return {
         "cities": cities,

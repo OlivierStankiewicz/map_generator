@@ -79,7 +79,6 @@ def json_to_objectTemplate(data):
             row['object_subclass'],
             row['object_group'],
             row['is_ground'],
-            row['unknown']
         )
 
         objectTempltes.append(obj)

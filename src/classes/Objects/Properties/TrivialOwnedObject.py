@@ -4,13 +4,12 @@ class TrivialOwnedObject(Properties):
     @classmethod
     def create_default(cls) -> 'TrivialOwnedObject':
         return cls(
-            owner= 0,
-            unknown= []
+            owner= 255
         )
 
-    def __init__(self, owner: int, unknown: list[int]) -> None:
+    def __init__(self, owner: int) -> None:
         self.owner = owner
-        self.unknown = unknown
+        self.unknown = [0, 0, 0]
 
     def to_dict(self) -> dict:
         return {

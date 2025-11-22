@@ -1,756 +1,756 @@
 {
-  "def": "AVGpike0.def",
-  "passability": [255, 255, 255, 255, 191, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 56,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGcros0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 64],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 57,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGgrff0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 25,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGswor0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 58,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGmonk0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 35,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGcavl0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 5,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGangl0.def",
-  "passability": [255, 255, 255, 255, 255, 159],
-  "actionability": [0, 0, 0, 0, 0, 64],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 8,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGcent0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 6,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGdwrf0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 64],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 12,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGelf0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 64],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 15,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGpega0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 50,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGtree0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 45,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGunic0.def",
-  "passability": [255, 255, 255, 255, 159, 31],
-  "actionability": [0, 0, 0, 0, 0, 64],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 51,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGgdrg0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 24,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGgrem0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 43,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGgarg0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 17,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGgolm0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 20, // CREATURE_GENERATOR4
-  "object_subclass": 1,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGmage0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 31,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGgeni0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 18,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGnaga0.def",
-  "passability": [255, 255, 255, 255, 63, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 36,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGtitn0.def",
-  "passability": [255, 255, 255, 255, 191, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 44,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGimp0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 29,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGgogs0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 64],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 22,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGhell0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 27,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGdemn0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 37,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGpit0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 40,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGefre0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 64],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 14,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGdevl0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 10,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGskel0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 54,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGzomb0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 55,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGwght0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 64],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 48,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGvamp0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 64],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 53,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGlich0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 52,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGbkni0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 3,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGbone0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 64],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 4,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGtrog0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 46,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGharp0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 26,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGbhld0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 64],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 2,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGmdsa0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 33,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGmino0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 64],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 34,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGmant0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 32,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGrdrg0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 64],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 41,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGgobl0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 21,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGwolf0.def",
-  "passability": [255, 255, 255, 255, 191, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 19,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGorcg0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 39,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGogre0.def",
-  "passability": [255, 255, 255, 255, 63, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 38,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGrocs0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 42,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGcycl0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 9,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGbhmt0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 1,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGgnll0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 20,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGlzrd0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 30,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGdfly0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 11,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGbasl0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 0,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGgorg0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 23,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGwyvn0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 64],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 49,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGhydr0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 64],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 28,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGpixie.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 59,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVG2ela.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 69,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVG2elw.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 72,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVG2elf.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 71,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVG2ele.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 70,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGelp.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 60,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGfbrd.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 17, // CREATURE_GENERATOR1
-  "object_subclass": 61,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-}
+      "def": "AVGpike0.def",
+      "passability": [255, 255, 255, 255, 191, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 56,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGcros0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 64],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 57,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGgrff0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 25,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGswor0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 58,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGmonk0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 35,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGcavl0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 5,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGangl0.def",
+      "passability": [255, 255, 255, 255, 255, 159],
+      "actionability": [0, 0, 0, 0, 0, 64],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 8,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGcent0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 6,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGdwrf0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 64],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 12,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGelf0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 64],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 15,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGpega0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 50,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGtree0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 45,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGunic0.def",
+      "passability": [255, 255, 255, 255, 159, 31],
+      "actionability": [0, 0, 0, 0, 0, 64],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 51,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGgdrg0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 24,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGgrem0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 43,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGgarg0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 17,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGgolm0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 20, // CREATURE_GENERATOR4
+      "object_subclass": 1,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGmage0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 31,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGgeni0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 18,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGnaga0.def",
+      "passability": [255, 255, 255, 255, 63, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 36,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGtitn0.def",
+      "passability": [255, 255, 255, 255, 191, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 44,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGimp0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 29,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGgogs0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 64],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 22,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGhell0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 27,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGdemn0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 37,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGpit0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 40,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGefre0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 64],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 14,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGdevl0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 10,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGskel0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 54,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGzomb0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 55,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGwght0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 64],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 48,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGvamp0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 64],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 53,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGlich0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 52,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGbkni0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 3,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGbone0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 64],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 4,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGtrog0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 46,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGharp0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 26,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGbhld0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 64],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 2,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGmdsa0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 33,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGmino0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 64],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 34,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGmant0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 32,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGrdrg0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 64],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 41,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGgobl0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 21,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGwolf0.def",
+      "passability": [255, 255, 255, 255, 191, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 19,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGorcg0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 39,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGogre0.def",
+      "passability": [255, 255, 255, 255, 63, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 38,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGrocs0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 42,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGcycl0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 9,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGbhmt0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 1,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGgnll0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 20,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGlzrd0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 30,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGdfly0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 11,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGbasl0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 0,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGgorg0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 23,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGwyvn0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 64],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 49,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGhydr0.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 64],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 28,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGpixie.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 59,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVG2ela.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 69,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVG2elw.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 72,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVG2elf.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 71,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVG2ele.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 70,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGelp.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 60,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+      "def": "AVGfbrd.def",
+      "passability": [255, 255, 255, 255, 255, 63],
+      "actionability": [0, 0, 0, 0, 0, 128],
+      "allowed_landscapes": [255, 1],
+      "landscape_group": [255, 0],
+      "object_class": 17, // CREATURE_GENERATOR1
+      "object_subclass": 61,
+      "object_group": 0, // Terrain
+      "is_ground": 0,
+      "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    }

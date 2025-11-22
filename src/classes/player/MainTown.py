@@ -10,7 +10,7 @@ class MainTown:
             z=0
         )
 
-    def __init__(self, generate_hero: bool, town_type: int, x: int, y: int, z: int) -> None:
+    def __init__(self, generate_hero: int, town_type: int, x: int, y: int, z: int) -> None:
         self.generate_hero = generate_hero
         self.town_type = town_type
         self.x = x

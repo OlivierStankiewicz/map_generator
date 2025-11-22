@@ -25,10 +25,10 @@ from classes.Enums.HallLevel import HallLevel
 from classes.Enums.CastleLevel import CastleLevel
 
 @dataclass
-class VictoryConditionParams():
-    victory_condition: VictoryConditions
-    allow_normal_win: int
-    applies_to_computer: int
+class VictoryConditionParams:
+    victory_condition: VictoryConditions = VictoryConditions.NORMAL
+    allow_normal_win: int = 1
+    applies_to_computer: int = 1
     # ACQUIRE_ARTIFACT | TRANSPORT_ARTIFACT
     artifact_type: ArtifactType = None
     # ACCUMULATE CREATURES

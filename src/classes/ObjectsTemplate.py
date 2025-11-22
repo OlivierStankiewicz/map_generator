@@ -13,12 +13,11 @@ class ObjectsTemplate:
             object_subclass= 0,
             object_group= 2, #
             is_ground= 0,
-            unknown= [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         )
 
     def __init__(self, definition: str, passability: list[int], actionability: list[int], allowed_landscapes: list[int],
                  landscape_group: list[int], object_class: int, object_subclass: int, object_group: int,
-                 is_ground: int, unknown: list[int]) -> None:
+                 is_ground: int) -> None:
         self.definition = definition
         self.passability = passability
         self.actionability = actionability

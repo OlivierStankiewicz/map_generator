@@ -5,7 +5,7 @@ class Heroes:
     def create_default(cls):
         return cls(
             type=255, # Heroes type
-            name= ""
+            name= ''
         )
 
     def __init__(self, type: int, name: str) -> None:

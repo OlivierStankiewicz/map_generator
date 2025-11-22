@@ -7,13 +7,12 @@ class Guardians:
         return cls(
             message= "",
             creatures= [Creatures.create_default() for _ in range(7)],
-            unknown=[0, 0, 0, 0]
         )
 
-    def __init__(self, message: str, creatures: list[Creatures], unknown: list) -> None:
+    def __init__(self, message: str, creatures: list[Creatures]) -> None:
         self.message = message
         self.creatures = creatures
-        self.unknown = unknown
+        self.unknown = [0, 0, 0, 0]
 
     def to_dict(self) -> dict:
         return {

@@ -7,8 +7,8 @@ from generation.player_gen.starting_hero_gen import generate_starting_hero
 
 def generate_player() -> Player:
     return Player(
-        can_be_human=1,  # 1 - True, 0 - False, def 1
-        can_be_computer=1,  # 1 - True, 0 - False, def 1
+        can_be_human=0,  # 1 - True, 0 - False, def 1
+        can_be_computer=0,  # 1 - True, 0 - False, def 1
         behavior=Behavior.RANDOM.value,  # Enums->Behaviors, def Behaviors.RANDOM
         has_customized_alignments=0,  # it can have other values but idk how
         allowed_alignments=AllowedAlignments.create_default(),

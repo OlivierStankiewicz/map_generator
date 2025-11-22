@@ -13,7 +13,7 @@ from classes.Enums.LossConditions import LossConditions
 
 @dataclass
 class LossConditionParams:
-    loss_condition: LossConditions
+    loss_condition: LossConditions = LossConditions.NORMAL
     x: int = 255
     y: int = 255
     z: int = 255
