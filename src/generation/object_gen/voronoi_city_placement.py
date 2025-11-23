@@ -1258,7 +1258,7 @@ def generate_city_positions_with_fields(map_format: int, player_cities: int, neu
         # Jesli nie udalo sie, powtorz generacje regionow (losuj inne punkty)
         # print(f"Nie udalo sie przypisac spojnych pol dla wszystkich miast - powtarzam generacje ({regen+1}/{max_regen_attempts})")
         # Regeneruj ziarna regionow i przemapuj tiles
-        all_region_seeds = placer.generate_seeds_with_minimum_distance(total_regions, region_min_distance)
+        all_region_seeds = placer.generate_seeds_with_minimum_distance(total_regions, region_min_distance, reserved_tiles)
         if len(all_region_seeds) < total_regions:
             # print(f"Uwaga: Udalo sie wygenerowac tylko {len(all_region_seeds)}/{total_regions} regionow podczas powtorzenia")
             total_regions = len(all_region_seeds)

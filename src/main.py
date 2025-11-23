@@ -34,7 +34,7 @@ terrain_values = {
     TerrainType.SNOW: 2,
     TerrainType.SAND: 4,
 }
-map = generate_voronoi_map(terrain_values)
+map = generate_voronoi_map(terrain_values, size=108)
 
 def filter_none_values(obj):
     """Recursively remove keys with None values from dictionaries"""

@@ -60,8 +60,8 @@ class TownParams:
 
 
 class ObjectTemplateHelper:
-    def __init__(self, tiles: list[Tile], townParams: TownParams, numberOfPlayers: int = 8,
-                 victory_condition_params: VictoryConditionParams = None, reserved_tiles: set[tuple[int, int]] = set()):
+    def __init__(self, tiles: list[Tile], town_params: TownParams, number_of_players: int = 8,
+                 victory_condition_params: VictoryConditionParams = None, reserved_tiles: set[tuple[int, int]] = None):
         self.id = 1
         self.absod_id = 0
         self.tiles: list[Tile] = tiles
@@ -75,7 +75,7 @@ class ObjectTemplateHelper:
         self.heroes = read_object_templates_from_json("heroes")
         self.heroes_specification = read_object_from_json("heroes_specification")
         self.mines = read_object_templates_from_json("mines")
-        self.reserved_tiles = reserved_tiles
+        self.reserved_tiles = reserved_tiles if reserved_tiles is not None else set()
 
         self.map_format = int(sqrt(len(self.tiles) / 2))
 
@@ -89,8 +89,8 @@ class ObjectTemplateHelper:
         self.final_city_positions: list[tuple[int, int, int]] = [] # TownType.value, pos_x, pos_y
 
         ### params ###
-        self.townParams = townParams
-        self.numberOfPlayers = numberOfPlayers
+        self.town_params = town_params
+        self.number_of_players = number_of_players
         self.occ = []
         self.victory_condition_params = victory_condition_params
 
@@ -99,10 +99,10 @@ class ObjectTemplateHelper:
         # Generate positions and all regions
         self.result = generate_city_positions_with_fields(
             self.map_format,
-            self.townParams.player_cities,
-            self.townParams.neutral_cities,
-            self.townParams.min_distance,
-            self.townParams.total_regions,
+            self.town_params.player_cities,
+            self.town_params.neutral_cities,
+            self.town_params.min_distance,
+            self.town_params.total_regions,
             self.reserved_tiles
         )
 
@@ -206,10 +206,11 @@ class ObjectTemplateHelper:
                 tile_x = x - 7 + col
                 tile_y = y - 5 + row
 
-                passable = bool(not (template.passability[row] >> (7 - col)) & 1)
+                passable = bool(not(template.passability[row] >> (7 - col)) & 1)
                 # print((tile_x, tile_y), passable)
                 actionable = bool((template.actionability[row] >> (7 - col)) & 1)
                 # print((tile_x, tile_y), actionable)
+
 
                 # Jeśli kafelek, który obiekt by zajmował, leży poza mapą -> invalid
                 if not (0 <= tile_x < self.map_format - 2 and 2 <= tile_y < self.map_format - 2):
@@ -217,12 +218,15 @@ class ObjectTemplateHelper:
                         # obiekt wychodzi poza mapę
                         return False
                     continue
-
+                
+                # print(f"Passable: {passable}, \nActionable: {actionable}, \nTile: ({tile_x}, {tile_y})")
                 if passable or actionable:
-                    if self.tiles[tile_y * self.map_format + tile_x] != TerrainType.WATER and self.tiles[tile_y * self.map_format + tile_x] != TerrainType.ROCK and self.occupied_tiles[tile_y][tile_x]:
-                        # print(f"Pozycja ({x}, {y}) - kolizja na kafelku ({tile_x}, {tile_y})")
+                    if self.occupied_tiles[tile_y][tile_x]:
                         return False
-
+                    if (tile_x, tile_y) in self.reserved_tiles:
+                        print(f"x,y:, {tile_x}, {tile_y}, Reserved: {(tile_x, tile_y) in self.reserved_tiles}")
+                        return False
+        
         return True
 
     def validate_placement_for_landscape(self, template: ObjectsTemplate, x: int, y: int) -> bool:
@@ -254,7 +258,7 @@ class ObjectTemplateHelper:
                     continue
 
                 if passable or actionable:
-                    if self.occupied_tiles_excluding_landscape[tile_y][tile_x]:
+                    if self.occupied_tiles_excluding_landscape[tile_y][tile_x] or (tile_x, tile_y) in self.reserved_tiles:
                         # print(f"Pozycja ({x}, {y}) - kolizja na kafelku ({tile_x}, {tile_y})")
                         return False
 
@@ -669,7 +673,7 @@ class ObjectTemplateHelper:
             for pos_x, pos_y in chosen_boundary_raster:
                 test_template = ObjectsTemplate.create_default()
                 test_template.passability = [255, 255, 248, 240, 240, 248]
-                final_x, final_y = self.find_alternative_position(test_template, int(pos_x), int(pos_y), max_offset=510)
+                final_x, final_y = self.find_alternative_position(test_template, int(pos_x), int(pos_y), max_offset=5)
 
                 if final_x is not None and final_y is not None:
                     tile_type_idx: int = TerrainType(self.tiles[final_y * self.map_format + final_x].terrain_type).value
