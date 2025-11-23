@@ -18,7 +18,7 @@ from generation.map_gen.utils import upscale_map, smooth_map, choose_sprite
 
 from generation.object_gen.object_template_helper import ObjectTemplateHelper, TownParams
 from generation.object_gen.objects_template_gen import generate_objects_template_and_objects
-from generation.empty_spaces_gen.empty_spaces_gen import gen_empty_spaces_mask
+from generation.empty_spaces_gen.empty_spaces_gen import EmptySpacesGenerator
 
 
 def generate_base_map() -> Map:
@@ -67,13 +67,7 @@ def generate_all_terrain_all_sprite_map() -> Map:
         objects_templates = [generate_objects_template_and_objects()],
         objects= [],
         global_events= [],
-        padding= [  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        padding= [0] * 124
     )
 
 
@@ -89,19 +83,16 @@ def generate_one_terrain_all_sprite_map(terrain_type: TerrainType) -> Map:
         tiles.append(generate_random_tile(random_terrain_sprite=False, random_terrain_type=False))
 
 def generate_voronoi_map(
-    terrain_values: Dict[TerrainType, int] = {
-        TerrainType.WATER: 1,
-        TerrainType.GRASS: 3,
-        TerrainType.SAND: 2,
-        TerrainType.DIRT: 3,
-    }, 
-    width: int = 72,
-    height: int = 72) -> Map:
+    terrain_values: Dict[TerrainType, int],
+    size: int = 72) -> Map:
     """
     Generate a map using Voronoi regions to assign terrain types.
     """
+    width = size
+    height = size
+    
     tiles = []
-    generator = VoronoiMapGenerator(height=height//2, width=width//2, terrain_weights=terrain_values)
+    generator = VoronoiMapGenerator(size=size//2, terrain_weights=terrain_values)
     terrain_map = generator.generate_map()
 
     # upscale map
@@ -136,12 +127,8 @@ def generate_voronoi_map(
     objects_templates, objects, city_field_mapping = obj.init_data()
 
     # reserve empty spaces for roads
-    empty_spaces_mask = gen_empty_spaces_mask(
-        width=width,
-        height=height,
-        terrain_map=terrain_map,
-        objects=objects
-    )
+    empty_spaces_generator = EmptySpacesGenerator(size, terrain_map, objects)
+    empty_spaces_mask = empty_spaces_generator.generate_empty_spaces()
     for y in range(height):
         for x in range(width):
             if empty_spaces_mask[y][x]:
@@ -155,7 +142,7 @@ def generate_voronoi_map(
 
     return Map(
         format=28,
-        basic_info=generate_basic_info(),
+        basic_info=generate_basic_info(map_size=size),
         players=[generate_player() for _ in range(8)],
         additional_info=generate_additional_info(),
         tiles=tiles,
@@ -164,3 +151,6 @@ def generate_voronoi_map(
         global_events=[],
         padding=[0] * 124
     )
+    
+    
+# reserve empty spaces

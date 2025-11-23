@@ -10,6 +10,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__))))
 from generation.map_gen.map_gen import generate_voronoi_map
 from classes.tile.Tile import TerrainType
 
+h3mtxt_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "h3mtxt.exe"))
+
 root = tk.Tk()
 root.withdraw()
 
@@ -36,8 +38,9 @@ terrain_values = {
     TerrainType.LAVA: 1,
     TerrainType.SAND: 1,
     TerrainType.DIRT: 3,
+    TerrainType.WATER: 3,
 }
-map = generate_voronoi_map(terrain_values)
+map = generate_voronoi_map(terrain_values=terrain_values, size=72)
 
 def filter_none_values(obj):
     """Recursively remove keys with None values from dictionaries"""
@@ -65,7 +68,7 @@ except Exception as e:
 
 print("Converting JSON to h3m...")
 try:
-    os.system(f'h3mtxt.exe {json_file_path} {h3m_file_path}')
+    os.system(f'{h3mtxt_path} {json_file_path} {h3m_file_path}')
     print("Conversion completed successfully.")
     print(f"New file created at: {h3m_file_path}")
 

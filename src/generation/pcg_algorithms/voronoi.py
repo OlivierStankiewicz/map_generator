@@ -25,9 +25,9 @@ class VoronoiRegion:
         )
 
 class VoronoiMapGenerator:
-    def __init__(self, height: int, width: int, terrain_weights: Dict[TerrainType, int], alpha: int = 5):
-        self.height = height
-        self.width = width
+    def __init__(self, size: int, terrain_weights: Dict[TerrainType, int], alpha: int = 5):
+        self.height = size
+        self.width = size
         self.terrain_weights = terrain_weights
         self.alpha = alpha
         

@@ -13,7 +13,8 @@ class BasicInfo:
             max_hero_level= 0 # max level
         )
     
-    def __init__(self, is_playable: int, map_size: int, has_two_levels: int, name: str, description: str, difficulty: int, max_hero_level: int) -> None:
+    def __init__(self, is_playable: int = 1, map_size: int = 72, has_two_levels: int = 1,
+                 name: str = "", description: str = "", difficulty: int = 1, max_hero_level: int = 0) -> None:
         self.is_playable = is_playable
         self.map_size = map_size
         self.has_two_levels = has_two_levels
