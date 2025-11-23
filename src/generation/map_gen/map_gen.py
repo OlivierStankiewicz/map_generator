@@ -117,6 +117,8 @@ def generate_voronoi_map(
     generator = VoronoiMapGenerator(height=height//2, width=width//2, terrain_weights=terrain_values)
     terrain_map = generator.generate_map()
 
+    reserved_tiles = set()
+
     # upscale map
     terrain_map = upscale_map(terrain_map=terrain_map)
     terrain_map = smooth_map(terrain_map=terrain_map)
@@ -124,6 +126,8 @@ def generate_voronoi_map(
         for x in range(width):
             terrain_type = terrain_map[y][x]
             sprite_val, x_terrain_flip, y_terrain_flip = choose_sprite(terrain_map, x, y)
+            if terrain_type == TerrainType.ROCK or terrain_type == TerrainType.WATER:
+                reserved_tiles.add((x, y))
             tiles.append(
                 generate_tile(
                     terrain_type=terrain_type, terrain_sprite=sprite_val,
@@ -147,7 +151,7 @@ def generate_voronoi_map(
 
     obj = ObjectTemplateHelper(tiles=tiles, numberOfPlayers=8,
                                townParams=TownParams(player_cities, neutral_cities, 30, total_regions),
-                               victory_condition_params=VictoryConditionParams(victory_condition=VictoryConditions.BUILD_GRAIL, creature_type=CreatureType.Griffin, count=150))
+                               victory_condition_params=VictoryConditionParams(victory_condition=VictoryConditions.BUILD_GRAIL, creature_type=CreatureType.Griffin, count=150), reserved_tiles=reserved_tiles)
     objects_templates, objects, city_field_mapping, players = obj.initData()
 
     # Wyswietl mapowanie miast do pol

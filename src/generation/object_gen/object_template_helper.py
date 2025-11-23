@@ -6,8 +6,6 @@ from dataclasses import dataclass
 from random import randint, choices, sample
 from math import sqrt
 
-from shiboken6.Shiboken import Object
-
 from classes.Enums.ArtifactType import converterTypeToNum as ar_converterTypeToNum
 from classes.Enums.CreatureType import converterTypeToNum as cr_converterTypeToNum
 from classes.Enums.Disposition import Disposition
@@ -63,7 +61,7 @@ class TownParams:
 
 class ObjectTemplateHelper:
     def __init__(self, tiles: list[Tile], townParams: TownParams, numberOfPlayers: int = 8,
-                 victory_condition_params: VictoryConditionParams = None):
+                 victory_condition_params: VictoryConditionParams = None, reserved_tiles: set[tuple[int, int]] = set()):
         self.id = 1
         self.absod_id = 0
         self.tiles: list[Tile] = tiles
@@ -77,6 +75,7 @@ class ObjectTemplateHelper:
         self.heroes = read_object_templates_from_json("heroes")
         self.heroes_specification = read_object_from_json("heroes_specification")
         self.mines = read_object_templates_from_json("mines")
+        self.reserved_tiles = reserved_tiles
 
         self.map_format = int(sqrt(len(self.tiles) / 2))
 
@@ -103,7 +102,8 @@ class ObjectTemplateHelper:
             self.townParams.player_cities,
             self.townParams.neutral_cities,
             self.townParams.min_distance,
-            self.townParams.total_regions
+            self.townParams.total_regions,
+            self.reserved_tiles
         )
 
         # test = ObjectsTemplate.create_default()
@@ -219,7 +219,7 @@ class ObjectTemplateHelper:
                     continue
 
                 if passable or actionable:
-                    if self.occupied_tiles[tile_y][tile_x]:
+                    if self.tiles[tile_y * self.map_format + tile_x] != TerrainType.WATER and self.tiles[tile_y * self.map_format + tile_x] != TerrainType.ROCK and self.occupied_tiles[tile_y][tile_x]:
                         # print(f"Pozycja ({x}, {y}) - kolizja na kafelku ({tile_x}, {tile_y})")
                         return False
 

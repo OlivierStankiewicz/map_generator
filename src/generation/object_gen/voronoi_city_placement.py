@@ -108,7 +108,8 @@ class VoronoiCityPlacer:
     
     def generate_seeds_with_minimum_distance(self, 
                                            num_cities: int, 
-                                           min_distance: int) -> List[Tuple[int, int]]:
+                                           min_distance: int,
+                                           reserved_tiles: set[tuple[int, int]]) -> List[Tuple[int, int]]:
         """
         Generate city seeds using Poisson disk sampling for minimum distance.
         Enhanced version with better distance guarantees.
@@ -140,8 +141,8 @@ class VoronoiCityPlacer:
                     distance = math.sqrt((x - sx)**2 + (y - sy)**2)
                     min_distance_to_seeds = min(min_distance_to_seeds, distance)
                 
-                # If this is a valid position and better than our current best
-                if min_distance_to_seeds >= min_distance and min_distance_to_seeds > best_min_distance:
+                # If this is a valid position and better than our current best and not a reserved tile
+                if min_distance_to_seeds >= min_distance and min_distance_to_seeds > best_min_distance and (x, y) not in reserved_tiles:
                     best_candidate = (x, y)
                     best_min_distance = min_distance_to_seeds
             
@@ -1139,7 +1140,7 @@ def select_regions_max_min_dist(all_regions: List[VoronoiRegion], n: int) -> Lis
 
 
 def generate_city_positions_with_fields(map_format: int, player_cities: int, neutral_cities: int,
-                                       min_distance: int, total_regions: int):
+                                       min_distance: int, total_regions: int, reserved_tiles: set[tuple[int, int]]):
     """
     Generate city positions and all Voronoi regions, where each city has 3 fields.
     
@@ -1162,7 +1163,7 @@ def generate_city_positions_with_fields(map_format: int, player_cities: int, neu
     # Wygeneruj pozycje dla wszystkich region�w (nie tylko miast)
     # Zmniejszamy wymagan� odleg�o�� mi�dzy regionami, �eby zmie�ci� wi�cej
     region_min_distance = max(5, min_distance // 4)  # Znacznie mniejsza odleg�o�� dla region�w
-    all_region_seeds = placer.generate_seeds_with_minimum_distance(total_regions, region_min_distance)
+    all_region_seeds = placer.generate_seeds_with_minimum_distance(total_regions, region_min_distance, reserved_tiles)
     
     if len(all_region_seeds) < total_regions:
         # print(f"Uwaga: Udalo sie wygenerowac tylko {len(all_region_seeds)}/{total_regions} regionow")
@@ -1182,8 +1183,9 @@ def generate_city_positions_with_fields(map_format: int, player_cities: int, neu
     for y in range(map_format):
         for x in range(map_format):
             closest_region = min(all_regions, key=lambda r: (r.seed_x - x) ** 2 + (r.seed_y - y) ** 2)
-            closest_region.tiles.append((x, y))
-            ownership[y][x] = closest_region
+            if (x, y) not in reserved_tiles:
+                closest_region.tiles.append((x, y))
+                ownership[y][x] = closest_region
     
     # Krok 2: Wybierz pozycje miast z wygenerowanych region�w
     total_cities = player_cities + neutral_cities
