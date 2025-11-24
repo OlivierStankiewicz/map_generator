@@ -102,6 +102,16 @@ class ObjectTemplateHelper:
         self.victory_condition_params = victory_condition_params
         self.difficulty = difficulty
 
+        limitations =       [#36      72      108     144
+                            [(2,4),  (2,8),  (2,8),  (2,8)], #player
+                            [(2,4),  (2,8),  (2,8),  (2,8)], #miasto
+                            [(1,1),  (2,2),  (2,2),  (2,2)], #dwelling
+                            [(1,1),  (1,1),  (1,1),  (1,1)], #level3
+                            [(1,1),  (1,2),  (2,2),  (4,4)], #level2
+                            [(1,1),  (1,2),  (2,2),  (5,5)], #level1.5
+                            [(1,1),  (1,2),  (2,2),  (8,10)]] #level1
+        self.limits = [i[int(self.map_format/36) - 1] for i in limitations]
+
 
     def initData(self):
         # Generate positions and all regions
@@ -456,8 +466,9 @@ class ObjectTemplateHelper:
             assigned_fields = city_to_fields.get(i, [])
             if len(assigned_fields) < 1:
                 continue
+
             # Add RandomDwelling on remaining fields with precise positioning
-            for additional_field_id in assigned_fields[1:]:  # Skip first field (main)
+            for additional_field_id in assigned_fields[1:self.limits[2][0] + 1]:  # Skip first field (main)
                 additional_field = next((f for f in fields_info if f.field_id == additional_field_id), None)
                 if additional_field:
                     precise_dwelling_x, precise_dwelling_y = self.find_dwelling_position(all_regions,
@@ -566,7 +577,7 @@ class ObjectTemplateHelper:
 
         for _, city_fields in city_to_fields.items():
             for field in city_fields:
-                for _ in range(randint(1, 2)):
+                for _ in range(randint(self.limits[6][0], self.limits[6][1])):
                     r = randint(0, len(special_buildings) - 1)
                     template = special_buildings[r]
 
@@ -627,7 +638,7 @@ class ObjectTemplateHelper:
         for _, city_fields in city_to_fields.items():
             for field_number in city_fields[1:2]:
                 boundary_raster = fields_info[field_number - 1].boundary_raster
-                chosen_boundary_raster = choices(boundary_raster, k=randint(1, 2))
+                chosen_boundary_raster = choices(boundary_raster, k=randint(self.limits[5][0], self.limits[5][1]))
 
                 object_class = []
                 for pos_x, pos_y in chosen_boundary_raster:
@@ -710,7 +721,7 @@ class ObjectTemplateHelper:
 
         for region in empty_regions:
             boundary_raster = fields_info[region].boundary_raster
-            chosen_boundary_raster = choices(boundary_raster, k=randint(1, 2))
+            chosen_boundary_raster = choices(boundary_raster, k=randint(self.limits[4][0], self.limits[4][1]))
             for pos_x, pos_y in chosen_boundary_raster:
                 test_template = ObjectsTemplate.create_default()
                 test_template.passability = [255, 255, 248, 240, 240, 248]
