@@ -7,22 +7,17 @@ class AccumulateResources(Details):
     @classmethod
     def create_default(cls) -> "AccumulateResources":
         return cls(
-            allow_normal_win=0,
-            applies_to_computer=0,
             resource_type=ResourceType.WOOD,
             amount=0
         )
 
-    def __init__(self, allow_normal_win: int, applies_to_computer: int, resource_type: ResourceType,
+    def __init__(self, resource_type: ResourceType,
                  amount: int) -> None:
-        super().__init__(allow_normal_win, applies_to_computer, VictoryConditions.ACCUMULATE_RESOURCES)
         self.resource_type = resource_type
         self.amount = amount
 
     def to_dict(self) -> dict:
-        dict = super().to_dict()
-        dict.update({
+        return {
             "resource_type": self.resource_type.value,
             "amount": self.amount
-        })
-        return dict
+        }

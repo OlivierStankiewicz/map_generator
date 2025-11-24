@@ -18,8 +18,8 @@ from classes.additional_info.VictoryConditions.TransportArtifact import Transpor
 from classes.additional_info.VictoryConditions.UpgradeTown import UpgradeTown
 
 from classes.Enums.VictoryConditions import VictoryConditions
-from classes.Enums.ArtifactType import ArtifactType
-from classes.Enums.CreatureType import CreatureType
+from classes.Enums.ArtifactType import ArtifactType, converterTypeToNum as ar_converterTypeToNum
+from classes.Enums.CreatureType import CreatureType, converterTypeToNum as cr_converterTypeToNum
 from classes.Enums.ResourceType import ResourceType
 from classes.Enums.HallLevel import HallLevel
 from classes.Enums.CastleLevel import CastleLevel
@@ -50,28 +50,30 @@ def generate_victory_condition(victory_condition_params: VictoryConditionParams)
     if victory_condition_params is None or victory_condition_params.victory_condition is None or victory_condition_params.victory_condition == VictoryConditions.NORMAL:
         return VictoryCondition.create_default()
     elif victory_condition_params.victory_condition == VictoryConditions.ACQUIRE_ARTIFACT:
-        details = AcquireArtifact(victory_condition_params.allow_normal_win, victory_condition_params.applies_to_computer, victory_condition_params.artifact_type)
+        details = AcquireArtifact(ar_converterTypeToNum(victory_condition_params.artifact_type))
     elif victory_condition_params.victory_condition == VictoryConditions.ACCUMULATE_CREATURES:
-        details = AccumulateCreatures(victory_condition_params.allow_normal_win, victory_condition_params.applies_to_computer, victory_condition_params.creature_type, victory_condition_params.count)
+        details = AccumulateCreatures(cr_converterTypeToNum(victory_condition_params.creature_type), victory_condition_params.count)
     elif victory_condition_params.victory_condition == VictoryConditions.ACCUMULATE_RESOURCES:
-        details = AccumulateResources(victory_condition_params.allow_normal_win, victory_condition_params.applies_to_computer, victory_condition_params.resource_type, victory_condition_params.amount)
+        details = AccumulateResources(victory_condition_params.resource_type, victory_condition_params.amount)
     elif victory_condition_params.victory_condition == VictoryConditions.UPGRADE_TOWN:
-        details = UpgradeTown(victory_condition_params.allow_normal_win, victory_condition_params.applies_to_computer, victory_condition_params.x, victory_condition_params.y, victory_condition_params.z, victory_condition_params.hall_level, victory_condition_params.castle_level)
+        details = UpgradeTown(victory_condition_params.x, victory_condition_params.y, victory_condition_params.z, victory_condition_params.hall_level, victory_condition_params.castle_level)
     elif victory_condition_params.victory_condition == VictoryConditions.BUILD_GRAIL:
-        details = BuildGrail(victory_condition_params.allow_normal_win, victory_condition_params.applies_to_computer, victory_condition_params.x, victory_condition_params.y, victory_condition_params.z)
+        details = BuildGrail(victory_condition_params.x, victory_condition_params.y, victory_condition_params.z)
     elif victory_condition_params.victory_condition == VictoryConditions.DEFEAT_HERO:
-        details = DefeatHero(victory_condition_params.allow_normal_win, victory_condition_params.applies_to_computer, victory_condition_params.x, victory_condition_params.y, victory_condition_params.z)
+        details = DefeatHero(victory_condition_params.x, victory_condition_params.y, victory_condition_params.z)
     elif victory_condition_params.victory_condition == VictoryConditions.CAPTURE_TOWN:
-        details = CaptureTown(victory_condition_params.allow_normal_win, victory_condition_params.applies_to_computer, victory_condition_params.x, victory_condition_params.y, victory_condition_params.z)
+        details = CaptureTown(victory_condition_params.x, victory_condition_params.y, victory_condition_params.z)
     elif victory_condition_params.victory_condition == VictoryConditions.DEFEAT_MONSTER:
-        details = DefeatMonster(victory_condition_params.allow_normal_win, victory_condition_params.applies_to_computer, victory_condition_params.x, victory_condition_params.y, victory_condition_params.z)
+        details = DefeatMonster(victory_condition_params.x, victory_condition_params.y, victory_condition_params.z)
     elif victory_condition_params.victory_condition == VictoryConditions.FLAG_DWELLINGS:
-        details = FlagDwellings(victory_condition_params.allow_normal_win, victory_condition_params.applies_to_computer)
+        details = FlagDwellings()
     elif victory_condition_params.victory_condition == VictoryConditions.FLAG_MINES:
-        details = FlagMines(victory_condition_params.allow_normal_win, victory_condition_params.applies_to_computer)
+        details = FlagMines()
     elif victory_condition_params.victory_condition == VictoryConditions.TRANSPORT_ARTIFACT:
-        details = TransportArtifact(victory_condition_params.allow_normal_win, victory_condition_params.applies_to_computer, victory_condition_params.artifact_type, victory_condition_params.x, victory_condition_params.y, victory_condition_params.z)
+        details = TransportArtifact(ar_converterTypeToNum(victory_condition_params.artifact_type), victory_condition_params.x, victory_condition_params.y, victory_condition_params.z)
 
     return VictoryCondition(
             type=victory_condition_params.victory_condition,
-            details=details)
+            details=details,
+            allow_normal_win=victory_condition_params.allow_normal_win,
+            applies_to_computer=victory_condition_params.applies_to_computer)

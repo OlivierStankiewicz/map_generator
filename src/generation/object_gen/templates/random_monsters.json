@@ -1,0 +1,96 @@
+{
+  "def": "AVWmon1.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 128],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [1, 0],
+  "object_class": 72, // RANDOM_MONSTER_L1
+  "object_subclass": 0,
+  "object_group": 2, // Monster
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVWmon2.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 128],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [1, 0],
+  "object_class": 73, // RANDOM_MONSTER_L2
+  "object_subclass": 0,
+  "object_group": 2, // Monster
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVWmon3.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 128],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [1, 0],
+  "object_class": 74, // RANDOM_MONSTER_L3
+  "object_subclass": 0,
+  "object_group": 2, // Monster
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVWmon4.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 128],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [1, 0],
+  "object_class": 75, // RANDOM_MONSTER_L4
+  "object_subclass": 0,
+  "object_group": 2, // Monster
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVWmon5.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 128],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [1, 0],
+  "object_class": 162, // RANDOM_MONSTER_L5
+  "object_subclass": 0,
+  "object_group": 2, // Monster
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVWmon6.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 128],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [1, 0],
+  "object_class": 163, // RANDOM_MONSTER_L6
+  "object_subclass": 0,
+  "object_group": 2, // Monster
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVWmon7.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 128],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [1, 0],
+  "object_class": 164, // RANDOM_MONSTER_L7
+  "object_subclass": 0,
+  "object_group": 2, // Monster
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVWmrnd0.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 128],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [1, 0],
+  "object_class": 71, // RANDOM_MONSTER
+  "object_subclass": 0,
+  "object_group": 2, // Monster
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+}

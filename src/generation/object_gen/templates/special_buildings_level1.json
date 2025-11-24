@@ -201,4 +201,16 @@
   "object_group": 0, // Terrain
   "is_ground": 0,
   "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVSgrdn0.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 128],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [85, 0],
+  "object_class": 32, // GARDEN_OF_REVELATION
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 }

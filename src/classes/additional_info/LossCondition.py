@@ -10,13 +10,14 @@ class LossCondition:
             type=LossConditions.NORMAL,
         )
 
-    def __init__(self, type: LossConditions) -> None:
+    def __init__(self, type: LossConditions, details: Details = None) -> None:
         self.type = type
-        self.details = Details.create_default()
+        self.details = details
 
     def to_dict(self) -> dict:
-        _dict = {
+        dict = {
             "type": self.type.value
         }
-        _dict.update(self.details.to_dict())
-        return _dict
+        if self.type != LossConditions.NORMAL and self.details is not None:
+            dict["details"] = self.details.to_dict()
+        return dict

@@ -14,13 +14,15 @@ root = tk.Tk()
 root.withdraw()
 
 print("Choose a folder to save the file")
-folder_path = filedialog.askdirectory(title="Select a folder to save the file")
+# folder_path = filedialog.askdirectory(title="Select a folder to save the file")
+folder_path = "C:/Users/macie/Desktop/inżynierka/tmp"
 if not folder_path:
     print("No folder selected. Exiting...")
     exit()
 print("Chosen folder:", folder_path)
 
-filename = input("Enter the file name (without extension): ").strip()
+# filename = input("Enter the file name (without extension): ").strip()
+filename = "test"
 if not filename:
     print("No filename provided. Exiting...")
     exit()
@@ -34,7 +36,7 @@ terrain_values = {
     TerrainType.SNOW: 2,
     TerrainType.SAND: 4,
 }
-map = generate_voronoi_map(terrain_values, size=108)
+map = generate_voronoi_map(terrain_values, size=72)
 
 def filter_none_values(obj):
     """Recursively remove keys with None values from dictionaries"""

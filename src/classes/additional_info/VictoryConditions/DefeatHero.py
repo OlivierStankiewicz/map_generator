@@ -5,24 +5,19 @@ class DefeatHero(Details):
     @classmethod
     def create_default(cls) -> "DefeatHero":
         return cls(
-            allow_normal_win=0,
-            applies_to_computer=0,
             x=0, # coordy bohatera
             y=0,
             z=0
         )
 
-    def __init__(self, allow_normal_win: int, applies_to_computer: int, x: int, y: int, z: int) -> None:
-        super().__init__(allow_normal_win, applies_to_computer, VictoryConditions.DEFEAT_HERO)
+    def __init__(self, x: int, y: int, z: int) -> None:
         self.x = x
         self.y = y
         self.z = z
 
     def to_dict(self) -> dict:
-        dict = super().to_dict()
-        dict.update({
+        return {
             "x": self.x,
             "y": self.y,
             "z": self.z
-        })
-        return dict
+        }

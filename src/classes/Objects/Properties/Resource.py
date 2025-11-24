@@ -5,13 +5,12 @@ class Resource(Properties):
     @classmethod
     def create_default(cls) -> "Resource":
         return cls(
-            quantity= 0,
-            unknown = []
+            quantity= 0
         )
 
-    def __init__(self, quantity: int, unknown: list[int]) -> None:
+    def __init__(self, quantity: int) -> None:
         self.quantity = quantity
-        self.unknown = unknown
+        self.unknown = [0, 0, 0, 0]
 
     def to_dict(self) -> dict:
         return {

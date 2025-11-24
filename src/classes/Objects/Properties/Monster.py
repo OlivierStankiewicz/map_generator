@@ -5,7 +5,7 @@ from classes.Objects.Properties.Helpers.MessageAndTreasures import MessageAndTre
 class Monster(Properties):
 
     @classmethod
-    def create_defaults(cls) -> "Monster":
+    def create_default(cls) -> "Monster":
         return cls(
             absod_id=0,
             count=0,
@@ -29,7 +29,7 @@ class Monster(Properties):
         dict = {
             "absod_id": self.absod_id,
             "count": self.count,
-            "disposition": self.disposition.value,
+            "disposition": self.disposition,
             "never_flees": self.never_flees,
             "does_not_grow": self.does_not_grow,
             "unknown": self.unknown

@@ -2,8 +2,11 @@ import random
 from typing import Dict
 
 from classes.Enums.ArtifactType import ArtifactType
+from classes.Enums.CastleLevel import CastleLevel
 from classes.Enums.CreatureType import CreatureType
 from classes.Enums.Formation import Formation
+from classes.Enums.HallLevel import HallLevel
+from classes.Enums.LossConditions import LossConditions
 from classes.Enums.ResourceType import ResourceType
 from classes.Enums.VictoryConditions import VictoryConditions
 from classes.Objects.Objects import Objects
@@ -20,6 +23,7 @@ from classes.tile.Flags import Flags
 
 from classes.tile.Tile import TerrainType
 from generation.additional_info_gen.loss_condition_gen import LossConditionParams
+from generation.additional_info_gen.teams_gen import TeamsParams
 from generation.additional_info_gen.victory_condition_gen import VictoryConditionParams
 from generation.basic_info_gen import generate_basic_info
 from generation.object_gen.json_parser import read_object_templates_from_json, read_object_from_json
@@ -109,8 +113,26 @@ def generate_voronoi_map(
         TerrainType.DIRT: 3,
     }, 
     size: int = 72,
-    player_cities: int = 2,
+    player_cities: int = 5,
     neutral_cities: int = 2,
+    difficulty = 1,
+    victory_condition_params: VictoryConditionParams=VictoryConditionParams(
+        victory_condition=VictoryConditions.TRANSPORT_ARTIFACT,
+        artifact_type=ArtifactType.Golden_Bow,
+        resource_type=ResourceType.GEMS,
+        creature_type=CreatureType.Griffin,
+        amount=100,
+        count=150,
+        x=255,
+        y=255,
+        z=255,
+        hall_level=HallLevel.CITY,
+        castle_level=CastleLevel.CASTLE,
+    ),
+    loss_condition_params: LossConditionParams = LossConditionParams(
+        loss_condition=LossConditions.TIME_EXPIRES,
+        days=10),
+    teams_params: TeamsParams = None
     ) -> Map:
     """
     Generate a map using Voronoi regions to assign terrain types.
@@ -163,12 +185,12 @@ def generate_voronoi_map(
             print(f"{i.terrain_type}")
 
     total_cities = player_cities + neutral_cities
-    total_regions = total_cities * 4  # 32 regiony (p?l)
+    total_regions = player_cities * 4 + neutral_cities  # 32 regiony (p?l)
 
     obj = ObjectTemplateHelper(tiles=tiles, number_of_players=8,
                                town_params=TownParams(player_cities, neutral_cities, 30, total_regions),
-                               victory_condition_params=VictoryConditionParams(victory_condition=VictoryConditions.BUILD_GRAIL, creature_type=CreatureType.Griffin, count=150),
-                               reserved_tiles=reserved_tiles)
+                               victory_condition_params=victory_condition_params,
+                               reserved_tiles=reserved_tiles, difficulty=difficulty)
     objects_templates, objects, city_field_mapping, players = obj.initData()
 
     # Wyswietl mapowanie miast do pol
@@ -181,9 +203,11 @@ def generate_voronoi_map(
         basic_info=generate_basic_info(map_size=size,
                         name="#Generated map",
                         description="This map has been generated",
-                        difficulty=1),
+                        difficulty=difficulty),
         players=players,
-        additional_info=generate_additional_info(),
+        additional_info=generate_additional_info(victory_condition_params=victory_condition_params,
+                                                 loss_condition_params=loss_condition_params,
+                                                 teams_params=teams_params),
         tiles=tiles,
         objects_templates=objects_templates,
         objects=objects,

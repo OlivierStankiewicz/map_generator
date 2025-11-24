@@ -10,13 +10,12 @@ class TimeExpires(Details):
 
     def __init__(self, days: int) -> None:
         self.days = days
-        super().__init__(LossConditions.TIME_EXPIRES)
 
     def to_dict(self) -> dict:
         return {
             'days': self.days
         }
 
-# 1 tydzieñ = 7 dni
-# 1 miesi¹c = 4 tygodnie = 28 dni
-# 1 rok = 12 miesiêcy = 48 tygodni = 336 dni
+# 1 tydzieï¿½ = 7 dni
+# 1 miesiï¿½c = 4 tygodnie = 28 dni
+# 1 rok = 12 miesiï¿½cy = 48 tygodni = 336 dni

@@ -14,7 +14,6 @@ class LoseTown(Details):
         self.x = x
         self.y = y
         self.z = z
-        super().__init__(LossConditions.LOSE_TOWN)
 
     def to_dict(self) -> dict:
         return {
