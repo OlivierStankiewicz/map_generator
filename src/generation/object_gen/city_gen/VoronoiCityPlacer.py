@@ -47,13 +47,7 @@ class VoronoiResult:
 class VoronoiCityPlacer:
     """
     City placement using Voronoi diagrams.
-    
-    Key advantages:
-    - Natural separation of city territories
-    - Adaptive safety radii based on region size
-    - No overlapping territories by design
     """
-    
     def __init__(self, map_size: int):
         self.map_width = map_size
         self.map_height = map_size
@@ -338,11 +332,6 @@ class VoronoiCityPlacer:
         cx = sum(x + 0.5 for x, y in region.tiles) / len(region.tiles)
         cy = sum(y + 0.5 for x, y in region.tiles) / len(region.tiles)
 
-        # Convert to centers and sort by angle around centroid to create a polygon
-        def angle(t):
-            tx, ty = t
-            return math.atan2((ty + 0.5) - cy, (tx + 0.5) - cx)
-
         boundary_centers = [(x + 0.5, y + 0.5) for x, y in boundary_tiles]
         # sort boundary tiles by their angle around centroid
         boundary_centers.sort(key=lambda p: math.atan2(p[1] - cy, p[0] - cx))
@@ -364,7 +353,6 @@ class VoronoiCityPlacer:
         )
 
         low, high = 0.0, max_possible
-        best_dist = 0.0
         best_selection: List[VoronoiRegion] = []
 
         # Binary search by distance
@@ -372,7 +360,6 @@ class VoronoiCityPlacer:
             mid = (low + high) / 2
             selection = self.can_select_with_distance(regions, n, mid)
             if selection:
-                best_dist = mid
                 best_selection = selection
                 low = mid
             else:
