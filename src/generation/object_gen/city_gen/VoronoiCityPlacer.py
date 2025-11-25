@@ -427,8 +427,7 @@ class VoronoiCityPlacer:
             raise Exception(f"Too few regions ({len(all_regions)}) for number of cities ({total_cities})")
         
         # Select city positions maximizing mutual distances
-        selected = self.select_regions_max_min_dist(all_regions, n=total_cities)
-        city_regions = selected[:total_cities]
+        city_regions = self.select_regions_max_min_dist(all_regions, n=total_cities)
 
         return total_cities, city_regions
 
@@ -508,8 +507,7 @@ class VoronoiCityPlacer:
                         closest_region.tiles.append((x, y))
 
             # Select new city points (maximizing distances)
-            selected = self.select_regions_max_min_dist(all_regions, n=total_cities)
-            city_regions = [region for region in selected[:total_cities]]
+            city_regions = self.select_regions_max_min_dist(all_regions, n=total_cities)
 
         if city_to_fields is None:
             raise Exception(f"Failed to assign 3 adjacent fields for each city after {max_regen_attempts} attempts")
