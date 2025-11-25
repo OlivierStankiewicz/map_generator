@@ -37,7 +37,7 @@ from classes.Objects.Properties.Town import Town
 from classes.ObjectsTemplate import ObjectsTemplate
 from classes.tile.Tile import Tile, TerrainType
 from generation.object_gen.json_parser import read_object_templates_from_json, read_object_from_json
-from generation.object_gen.voronoi_city_placement import generate_city_positions_with_fields, get_region_tiles
+from generation.object_gen.city_gen.voronoi_city_placement import generate_city_positions_with_fields, get_region_tiles
 
 
 @dataclass
