@@ -419,7 +419,7 @@ class VoronoiCityPlacer:
                 if (x, y) not in reserved_tiles:
                     closest_region.tiles.append((x, y))
 
-        return all_regions, region_min_distance
+        return all_regions, region_min_distance, total_regions
     
     def generate_step_2(self, player_cities, neutral_cities, all_regions):
         total_cities = player_cities + neutral_cities

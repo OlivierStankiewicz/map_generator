@@ -124,7 +124,7 @@ def generate_city_positions_with_fields(map_size: int, num_of_player_cities: int
     placer = VoronoiCityPlacer(map_size)
 
     #* Step 1: Generate all Voronoi regions
-    all_regions, region_min_distance = placer.generate_step_1(min_distance, reserved_tiles, total_regions)
+    all_regions, region_min_distance, total_regions = placer.generate_step_1(min_distance, reserved_tiles, total_regions)
 
     #* Step 2: Select city positions from generated regions
     total_cities, selected, city_regions = placer.generate_step_2(num_of_player_cities, num_of_neutral_cities, all_regions)
@@ -200,7 +200,7 @@ def generate_city_positions_with_fields(map_size: int, num_of_player_cities: int
         # Assign tiles to new regions
         for y in range(map_size):
             for x in range(map_size):
-                closest_region = min(all_regions, key=lambda r: (r.seed_x - x) ** 2 + (r.seed_y - y) ** 2)
+                closest_region: VoronoiRegion = min(all_regions, key=lambda r: (r.seed_x - x) ** 2 + (r.seed_y - y) ** 2)
                 if (x, y) not in reserved_tiles:
                     closest_region.tiles.append((x, y))
 
