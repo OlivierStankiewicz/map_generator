@@ -105,65 +105,15 @@ def get_region_tiles(all_regions: List[VoronoiRegion], region_id: Optional[int] 
 
     return []
 
-
-def distance(a: VoronoiRegion, b: VoronoiRegion) -> float:
-    """Euclidean distance between region seed points."""
-    return math.hypot(a.seed_x - b.seed_x, a.seed_y - b.seed_y)
-
-
-def can_select_with_distance(regions: List[VoronoiRegion], n: int, min_dist: float) -> List[VoronoiRegion] | None:
-    """Tries to select n regions with minimum distance min_dist.
-       If successful - returns selected regions, if not - None."""
-    selected = [regions[0]]
-    for region in regions[1:]:
-        if all(distance(region, s) >= min_dist for s in selected):
-            selected.append(region)
-            if len(selected) == n:
-                return selected
-    return None
-
-
-def select_regions_max_min_dist(all_regions: List[VoronoiRegion], n: int) -> List[VoronoiRegion]:
-    """Returns list of n regions with maximum minimum distance between seed points."""
-    if n >= len(all_regions):
-        return all_regions.copy()
-
-    regions = sorted(all_regions, key=lambda r: (r.seed_x, r.seed_y))
-
-    # Determine maximum possible distance
-    max_possible = max(
-        distance(a, b)
-        for i, a in enumerate(regions)
-        for b in regions[i + 1 :]
-    )
-
-    low, high = 0.0, max_possible
-    best_dist = 0.0
-    best_selection: List[VoronoiRegion] = []
-
-    # Binary search by distance
-    while high - low > 1e-3:
-        mid = (low + high) / 2
-        selection = can_select_with_distance(regions, n, mid)
-        if selection:
-            best_dist = mid
-            best_selection = selection
-            low = mid
-        else:
-            high = mid
-
-    return best_selection
-
-
-def generate_city_positions_with_fields(map_format: int, player_cities: int, neutral_cities: int,
+def generate_city_positions_with_fields(map_size: int, num_of_player_cities: int, num_of_neutral_cities: int,
                                        min_distance: int, total_regions: int, reserved_tiles: set[tuple[int, int]]):
     """
     Generate city positions and all Voronoi regions, where each city has 3 fields.
     
     Args:
         map_format: Map size
-        player_cities: Number of player cities  
-        neutral_cities: Number of neutral cities
+        num_of_player_cities: Number of player cities  
+        num_of_neutral_cities: Number of neutral cities
         min_distance: Minimum distance between cities
         total_regions: Total number of regions to generate
         
@@ -171,56 +121,20 @@ def generate_city_positions_with_fields(map_format: int, player_cities: int, neu
         dict: Contains 'cities', 'all_regions', 'city_to_fields'
     """
 
-    # Step 1: Generate all Voronoi regions
-    placer = VoronoiCityPlacer(map_format, map_format)
-    
-    # Generate positions for all regions (not just cities)
-    # Reduce required distance between regions to fit more
-    region_min_distance = max(5, min_distance // 4)  # Much smaller distance for regions
-    all_region_seeds = placer.generate_seeds_with_minimum_distance(total_regions, region_min_distance, reserved_tiles)
-    
-    if len(all_region_seeds) < total_regions:
-        # print(f"Warning: Could only generate {len(all_region_seeds)}/{total_regions} regions")
-        total_regions = len(all_region_seeds)
-    
-    # Generate Voronoi regions for all positions
-    all_regions = []
-    
-    for i, (x, y) in enumerate(all_region_seeds):
-        region = VoronoiRegion(x, y)
-        region.region_id = i + 1  # Number regions from 1
-        all_regions.append(region)
-    
-    # Assign tiles to regions
-    ownership = [[None for _ in range(map_format)] for _ in range(map_format)]
-    
-    for y in range(map_format):
-        for x in range(map_format):
-            closest_region = min(all_regions, key=lambda r: (r.seed_x - x) ** 2 + (r.seed_y - y) ** 2)
-            if (x, y) not in reserved_tiles:
-                closest_region.tiles.append((x, y))
-                ownership[y][x] = closest_region
-    
-    # Step 2: Select city positions from generated regions
-    total_cities = player_cities + neutral_cities
-    
-    if total_cities > len(all_regions):
-        raise Exception(f"Too few regions ({len(all_regions)}) for number of cities ({total_cities})")
-    
-    # Select city positions maximizing mutual distances
-    selected = select_regions_max_min_dist(all_regions, n=player_cities + neutral_cities)
-    # print("Selected points:")
-    # for r in selected:
-        # print(r.seed_x, r.seed_y)
+    placer = VoronoiCityPlacer(map_size)
 
-    city_regions = [region for region in selected[:total_cities]]
+    #* Step 1: Generate all Voronoi regions
+    all_regions, region_min_distance = placer.generate_step_1(min_distance, reserved_tiles, total_regions)
+
+    #* Step 2: Select city positions from generated regions
+    total_cities, selected, city_regions = placer.generate_step_2(num_of_player_cities, num_of_neutral_cities, all_regions)
 
     # Step 3: Assign each city 3 fields (regions) - must form connected component of adjacent regions
     # If for any city we can't find 3 adjacent fields, repeat entire generation process
-    max_regen_attempts = 6
+    max_regen_attempts = 50
     city_to_fields = None
 
-    for regen in range(max_regen_attempts):
+    for _ in range(max_regen_attempts):
         # Reset assignments
         used_regions = set()
         candidate_city_to_fields: Dict[int, List[int]] = {}
@@ -229,7 +143,7 @@ def generate_city_positions_with_fields(map_format: int, player_cities: int, neu
         # For each city try to find connected component of size >= 3
         for i, city_region in enumerate(city_regions):
             # List of candidates for main region: first preferred, then other regions sorted by distance
-            candidates = [city_region] + [r for r in sorted(all_regions, key=lambda r: distance(r, city_region)) if r.region_id not in used_regions and r.region_id != city_region.region_id]
+            candidates = [city_region] + [r for r in sorted(all_regions, key=lambda r: placer.distance(r, city_region)) if r.region_id not in used_regions and r.region_id != city_region.region_id]
 
             found = False
             for cand in candidates:
@@ -284,13 +198,14 @@ def generate_city_positions_with_fields(map_format: int, player_cities: int, neu
             all_regions.append(region)
 
         # Assign tiles to new regions
-        for y in range(map_format):
-            for x in range(map_format):
+        for y in range(map_size):
+            for x in range(map_size):
                 closest_region = min(all_regions, key=lambda r: (r.seed_x - x) ** 2 + (r.seed_y - y) ** 2)
-                closest_region.tiles.append((x, y))
+                if (x, y) not in reserved_tiles:
+                    closest_region.tiles.append((x, y))
 
         # Select new city points (maximizing distances)
-        selected = select_regions_max_min_dist(all_regions, n=player_cities + neutral_cities)
+        selected = placer.select_regions_max_min_dist(all_regions, n=num_of_player_cities + num_of_neutral_cities)
         city_regions = [region for region in selected[:total_cities]]
 
     if city_to_fields is None:
@@ -304,9 +219,9 @@ def generate_city_positions_with_fields(map_format: int, player_cities: int, neu
         #       f"({all_regions[assigned[2] - 1].seed_x}, {all_regions[assigned[2] - 1].seed_y})")
     
     # Krok 4: Utworz obiekty miast
-    cities = []
+    cities: CityWithVoronoi = []
     for i, city_region in enumerate(city_regions):
-        is_player = i < player_cities
+        is_player = i < num_of_player_cities
         player_id = i + 1 if is_player else None
         rest_of_tiles = []
 
@@ -369,7 +284,7 @@ def generate_city_positions_with_fields(map_format: int, player_cities: int, neu
     # print(f"Generated {len(cities)} cities with {len(all_regions)} regions")
     # print(f"Field assignments to cities:")
     for i, fields in city_to_fields.items():
-        city_type = "Gracz" if i < player_cities else "Neutralne"
+        city_type = "Gracz" if i < num_of_player_cities else "Neutralne"
         boundary_count = len(city_boundaries.get(i, []))
         # print(f"  City {i+1} ({city_type}): fields {fields}, boundary {boundary_count} points")
     

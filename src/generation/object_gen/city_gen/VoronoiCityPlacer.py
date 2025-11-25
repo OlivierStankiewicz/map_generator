@@ -54,9 +54,9 @@ class VoronoiCityPlacer:
     - No overlapping territories by design
     """
     
-    def __init__(self, map_width: int, map_height: int):
-        self.map_width = map_width
-        self.map_height = map_height
+    def __init__(self, map_size: int):
+        self.map_width = map_size
+        self.map_height = map_size
     
     def generate_seeds_with_minimum_distance(self, 
                                            num_cities: int, 
@@ -348,3 +348,86 @@ class VoronoiCityPlacer:
         boundary_centers.sort(key=lambda p: math.atan2(p[1] - cy, p[0] - cx))
 
         return boundary_centers
+    
+    def select_regions_max_min_dist(self, all_regions: List[VoronoiRegion], n: int) -> List[VoronoiRegion]:
+        """Returns list of n regions with maximum minimum distance between seed points."""
+        if n >= len(all_regions):
+            return all_regions.copy()
+
+        regions = sorted(all_regions, key=lambda r: (r.seed_x, r.seed_y))
+
+        # Determine maximum possible distance
+        max_possible = max(
+            self.distance(a, b)
+            for i, a in enumerate(regions)
+            for b in regions[i + 1 :]
+        )
+
+        low, high = 0.0, max_possible
+        best_dist = 0.0
+        best_selection: List[VoronoiRegion] = []
+
+        # Binary search by distance
+        while high - low > 1e-3:
+            mid = (low + high) / 2
+            selection = self.can_select_with_distance(regions, n, mid)
+            if selection:
+                best_dist = mid
+                best_selection = selection
+                low = mid
+            else:
+                high = mid
+
+        return best_selection
+    
+    def distance(self, a: VoronoiRegion, b: VoronoiRegion) -> float:
+        """Euclidean distance between region seed points."""
+        return math.hypot(a.seed_x - b.seed_x, a.seed_y - b.seed_y)
+    
+    def can_select_with_distance(self, regions: List[VoronoiRegion], n: int, min_dist: float) -> List[VoronoiRegion] | None:
+        """Tries to select n regions with minimum distance min_dist.
+        If successful - returns selected regions, if not - None."""
+        selected = [regions[0]]
+        for region in regions[1:]:
+            if all(self.distance(region, s) >= min_dist for s in selected):
+                selected.append(region)
+                if len(selected) == n:
+                    return selected
+        return None
+    
+    def generate_step_1(self, min_distance, reserved_tiles, total_regions):
+        # Generate positions for all regions (not just cities)
+        # Reduce required distance between regions to fit more
+        region_min_distance = max(5, min_distance // 4)  # Much smaller distance for regions
+        all_region_seeds = self.generate_seeds_with_minimum_distance(total_regions, region_min_distance, reserved_tiles)
+        
+        if len(all_region_seeds) < total_regions:
+            # print(f"Warning: Could only generate {len(all_region_seeds)}/{total_regions} regions")
+            total_regions = len(all_region_seeds)
+        
+        # Generate Voronoi regions for all positions
+        all_regions = []
+        
+        for i, (x, y) in enumerate(all_region_seeds):
+            region = VoronoiRegion(x, y)
+            region.region_id = i + 1  # Number regions from 1
+            all_regions.append(region)
+        
+        for y in range(self.map_height):
+            for x in range(self.map_width):
+                closest_region = min(all_regions, key=lambda r: (r.seed_x - x) ** 2 + (r.seed_y - y) ** 2)
+                if (x, y) not in reserved_tiles:
+                    closest_region.tiles.append((x, y))
+
+        return all_regions, region_min_distance
+    
+    def generate_step_2(self, player_cities, neutral_cities, all_regions):
+        total_cities = player_cities + neutral_cities
+        if total_cities > len(all_regions):
+            raise Exception(f"Too few regions ({len(all_regions)}) for number of cities ({total_cities})")
+        
+        # Select city positions maximizing mutual distances
+        selected = self.select_regions_max_min_dist(all_regions, n=total_cities)
+        city_regions = selected[:total_cities]
+
+        return total_cities, selected, city_regions
