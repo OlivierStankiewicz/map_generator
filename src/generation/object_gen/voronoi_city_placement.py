@@ -16,14 +16,14 @@ from voronoi import VoronoiRegion
 
 @dataclass
 class FieldInfo:
-    """Informacje o polu (regionie) Voronoi."""
-    field_id: int  # ID pola
-    centroid: Tuple[float, float]  # Centrum pola (x, y)
-    boundary: List[Tuple[float, float]]  # Krawedzie pola jako lista punktow float
-    boundary_raster: List[Tuple[int, int]]  # Krawedzie jako dyskretne punkty grid'a
-    area: int  # Liczba tiles w polu
-    seed_position: Tuple[int, int]  # Pozycja seed'a
-    assigned_to_city: Optional[int] = None  # ID miasta jesli pole jest przypisane
+    """Information about a Voronoi field (region)."""
+    field_id: int  # Field ID
+    centroid: Tuple[float, float]  # Field center (x, y)
+    boundary: List[Tuple[float, float]]  # Field edges as list of float points
+    boundary_raster: List[Tuple[int, int]]  # Edges as discrete grid points
+    area: int  # Number of tiles in field
+    seed_position: Tuple[int, int]  # Seed position
+    assigned_to_city: Optional[int] = None  # City ID if field is assigned
 
 @dataclass
 class VoronoiEdge:
@@ -298,18 +298,18 @@ class VoronoiCityPlacer:
 
     def _calculate_region_centroid(self, region: VoronoiRegion) -> Tuple[float, float]:
         """
-        Oblicza centroid (srodek masy) regionu na podstawie jego tiles.
+        Calculate the centroid (center of mass) of a region based on its tiles.
 
         Args:
-            region: Region Voronoi
+            region: Voronoi region
 
         Returns:
-            Tuple[float, float]: Wspolrzedne centroidu (x, y) jako tile centers
+            Tuple[float, float]: Centroid coordinates (x, y) as tile centers
         """
         if not region.tiles:
             return (float(region.seed_x) + 0.5, float(region.seed_y) + 0.5)
 
-        # Oblicz srednia pozycje wszystkich tiles (jako tile centers)
+        # Calculate average position of all tiles (as tile centers)
         sum_x = sum(x + 0.5 for x, y in region.tiles)
         sum_y = sum(y + 0.5 for x, y in region.tiles)
 
@@ -320,26 +320,26 @@ class VoronoiCityPlacer:
 
     def _rasterize_boundary_edges(self, boundary_points: List[Tuple[float, float]]) -> List[Tuple[int, int]]:
         """
-        Rasteryzuje krawedzie pola na dyskretne punkty grid'a.
-        Dla kazdego segmentu krawedzi, oblicza wszystkie tiles przez ktore przechodzi.
+        Rasterize field edges to discrete grid points.
+        For each edge segment, calculate all tiles it passes through.
 
         Args:
-            boundary_points: Lista punktow krawedzi jako (x, y) float
+            boundary_points: List of edge points as (x, y) float
 
         Returns:
-            Lista unikalnych punktow grid'a (x, y) int przez ktore przechodza krawedzie
+            List of unique grid points (x, y) int through which edges pass
         """
         if len(boundary_points) < 2:
             return []
 
         raster_points = set()
 
-        # Dla kazdego segmentu krawedzi
+        # For each edge segment
         for i in range(len(boundary_points)):
             start = boundary_points[i]
-            end = boundary_points[(i + 1) % len(boundary_points)]  # Zamykamy polygon
+            end = boundary_points[(i + 1) % len(boundary_points)]  # Close polygon
 
-            # Rasteryzuj linie od start do end uzywajac algorytmu Bresenhama
+            # Rasterize line from start to end using Bresenham's algorithm
             line_points = self._bresenham_line(start[0], start[1], end[0], end[1])
             raster_points.update(line_points)
 
@@ -347,23 +347,23 @@ class VoronoiCityPlacer:
 
     def _bresenham_line(self, x0: float, y0: float, x1: float, y1: float) -> List[Tuple[int, int]]:
         """
-        Algorytm Bresenhama do rasteryzacji linii.
-        Zwraca wszystkie punkty grid'a przez ktore przechodzi linia.
+        Bresenham's algorithm for line rasterization.
+        Returns all grid points through which the line passes.
 
         Args:
-            x0, y0: Punkt poczatkowy (float)
-            x1, y1: Punkt koncowy (float)
+            x0, y0: Starting point (float)
+            x1, y1: Ending point (float)
 
         Returns:
-            Lista punktow grid'a (x, y) int
+            List of grid points (x, y) int
         """
         points = []
 
-        # Konwertuj float na int (floor)
+        # Convert float to int (floor)
         ix0, iy0 = int(x0), int(y0)
         ix1, iy1 = int(x1), int(y1)
 
-        # Sprawdz granice mapy
+        # Check map bounds
         ix0 = max(0, min(self.map_width - 1, ix0))
         iy0 = max(0, min(self.map_height - 1, iy0))
         ix1 = max(0, min(self.map_width - 1, ix1))
@@ -396,30 +396,30 @@ class VoronoiCityPlacer:
                     err += dy
                 y += sy
 
-        points.append((x, y))  # Dodaj ostatni punkt
+        points.append((x, y))  # Add last point
 
         return points
 
     def are_regions_adjacent(self, region1: 'VoronoiRegion', region2: 'VoronoiRegion') -> bool:
         """
-        Sprawdza czy dwa regiony Voronoi sa sasiednie (maja wspolna granice).
+        Check if two Voronoi regions are adjacent (share a common border).
 
         Args:
-            region1, region2: Regiony do sprawdzenia
+            region1, region2: Regions to check
 
         Returns:
-            bool: True jesli regiony sa sasiednie
+            bool: True if regions are adjacent
         """
         if not region1.tiles or not region2.tiles:
             return False
 
-        # Konwertuj tiles na set dla szybszego wyszukiwania
+        # Convert tiles to set for faster lookup
         tiles1 = set(region1.tiles)
         tiles2 = set(region2.tiles)
 
-        # Sprawdz czy ktorykolwiek tile z region1 ma sasiada w region2
+        # Check if any tile from region1 has a neighbor in region2
         for x, y in tiles1:
-            # Sprawdz 4 sasiadow (g�ra, d�, lewo, prawo)
+            # Check 4 neighbors (up, down, left, right)
             for dx, dy in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
                 neighbor_x, neighbor_y = x + dx, y + dy
                 if (neighbor_x, neighbor_y) in tiles2:
@@ -430,15 +430,15 @@ class VoronoiCityPlacer:
     def find_adjacent_regions(self, target_region: 'VoronoiRegion', all_regions: List['VoronoiRegion'],
                               exclude_regions: set) -> List['VoronoiRegion']:
         """
-        Znajdz wszystkie regiony sasiednie do podanego regionu.
+        Find all regions adjacent to a given region.
 
         Args:
-            target_region: Region dla ktorego szukamy sasiadow
-            all_regions: Lista wszystkich regionow
-            exclude_regions: Set ID regionow do pominiecia
+            target_region: Region for which we search for neighbors
+            all_regions: List of all regions
+            exclude_regions: Set of region IDs to skip
 
         Returns:
-            Lista sasiadujacych regionow
+            List of adjacent regions
         """
         adjacent = []
         for region in all_regions:
@@ -1023,23 +1023,23 @@ def generate_city_area_boundaries(all_regions: List[VoronoiRegion],
     city_boundaries = {}
     
     for city_id, fields_list in city_to_fields.items():
-        # Zbierz wszystkie tiles nale��ce do tego miasta
+        # Collect all tiles belonging to this city
         city_tiles = set()
         
         for field_id in fields_list:
-            # Znajd� region o tym ID
+            # Find region with this ID
             region = next((r for r in all_regions if r.region_id == field_id), None)
             if region:
                 city_tiles.update(region.tiles)
         
-        # Teraz znajd� zewn�trzne kraw�dzie tego obszaru
+        # Now find external edges of this area
         boundary_tiles = []
         
         for tile_x, tile_y in city_tiles:
-            # sprawd� czy tile jest na kraw�dzi (ma s�siada nie nale��cego do miasta)
+            # Check if tile is on edge (has neighbor not belonging to city)
             is_boundary = False
             
-            # Sprawd� wszystkich 8 s�siad�w
+            # Check all 8 neighbors
             for dx in [-1, 0, 1]:
                 for dy in [-1, 0, 1]:
                     if dx == 0 and dy == 0:
@@ -1047,7 +1047,7 @@ def generate_city_area_boundaries(all_regions: List[VoronoiRegion],
                         
                     neighbor_x, neighbor_y = tile_x + dx, tile_y + dy
                     
-                    # Je�li s�siad jest poza map� lub nie nale�y do tego miasta
+                    # If neighbor is outside map or doesn't belong to this city
                     if ((neighbor_x, neighbor_y) not in city_tiles):
                         is_boundary = True
                         break
@@ -1065,20 +1065,20 @@ def generate_city_area_boundaries(all_regions: List[VoronoiRegion],
 
 def get_region_tiles(all_regions: List[VoronoiRegion], region_id: Optional[int] = None, seed: Optional[Tuple[int, int]] = None) -> List[Tuple[int, int]]:
     """
-    Zwraca listę kafelków (tiles) należących do danego regionu Voronoi.
+    Returns list of tiles belonging to a given Voronoi region.
 
-    Można znaleźć region po `region_id` lub po pozycji ziarna `seed` (x, y).
+    Can find region by `region_id` or by seed position `seed` (x, y).
 
     Args:
-        all_regions: lista obiektów `VoronoiRegion` wygenerowanych wcześniej
-        region_id: opcjonalne ID regionu (pole.region_id)
-        seed: opcjonalny tuple (x, y) pozycji ziarna regionu
+        all_regions: list of previously generated `VoronoiRegion` objects
+        region_id: optional region ID (field.region_id)
+        seed: optional tuple (x, y) of region seed position
 
     Returns:
-        Lista tupli (x, y) kafelków należących do regionu. Zwraca pustą listę, jeśli nie znaleziono regionu.
+        List of (x, y) tuples of tiles belonging to the region. Returns empty list if region not found.
     """
     if region_id is None and seed is None:
-        raise ValueError("Trzeba podać albo region_id, albo seed=(x,y)")
+        raise ValueError("Must provide either region_id or seed=(x,y)")
 
     for region in all_regions:
         if region_id is not None and getattr(region, 'region_id', None) == region_id:
@@ -1091,13 +1091,13 @@ def get_region_tiles(all_regions: List[VoronoiRegion], region_id: Optional[int] 
 
 
 def distance(a: VoronoiRegion, b: VoronoiRegion) -> float:
-    """Odległość euklidesowa między punktami nasiennymi regionów."""
+    """Euclidean distance between region seed points."""
     return math.hypot(a.seed_x - b.seed_x, a.seed_y - b.seed_y)
 
 
 def can_select_with_distance(regions: List[VoronoiRegion], n: int, min_dist: float) -> List[VoronoiRegion] | None:
-    """Próbuje wybrać n regionów z minimalnym odstępem min_dist.
-       Jeśli się uda – zwraca wybrane regiony, jeśli nie – None."""
+    """Tries to select n regions with minimum distance min_dist.
+       If successful - returns selected regions, if not - None."""
     selected = [regions[0]]
     for region in regions[1:]:
         if all(distance(region, s) >= min_dist for s in selected):
@@ -1108,13 +1108,13 @@ def can_select_with_distance(regions: List[VoronoiRegion], n: int, min_dist: flo
 
 
 def select_regions_max_min_dist(all_regions: List[VoronoiRegion], n: int) -> List[VoronoiRegion]:
-    """Zwraca listę n regionów o maksymalnej minimalnej odległości między punktami nasiennymi."""
+    """Returns list of n regions with maximum minimum distance between seed points."""
     if n >= len(all_regions):
         return all_regions.copy()
 
     regions = sorted(all_regions, key=lambda r: (r.seed_x, r.seed_y))
 
-    # Ustalenie maksymalnego możliwego dystansu
+    # Determine maximum possible distance
     max_possible = max(
         distance(a, b)
         for i, a in enumerate(regions)
@@ -1125,7 +1125,7 @@ def select_regions_max_min_dist(all_regions: List[VoronoiRegion], n: int) -> Lis
     best_dist = 0.0
     best_selection: List[VoronoiRegion] = []
 
-    # Binary search po odległości
+    # Binary search by distance
     while high - low > 1e-3:
         mid = (low + high) / 2
         selection = can_select_with_distance(regions, n, mid)
@@ -1154,30 +1154,28 @@ def generate_city_positions_with_fields(map_format: int, player_cities: int, neu
     Returns:
         dict: Contains 'cities', 'all_regions', 'city_to_fields'
     """
-    # print(f"\n=== GENEROWANIE {total_regions} REGIONOW DLA {player_cities + neutral_cities} MIAST ===")
-    
-    # Krok 1: Wygeneruj wszystkie regiony Voronoi
-    # print(f"Tworzenie VoronoiCityPlacer z rozmiarem mapy: {map_format}x{map_format}")
+
+    # Step 1: Generate all Voronoi regions
     placer = VoronoiCityPlacer(map_format, map_format)
     
-    # Wygeneruj pozycje dla wszystkich region�w (nie tylko miast)
-    # Zmniejszamy wymagan� odleg�o�� mi�dzy regionami, �eby zmie�ci� wi�cej
-    region_min_distance = max(5, min_distance // 4)  # Znacznie mniejsza odleg�o�� dla region�w
+    # Generate positions for all regions (not just cities)
+    # Reduce required distance between regions to fit more
+    region_min_distance = max(5, min_distance // 4)  # Much smaller distance for regions
     all_region_seeds = placer.generate_seeds_with_minimum_distance(total_regions, region_min_distance, reserved_tiles)
     
     if len(all_region_seeds) < total_regions:
-        # print(f"Uwaga: Udalo sie wygenerowac tylko {len(all_region_seeds)}/{total_regions} regionow")
+        # print(f"Warning: Could only generate {len(all_region_seeds)}/{total_regions} regions")
         total_regions = len(all_region_seeds)
     
-    # Wygeneruj regiony Voronoi dla wszystkich pozycjigenerate_voronoi_regions
+    # Generate Voronoi regions for all positions
     all_regions = []
     
     for i, (x, y) in enumerate(all_region_seeds):
         region = VoronoiRegion(x, y)
-        region.region_id = i + 1  # Numeruj regiony od 1
+        region.region_id = i + 1  # Number regions from 1
         all_regions.append(region)
     
-    # Przypisz tiles do region�w
+    # Assign tiles to regions
     ownership = [[None for _ in range(map_format)] for _ in range(map_format)]
     
     for y in range(map_format):
@@ -1187,34 +1185,34 @@ def generate_city_positions_with_fields(map_format: int, player_cities: int, neu
                 closest_region.tiles.append((x, y))
                 ownership[y][x] = closest_region
     
-    # Krok 2: Wybierz pozycje miast z wygenerowanych region�w
+    # Step 2: Select city positions from generated regions
     total_cities = player_cities + neutral_cities
     
     if total_cities > len(all_regions):
-        raise Exception(f"Zbyt malo regionow ({len(all_regions)}) dla liczby miast ({total_cities})")
+        raise Exception(f"Too few regions ({len(all_regions)}) for number of cities ({total_cities})")
     
-    # Wybieramy pozycje miast maksymalizujac wzajemne odleglosci
+    # Select city positions maximizing mutual distances
     selected = select_regions_max_min_dist(all_regions, n=player_cities + neutral_cities)
-    # print("Wybrane punkty:")
+    # print("Selected points:")
     # for r in selected:
         # print(r.seed_x, r.seed_y)
 
     city_regions = [region for region in selected[:total_cities]]
 
-    # Krok 3: Przypisz kazdemu miastu 3 pola (regiony) - musza tworzyc spojny komponent sasiadujacych regionow
-    # Jesli dla jakiegokolwiek miasta nie da sie znalezc 3 przylegajacych do siebie pol, powtorz caly proces generacji
+    # Step 3: Assign each city 3 fields (regions) - must form connected component of adjacent regions
+    # If for any city we can't find 3 adjacent fields, repeat entire generation process
     max_regen_attempts = 6
     city_to_fields = None
 
     for regen in range(max_regen_attempts):
-        # Zresetuj przypisania
+        # Reset assignments
         used_regions = set()
         candidate_city_to_fields: Dict[int, List[int]] = {}
         failure = False
 
-        # Dla kazdego miasta probujemy znalezc spojny komponent o wielkosci >= 3
+        # For each city try to find connected component of size >= 3
         for i, city_region in enumerate(city_regions):
-            # Lista kandydatow dla regionu glownym: najpierw preferowane, potem inne regiony posortowane po odleglosci
+            # List of candidates for main region: first preferred, then other regions sorted by distance
             candidates = [city_region] + [r for r in sorted(all_regions, key=lambda r: distance(r, city_region)) if r.region_id not in used_regions and r.region_id != city_region.region_id]
 
             found = False
@@ -1222,7 +1220,7 @@ def generate_city_positions_with_fields(map_format: int, player_cities: int, neu
                 if cand.region_id in used_regions:
                     continue
 
-                # BFS po grafie sasiadujacych regionow (pomijamy juz uzyte regiony)
+                # BFS through graph of adjacent regions (skip already used regions)
                 comp_ids = set()
                 stack = [cand]
                 while stack:
@@ -1235,7 +1233,7 @@ def generate_city_positions_with_fields(map_format: int, player_cities: int, neu
                         if n.region_id not in comp_ids:
                             stack.append(n)
 
-                # Jezeli komponent ma co najmniej 3 regiony, wybierz dwa najblizsze do kandydata
+                # If component has at least 3 regions, select two closest to candidate
                 if len(comp_ids) >= 3:
                     comp_regions = [r for r in all_regions if r.region_id in comp_ids and r.region_id != cand.region_id]
                     comp_regions.sort(key=lambda r: (r.seed_x - cand.seed_x) ** 2 + (r.seed_y - cand.seed_y) ** 2)
@@ -1247,7 +1245,7 @@ def generate_city_positions_with_fields(map_format: int, player_cities: int, neu
                     break
 
             if not found:
-                # Nie znaleziono spojnego komponentu dla tego miasta w tej rundzie - oznacz porazke i powtorz cala generacje
+                # No connected component found for this city in this round - mark failure and repeat entire generation
                 failure = True
                 break
 
@@ -1255,12 +1253,12 @@ def generate_city_positions_with_fields(map_format: int, player_cities: int, neu
             city_to_fields = candidate_city_to_fields
             break
 
-        # Jesli nie udalo sie, powtorz generacje regionow (losuj inne punkty)
-        # print(f"Nie udalo sie przypisac spojnych pol dla wszystkich miast - powtarzam generacje ({regen+1}/{max_regen_attempts})")
-        # Regeneruj ziarna regionow i przemapuj tiles
+        # If failed, repeat region generation (randomize new points)
+        # print(f"Failed to assign connected fields for all cities - repeating generation ({regen+1}/{max_regen_attempts})")
+        # Regenerate region seeds and remap tiles
         all_region_seeds = placer.generate_seeds_with_minimum_distance(total_regions, region_min_distance, reserved_tiles)
         if len(all_region_seeds) < total_regions:
-            # print(f"Uwaga: Udalo sie wygenerowac tylko {len(all_region_seeds)}/{total_regions} regionow podczas powtorzenia")
+            # print(f"Warning: Could only generate {len(all_region_seeds)}/{total_regions} regions during retry")
             total_regions = len(all_region_seeds)
 
         all_regions = []
@@ -1269,18 +1267,18 @@ def generate_city_positions_with_fields(map_format: int, player_cities: int, neu
             region.region_id = i_s + 1
             all_regions.append(region)
 
-        # Przypisz tiles do nowych regionow
+        # Assign tiles to new regions
         for y in range(map_format):
             for x in range(map_format):
                 closest_region = min(all_regions, key=lambda r: (r.seed_x - x) ** 2 + (r.seed_y - y) ** 2)
                 closest_region.tiles.append((x, y))
 
-        # Wybrac nowe punkty miast (maksymalizujac dystanse)
+        # Select new city points (maximizing distances)
         selected = select_regions_max_min_dist(all_regions, n=player_cities + neutral_cities)
         city_regions = [region for region in selected[:total_cities]]
 
     if city_to_fields is None:
-        raise Exception(f"Nie udalo sie przypisac 3 przylegajacych pol dla kazdego miasta po {max_regen_attempts} probach")
+        raise Exception(f"Failed to assign 3 adjacent fields for each city after {max_regen_attempts} attempts")
 
     # Wypisz przypisania pol do miast
     # for i, assigned in city_to_fields.items():
@@ -1312,27 +1310,27 @@ def generate_city_positions_with_fields(map_format: int, player_cities: int, neu
         )
         cities.append(city)
     
-    # Krok 5: Utworz informacje o wszystkich polach (regionach)
+    # Step 5: Create information about all fields (regions)
     fields_info = []
-    city_regions_ids = set()  # ID regionow zajmowanych przez miasta
+    city_regions_ids = set()  # IDs of regions occupied by cities
     for fields_list in city_to_fields.values():
         city_regions_ids.update(fields_list)
     
     for region in all_regions:
-        # Oblicz centroid regionu
+        # Calculate region centroid
         centroid = placer._calculate_region_centroid(region)
         
-        # Oblicz krawedzie regionu
+        # Calculate region edges
         boundary = placer._region_boundary_polygon(region)
         
-        # Rasteryzuj krawedzie na dyskretne punkty grid'a
+        # Rasterize edges to discrete grid points
         boundary_raster = placer._rasterize_boundary_edges(boundary)
         
-        # Sprawdz czy region jest przypisany do miasta
+        # Check if region is assigned to a city
         assigned_city = None
         for city_id, fields_list in city_to_fields.items():
             if region.region_id in fields_list:
-                assigned_city = city_id + 1  # +1 bo city_id zaczyna sie od 0
+                assigned_city = city_id + 1  # +1 because city_id starts from 0
                 break
         
         field_info = FieldInfo(
@@ -1346,18 +1344,18 @@ def generate_city_positions_with_fields(map_format: int, player_cities: int, neu
         )
         fields_info.append(field_info)
     
-    # Sortuj pola po ID dla lepszej czytelnosci
+    # Sort fields by ID for better readability
     fields_info.sort(key=lambda f: f.field_id)
     
-    # Wygeneruj obram�wki dla ca�ych obszar�w miast
+    # Generate boundaries for entire city areas
     city_boundaries = generate_city_area_boundaries(all_regions, city_to_fields, placer)
     
-    # print(f"Wygenerowano {len(cities)} miast z {len(all_regions)} regionami")
-    # print(f"Przypisania pol do miast:")
+    # print(f"Generated {len(cities)} cities with {len(all_regions)} regions")
+    # print(f"Field assignments to cities:")
     for i, fields in city_to_fields.items():
         city_type = "Gracz" if i < player_cities else "Neutralne"
         boundary_count = len(city_boundaries.get(i, []))
-        # print(f"  Miasto {i+1} ({city_type}): pola {fields}, obramowka {boundary_count} punktow")
+        # print(f"  City {i+1} ({city_type}): fields {fields}, boundary {boundary_count} points")
     
     return {
         "cities": cities,

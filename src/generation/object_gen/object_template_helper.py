@@ -7,18 +7,11 @@ from random import randint, choices, sample
 from math import sqrt
 
 from classes.Enums.ArtifactType import converterTypeToNum as ar_converterTypeToNum
-from classes.Enums.CreatureType import converterTypeToNum as cr_converterTypeToNum, CreatureType, CreatureNum, converterNumToType as cr_converterNumToType
-from classes.Enums.Disposition import Disposition
-from classes.Enums.ResourceType import ResourceType
+from classes.Enums.CreatureType import converterTypeToNum as cr_converterTypeToNum, CreatureNum, converterNumToType as cr_converterNumToType
 from classes.Enums.VictoryConditions import VictoryConditions
 from classes.Objects.Properties.Artifact import Artifact
-from classes.Objects.Properties.Helpers.Artifacts import Artifacts
 from classes.Objects.Properties.Helpers.Creatures import Creatures
 from classes.Objects.Properties.Helpers.Guardians import Guardians
-from classes.Objects.Properties.Helpers.PrimarySkills import PrimarySkills
-from classes.Objects.Properties.Helpers.SecondarySkills import SecondarySkills
-from classes.Objects.Properties.Helpers.Spells import Spells
-from classes.Enums.Heroes import Hero as HeroEnum
 from classes.Objects.Properties.Hero import Hero
 from classes.Objects.Properties.Monster import Monster
 from classes.Objects.Properties.RandomDwellingPresetAlignment import RandomDwellingPresetAlignment
@@ -30,8 +23,6 @@ from classes.Objects.Properties.TrivialOwnedObject import TrivialOwnedObject
 from classes.Objects.Properties.WitchHut import WitchHut
 from classes.player.Heroes import Heroes
 from classes.player.MainTown import MainTown
-from classes.player.StartingHero import StartingHero
-from generation.additional_info_gen.loss_condition_gen import LossConditionParams
 from generation.additional_info_gen.victory_condition_gen import VictoryConditionParams
 from generation.player_gen.player_gen import generate_player
 
@@ -40,16 +31,13 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '.
 from classes.Objects.Objects import Objects
 
 from classes.Enums.Formation import Formation
-from classes.Enums.TownType import TownType
 from classes.Objects.Properties.Helpers.MayNotHaveSpell import MayNotHaveSpell
 from classes.Objects.Properties.Helpers.MustHaveSpell import MustHaveSpell
 from classes.Objects.Properties.Town import Town
-from classes.Objects.Properties.RandomDwelling import RandomDwelling
-from classes.Objects.Properties.Helpers.Alignment import Alignment
 from classes.ObjectsTemplate import ObjectsTemplate
 from classes.tile.Tile import Tile, TerrainType
 from generation.object_gen.json_parser import read_object_templates_from_json, read_object_from_json
-from generation.object_gen.voronoi_city_placement import generate_city_positions, generate_city_positions_with_fields, get_region_tiles
+from generation.object_gen.voronoi_city_placement import generate_city_positions_with_fields, get_region_tiles
 
 
 @dataclass
