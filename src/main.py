@@ -14,8 +14,8 @@ root = tk.Tk()
 root.withdraw()
 
 print("Choose a folder to save the file")
-# folder_path = filedialog.askdirectory(title="Select a folder to save the file")
-folder_path = "C:/Users/macie/Desktop/inżynierka/tmp"
+folder_path = filedialog.askdirectory(title="Select a folder to save the file")
+# folder_path = "C:/Users/macie/Desktop/inżynierka/tmp"
 if not folder_path:
     print("No folder selected. Exiting...")
     exit()

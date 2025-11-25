@@ -4,111 +4,11 @@ Uses existing Voronoi implementation to create natural city distribution.
 """
 
 import math
-import random
 from typing import List, Tuple, Dict, Optional
-from dataclasses import dataclass
-import sys
-import os
 
 # Import the existing Voronoi implementation
 from generation.pcg_algorithms.voronoi import VoronoiRegion
 from generation.object_gen.city_gen.VoronoiCityPlacer import *
-
-
-def quick_city_placement(map_width: int, 
-                        map_height: int,
-                        player_cities: int, 
-                        neutral_cities: int,
-                        min_distance: int = 20,
-                        include_edges: bool = False) -> Tuple[VoronoiResult, bool, List[str]]:
-    """
-    Quick function for city placement using Voronoi with distance constraints.
-    
-    Args:
-        map_width, map_height: Map dimensions
-        player_cities: Number of player cities
-        neutral_cities: Number of neutral cities
-        min_distance: Minimum distance between cities (default 20)
-        include_edges: Whether to calculate and include Voronoi edges
-    
-    Returns:
-        Tuple with VoronoiResult (cities + edges), success status, and any problems
-    """
-    placer = VoronoiCityPlacer(map_width, map_height)
-    
-    try:
-        result = placer.place_cities_with_voronoi(player_cities, neutral_cities, min_distance, return_edges=include_edges)
-        is_valid, problems = placer.validate_placement(result.cities)
-        return result, is_valid, problems
-    except RuntimeError as e:
-        # If placement completely failed
-        empty_result = VoronoiResult(cities=[], edges=[], min_distance_achieved=0.0)
-        return empty_result, False, [str(e)]
-
-
-def get_city_limits_for_map(map_width: int, map_height: int, min_distance: int = 20) -> Dict:
-    """
-    Get recommended city limits for a map size with given minimum distance.
-    
-    Returns:
-        Dict with recommendations and limits
-    """
-    placer = VoronoiCityPlacer(map_width, map_height)
-    max_cities = placer.calculate_max_cities_for_distance(min_distance)
-    
-    # Recommended distributions
-    recommendations = []
-    
-    # Small maps
-    if max_cities >= 6:
-        recommendations.append({"players": 4, "neutrals": 2, "total": 6, "description": "Small competitive"})
-    if max_cities >= 8:
-        recommendations.append({"players": 6, "neutrals": 2, "total": 8, "description": "Medium competitive"})
-    if max_cities >= 10:
-        recommendations.append({"players": 8, "neutrals": 2, "total": 10, "description": "Large competitive"})
-    if max_cities >= 13:
-        recommendations.append({"players": 8, "neutrals": 5, "total": 13, "description": "Standard campaign"})
-    if max_cities >= 16:
-        recommendations.append({"players": 10, "neutrals": 6, "total": 16, "description": "Large campaign"})
-    
-    return {
-        "map_size": f"{map_width}x{map_height}",
-        "min_distance": min_distance,
-        "max_cities": max_cities,
-        "recommendations": recommendations,
-        "area_per_city": (map_width * map_height) / max_cities if max_cities > 0 else 0
-    }
-
-
-def generate_city_positions(map_format: int, player_cities: int, neutral_cities: int,
-                            min_distance: int):
-    """Test the new edge calculation functionality."""
-    # print("\n=== TESTING VORONOI EDGES ===")
-
-    # Small test case to visualize edges
-    placer = VoronoiCityPlacer(map_format, map_format)
-    result = placer.place_cities_with_voronoi(player_cities, neutral_cities, min_distance, return_edges=True)
-
-    # print(f"\nPlacement results:")
-    # print(f"Cities: {len(result.cities)}")
-    # print(f"Edges: {len(result.edges)}")
-    # print(f"Min distance: {result.min_distance_achieved:.1f}")
-
-    # print("\nCity positions:")
-    # for i, city in enumerate(result.cities):
-    #     city_type = f"Player {city.player_id}" if city.is_player_city else f"Neutral {i - sum(1 for c in result.cities[:i] if c.is_player_city) + 1}"
-        # city.x and city.y may be floats (tile centers)
-        # print(f"  {city_type}: ({city.x:5.2f}, {city.y:5.2f}) - Region size: {city.region_area}")
-        # if city.region_boundary is not None:
-            # print(f"    Boundary points: {len(city.region_boundary)}")
-
-    # print("\nVoronoi edges:")
-    # for i, edge in enumerate(result.edges):
-        # print(f"  Edge {i + 1}: {edge.region1_seed} <-> {edge.region2_seed}")
-        # print(f"    Boundary length: {edge.length:.1f} points")
-
-    return result
-
 
 
 # 72 x 72
