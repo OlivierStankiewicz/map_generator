@@ -157,10 +157,10 @@ class ObjectTemplateHelper:
 
         for row in range(rows):
             for col in range(cols):
-                tile_x = x - 7 + col
+                tile_x = x - col
                 tile_y = y - 5 + row
 
-                passable = bool(not (template.passability[row] >> (7 - col)) & 1)
+                passable = bool(not((template.passability[row] >> (7 - col)) & 1))
                 actionable = bool((template.actionability[row] >> (7 - col)) & 1)
 
                 # Oznacz kafelek jako zajety jesli jest nieprzejezdny lub akcjonowalny
@@ -209,14 +209,11 @@ class ObjectTemplateHelper:
 
         for row in range(rows):
             for col in range(cols):
-                tile_x = x - 7 + col
+                tile_x = x - col
                 tile_y = y - 5 + row
 
-                passable = bool(not(template.passability[row] >> (7 - col)) & 1)
-                # print((tile_x, tile_y), passable)
+                passable = bool(not((template.passability[row] >> (7 - col)) & 1))
                 actionable = bool((template.actionability[row] >> (7 - col)) & 1)
-                # print((tile_x, tile_y), actionable)
-
 
                 # Jeśli kafelek, który obiekt by zajmował, leży poza mapą -> invalid
                 if not (0 <= tile_x < self.map_format - 2 and 2 <= tile_y < self.map_format - 2):
@@ -225,12 +222,10 @@ class ObjectTemplateHelper:
                         return False
                     continue
                 
-                # print(f"Passable: {passable}, \nActionable: {actionable}, \nTile: ({tile_x}, {tile_y})")
                 if passable or actionable:
                     if self.occupied_tiles[tile_y][tile_x]:
                         return False
                     if (tile_x, tile_y) in self.reserved_tiles:
-                        print(f"x,y:, {tile_x}, {tile_y}, Reserved: {(tile_x, tile_y) in self.reserved_tiles}")
                         return False
         
         return True
@@ -248,13 +243,11 @@ class ObjectTemplateHelper:
 
         for row in range(rows):
             for col in range(cols):
-                tile_x = x - 7 + col
+                tile_x = x - col
                 tile_y = y - 5 + row
 
-                passable = bool(not (template.passability[row] >> (7 - col)) & 1)
-                # print((tile_x, tile_y), passable)
+                passable = bool(not((template.passability[row] >> (7 - col)) & 1))
                 actionable = bool((template.actionability[row] >> (7 - col)) & 1)
-                # print((tile_x, tile_y), actionable)
 
                 # Jeśli kafelek, który obiekt by zajmował, leży poza mapą -> invalid
                 if not (0 <= tile_x < self.map_format and 0 <= tile_y < self.map_format):
