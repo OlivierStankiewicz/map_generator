@@ -1114,6 +1114,60 @@ class MapGeneratorGUI(QWidget):
             for _ in range(tile_px):
                 rows.append(row_pixels[:])
 
+        # Overlay player main towns (if present) as small colored squares
+        try:
+            player_colors = [
+                (255, 0, 0),    # red
+                (0, 0, 255),    # blue
+                (210, 180, 140),# tan
+                (0, 128, 0),    # green
+                (255, 165, 0),  # orange
+                (128, 0, 128),  # purple
+                (0, 128, 128),  # teal
+                (255, 192, 203) # pink
+            ]
+            for p_idx, p in enumerate(getattr(map_obj, 'players', []) or []):
+                mt = getattr(p, 'main_town', None)
+                if not mt:
+                    continue
+                # recover grid city coordinates: generator stored main_town.x = final_x - 2
+                try:
+                    city_x = int(mt.x + 2)
+                    city_y = int(mt.y)
+                except Exception:
+                    continue
+
+                # tiles to color: (x-1,y), (x,y), (x+1,y), (x,y+1)
+                tile_coords = [
+                    (city_x - 1, city_y),
+                    (city_x, city_y),
+                    (city_x + 1, city_y),
+                    (city_x, city_y - 1),
+                ]
+
+                color = player_colors[p_idx] if p_idx < len(player_colors) else (0, 0, 0)
+
+                # paint whole tiles (tile_px x tile_px) in the rows array
+                for tx, ty in tile_coords:
+                    if tx < 0 or tx >= width or ty < 0 or ty >= height:
+                        continue
+                    # pixel ranges for this tile
+                    px0 = tx * tile_px
+                    py0 = ty * tile_px
+                    px1 = px0 + tile_px - 1
+                    py1 = py0 + tile_px - 1
+                    for ry in range(py0, py1 + 1):
+                        if ry < 0 or ry >= img_h:
+                            continue
+                        row = rows[ry]
+                        for rx in range(px0, px1 + 1):
+                            if rx < 0 or rx >= img_w:
+                                continue
+                            row[rx] = color
+        except Exception:
+            # don't fail the whole save if overlay fails
+            pass
+
         # write 24-bit BMP
         import struct
 
@@ -1186,8 +1240,57 @@ class MapGeneratorGUI(QWidget):
                         data[idx + 2] = b
                         idx += 3
 
-        # QImage expects bytes in top-down order for Format_RGB888
-        return QImage(bytes(data), img_w, img_h, QImage.Format_RGB888)
+        qimg = QImage(bytes(data), img_w, img_h, QImage.Format_RGB888)
+
+        # Paint player main towns on top of generated image
+        try:
+            painter = QPainter(qimg)
+            painter.setRenderHint(QPainter.Antialiasing)
+            player_colors = [
+                QColor(255, 0, 0),    # red
+                QColor(0, 0, 255),    # blue
+                QColor(210, 180, 140),# tan
+                QColor(0, 128, 0),    # green
+                QColor(255, 165, 0),  # orange
+                QColor(128, 0, 128),  # purple
+                QColor(0, 128, 128),  # teal
+                QColor(255, 192, 203) # pink
+            ]
+            for p_idx, p in enumerate(getattr(map_obj, 'players', []) or []):
+                mt = getattr(p, 'main_town', None)
+                if not mt:
+                    continue
+                try:
+                    city_x = int(mt.x + 2)
+                    city_y = int(mt.y)
+                except Exception:
+                    continue
+
+                tile_coords = [
+                    (city_x - 1, city_y),
+                    (city_x, city_y),
+                    (city_x + 1, city_y),
+                    (city_x, city_y - 1),
+                ]
+
+                color = player_colors[p_idx] if p_idx < len(player_colors) else QColor(0, 0, 0)
+                pen = QPen(QColor(0, 0, 0))
+                pen.setWidth(1)
+                painter.setPen(pen)
+                for tx, ty in tile_coords:
+                    if tx < 0 or tx >= width or ty < 0 or ty >= height:
+                        continue
+                    x_px = int(tx * tile_px)
+                    y_px = int(ty * tile_px)
+                    rect = QtCore.QRect(x_px, y_px, int(tile_px), int(tile_px))
+                    painter.fillRect(rect, color)
+                    painter.drawRect(rect)
+            painter.end()
+        except Exception:
+            # if overlay fails, return base image
+            pass
+
+        return qimg
 
     def _on_worker_finished(self, map_obj, folder, filename):
         try:
