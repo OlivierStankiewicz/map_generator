@@ -16,7 +16,7 @@ from PySide6.QtWidgets import (
     QPlainTextEdit,
     QSizePolicy,
 )
-from PySide6.QtGui import QImage, QPixmap
+from PySide6.QtGui import QImage, QPixmap, QPainter, QPainterPath, QPen, QColor, QFontMetrics
 import sys
 import os
 import json
@@ -149,6 +149,51 @@ class LimitedPlainTextEdit(QPlainTextEdit):
             return
 
         return super().keyPressEvent(event)
+
+
+class OutlinedLabel(QtWidgets.QLabel):
+    """QLabel that draws a hard outline around the text using QPainterPath.
+
+    This produces a solid sharp border (miter join) around the text rather
+    than a soft blurred shadow.
+    """
+    def __init__(self, *args, outline_width: int = 2, outline_color: str = 'black', **kwargs):
+        super().__init__(*args, **kwargs)
+        self._outline_width = int(outline_width)
+        self._outline_color = QColor(outline_color)
+
+    def paintEvent(self, event):
+        text = self.text() or ''
+        if not text:
+            return super().paintEvent(event)
+
+        painter = QPainter(self)
+        painter.setRenderHint(QPainter.Antialiasing)
+        font = self.font()
+        fm = QFontMetrics(font)
+        rect = self.rect()
+
+        # Compute coordinates for left-aligned, vertically centered text
+        tw = fm.horizontalAdvance(text)
+        th = fm.height()
+        x = 0
+        y = int((rect.height() + fm.ascent() - fm.descent()) / 2)
+
+        path = QPainterPath()
+        path.addText(x, y, font, text)
+
+        pen = QPen(self._outline_color)
+        pen.setWidth(self._outline_width)
+        pen.setJoinStyle(QtCore.Qt.MiterJoin)
+        painter.setPen(pen)
+        painter.drawPath(path)
+
+        # draw filled text on top using the widget's palette/stylesheet color
+        # Use drawText to respect alignment and eliding behavior
+        painter.setPen(self.palette().color(self.foregroundRole()))
+        painter.drawText(rect, QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter, text)
+
+        painter.end()
 
 
 class GeneratorWorker(QtCore.QObject):
@@ -408,8 +453,20 @@ class MapGeneratorGUI(QWidget):
         self.loss_days_spin.setRange(0, 1000)
         self.loss_days_spin.setValue(6)
 
+        # create explicit labels for the Victory/Loss rows so we can color them
+        self.victory_label = QLabel("Victory:")
+        try:
+            self.victory_label.setStyleSheet("color: green; font-weight: bold;")
+        except Exception:
+            pass
+        self.loss_label = QLabel("Loss:")
+        try:
+            self.loss_label.setStyleSheet("color: red; font-weight: bold;")
+        except Exception:
+            pass
+
         # Add victory-related rows
-        victory_layout.addRow("Victory:", self.victory_combo)
+        victory_layout.addRow(self.victory_label, self.victory_combo)
         victory_layout.addRow(self.artifact_label, self.artifact_combo)
         victory_layout.addRow(self.creature_label, self.creature_combo)
         victory_layout.addRow(self.creature_count_label, self.creature_count_spin)
@@ -418,7 +475,7 @@ class MapGeneratorGUI(QWidget):
         victory_group.setLayout(victory_layout)
 
         # Add loss-related rows
-        loss_layout.addRow("Loss:", self.loss_combo)
+        loss_layout.addRow(self.loss_label, self.loss_combo)
         # loss days with explicit label for toggling
         self.loss_days_label = QLabel("Loss days:")
         loss_layout.addRow(self.loss_days_label, self.loss_days_spin)
@@ -476,6 +533,11 @@ class MapGeneratorGUI(QWidget):
         actions_layout = QHBoxLayout()
         actions_layout.addWidget(self.generate_btn)
         actions_group.setLayout(actions_layout)
+        # gentle color for Actions to make it stand out pleasantly
+        # try:
+        #     actions_group.setStyleSheet("background-color: rgba(200, 240, 200, 0.9); border: 1px solid rgba(0,0,0,0.08);")
+        # except Exception:
+        #     pass
 
         # Right column: preview (top) and Terrain values under it
         right_v = QVBoxLayout()
@@ -512,7 +574,9 @@ class MapGeneratorGUI(QWidget):
         # stack victory and loss groups vertically so grid layout doesn't change
         wl_widget = QWidget()
         wl_v = QVBoxLayout()
-        wl_v.setContentsMargins(0, 0, 0, 0)
+        # give some spacing between victory and loss so they don't visually overlap
+        wl_v.setContentsMargins(4, 4, 4, 4)
+        wl_v.setSpacing(8)
         wl_v.addWidget(victory_group)
         wl_v.addWidget(loss_group)
         wl_widget.setLayout(wl_v)
@@ -535,6 +599,10 @@ class MapGeneratorGUI(QWidget):
         ta_layout.addWidget(self.terrain_group)
         ta_layout.addWidget(actions_group)
         terrain_actions_group.setLayout(ta_layout)
+        # try:
+        #     terrain_actions_group.setStyleSheet("background-color: rgba(220, 235, 255, 0.85); border: 1px solid rgba(0,0,0,0.06);")
+        # except Exception:
+        #     pass
 
         # Place composite on the left spanning columns 0..1 and rows 0..1
         grid.addWidget(composite_group, 0, 0, 2, 2)
@@ -545,8 +613,10 @@ class MapGeneratorGUI(QWidget):
         # can expand vertically without affecting their heights. Give column 2
         # (Terrain) the stretch so extra vertical space is assigned there.
         players_group.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
-        victory_group.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
-        loss_group.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+        # allow victory/loss groups to request preferred heights so the vertical
+        # layout can allocate space and avoid overlapping
+        victory_group.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        loss_group.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         self.teams_group.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
         # Terrain should expand vertically and can push Actions down in column 2
         self.terrain_group.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
@@ -698,10 +768,35 @@ class MapGeneratorGUI(QWidget):
 
         # Rows for players 1..8
         for r in range(MAX_PLAYERS):
-            p_label = QLabel(f"Player {r+1}")
+            p_label = OutlinedLabel(f"Player {r+1}")
             # disable entire row if player index is not active
             enabled_row = (r < players_active)
             p_label.setEnabled(enabled_row)
+            # color player label according to player index
+            try:
+                _player_colors = [
+                    'red',    # 1
+                    'blue',   # 2
+                    'tan',    # 3
+                    'green',  # 4
+                    'orange', # 5
+                    'purple', # 6
+                    'teal',   # 7
+                    'pink',   # 8
+                ]
+                col = _player_colors[r] if r < len(_player_colors) else 'black'
+                p_label.setStyleSheet(f"color: {col};")
+                # add a subtle black outline using a drop shadow effect with zero offset
+                try:
+                    effect = QtWidgets.QGraphicsDropShadowEffect(self)
+                    effect.setBlurRadius(6)
+                    effect.setColor(QtCore.Qt.black)
+                    effect.setOffset(0, 0)
+                    p_label.setGraphicsEffect(effect)
+                except Exception:
+                    pass
+            except Exception:
+                pass
             self.teams_grid_layout.addWidget(p_label, r+1, 0)
 
             btn_group = QtWidgets.QButtonGroup(self)
@@ -939,6 +1034,10 @@ class MapGeneratorGUI(QWidget):
             if ret == 0:
                 QMessageBox.information(self, "Success", f"New file created at: {h3m_file_path}")
                 self.status_label.setText("Done")
+                try:
+                    print("successfully generated a map using GUI")
+                except Exception:
+                    pass
             else:
                 QMessageBox.information(self, "Conversion", f"Conversion finished with code {ret}. JSON saved to {json_file_path}")
                 self.status_label.setText("Saved JSON (converter returned non-zero)")
@@ -1145,6 +1244,10 @@ class MapGeneratorGUI(QWidget):
                 else:
                     QMessageBox.information(self, "Success", f"Map saved to {h3m_file_path}")
                     self.status_label.setText("Done")
+                    try:
+                        print("successfully generated a map using GUI")
+                    except Exception:
+                        pass
             except Exception as e:
                 QMessageBox.warning(self, "Converter error", f"Failed to run converter: {e}")
                 self.status_label.setText("Converter failed")

@@ -73,7 +73,10 @@ map_generator/
 
 - Use the scripts in `src/test_scripts/` for separately testing map .json representation generation and conversion to .h3m.
 - Run `src/main.py` to generate maps using the main procedural logic.
-- Run `src/gui.py` to run the application with a GUI.
+- To run the GUI:
+  - Install the needed requirements using `pip`
+  - Optionally create and use a virtual environment
+  - Run `src/gui.py` to launch the application with a GUI.
 
 ---
 
