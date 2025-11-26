@@ -13,6 +13,8 @@ from PySide6.QtWidgets import (
     QGroupBox,
     QFormLayout,
     QComboBox,
+    QPlainTextEdit,
+    QSizePolicy,
 )
 from PySide6.QtGui import QImage, QPixmap
 import sys
@@ -21,30 +23,42 @@ import json
 import subprocess
 import shutil
 import traceback
+from datetime import datetime
 
 # Ensure the `src` directory is on sys.path so imports work whether the script is
 # run from project root (`python src/gui.py`) or from inside `src`.
-project_src = os.path.abspath(os.path.dirname(__file__))
-if project_src not in sys.path:
-    sys.path.insert(0, project_src)
+# project_src = os.path.abspath(os.path.dirname(__file__))
+# if project_src not in sys.path:
+#     sys.path.insert(0, project_src)
 
-generate_voronoi_map = None
-try:
-    from generation.map_gen.map_gen import generate_voronoi_map
-except Exception:
-    try:
-        from src.generation.map_gen.map_gen import generate_voronoi_map
-    except Exception:
-        generate_voronoi_map = None
+# generate_voronoi_map = None
+# try:
+#     from generation.map_gen.map_gen import generate_voronoi_map
+# except Exception:
+#     try:
+#         from src.generation.map_gen.map_gen import generate_voronoi_map
+#     except Exception:
+#         generate_voronoi_map = None
 
-try:
-    from classes.tile.Tile import TerrainType
-except Exception:
-    try:
-        from src.classes.tile.Tile import TerrainType
-    except Exception:
-        TerrainType = None
+# try:
+#     from classes.tile.Tile import TerrainType
+# except Exception:
+#     try:
+#         from src.classes.tile.Tile import TerrainType
+#     except Exception:
+#         TerrainType = None
 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__))))
+from generation.map_gen.map_gen import generate_voronoi_map
+from classes.tile.Tile import TerrainType
+from generation.additional_info_gen.teams_gen import TeamsParams
+from generation.additional_info_gen.victory_condition_gen import VictoryConditionParams
+from generation.additional_info_gen.loss_condition_gen import LossConditionParams
+from classes.Enums.VictoryConditions import VictoryConditions
+from classes.Enums.ArtifactType import ArtifactType
+from classes.Enums.CreatureType import CreatureType
+from classes.Enums.ResourceType import ResourceType
+from classes.Enums.LossConditions import LossConditions
 
 def filter_none_values(obj):
     """Recursively remove keys with None values from dictionaries"""
@@ -54,6 +68,87 @@ def filter_none_values(obj):
         return [filter_none_values(item) for item in obj if item is not None]
     else:
         return obj
+
+
+class LimitedPlainTextEdit(QPlainTextEdit):
+    """QPlainTextEdit that enforces a maximum character length on insert and paste.
+
+    This prevents typing or pasting more than `max_length` characters.
+    """
+    def __init__(self, max_length: int = 300, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.max_length = int(max_length)
+
+    def insertPlainText(self, text: str) -> None:
+        cur = self.toPlainText()
+        # account for selected text which will be replaced
+        cursor = self.textCursor()
+        sel_len = len(cursor.selectedText()) if cursor is not None else 0
+        allowed = self.max_length - (len(cur) - sel_len)
+        if allowed <= 0:
+            return
+        if len(text) > allowed:
+            text = text[:allowed]
+        super().insertPlainText(text)
+
+    def insertFromMimeData(self, source) -> None:
+        # handle paste operations
+        try:
+            text = source.text()
+        except Exception:
+            text = ''
+        cur = self.toPlainText()
+        cursor = self.textCursor()
+        sel_len = len(cursor.selectedText()) if cursor is not None else 0
+        allowed = self.max_length - (len(cur) - sel_len)
+        if allowed <= 0:
+            return
+        if len(text) > allowed:
+            text = text[:allowed]
+        md = QtCore.QMimeData()
+        md.setText(text)
+        super().insertFromMimeData(md)
+
+    def keyPressEvent(self, event):
+        # Allow navigation and editing keys (so backspace/delete still work)
+        key = event.key()
+        navigation_keys = {
+            QtCore.Qt.Key_Backspace,
+            QtCore.Qt.Key_Delete,
+            QtCore.Qt.Key_Left,
+            QtCore.Qt.Key_Right,
+            QtCore.Qt.Key_Home,
+            QtCore.Qt.Key_End,
+            QtCore.Qt.Key_Up,
+            QtCore.Qt.Key_Down,
+            QtCore.Qt.Key_PageUp,
+            QtCore.Qt.Key_PageDown,
+        }
+        if key in navigation_keys:
+            return super().keyPressEvent(event)
+
+        # Allow common shortcuts (Ctrl+C/X/V/A/Z/Y etc.) to be handled normally
+        if event.modifiers() & (QtCore.Qt.ControlModifier | QtCore.Qt.AltModifier):
+            return super().keyPressEvent(event)
+
+        # For printable input, enforce the remaining allowed characters (accounting for selection)
+        text = event.text()
+        if not text:
+            return super().keyPressEvent(event)
+
+        cur = self.toPlainText()
+        cursor = self.textCursor()
+        sel_len = len(cursor.selectedText()) if cursor is not None else 0
+        allowed = self.max_length - (len(cur) - sel_len)
+        if allowed <= 0:
+            # nothing allowed — ignore printable input
+            return
+        if len(text) > allowed:
+            # insert truncated text
+            self.insertPlainText(text[:allowed])
+            return
+
+        return super().keyPressEvent(event)
 
 
 class GeneratorWorker(QtCore.QObject):
@@ -78,7 +173,7 @@ class MapGeneratorGUI(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Map Generator GUI")
-        self.resize(540, 160)
+        self.resize(820, 300)
 
         # Widgets
         self.folder_label = QLabel("Save folder:")
@@ -88,86 +183,308 @@ class MapGeneratorGUI(QWidget):
         self.filename_label = QLabel("File name (without extension):")
         self.filename_edit = QLineEdit()
 
-        # Map size selector
+        # Map metadata: name and description
+        self.map_name_label = QLabel("Map name:")
+        self.map_name_edit = QLineEdit()
+        # limit to 30 characters
+        self.map_name_edit.setMaxLength(30)
+        # default name with current date/time
+        now = datetime.now()
+        default_name = f"My Map {now.day}/{now.month}/{now.year} {now.hour:02d}:{now.minute:02d}:{now.second:02d}"
+        self.map_name_edit.setText(default_name)
+        # default filename in snake_case with zero-padded numbers
+        filename_default = f"my_map_{now.day:02d}_{now.month:02d}_{now.year}_{now.hour:02d}_{now.minute:02d}_{now.second:02d}"
+        self.filename_edit.setText(filename_default)
+
+        self.map_desc_label = QLabel("Map description:")
+        self.map_desc_max = 300
+        # use LimitedPlainTextEdit to prevent typing/pasting more than allowed
+        self.map_desc_edit = LimitedPlainTextEdit(self.map_desc_max)
+        self.map_desc_edit.setFixedHeight(80)
+        # default description
+        description_default = f"Map generated on {now.day}/{now.month}/{now.year} at {now.hour:02d}:{now.minute:02d}:{now.second:02d}."
+        self.map_desc_edit.setPlainText(description_default)
+
+        # Map size selector (fixed preset sizes)
         self.size_label = QLabel("Map size:")
         self.size_combo = QComboBox()
         self.size_combo.addItems(["36x36", "72x72", "108x108", "144x144"])
         # default to 72x72
         self.size_combo.setCurrentText("72x72")
 
-        # Terrain value controls (match main.py defaults)
+        # Terrain value controls (dynamic list)
         self.terrain_group = QGroupBox("Terrain values")
-        terrain_form = QFormLayout()
-        self.spin_water = QSpinBox(); self.spin_water.setRange(0, 10); self.spin_water.setValue(2)
-        self.spin_grass = QSpinBox(); self.spin_grass.setRange(0, 10); self.spin_grass.setValue(3)
-        self.spin_snow = QSpinBox(); self.spin_snow.setRange(0, 10); self.spin_snow.setValue(2)
-        self.spin_swamp = QSpinBox(); self.spin_swamp.setRange(0, 10); self.spin_swamp.setValue(3)
-        self.spin_rough = QSpinBox(); self.spin_rough.setRange(0, 10); self.spin_rough.setValue(1)
-        self.spin_lava = QSpinBox(); self.spin_lava.setRange(0, 10); self.spin_lava.setValue(1)
-        self.spin_sand = QSpinBox(); self.spin_sand.setRange(0, 10); self.spin_sand.setValue(1)
-        self.spin_dirt = QSpinBox(); self.spin_dirt.setRange(0, 10); self.spin_dirt.setValue(3)
-        self.spin_rock = QSpinBox(); self.spin_rock.setRange(0, 10); self.spin_rock.setValue(2)
-        terrain_form.addRow("WATER:", self.spin_water)
-        terrain_form.addRow("GRASS:", self.spin_grass)
-        terrain_form.addRow("SNOW:", self.spin_snow)
-        terrain_form.addRow("SWAMP:", self.spin_swamp)
-        terrain_form.addRow("ROUGH:", self.spin_rough)
-        terrain_form.addRow("LAVA:", self.spin_lava)
-        terrain_form.addRow("SAND:", self.spin_sand)
-        terrain_form.addRow("DIRT:", self.spin_dirt)
-        terrain_form.addRow("ROCK:", self.spin_rock)
-        self.terrain_group.setLayout(terrain_form)
+        self.terrain_layout = QVBoxLayout()
+
+        # Container for rows: each entry will be a QWidget with HBox (label, spinner, remove btn)
+        self.terrain_rows_container = QWidget()
+        self.terrain_rows_layout = QVBoxLayout()
+        self.terrain_rows_layout.setContentsMargins(0, 0, 0, 0)
+        self.terrain_rows_container.setLayout(self.terrain_rows_layout)
+
+        # controls for adding terrains
+        add_layout = QHBoxLayout()
+        self.terrain_add_combo = QComboBox()
+        # populate with TerrainType names, but exclude SUBTERRANEAN and ROCK
+        for t in TerrainType:
+            try:
+                if t.name in ("SUBTERRANEAN", "ROCK"):
+                    continue
+            except Exception:
+                pass
+            self.terrain_add_combo.addItem(t.name)
+        self.terrain_add_btn = QPushButton("Add terrain")
+        self.terrain_add_btn.clicked.connect(self._on_add_terrain_clicked)
+        add_layout.addWidget(self.terrain_add_combo)
+        add_layout.addWidget(self.terrain_add_btn)
+
+        self.terrain_layout.addWidget(self.terrain_rows_container)
+        self.terrain_layout.addLayout(add_layout)
+        self.terrain_group.setLayout(self.terrain_layout)
+
+        # storage for active terrain widgets: TerrainType -> {'row': QWidget, 'spin': QSpinBox}
+        self.terrain_widgets = {}
+        # ensure at least one terrain (DIRT) present by default
+        try:
+            self._add_terrain(TerrainType.DIRT)
+        except Exception:
+            # fallback: if TerrainType.DIRT not available, add first member
+            try:
+                first = list(TerrainType)[0]
+                self._add_terrain(first)
+            except Exception:
+                pass
 
         self.generate_btn = QPushButton("Generate map")
         self.status_label = QLabel("")
 
         # Layout
-        folder_layout = QHBoxLayout()
-        folder_layout.addWidget(self.folder_path_edit)
-        folder_layout.addWidget(self.folder_browse_btn)
+        # Build File group (now contains Save folder as a sub-group)
+        file_group = QGroupBox("File")
+        file_layout = QVBoxLayout()
 
-        # Build left column of controls wrapped in group boxes
-        left_col = QVBoxLayout()
-
-        # Save folder group
+        # Save folder subgroup inside File
         folder_group = QGroupBox("Save folder")
         fg_layout = QHBoxLayout()
         fg_layout.addWidget(self.folder_path_edit)
         fg_layout.addWidget(self.folder_browse_btn)
         folder_group.setLayout(fg_layout)
-        left_col.addWidget(folder_group)
+        file_layout.addWidget(folder_group)
 
-        # File group (filename + size)
-        file_group = QGroupBox("File")
-        file_layout = QVBoxLayout()
+        # Filename
         file_layout.addWidget(self.filename_label)
         file_layout.addWidget(self.filename_edit)
+        # Map info (name + description)
+        map_info_group = QGroupBox("Map info")
+        map_info_layout = QFormLayout()
+        map_info_layout.addRow(self.map_name_label, self.map_name_edit)
+        map_info_layout.addRow(self.map_desc_label, self.map_desc_edit)
+        map_info_group.setLayout(map_info_layout)
+        file_layout.addWidget(map_info_group)
         size_layout = QHBoxLayout()
         size_layout.addWidget(self.size_label)
         size_layout.addWidget(self.size_combo)
         file_layout.addLayout(size_layout)
         file_group.setLayout(file_layout)
-        left_col.addWidget(file_group)
+
+        # Players group: player count (synced with player cities) and neutral cities
+        players_group = QGroupBox("Players / Cities")
+        pg_layout = QFormLayout()
+        self.player_cities_spin = QSpinBox()
+        self.player_cities_spin.setRange(0, 8)
+        self.player_cities_spin.setValue(5)
+        self.players_spin = QSpinBox()
+        self.players_spin.setRange(0, 8)
+        self.players_spin.setValue(5)
+        # sync flag to avoid recursion
+        self._syncing_player_counts = False
+        def _on_player_cities_changed(val):
+            if self._syncing_player_counts:
+                return
+            self._syncing_player_counts = True
+            try:
+                self.players_spin.setValue(val)
+                # update teams max and rebuild grid (cap at 7 teams)
+                self.teams_spin.setMaximum(min(7, max(0, val - 1)))
+                self._rebuild_teams_grid_needed = True
+            finally:
+                self._syncing_player_counts = False
+
+        def _on_players_changed(val):
+            if self._syncing_player_counts:
+                return
+            self._syncing_player_counts = True
+            try:
+                self.player_cities_spin.setValue(val)
+                # update teams max and rebuild grid (cap at 7 teams)
+                self.teams_spin.setMaximum(min(7, max(0, val - 1)))
+                self._rebuild_teams_grid_needed = True
+            finally:
+                self._syncing_player_counts = False
+
+        self.player_cities_spin.valueChanged.connect(_on_player_cities_changed)
+        self.players_spin.valueChanged.connect(_on_players_changed)
+
+        self.neutral_cities_spin = QSpinBox()
+        self.neutral_cities_spin.setRange(0, 50)
+        self.neutral_cities_spin.setValue(2)
+
+        # Difficulty selector (0..4)
+        self.difficulty_spin = QSpinBox()
+        self.difficulty_spin.setRange(0, 4)
+        self.difficulty_spin.setValue(1)
+
+        pg_layout.addRow("Player cities:", self.player_cities_spin)
+        pg_layout.addRow("Players:", self.players_spin)
+        pg_layout.addRow("Neutral cities:", self.neutral_cities_spin)
+        pg_layout.addRow("Difficulty:", self.difficulty_spin)
+        # Teams: number of teams and per-player assignments
+        # Allow up to 7 teams (columns) in the fixed grid; actual enabled teams
+        # will be min(7, players-1) and adjusted when players change.
+        self.teams_spin = QSpinBox()
+        self.teams_spin.setRange(0, 7)
+        # initial max: min(7, players-1)
+        self.teams_spin.setMaximum(min(7, max(0, int(self.players_spin.value()) - 1)))
+        self.teams_spin.setValue(0)
+        pg_layout.addRow("Teams:", self.teams_spin)
+
+        # Teams grid area: shows per-player radio buttons for selecting team
+        self.teams_group = QGroupBox("Teams assignment")
+        self.teams_grid_widget = QWidget()
+        self.teams_grid_layout = QtWidgets.QGridLayout()
+        self.teams_grid_layout.setContentsMargins(6, 6, 6, 6)
+        self.teams_grid_widget.setLayout(self.teams_grid_layout)
+        tg_layout = QVBoxLayout()
+        tg_layout.addWidget(self.teams_grid_widget)
+        self.teams_group.setLayout(tg_layout)
+
+        # Victory and Loss conditions split into separate groups
+        victory_group = QGroupBox("Victory condition")
+        victory_layout = QFormLayout()
+
+        loss_group = QGroupBox("Loss condition")
+        loss_layout = QFormLayout()
+
+        # Victory condition selector
+        self.victory_combo = QComboBox()
+        # options: Normal + requested special ones
+        self.victory_combo.addItem("Normal", VictoryConditions.NORMAL)
+        self.victory_combo.addItem("Acquire specific artifact", VictoryConditions.ACQUIRE_ARTIFACT)
+        self.victory_combo.addItem("Accumulate creatures", VictoryConditions.ACCUMULATE_CREATURES)
+        self.victory_combo.addItem("Accumulate resources", VictoryConditions.ACCUMULATE_RESOURCES)
+        self.victory_combo.addItem("Flag all dwellings", VictoryConditions.FLAG_DWELLINGS)
+        self.victory_combo.addItem("Flag all mines", VictoryConditions.FLAG_MINES)
+
+        # extra controls for victory types (create explicit labels so we can
+        # hide/show both label + control in the form layout)
+        self.artifact_combo = QComboBox()
+        for a in ArtifactType:
+            self.artifact_combo.addItem(a.name, a)
+        self.artifact_label = QLabel("Artifact:")
+
+        self.creature_combo = QComboBox()
+        for c in CreatureType:
+            self.creature_combo.addItem(c.name, c)
+        self.creature_label = QLabel("Creature type:")
+        self.creature_count_spin = QSpinBox()
+        self.creature_count_spin.setRange(1, 10000)
+        self.creature_count_spin.setValue(50)
+        self.creature_count_label = QLabel("Creature count:")
+
+        self.resource_combo = QComboBox()
+        for r in ResourceType:
+            self.resource_combo.addItem(r.name, r)
+        self.resource_label = QLabel("Resource:")
+        self.resource_amount_spin = QSpinBox()
+        self.resource_amount_spin.setRange(1, 1000000)
+        self.resource_amount_spin.setValue(100)
+        self.resource_amount_label = QLabel("Resource amount:")
+
+        # Loss condition selector
+        self.loss_combo = QComboBox()
+        self.loss_combo.addItem("Normal", LossConditions.NORMAL)
+        self.loss_combo.addItem("Time expires", LossConditions.TIME_EXPIRES)
+        self.loss_days_spin = QSpinBox()
+        self.loss_days_spin.setRange(0, 1000)
+        self.loss_days_spin.setValue(6)
+
+        # Add victory-related rows
+        victory_layout.addRow("Victory:", self.victory_combo)
+        victory_layout.addRow(self.artifact_label, self.artifact_combo)
+        victory_layout.addRow(self.creature_label, self.creature_combo)
+        victory_layout.addRow(self.creature_count_label, self.creature_count_spin)
+        victory_layout.addRow(self.resource_label, self.resource_combo)
+        victory_layout.addRow(self.resource_amount_label, self.resource_amount_spin)
+        victory_group.setLayout(victory_layout)
+
+        # Add loss-related rows
+        loss_layout.addRow("Loss:", self.loss_combo)
+        # loss days with explicit label for toggling
+        self.loss_days_label = QLabel("Loss days:")
+        loss_layout.addRow(self.loss_days_label, self.loss_days_spin)
+        loss_group.setLayout(loss_layout)
+
+        # Visibility logic: show only controls relevant to chosen victory type
+        def _on_victory_changed(_):
+            v = self.victory_combo.currentData()
+            is_art = (v == VictoryConditions.ACQUIRE_ARTIFACT)
+            is_cre = (v == VictoryConditions.ACCUMULATE_CREATURES)
+            is_res = (v == VictoryConditions.ACCUMULATE_RESOURCES)
+            # artifact
+            self.artifact_label.setVisible(is_art)
+            self.artifact_combo.setVisible(is_art)
+            # creatures
+            self.creature_label.setVisible(is_cre)
+            self.creature_combo.setVisible(is_cre)
+            self.creature_count_label.setVisible(is_cre)
+            self.creature_count_spin.setVisible(is_cre)
+            # resources
+            self.resource_label.setVisible(is_res)
+            self.resource_combo.setVisible(is_res)
+            self.resource_amount_label.setVisible(is_res)
+            self.resource_amount_spin.setVisible(is_res)
+
+        def _on_loss_changed(_):
+            l = self.loss_combo.currentData()
+            is_time = (l == LossConditions.TIME_EXPIRES)
+            self.loss_days_label.setVisible(is_time)
+            self.loss_days_spin.setVisible(is_time)
+
+        self.victory_combo.currentIndexChanged.connect(_on_victory_changed)
+        self.loss_combo.currentIndexChanged.connect(_on_loss_changed)
+        # initialize visibility for both victory and loss
+        _on_victory_changed(None)
+        _on_loss_changed(None)
+
+        # internal structures to manage radio buttons per player
+        self.team_button_groups = []  # list of QButtonGroup, one per player (row)
+        self.team_radio_buttons = []  # matrix: [player_index][team_index] -> QRadioButton
+
+        # ensure teams grid reflects initial players/teams
+        self._rebuild_teams_grid_needed = True
+        # connect signals to rebuild teams grid when players or teams change
+        self.teams_spin.valueChanged.connect(lambda _: self._rebuild_teams_grid())
+        self.players_spin.valueChanged.connect(lambda _: self._rebuild_teams_grid())
+        # build initial grid
+        self._rebuild_teams_grid()
+        players_group.setLayout(pg_layout)
 
         # Terrain group (already a QGroupBox)
-        left_col.addWidget(self.terrain_group)
 
         # Actions group
         actions_group = QGroupBox("Actions")
         actions_layout = QHBoxLayout()
         actions_layout.addWidget(self.generate_btn)
         actions_group.setLayout(actions_layout)
-        left_col.addWidget(actions_group)
 
-        # Right column: preview (center vertically, title directly above the preview)
-        right_col = QVBoxLayout()
-        right_col.setSpacing(6)
-        right_col.setContentsMargins(0, 0, 0, 0)
-        right_col.addStretch(1)
+        # Right column: preview (top) and Terrain values under it
+        right_v = QVBoxLayout()
+        right_v.setSpacing(6)
+        right_v.setContentsMargins(0, 0, 0, 0)
 
         inner_preview = QVBoxLayout()
         inner_preview.setSpacing(4)
-        self.preview_title = QLabel("Podgląd wygenerowanej mapy")
+        self.preview_title = QLabel("Preview of the generated map")
         self.preview_title.setAlignment(QtCore.Qt.AlignHCenter)
         inner_preview.addWidget(self.preview_title, alignment=QtCore.Qt.AlignHCenter)
 
@@ -175,21 +492,90 @@ class MapGeneratorGUI(QWidget):
         self.preview_label.setFixedSize(300, 300)
         self.preview_label.setAlignment(QtCore.Qt.AlignCenter)
         # placeholder text until a map is generated
-        self.preview_label.setText("tu będzie podgląd wygenerowanej mapy")
+        self.preview_label.setText("After generating a map, its preview will appear here.")
         self.preview_label.setStyleSheet("color: #666; border: 1px solid #ccc; padding: 6px;")
         inner_preview.addWidget(self.preview_label, alignment=QtCore.Qt.AlignHCenter)
 
-        right_col.addLayout(inner_preview)
-        right_col.addStretch(1)
+        right_v.addLayout(inner_preview)
 
-        # Combine into main layout
-        main_layout = QHBoxLayout()
-        main_layout.addLayout(left_col)
-        main_layout.addLayout(right_col)
+        # Top area: File (left) and Preview+Terrain (right)
+        top_h = QHBoxLayout()
+        top_h.addWidget(file_group, stretch=1)
+        top_h.addLayout(right_v)
 
-        # Overall wrapper to include status at bottom
+        # Bottom area: arrange Players, Win/Lose and Terrain in three columns
+        bottom_area = QVBoxLayout()
+        grid = QtWidgets.QGridLayout()
+
+        # Row 0: composite area (Players side-by-side with Victory/Loss), and
+        # Terrain & Actions on the right.
+        # stack victory and loss groups vertically so grid layout doesn't change
+        wl_widget = QWidget()
+        wl_v = QVBoxLayout()
+        wl_v.setContentsMargins(0, 0, 0, 0)
+        wl_v.addWidget(victory_group)
+        wl_v.addWidget(loss_group)
+        wl_widget.setLayout(wl_v)
+
+        # Composite group that places Players and Win/Lose side-by-side, with
+        # Win/Lose given more horizontal space. Teams sits below them.
+        composite_group = QGroupBox("Players & Win/Lose")
+        comp_layout = QVBoxLayout()
+        top_h_comp = QHBoxLayout()
+        top_h_comp.addWidget(players_group, 1)
+        top_h_comp.addWidget(wl_widget, 2)
+        comp_layout.addLayout(top_h_comp)
+        comp_layout.addWidget(self.teams_group)
+        composite_group.setLayout(comp_layout)
+
+        # Combine Terrain values and Actions into a single stacked group on the right
+        terrain_actions_group = QGroupBox("Terrain & Actions")
+        ta_layout = QVBoxLayout()
+        ta_layout.setContentsMargins(6, 6, 6, 6)
+        ta_layout.addWidget(self.terrain_group)
+        ta_layout.addWidget(actions_group)
+        terrain_actions_group.setLayout(ta_layout)
+
+        # Place composite on the left spanning columns 0..1 and rows 0..1
+        grid.addWidget(composite_group, 0, 0, 2, 2)
+        # Place terrain/actions on the right spanning both rows
+        grid.addWidget(terrain_actions_group, 0, 2, 2, 1)
+
+        # Make Players and Victory/Loss groups fixed-height so Terrain column
+        # can expand vertically without affecting their heights. Give column 2
+        # (Terrain) the stretch so extra vertical space is assigned there.
+        players_group.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+        victory_group.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+        loss_group.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+        self.teams_group.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+        # Terrain should expand vertically and can push Actions down in column 2
+        self.terrain_group.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
+        actions_group.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+        # Make Terrain and Actions match preview width and avoid them
+        # taking excessive horizontal space. Use column stretches so columns
+        # 0 and 1 receive extra width while column 2 stays compact.
+        # Use preview width (fixed) for Terrain/Actions.
+        try:
+            preview_w = self.preview_label.width()
+        except Exception:
+            preview_w = 300
+        self.terrain_group.setFixedWidth(preview_w)
+        actions_group.setFixedWidth(preview_w)
+        grid.setColumnStretch(0, 1)
+        grid.setColumnStretch(1, 1)
+        grid.setColumnStretch(2, 0)
+        # Give the top row (where Terrain lives) the vertical stretch so
+        # Terrain (3) can expand vertically while the bottom row (Teams +
+        # Actions) remains compact.
+        grid.setRowStretch(0, 1)
+        grid.setRowStretch(1, 0)
+
+        bottom_area.addLayout(grid)
+
+        # Overall wrapper: top row then bottom area then status
         wrapper = QVBoxLayout()
-        wrapper.addLayout(main_layout)
+        wrapper.addLayout(top_h)
+        wrapper.addLayout(bottom_area)
         wrapper.addWidget(self.status_label)
 
         self.setLayout(wrapper)
@@ -206,12 +592,151 @@ class MapGeneratorGUI(QWidget):
         if folder:
             self.folder_path_edit.setText(folder)
 
+    def _on_add_terrain_clicked(self):
+        txt = self.terrain_add_combo.currentText()
+        if not txt:
+            return
+        try:
+            t = TerrainType[txt]
+        except Exception:
+            return
+        # add terrain row
+        self._add_terrain(t)
+        self._refresh_available_terrains()
+
+    def _add_terrain(self, terrain: TerrainType):
+        # if already present, ignore
+        if terrain in self.terrain_widgets:
+            return
+        row = QWidget()
+        hl = QHBoxLayout()
+        hl.setContentsMargins(0, 0, 0, 0)
+        row.setLayout(hl)
+
+        label = QLabel(terrain.name)
+        spin = QSpinBox()
+        spin.setRange(1, 5)
+        spin.setValue(1)
+        remove_btn = QPushButton("Remove")
+
+        def _remove_here():
+            # prevent removing last terrain
+            if len(self.terrain_widgets) <= 1:
+                QMessageBox.warning(self, "Minimum terrains", "At least one terrain must be present.")
+                return
+            self._remove_terrain(terrain)
+            self._refresh_available_terrains()
+
+        remove_btn.clicked.connect(_remove_here)
+
+        hl.addWidget(label)
+        hl.addWidget(spin)
+        hl.addWidget(remove_btn)
+
+        self.terrain_rows_layout.addWidget(row)
+        self.terrain_widgets[terrain] = {'row': row, 'spin': spin}
+
+    def _remove_terrain(self, terrain: TerrainType):
+        info = self.terrain_widgets.get(terrain)
+        if not info:
+            return
+        row = info['row']
+        # remove widget from layout and delete
+        self.terrain_rows_layout.removeWidget(row)
+        row.setParent(None)
+        row.deleteLater()
+        del self.terrain_widgets[terrain]
+
+    def _refresh_available_terrains(self):
+        # update add combo to show only terrains not yet added
+        current = self.terrain_add_combo.currentText()
+        self.terrain_add_combo.clear()
+        for t in TerrainType:
+            if t == TerrainType.SUBTERRANEAN or t == TerrainType.ROCK:
+                continue
+            if t not in self.terrain_widgets:
+                self.terrain_add_combo.addItem(t.name)
+        # if no available terrains left, disable add
+        self.terrain_add_combo.setEnabled(self.terrain_add_combo.count() > 0)
+        self.terrain_add_btn.setEnabled(self.terrain_add_combo.count() > 0)
+        # try to restore previous selection if still present
+        idx = self.terrain_add_combo.findText(current)
+        if idx >= 0:
+            self.terrain_add_combo.setCurrentIndex(idx)
+
+    def _rebuild_teams_grid(self):
+        # Build a fixed 8x7 grid (8 players rows x 7 team columns). Cells that are
+        # outside the active player count or active team count will be disabled
+        # (greyed out) and not clickable. This ensures a stable visual layout.
+        # Clear existing grid widgets
+        for i in reversed(range(self.teams_grid_layout.count())):
+            item = self.teams_grid_layout.itemAt(i)
+            w = item.widget()
+            if w:
+                self.teams_grid_layout.removeWidget(w)
+                w.setParent(None)
+
+        players_active = int(self.players_spin.value())
+        num_teams_active = int(self.teams_spin.value())
+
+        MAX_PLAYERS = 8
+        MAX_TEAMS = 7
+
+        self.team_button_groups = []
+        self.team_radio_buttons = []
+
+        # Header row (team labels)
+        self.teams_grid_layout.addWidget(QLabel("Player"), 0, 0)
+        self._team_header_labels = []
+        for c in range(MAX_TEAMS):
+            lbl = QLabel(f"Team {c+1}")
+            # disable header if this team index is not active
+            enabled_col = (c < num_teams_active)
+            lbl.setEnabled(enabled_col)
+            self.teams_grid_layout.addWidget(lbl, 0, c+1)
+            self._team_header_labels.append(lbl)
+
+        # Rows for players 1..8
+        for r in range(MAX_PLAYERS):
+            p_label = QLabel(f"Player {r+1}")
+            # disable entire row if player index is not active
+            enabled_row = (r < players_active)
+            p_label.setEnabled(enabled_row)
+            self.teams_grid_layout.addWidget(p_label, r+1, 0)
+
+            btn_group = QtWidgets.QButtonGroup(self)
+            btn_group.setExclusive(True)
+            row_buttons = []
+            for c in range(MAX_TEAMS):
+                rb = QtWidgets.QRadioButton()
+                # determine whether this cell should be enabled: both the row
+                # (player used) and the column (team enabled)
+                enabled_cell = enabled_row and (c < num_teams_active)
+                rb.setEnabled(enabled_cell)
+                # If the cell is disabled, ensure it's unchecked
+                if not enabled_cell:
+                    rb.setChecked(False)
+                self.teams_grid_layout.addWidget(rb, r+1, c+1)
+                btn_group.addButton(rb, c)
+                row_buttons.append(rb)
+
+            # default selection for active rows: assign to team 0 if team 0 exists
+            if enabled_row and num_teams_active > 0:
+                # ensure team 0 is enabled
+                if row_buttons and row_buttons[0].isEnabled():
+                    row_buttons[0].setChecked(True)
+
+            self.team_button_groups.append(btn_group)
+            self.team_radio_buttons.append(row_buttons)
+
+        self._rebuild_teams_grid_needed = False
+
     def on_generate(self):
         folder = self.folder_path_edit.text().strip()
         filename = self.filename_edit.text().strip()
 
         if not folder:
-            QMessageBox.warning(self, "Missing folder", "Please select a folder to save the files.")
+            QMessageBox.warning(self, "Missing folder", "Please select a folder to save the file.")
             return
         if not filename:
             QMessageBox.warning(self, "Missing filename", "Please enter a file name.")
@@ -235,29 +760,107 @@ class MapGeneratorGUI(QWidget):
             if TerrainType is None:
                 raise ImportError("TerrainType enum not available (failed to import classes.tile.Tile).")
 
-            terrain_values = {
-                TerrainType.WATER: self.spin_water.value(),
-                TerrainType.GRASS: self.spin_grass.value(),
-                TerrainType.SNOW: self.spin_snow.value(),
-                TerrainType.SWAMP: self.spin_swamp.value(),
-                TerrainType.ROUGH: self.spin_rough.value(),
-                TerrainType.LAVA: self.spin_lava.value(),
-                TerrainType.SAND: self.spin_sand.value(),
-                TerrainType.DIRT: self.spin_dirt.value(),
-                TerrainType.ROCK: self.spin_rock.value(),
-            }
+            # collect terrain values from dynamic terrain_widgets
+            terrain_values = {}
+            for t, info in self.terrain_widgets.items():
+                try:
+                    terrain_values[t] = int(info['spin'].value())
+                except Exception:
+                    pass
 
-            # parse selected size (e.g. "72x72")
+            # Constraint: WATER value cannot be more than 1/3 of total terrain values
+            try:
+                total_val = sum(terrain_values.values())
+                water_val = terrain_values.get(TerrainType.WATER, 0)
+                if total_val > 0 and water_val > (total_val / 3.0):
+                    QMessageBox.warning(self, "Terrain constraint", "Water value cannot be more than one third of the sum of all terrain values.")
+                    self.generate_btn.setEnabled(True)
+                    return
+            except Exception:
+                # if anything goes wrong, don't block generation here
+                pass
+
+            # parse selected size (e.g. "72x72") from closed list
             size_text = self.size_combo.currentText()
             try:
                 w_str, h_str = size_text.split('x')
-                width = int(w_str)
-                height = int(h_str)
+                size_val = int(w_str)
             except Exception:
-                width = 72
-                height = 72
+                size_val = 72
+            width = height = size_val
+            # Build teams_params according to UI
+            num_teams = int(self.teams_spin.value())
+            players_count = int(self.players_spin.value())
+            teams_params = None
+            if num_teams > 0:
+                # collect per-player team assignments
+                team_for_player = []
+                # collect team assignments for existing players only (0..players_count-1)
+                for p_idx in range(players_count):
+                    # if radio groups not present (e.g., UI mismatch) default to team 0
+                    if p_idx < len(self.team_button_groups):
+                        gid = self.team_button_groups[p_idx].checkedId()
+                        if gid is None or gid < 0:
+                            QMessageBox.warning(self, "Teams", f"Player {p_idx+1} has no team selected. Please assign a team.")
+                            self.generate_btn.setEnabled(True)
+                            return
+                        team_for_player.append(int(gid))
+                    else:
+                        team_for_player.append(0)
 
-            map = generate_voronoi_map(terrain_values, width=width, height=height)
+                # validate: every team must have at least one REAL player assigned
+                counts = [0] * num_teams
+                for t in team_for_player[:players_count]:
+                    if 0 <= t < num_teams:
+                        counts[t] += 1
+                empty = [i for i, c in enumerate(counts) if c == 0]
+                if empty:
+                    QMessageBox.warning(self, "Teams", f"Each team must have at least one player. Teams without players: {', '.join(str(i+1) for i in empty)}")
+                    self.generate_btn.setEnabled(True)
+                    return
+
+                # H3M/JSON format expects team_for_player to be length 8 — pad with zeros for unused slots
+                while len(team_for_player) < 8:
+                    team_for_player.append(0)
+
+                teams_params = TeamsParams(num_teams=num_teams, team_for_player=team_for_player)
+
+            # Build victory / loss params from UI
+            vc_params = None
+            lc_params = None
+
+            v_choice = self.victory_combo.currentData()
+            if v_choice is not None and v_choice != VictoryConditions.NORMAL:
+                vc_params = VictoryConditionParams()
+                vc_params.victory_condition = v_choice
+                # fill specific fields
+                if v_choice == VictoryConditions.ACQUIRE_ARTIFACT:
+                    vc_params.artifact_type = self.artifact_combo.currentData()
+                elif v_choice == VictoryConditions.ACCUMULATE_CREATURES:
+                    vc_params.creature_type = self.creature_combo.currentData()
+                    vc_params.count = int(self.creature_count_spin.value())
+                elif v_choice == VictoryConditions.ACCUMULATE_RESOURCES:
+                    vc_params.resource_type = self.resource_combo.currentData()
+                    vc_params.amount = int(self.resource_amount_spin.value())
+
+            l_choice = self.loss_combo.currentData()
+            if l_choice is not None and l_choice != LossConditions.NORMAL:
+                lc_params = LossConditionParams()
+                lc_params.loss_condition = l_choice
+                if l_choice == LossConditions.TIME_EXPIRES:
+                    lc_params.days = int(self.loss_days_spin.value())
+
+            map = generate_voronoi_map(
+                terrain_values,
+                size=size_val,
+                players_count=int(self.players_spin.value()),
+                player_cities=int(self.player_cities_spin.value()),
+                neutral_cities=int(self.neutral_cities_spin.value()),
+                difficulty=int(self.difficulty_spin.value()),
+                victory_condition_params=vc_params,
+                loss_condition_params=lc_params,
+                teams_params=teams_params,
+            )
             # store last generated map and size for preview
             try:
                 self._last_map = map
@@ -281,6 +884,30 @@ class MapGeneratorGUI(QWidget):
 
         try:
             map_dict = filter_none_values(map.to_dict())
+            # Inject user-provided basic info if present
+            try:
+                name_val = self.map_name_edit.text().strip()
+                desc_val = self.map_desc_edit.toPlainText().strip()
+                # enforce limits again
+                if len(name_val) > 30:
+                    name_val = name_val[:30]
+                if len(desc_val) > self.map_desc_max:
+                    desc_val = desc_val[: self.map_desc_max]
+                if hasattr(map, 'basic_info') and map.basic_info is not None:
+                    try:
+                        map.basic_info.name = name_val
+                        map.basic_info.description = desc_val
+                    except Exception:
+                        # basic_info may be plain dict-like
+                        try:
+                            map.basic_info['name'] = name_val
+                            map.basic_info['description'] = desc_val
+                        except Exception:
+                            pass
+                # re-serialize after injection
+                map_dict = filter_none_values(map.to_dict())
+            except Exception:
+                pass
             json_map_representation = json.dumps(map_dict, indent=2)
             self.status_label.setText("Map representation generated successfully")
             QApplication.processEvents()
@@ -324,6 +951,7 @@ class MapGeneratorGUI(QWidget):
     def _set_status_text(self, text):
         self.status_label.setText(text)
         QApplication.processEvents()
+
 
     def _on_worker_error(self, msg):
         QMessageBox.critical(self, "Generation error", f"Map generation failed:\n{msg}")

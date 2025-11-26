@@ -19,12 +19,13 @@ map_generator/
 │   ├── classes/                   # All classes used to represent map objects
 │   ├── generation/                # Map generation logic
 │   ├── test_scripts/              # Scripts for testing map generation and conversion
+│   ├── gui.py                     # GUI version of the app
 │   └── main.py                    # Main script for map generation
 │
 ├── Readme.md
 ├── .gitignore
 ├── h3mtxt.exe                     # Script used for converting .json files representing valid maps to .h3m
-└── requirements.txt
+└── requirements.txt               # Needed requirements to run the app
 ```
 
 ---
@@ -63,12 +64,16 @@ map_generator/
   The main script for map generation.  
   Currently, it generates a map of all terrain types with all of their known sprites (more sprite numbers have to be tested).
 
+- **src/gui.py**
+  Script containing logic for the GUI version of the app. Allows to manipulate more map file parameters than the non-GUI version.
+
 ---
 
 ## Usage
 
 - Use the scripts in `src/test_scripts/` for separately testing map .json representation generation and conversion to .h3m.
 - Run `src/main.py` to generate maps using the main procedural logic.
+- Run `src/gui.py` to run the application with a GUI.
 
 ---
 

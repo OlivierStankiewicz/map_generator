@@ -58,7 +58,7 @@ class ObjectTemplateHelper:
         self.tiles: list[Tile] = tiles
         self.objectTemplates: list[ObjectsTemplate] = []
         self.objects: list[Objects] = []
-        self.players = [generate_player() for _ in range(8)]
+        self.players = [generate_player() for _ in range(number_of_players)]
 
         self.towns = read_object_templates_from_json("towns")
         self.dwellings_random = read_object_templates_from_json("random_dwellings")  # 0-8 RANDOM_DWELLING_PRESET_ALIGNMENT; 9 RANDOM_DWELLING; 10 - 16 RANDOM_DWELLING_PRESET_LEVEL
@@ -87,7 +87,8 @@ class ObjectTemplateHelper:
         self.town_params = town_params
         self.number_of_players = number_of_players
         self.occ = []
-        self.victory_condition_params = victory_condition_params
+        # Ensure we always have a VictoryConditionParams object to avoid NoneType attribute errors
+        self.victory_condition_params = victory_condition_params if victory_condition_params is not None else VictoryConditionParams()
         self.difficulty = difficulty
 
         limitations =       [#36      72      108     144
