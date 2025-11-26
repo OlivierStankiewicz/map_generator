@@ -176,15 +176,6 @@ def generate_voronoi_map(
                 )
             )
 
-    # underground
-    for y in range(height):
-        for x in range(width):
-            tiles.append(generate_tile(terrain_type=TerrainType.ROCK, terrain_sprite=1))
-
-    for i in tiles:
-        if i.terrain_type == TerrainType.DIRT:
-            print(f"{i.terrain_type}")
-
     total_cities = player_cities + neutral_cities
     total_regions = player_cities * 4 + neutral_cities  # 32 regiony (p?l)
 

@@ -70,7 +70,7 @@ class ObjectTemplateHelper:
         self.random_monsters = read_object_templates_from_json("random_monsters")
         self.reserved_tiles = reserved_tiles if reserved_tiles is not None else set()
 
-        self.map_format = int(sqrt(len(self.tiles) / 2))
+        self.map_format = int(sqrt(len(self.tiles)))
 
         self.result = None
 

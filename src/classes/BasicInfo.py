@@ -6,7 +6,7 @@ class BasicInfo:
         return cls(
             is_playable= 1, # 0 1
             map_size= 72,
-            has_two_levels= 1, # 0 1
+            has_two_levels= 0, # 0 1
             name= "",
             description= "",
             difficulty= 1, # 0 4
