@@ -502,58 +502,74 @@ class ObjectTemplateHelper:
         self.id = id
         self.absod_id = absod_id
 
-
     def generate_heroes_positioning(self):
         heroes = []
         heroes_templates = []
         id = self.id
         absod_id = self.absod_id
+        used_heroes = []
 
         for i, (city, pos_x, pos_y) in enumerate(self.final_city_positions):
             a = randint(0, 1)
             # print(f"Hero city {i}: {city} ({pos_x}, {pos_y}): {city * 2 + a}")
             heroTemplate = self.heroes[city * 2 + a]
-            type = (city * 2 + a) * 8 + randint(0, 7)
+
+            type = None
+            while type is not None and type not in used_heroes:
+                type = (city * 2 + a) * 8 + randint(0, 7)
+            used_heroes.append(type)
             hero: Objects = self.heroes_specification[type]
 
-            final_x, final_y = self.find_alternative_position(heroTemplate, pos_x, pos_y, max_offset=5, validation_function=self.validate_placement_for_landscape)
+            for _ in range(10):
+                final_x, final_y = self.find_alternative_position(heroTemplate, pos_x, pos_y, max_offset=5,
+                                                                  validation_function=self.validate_placement_for_landscape)
+                if final_x is not None and final_y is not None:
+                    id = id + 1
+                    absod_id = absod_id + 1
 
-            if final_x is not None and final_y is not None:
-                id = id + 1
-                absod_id = absod_id + 1
+                    hero.x = final_x
+                    hero.y = final_y
+                    hero.template_idx = id
+                    hero.properties['absod_id'] = absod_id
+                    hero.properties['type'] = type
+                    hero.properties['owner'] = i
 
-                hero.x = final_x
-                hero.y = final_y
-                hero.template_idx = id
-                hero.properties['absod_id'] = absod_id
-                hero.properties['type'] = type
-                hero.properties['owner'] = i
+                    heroes_templates.append(heroTemplate)
+                    heroes.append(hero)
+                    self.players[i].can_be_computer = 1
+                    self.players[i].can_be_human = 1
+                    self.players[i].starting_hero.type = type
+                    self.players[i].starting_hero.portrait = type
+                    self.players[i].heroes = [Heroes(type, '')]  # HeroEnum(type).name
+                    if city == 0:
+                        self.players[i].allowed_alignments.castle = True
+                    elif city == 1:
+                        self.players[i].allowed_alignments.rampart = True
+                    elif city == 2:
+                        self.players[i].allowed_alignments.tower = True
+                    elif city == 3:
+                        self.players[i].allowed_alignments.inferno = True
+                    elif city == 4:
+                        self.players[i].allowed_alignments.necropolis = True
+                    elif city == 5:
+                        self.players[i].allowed_alignments.dungeon = True
+                    elif city == 6:
+                        self.players[i].allowed_alignments.stronghold = True
+                    elif city == 7:
+                        self.players[i].allowed_alignments.fortress = True
+                    elif city == 8:
+                        self.players[i].allowed_alignments.conflux = True
 
-                heroes_templates.append(heroTemplate)
-                heroes.append(hero)
-                self.players[i].can_be_computer = 1
-                self.players[i].can_be_human = 1
-                self.players[i].starting_hero.type = type
-                self.players[i].starting_hero.portrait = type
-                self.players[i].heroes = [Heroes(type, '')] #HeroEnum(type).name
-                if city == 0: self.players[i].allowed_alignments.castle = True
-                elif city == 1: self.players[i].allowed_alignments.rampart = True
-                elif city == 2: self.players[i].allowed_alignments.tower = True
-                elif city == 3: self.players[i].allowed_alignments.inferno = True
-                elif city == 4: self.players[i].allowed_alignments.necropolis = True
-                elif city == 5: self.players[i].allowed_alignments.dungeon = True
-                elif city == 6: self.players[i].allowed_alignments.stronghold = True
-                elif city == 7: self.players[i].allowed_alignments.fortress = True
-                elif city == 8: self.players[i].allowed_alignments.conflux = True
-
-                self.mark_object_tiles_as_occupied(heroTemplate, final_x, final_y)
+                    self.mark_object_tiles_as_occupied(heroTemplate, final_x, final_y)
+                    break
+            else:
+                raise Exception(f"Can not set a hero")
 
         self.objectTemplates.extend(heroes_templates)
         self.objects.extend(heroes)
 
         self.id = id
         self.absod_id = absod_id
-
 
     def generate_special_building(self):
         self.generate_special_building_level3()
