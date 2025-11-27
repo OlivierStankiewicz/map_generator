@@ -25,30 +25,7 @@ import shutil
 import traceback
 from datetime import datetime
 
-# Ensure the `src` directory is on sys.path so imports work whether the script is
-# run from project root (`python src/gui.py`) or from inside `src`.
-# project_src = os.path.abspath(os.path.dirname(__file__))
-# if project_src not in sys.path:
-#     sys.path.insert(0, project_src)
-
-# generate_voronoi_map = None
-# try:
-#     from generation.map_gen.map_gen import generate_voronoi_map
-# except Exception:
-#     try:
-#         from src.generation.map_gen.map_gen import generate_voronoi_map
-#     except Exception:
-#         generate_voronoi_map = None
-
-# try:
-#     from classes.tile.Tile import TerrainType
-# except Exception:
-#     try:
-#         from src.classes.tile.Tile import TerrainType
-#     except Exception:
-#         TerrainType = None
-
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__))))
+sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 from generation.map_gen.map_gen import generate_voronoi_map
 from classes.tile.Tile import TerrainType
 from generation.additional_info_gen.teams_gen import TeamsParams

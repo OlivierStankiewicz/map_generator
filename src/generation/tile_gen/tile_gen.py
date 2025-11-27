@@ -1,12 +1,8 @@
-import sys
-import os
 from enum import Enum
 from random import choice
 
-# Ensure that imports are done from the level of the src directory
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 from classes.tile.Flags import Flags
-from classes.tile.Tile import Tile, TerrainType
+from classes.tile.Tile import Tile, TerrainType, RiverType, RoadType
 from generation.tile_gen.flags_gen import generate_flags
 
 class SpriteType(Enum):
@@ -79,18 +75,18 @@ def generate_random_tile(random_terrain_type: bool, random_terrain_sprite: bool)
     return Tile(
         terrain_type = terrain_type,
         terrain_sprite = terrain_sprite,
-        river_type = 0,
+        river_type = RiverType.NONE,
         river_sprite =  0,
-        road_type = 0,
+        road_type = RoadType.NONE,
         road_sprite = 0,
         flags = generate_flags()
     )
 
 def generate_tile(terrain_type: TerrainType = TerrainType.WATER,
                   terrain_sprite: int = 0,
-                  river_type: int = 0,
+                  river_type: RiverType = RiverType.NONE,
                   river_sprite: int = 0,
-                  road_type: int = 0,
+                  road_type: RoadType = RoadType.NONE,
                   road_sprite: int = 0,
                   flags: Flags = generate_flags()) -> Tile:
     return Tile(
