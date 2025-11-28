@@ -7,18 +7,11 @@ from random import randint, choices, sample
 from math import sqrt
 
 from classes.Enums.ArtifactType import converterTypeToNum as ar_converterTypeToNum
-from classes.Enums.CreatureType import converterTypeToNum as cr_converterTypeToNum, CreatureType, CreatureNum, converterNumToType as cr_converterNumToType
-from classes.Enums.Disposition import Disposition
-from classes.Enums.ResourceType import ResourceType
+from classes.Enums.CreatureType import converterTypeToNum as cr_converterTypeToNum, CreatureNum, converterNumToType as cr_converterNumToType
 from classes.Enums.VictoryConditions import VictoryConditions
 from classes.Objects.Properties.Artifact import Artifact
-from classes.Objects.Properties.Helpers.Artifacts import Artifacts
 from classes.Objects.Properties.Helpers.Creatures import Creatures
 from classes.Objects.Properties.Helpers.Guardians import Guardians
-from classes.Objects.Properties.Helpers.PrimarySkills import PrimarySkills
-from classes.Objects.Properties.Helpers.SecondarySkills import SecondarySkills
-from classes.Objects.Properties.Helpers.Spells import Spells
-from classes.Enums.Heroes import Hero as HeroEnum
 from classes.Objects.Properties.Hero import Hero
 from classes.Objects.Properties.Monster import Monster
 from classes.Objects.Properties.RandomDwellingPresetAlignment import RandomDwellingPresetAlignment
@@ -30,8 +23,6 @@ from classes.Objects.Properties.TrivialOwnedObject import TrivialOwnedObject
 from classes.Objects.Properties.WitchHut import WitchHut
 from classes.player.Heroes import Heroes
 from classes.player.MainTown import MainTown
-from classes.player.StartingHero import StartingHero
-from generation.additional_info_gen.loss_condition_gen import LossConditionParams
 from generation.additional_info_gen.victory_condition_gen import VictoryConditionParams
 from generation.player_gen.player_gen import generate_player
 
@@ -40,16 +31,13 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '.
 from classes.Objects.Objects import Objects
 
 from classes.Enums.Formation import Formation
-from classes.Enums.TownType import TownType
 from classes.Objects.Properties.Helpers.MayNotHaveSpell import MayNotHaveSpell
 from classes.Objects.Properties.Helpers.MustHaveSpell import MustHaveSpell
 from classes.Objects.Properties.Town import Town
-from classes.Objects.Properties.RandomDwelling import RandomDwelling
-from classes.Objects.Properties.Helpers.Alignment import Alignment
 from classes.ObjectsTemplate import ObjectsTemplate
 from classes.tile.Tile import Tile, TerrainType
 from generation.object_gen.json_parser import read_object_templates_from_json, read_object_from_json
-from generation.object_gen.voronoi_city_placement import generate_city_positions, generate_city_positions_with_fields, get_region_tiles
+from generation.object_gen.city_gen.voronoi_city_placement import generate_city_positions_with_fields, get_region_tiles
 
 
 @dataclass
@@ -70,7 +58,7 @@ class ObjectTemplateHelper:
         self.tiles: list[Tile] = tiles
         self.objectTemplates: list[ObjectsTemplate] = []
         self.objects: list[Objects] = []
-        self.players = [generate_player() for _ in range(8)]
+        self.players = [generate_player() for _ in range(number_of_players)]
 
         self.towns = read_object_templates_from_json("towns")
         self.dwellings_random = read_object_templates_from_json("random_dwellings")  # 0-8 RANDOM_DWELLING_PRESET_ALIGNMENT; 9 RANDOM_DWELLING; 10 - 16 RANDOM_DWELLING_PRESET_LEVEL
@@ -82,7 +70,7 @@ class ObjectTemplateHelper:
         self.random_monsters = read_object_templates_from_json("random_monsters")
         self.reserved_tiles = reserved_tiles if reserved_tiles is not None else set()
 
-        self.map_format = int(sqrt(len(self.tiles) / 2))
+        self.map_format = int(sqrt(len(self.tiles)))
 
         self.result = None
 
@@ -99,7 +87,8 @@ class ObjectTemplateHelper:
         self.town_params = town_params
         self.number_of_players = number_of_players
         self.occ = []
-        self.victory_condition_params = victory_condition_params
+        # Ensure we always have a VictoryConditionParams object to avoid NoneType attribute errors
+        self.victory_condition_params = victory_condition_params if victory_condition_params is not None else VictoryConditionParams()
         self.difficulty = difficulty
 
         limitations =       [#36      72      108     144
@@ -169,10 +158,10 @@ class ObjectTemplateHelper:
 
         for row in range(rows):
             for col in range(cols):
-                tile_x = x - 7 + col
+                tile_x = x - col
                 tile_y = y - 5 + row
 
-                passable = bool(not (template.passability[row] >> (7 - col)) & 1)
+                passable = bool(not((template.passability[row] >> (7 - col)) & 1))
                 actionable = bool((template.actionability[row] >> (7 - col)) & 1)
 
                 # Oznacz kafelek jako zajety jesli jest nieprzejezdny lub akcjonowalny
@@ -221,14 +210,11 @@ class ObjectTemplateHelper:
 
         for row in range(rows):
             for col in range(cols):
-                tile_x = x - 7 + col
+                tile_x = x - col
                 tile_y = y - 5 + row
 
-                passable = bool(not(template.passability[row] >> (7 - col)) & 1)
-                # print((tile_x, tile_y), passable)
+                passable = bool(not((template.passability[row] >> (7 - col)) & 1))
                 actionable = bool((template.actionability[row] >> (7 - col)) & 1)
-                # print((tile_x, tile_y), actionable)
-
 
                 # Jeśli kafelek, który obiekt by zajmował, leży poza mapą -> invalid
                 if not (0 <= tile_x < self.map_format - 2 and 2 <= tile_y < self.map_format - 2):
@@ -237,12 +223,10 @@ class ObjectTemplateHelper:
                         return False
                     continue
                 
-                # print(f"Passable: {passable}, \nActionable: {actionable}, \nTile: ({tile_x}, {tile_y})")
                 if passable or actionable:
                     if self.occupied_tiles[tile_y][tile_x]:
                         return False
                     if (tile_x, tile_y) in self.reserved_tiles:
-                        print(f"x,y:, {tile_x}, {tile_y}, Reserved: {(tile_x, tile_y) in self.reserved_tiles}")
                         return False
         
         return True
@@ -260,13 +244,11 @@ class ObjectTemplateHelper:
 
         for row in range(rows):
             for col in range(cols):
-                tile_x = x - 7 + col
+                tile_x = x - col
                 tile_y = y - 5 + row
 
-                passable = bool(not (template.passability[row] >> (7 - col)) & 1)
-                # print((tile_x, tile_y), passable)
+                passable = bool(not((template.passability[row] >> (7 - col)) & 1))
                 actionable = bool((template.actionability[row] >> (7 - col)) & 1)
-                # print((tile_x, tile_y), actionable)
 
                 # Jeśli kafelek, który obiekt by zajmował, leży poza mapą -> invalid
                 if not (0 <= tile_x < self.map_format and 0 <= tile_y < self.map_format):

@@ -113,11 +113,12 @@ def generate_voronoi_map(
         TerrainType.DIRT: 3,
     }, 
     size: int = 72,
-    player_cities: int = 5,
+    player_cities: int = 8,
+    players_count: int = 8,
     neutral_cities: int = 2,
-    difficulty = 1,
+    difficulty: int = 1,
     victory_condition_params: VictoryConditionParams=VictoryConditionParams(
-        victory_condition=VictoryConditions.TRANSPORT_ARTIFACT,
+        victory_condition=VictoryConditions.ACQUIRE_ARTIFACT, # changed from transport because it wasnt working
         artifact_type=ArtifactType.Golden_Bow,
         resource_type=ResourceType.GEMS,
         creature_type=CreatureType.Griffin,
@@ -131,7 +132,7 @@ def generate_voronoi_map(
     ),
     loss_condition_params: LossConditionParams = LossConditionParams(
         loss_condition=LossConditions.TIME_EXPIRES,
-        days=10),
+        days=6), # tu był pies pogrzebany
     teams_params: TeamsParams = None
     ) -> Map:
     """
@@ -175,19 +176,10 @@ def generate_voronoi_map(
                 )
             )
 
-    # underground
-    for y in range(height):
-        for x in range(width):
-            tiles.append(generate_tile(terrain_type=TerrainType.ROCK, terrain_sprite=1))
-
-    for i in tiles:
-        if i.terrain_type == TerrainType.DIRT:
-            print(f"{i.terrain_type}")
-
     total_cities = player_cities + neutral_cities
     total_regions = player_cities * 4 + neutral_cities  # 32 regiony (p?l)
 
-    obj = ObjectTemplateHelper(tiles=tiles, number_of_players=8,
+    obj = ObjectTemplateHelper(tiles=tiles, number_of_players=players_count,
                                town_params=TownParams(player_cities, neutral_cities, 30, total_regions),
                                victory_condition_params=victory_condition_params,
                                reserved_tiles=reserved_tiles, difficulty=difficulty)
@@ -197,6 +189,34 @@ def generate_voronoi_map(
     print("\n=== MAPOWANIE MIAST DO POL ===")
     for city_info in city_field_mapping:
         print(f"{city_info}")
+
+    # Ensure there are always 8 player slots in the serialized map.
+    # For missing players append dummy players that are inactive (won't appear on map):
+    # set both can_be_human and can_be_computer to 0.
+    if len(players) < 8:
+        from classes.player.Player import Player as PlayerClass
+        missing = 8 - len(players)
+        from classes.player.StartingHero import StartingHero
+        for _ in range(missing):
+            p = PlayerClass.create_default()
+            try:
+                p.can_be_human = 0
+                p.can_be_computer = 0
+                p.main_town = None
+                p.has_random_heroes = 0
+                # ensure starting_hero exists and indicates 'none'
+                try:
+                    p.starting_hero = StartingHero.create_default()
+                except Exception:
+                    # fallback: leave existing starting_hero or set attribute if possible
+                    if not hasattr(p, 'starting_hero'):
+                        p.starting_hero = None
+                p.num_nonspecific_placeholder_heroes = 0
+                p.heroes = []
+            except Exception:
+                # best-effort; continue even if some attributes missing
+                pass
+            players.append(p)
 
     return Map(
         format=28,
