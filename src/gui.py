@@ -278,7 +278,22 @@ class MapGeneratorGUI(QWidget):
             except Exception:
                 pass
 
+        # Ensure the add-combo does not contain terrains already added (DIRT)
+        # and default the selection to SAND for convenience.
+        try:
+            self._refresh_available_terrains()
+            idx_sand = self.terrain_add_combo.findText("SAND")
+            if idx_sand >= 0:
+                self.terrain_add_combo.setCurrentIndex(idx_sand)
+        except Exception:
+            pass
+
         self.generate_btn = QPushButton("Generate map")
+        try:
+            # match height with the Manual QToolButton for consistent appearance
+            self.generate_btn.setFixedHeight(34)
+        except Exception:
+            pass
         self.status_label = QLabel("")
 
         # Layout
@@ -522,11 +537,33 @@ class MapGeneratorGUI(QWidget):
         players_group.setLayout(pg_layout)
 
         # Terrain group (already a QGroupBox)
-
+        # 123456
         # Actions group
         actions_group = QGroupBox("Actions")
         actions_layout = QHBoxLayout()
         actions_layout.addWidget(self.generate_btn)
+        # Add manual/info button next to Generate in the actions bar for quick access
+        # use QPushButton so icon+text can be centered easily
+        self.info_btn = QPushButton()
+        try:
+            icon = QApplication.style().standardIcon(QtWidgets.QStyle.SP_MessageBoxInformation)
+            self.info_btn.setIcon(icon)
+        except Exception:
+            pass
+        self.info_btn.setToolTip("Show manual / how-to")
+        try:
+            self.info_btn.setText("Manual")
+            self.info_btn.setIconSize(QtCore.QSize(18, 18))
+            # match Generate button height for consistency
+            self.info_btn.setFixedHeight(34)
+            self.info_btn.setMinimumWidth(110)
+            # center icon+text
+            self.info_btn.setStyleSheet("font-weight: bold; padding: 4px; text-align: center;")
+        except Exception:
+            pass
+        self.info_btn.setCursor(QtCore.Qt.PointingHandCursor)
+        actions_layout.addSpacing(8)
+        actions_layout.addWidget(self.info_btn)
         actions_group.setLayout(actions_layout)
         # gentle color for Actions to make it stand out pleasantly
         # try:
@@ -539,40 +576,47 @@ class MapGeneratorGUI(QWidget):
         right_v.setSpacing(6)
         right_v.setContentsMargins(0, 0, 0, 0)
 
-        inner_preview = QVBoxLayout()
-        inner_preview.setSpacing(4)
-        # Title area with an information button
+        # Wrap preview area in a GroupBox so it gets the same bordered pane
+        # treatment as other sections (visually consistent)
+        preview_group = QGroupBox("Preview of the generated map")
+        preview_group.setContentsMargins(6, 6, 6, 6)
+        preview_group_layout = QVBoxLayout()
+        preview_group_layout.setSpacing(4)
+        # give a slightly larger top margin so the group's title has breathing room
+        preview_group_layout.setContentsMargins(6, 12, 6, 6)
+
+        # Top row: right-aligned info/manual button
         top_preview_h = QHBoxLayout()
         top_preview_h.setContentsMargins(0, 0, 0, 0)
-        self.preview_title = QLabel("Preview of the generated map")
-        self.preview_title.setAlignment(QtCore.Qt.AlignLeft)
-        top_preview_h.addWidget(self.preview_title)
-
-        # Info button with standard Qt information icon
-        self.info_btn = QPushButton()
-        try:
-            icon = QApplication.style().standardIcon(QtWidgets.QStyle.SP_MessageBoxInformation)
-            self.info_btn.setIcon(icon)
-        except Exception:
-            self.info_btn.setText("i")
-        self.info_btn.setToolTip("Show manual / how-to")
-        self.info_btn.setFixedSize(28, 28)
-        self.info_btn.setIconSize(QtCore.QSize(18, 18))
-        self.info_btn.setCursor(QtCore.Qt.PointingHandCursor)
         top_preview_h.addStretch()
-        top_preview_h.addWidget(self.info_btn)
 
-        inner_preview.addLayout(top_preview_h)
+        # keep preview title area compact (info button moved to Actions bar)
+
+        preview_group_layout.addLayout(top_preview_h)
 
         self.preview_label = QLabel()
-        self.preview_label.setFixedSize(300, 300)
+        # allow the preview to shrink when the window is smaller, but keep a
+        # reasonable maximum so layout remains usable
+        self.preview_label.setMinimumSize(150, 150)
+        self.preview_label.setMaximumSize(300, 300)
         self.preview_label.setAlignment(QtCore.Qt.AlignCenter)
         # placeholder text until a map is generated
         self.preview_label.setText("After generating a map, its preview will appear here.")
         self.preview_label.setStyleSheet("color: #666; border: 1px solid #ccc; padding: 6px;")
-        inner_preview.addWidget(self.preview_label, alignment=QtCore.Qt.AlignHCenter)
+        preview_group_layout.addWidget(self.preview_label, alignment=QtCore.Qt.AlignHCenter)
 
-        right_v.addLayout(inner_preview)
+        # Button to save the preview BMP (uses existing on_save_preview)
+        self.save_preview_btn = QPushButton("Save preview")
+        self.save_preview_btn.setToolTip("Save preview BMP of last generated map")
+        self.save_preview_btn.setFixedWidth(140)
+        try:
+            self.save_preview_btn.clicked.connect(self.on_save_preview)
+        except Exception:
+            pass
+        preview_group_layout.addWidget(self.save_preview_btn, alignment=QtCore.Qt.AlignHCenter)
+
+        preview_group.setLayout(preview_group_layout)
+        right_v.addWidget(preview_group)
 
         # Top area: File (left) and Preview+Terrain (right)
         top_h = QHBoxLayout()
@@ -658,6 +702,9 @@ class MapGeneratorGUI(QWidget):
 
         # Overall wrapper: top row then bottom area then status
         wrapper = QVBoxLayout()
+        # add spacing so sections don't visually overlap when the window is
+        # resized smaller; the QScrollArea will provide scrollbars if needed
+        wrapper.setSpacing(12)
         wrapper.addLayout(top_h)
         wrapper.addLayout(bottom_area)
         wrapper.addWidget(self.status_label)
@@ -682,23 +729,72 @@ class MapGeneratorGUI(QWidget):
         manual_title.setStyleSheet("font-weight: bold; font-size: 16px;")
         manual_layout.addWidget(manual_title)
 
-        manual_text = LimitedPlainTextEdit(10000)
-        manual_text.setReadOnly(True)
-        manual_text.setPlainText(
-            "Krótkie wskazówki:\n\n"
-            "1. Wybierz folder zapisu i nazwę pliku.\n"
-            "2. Ustaw rozmiar mapy (np. 72x72).\n"
-            "3. Dodaj i skonfiguruj wartości terenów po prawej (np. DIRT, GRASS).\n"
-            "4. Ustaw liczbę graczy i miasta, a następnie (opcjonalnie) zespoły.\n"
-            "5. W sekcji Win/Lose wybierz warunki zwycięstwa lub przegranej.\n"
-            "   - Dla 'Time expires' wybierz z listy ile dni (np. '1 week' -> 7 dni).\n"
-            "6. Naciśnij 'Generate map' aby wygenerować plik JSON i (opcjonalnie) .h3m.\n\n"
-            "Dodatkowo:\n"
-            "- Możesz zapisać podgląd mapy klikając prawym przyciskiem na obszarze podglądu (funkcja eksperymentalna).\n"
-            "- Jeśli konwerter 'h3mtxt.exe' nie jest w PATH, zostanie zapisany tylko JSON.\n\n"
-            "Jeśli potrzebujesz szczegółowego poradnika z obrazkami, daj znać, a przygotuję stronę pomocy." 
+        # Show manual as formatted QLabel (larger font, label-like appearance)
+        manual_body = (
+            "Welcome to the Heroes III: Shadow of Death map generator:\n\n"
+            "1. Select the save folder and file name.\n"
+            "2. Enter the map name and description.\n"
+            "3. Set the map size (e.g., 72x72).\n"
+            "4. Add terrain values on the right (e.g., DIRT, GRASS) and set their estimated coverage.\n"
+            "5. Set the number of players and towns, and optionally teams.\n"
+            "6. In the Win/Lose section, choose victory or defeat conditions and set any additional parameters.\n"
+            "7. Press 'Generate map' to create the .h3m map file and save it to the selected folder.\n\n"
+            "8. To use the generated map, simply copy the .h3m file into your Heroes III: SoD 'Maps' folder.\n"
+            "Enjoy!\n\n"
+            "Additionally:\n"
+            "- You can save the map preview by right-clicking on the preview area.\n\n"
+            "What if the 'h3mtxt.exe' converter is not present?\n"
+            "Only a JSON representation of the map will be saved. You can then use the h3mtxt.exe tool separately to convert JSON to .h3m.\n\n"
         )
-        manual_layout.addWidget(manual_text)
+        manual_html = manual_body.replace('\n', '<br>')
+        manual_label = QLabel(f"<div style='font-size:13px; line-height:1.45;'>{manual_html}</div>")
+        manual_label.setWordWrap(True)
+        manual_label.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
+        manual_label.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
+
+        # Try to load 'nasza_mapa.PNG' from a few likely locations. If not found,
+        # show a small placeholder label with instructions.
+        img_label = QLabel()
+        img_label.setAlignment(QtCore.Qt.AlignCenter)
+        candidates = [
+            os.path.join(os.path.dirname(__file__), '..', 'nasza_mapa.PNG'),
+            os.path.join(os.path.dirname(__file__), '..', 'generated_maps', 'nasza_mapa.PNG'),
+            os.path.join(os.getcwd(), 'nasza_mapa.PNG'),
+        ]
+        img_path = None
+        for p in candidates:
+            try:
+                p_abs = os.path.abspath(p)
+            except Exception:
+                p_abs = p
+            if os.path.exists(p_abs):
+                img_path = p_abs
+                break
+
+        if img_path:
+            try:
+                pix = QPixmap(img_path)
+                if not pix.isNull():
+                    # scale to fit manual area (max width 320, keep aspect)
+                    max_w = 320
+                    max_h = 320
+                    pix = pix.scaled(max_w, max_h, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
+                    img_label.setPixmap(pix)
+                else:
+                    img_label.setText("[Image could not be loaded]")
+            except Exception:
+                img_label.setText("[Image load error]")
+        else:
+            img_label.setText("[Add nasza_mapa.PNG to project root to show image]")
+            img_label.setStyleSheet('font-style: italic; color: #666;')
+
+        # Place text on the left and image on the right
+        manual_h = QHBoxLayout()
+        manual_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        img_label.setMaximumWidth(320)
+        manual_h.addWidget(manual_label, 1)
+        manual_h.addWidget(img_label, 0)
+        manual_layout.addLayout(manual_h)
 
         manual_close = QPushButton("Back to editor")
         manual_close.setFixedWidth(140)
