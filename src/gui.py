@@ -25,29 +25,6 @@ import shutil
 import traceback
 from datetime import datetime
 
-# Ensure the `src` directory is on sys.path so imports work whether the script is
-# run from project root (`python src/gui.py`) or from inside `src`.
-# project_src = os.path.abspath(os.path.dirname(__file__))
-# if project_src not in sys.path:
-#     sys.path.insert(0, project_src)
-
-# generate_voronoi_map = None
-# try:
-#     from generation.map_gen.map_gen import generate_voronoi_map
-# except Exception:
-#     try:
-#         from src.generation.map_gen.map_gen import generate_voronoi_map
-#     except Exception:
-#         generate_voronoi_map = None
-
-# try:
-#     from classes.tile.Tile import TerrainType
-# except Exception:
-#     try:
-#         from src.classes.tile.Tile import TerrainType
-#     except Exception:
-#         TerrainType = None
-
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__))))
 from generation.map_gen.map_gen import generate_voronoi_map
 from classes.tile.Tile import TerrainType
@@ -218,7 +195,8 @@ class MapGeneratorGUI(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Map Generator GUI")
-        self.resize(820, 300)
+        # Make the default window a bit taller so more controls fit vertically
+        self.resize(820, 820)
 
         # Widgets
         self.folder_label = QLabel("Save folder:")
@@ -449,9 +427,26 @@ class MapGeneratorGUI(QWidget):
         self.loss_combo = QComboBox()
         self.loss_combo.addItem("Normal", LossConditions.NORMAL)
         self.loss_combo.addItem("Time expires", LossConditions.TIME_EXPIRES)
-        self.loss_days_spin = QSpinBox()
-        self.loss_days_spin.setRange(0, 1000)
-        self.loss_days_spin.setValue(6)
+        # Dropdown for time-based loss parameters. Each item stores the
+        # corresponding number of days as its data value.
+        self.loss_days_combo = QComboBox()
+        # single-day options (2..6 days)
+        for d in range(2, 7):
+            self.loss_days_combo.addItem(f"{d} days", d)
+        # weeks: 1..7 -> 7,14,...,49
+        for w in range(1, 8):
+            days = w * 7
+            label = f"{w} week" if w == 1 else f"{w} weeks"
+            self.loss_days_combo.addItem(label, days)
+        # months: 2..12 months, each month == 4 weeks == 28 days
+        for m in range(2, 13):
+            days = m * 4 * 7
+            label = f"{m} months"
+            self.loss_days_combo.addItem(label, days)
+        # default selection to 2 days (like in map editor)
+        idx = self.loss_days_combo.findData(2)
+        if idx >= 0:
+            self.loss_days_combo.setCurrentIndex(idx)
 
         # create explicit labels for the Victory/Loss rows so we can color them
         self.victory_label = QLabel("Victory:")
@@ -478,7 +473,7 @@ class MapGeneratorGUI(QWidget):
         loss_layout.addRow(self.loss_label, self.loss_combo)
         # loss days with explicit label for toggling
         self.loss_days_label = QLabel("Loss days:")
-        loss_layout.addRow(self.loss_days_label, self.loss_days_spin)
+        loss_layout.addRow(self.loss_days_label, self.loss_days_combo)
         loss_group.setLayout(loss_layout)
 
         # Visibility logic: show only controls relevant to chosen victory type
@@ -505,7 +500,7 @@ class MapGeneratorGUI(QWidget):
             l = self.loss_combo.currentData()
             is_time = (l == LossConditions.TIME_EXPIRES)
             self.loss_days_label.setVisible(is_time)
-            self.loss_days_spin.setVisible(is_time)
+            self.loss_days_combo.setVisible(is_time)
 
         self.victory_combo.currentIndexChanged.connect(_on_victory_changed)
         self.loss_combo.currentIndexChanged.connect(_on_loss_changed)
@@ -546,9 +541,28 @@ class MapGeneratorGUI(QWidget):
 
         inner_preview = QVBoxLayout()
         inner_preview.setSpacing(4)
+        # Title area with an information button
+        top_preview_h = QHBoxLayout()
+        top_preview_h.setContentsMargins(0, 0, 0, 0)
         self.preview_title = QLabel("Preview of the generated map")
-        self.preview_title.setAlignment(QtCore.Qt.AlignHCenter)
-        inner_preview.addWidget(self.preview_title, alignment=QtCore.Qt.AlignHCenter)
+        self.preview_title.setAlignment(QtCore.Qt.AlignLeft)
+        top_preview_h.addWidget(self.preview_title)
+
+        # Info button with standard Qt information icon
+        self.info_btn = QPushButton()
+        try:
+            icon = QApplication.style().standardIcon(QtWidgets.QStyle.SP_MessageBoxInformation)
+            self.info_btn.setIcon(icon)
+        except Exception:
+            self.info_btn.setText("i")
+        self.info_btn.setToolTip("Show manual / how-to")
+        self.info_btn.setFixedSize(28, 28)
+        self.info_btn.setIconSize(QtCore.QSize(18, 18))
+        self.info_btn.setCursor(QtCore.Qt.PointingHandCursor)
+        top_preview_h.addStretch()
+        top_preview_h.addWidget(self.info_btn)
+
+        inner_preview.addLayout(top_preview_h)
 
         self.preview_label = QLabel()
         self.preview_label.setFixedSize(300, 300)
@@ -648,7 +662,62 @@ class MapGeneratorGUI(QWidget):
         wrapper.addLayout(bottom_area)
         wrapper.addWidget(self.status_label)
 
-        self.setLayout(wrapper)
+        # Make the whole GUI content scrollable when the window is too small.
+        content_widget = QWidget()
+        content_widget.setLayout(wrapper)
+
+        scroll = QtWidgets.QScrollArea()
+        scroll.setWidgetResizable(True)
+        scroll.setWidget(content_widget)
+
+        # Use a stacked widget so we can switch between main UI and a manual view
+        self.stack = QtWidgets.QStackedWidget()
+        self.stack.addWidget(scroll)  # index 0 = main UI
+
+        # Manual / how-to page
+        manual_widget = QWidget()
+        manual_layout = QVBoxLayout()
+        manual_layout.setContentsMargins(8, 8, 8, 8)
+        manual_title = QLabel("Manual — How to use the Map Generator")
+        manual_title.setStyleSheet("font-weight: bold; font-size: 16px;")
+        manual_layout.addWidget(manual_title)
+
+        manual_text = LimitedPlainTextEdit(10000)
+        manual_text.setReadOnly(True)
+        manual_text.setPlainText(
+            "Krótkie wskazówki:\n\n"
+            "1. Wybierz folder zapisu i nazwę pliku.\n"
+            "2. Ustaw rozmiar mapy (np. 72x72).\n"
+            "3. Dodaj i skonfiguruj wartości terenów po prawej (np. DIRT, GRASS).\n"
+            "4. Ustaw liczbę graczy i miasta, a następnie (opcjonalnie) zespoły.\n"
+            "5. W sekcji Win/Lose wybierz warunki zwycięstwa lub przegranej.\n"
+            "   - Dla 'Time expires' wybierz z listy ile dni (np. '1 week' -> 7 dni).\n"
+            "6. Naciśnij 'Generate map' aby wygenerować plik JSON i (opcjonalnie) .h3m.\n\n"
+            "Dodatkowo:\n"
+            "- Możesz zapisać podgląd mapy klikając prawym przyciskiem na obszarze podglądu (funkcja eksperymentalna).\n"
+            "- Jeśli konwerter 'h3mtxt.exe' nie jest w PATH, zostanie zapisany tylko JSON.\n\n"
+            "Jeśli potrzebujesz szczegółowego poradnika z obrazkami, daj znać, a przygotuję stronę pomocy." 
+        )
+        manual_layout.addWidget(manual_text)
+
+        manual_close = QPushButton("Back to editor")
+        manual_close.setFixedWidth(140)
+        manual_close.clicked.connect(lambda: self.stack.setCurrentIndex(0))
+        manual_layout.addWidget(manual_close, alignment=QtCore.Qt.AlignRight)
+        manual_widget.setLayout(manual_layout)
+
+        self.stack.addWidget(manual_widget)  # index 1 = manual
+
+        main_layout = QVBoxLayout()
+        main_layout.setContentsMargins(0, 0, 0, 0)
+        main_layout.addWidget(self.stack)
+        self.setLayout(main_layout)
+
+        # connect info button to show manual
+        try:
+            self.info_btn.clicked.connect(lambda: self.stack.setCurrentIndex(1))
+        except Exception:
+            pass
 
         # Signals
         self.folder_browse_btn.clicked.connect(self.browse_folder)
@@ -682,6 +751,36 @@ class MapGeneratorGUI(QWidget):
         hl = QHBoxLayout()
         hl.setContentsMargins(0, 0, 0, 0)
         row.setLayout(hl)
+
+        # color square that matches preview colors for this terrain
+        def _rgb_for_terrain(t):
+            try:
+                v = t.value
+            except Exception:
+                try:
+                    v = int(t)
+                except Exception:
+                    v = 0
+            color_map = {
+                0: (153, 102, 51),   # DIRT
+                1: (210, 180, 140),  # SAND
+                2: (34, 139, 34),    # GRASS
+                3: (240, 240, 240),  # SNOW
+                4: (85, 107, 47),    # SWAMP
+                5: (128, 128, 128),  # ROUGH
+                6: (0, 0, 0),        # SUBTERRANEAN
+                7: (64, 64, 64),     # LAVA
+                8: (28, 107, 160),   # WATER
+                9: (0, 0, 0),        # ROCK
+            }
+            return color_map.get(v, (192, 192, 192))
+
+        color_label = QLabel()
+        color_label.setFixedSize(18, 12)
+        r, g, b = _rgb_for_terrain(terrain)
+        # subtle border so square is visible on light backgrounds
+        color_label.setStyleSheet(f"background-color: rgb({r},{g},{b}); border: 1px solid #444;")
+        hl.addWidget(color_label)
 
         label = QLabel(terrain.name)
         spin = QSpinBox()
@@ -943,7 +1042,13 @@ class MapGeneratorGUI(QWidget):
                 lc_params = LossConditionParams()
                 lc_params.loss_condition = l_choice
                 if l_choice == LossConditions.TIME_EXPIRES:
-                    lc_params.days = int(self.loss_days_spin.value())
+                    # loss_days_combo stores the corresponding days as item data
+                    data = self.loss_days_combo.currentData()
+                    try:
+                        lc_params.days = int(data)
+                    except Exception:
+                        # fallback: if data missing, default to 6 days
+                        lc_params.days = 6
 
             map = generate_voronoi_map(
                 terrain_values,
@@ -1274,9 +1379,8 @@ class MapGeneratorGUI(QWidget):
                 ]
 
                 color = player_colors[p_idx] if p_idx < len(player_colors) else QColor(0, 0, 0)
-                pen = QPen(QColor(0, 0, 0))
-                pen.setWidth(1)
-                painter.setPen(pen)
+                # draw filled tiles for town without outlining borders
+                painter.setPen(QtCore.Qt.NoPen)
                 for tx, ty in tile_coords:
                     if tx < 0 or tx >= width or ty < 0 or ty >= height:
                         continue
@@ -1284,7 +1388,6 @@ class MapGeneratorGUI(QWidget):
                     y_px = int(ty * tile_px)
                     rect = QtCore.QRect(x_px, y_px, int(tile_px), int(tile_px))
                     painter.fillRect(rect, color)
-                    painter.drawRect(rect)
             painter.end()
         except Exception:
             # if overlay fails, return base image
