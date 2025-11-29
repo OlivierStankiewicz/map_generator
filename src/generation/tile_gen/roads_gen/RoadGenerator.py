@@ -12,22 +12,19 @@ class RoadGenerator:
     Encapsulates the empty-space / road mask generation.
     Use generate() to produce a 2D boolean mask (height x width).
     """
-
     def __init__(
         self,
         size: int,
         terrain_map: List[List[TerrainType]],
-        # objects: List,
         entry_points: List[Tuple[int,int]],
-        occupied_tiles_excluding_landscape: List[List[bool]],
+        occupied_tiles: List[List[bool]],
         reserve_radius: int = 1
     ) -> None:
         self.width = size
         self.height = size
         self.terrain_map = terrain_map
-        # self.objects = objects 
         self.entry_points = entry_points
-        self.occupied_tiles_excluding_landscape = occupied_tiles_excluding_landscape
+        self.occupied_tiles = occupied_tiles
         self.reserve_radius = reserve_radius
         self.restricted_terrain = {TerrainType.WATER, TerrainType.ROCK}
         
@@ -39,7 +36,7 @@ class RoadGenerator:
         return 0 <= x < self.width and 0 <= y < self.height
 
     def is_walkable_cell(self, x: int, y: int) -> bool:
-        return self.in_bounds(x, y) and (self.terrain_map[y][x] not in self.restricted_terrain) and (not self.occupied_tiles_excluding_landscape[y][x])
+        return self.in_bounds(x, y) and (not self.occupied_tiles[y][x])
     
     def _a_star_with_costs(self, start: Tuple[int,int], goal: Tuple[int,int], cost_map: List[List[float]]) -> List[Tuple[int,int]]:
         """A* search using a precomputed per-cell cost_map.
@@ -57,22 +54,39 @@ class RoadGenerator:
         g_score = {start: 0.0}
         came_from = {}
 
+        # closed set of expanded nodes — prevents re-processing the same node
+        closed: set = set()
+
+        # local references for speed inside the loop
+        neigh_offsets = [(-1,0),(1,0),(0,-1),(0,1)]
         while open_heap:
             _, current = heapq.heappop(open_heap)
-            if current == goal:
-                # reconstruct
+            if current in closed:
+                continue
+
+            cx, cy = current
+            if sqrt((cx-goal[0])**2 + (cy-goal[1])**2) <= 1: # reached neighbor of goal
                 path = [current]
                 while path[-1] in came_from:
                     path.append(came_from[path[-1]])
                 path.reverse()
                 return path
 
-            cx, cy = current
-            for dx, dy in [(-1,0),(1,0),(0,-1),(0,1)]:
+            closed.add(current)
+
+            for dx, dy in neigh_offsets:
                 nx, ny = cx + dx, cy + dy
                 neighbor = (nx, ny)
-                # if not self.is_walkable_cell(nx, ny):
-                #     continue
+
+                # quick bounds + walkable check
+                if not self.is_walkable_cell(nx, ny):
+                    # print(f"Skipping non-walkable cell: {(nx, ny)}")
+                    continue
+
+                # if neighbor already expanded, skip
+                if neighbor in closed:
+                    continue
+
                 tentative_g = g_score[current] + cost_map[ny][nx]
                 if tentative_g < g_score.get(neighbor, float('inf')):
                     came_from[neighbor] = current
@@ -162,11 +176,6 @@ class RoadGenerator:
         return paths_endpoints
     
     def generate(self) -> List[List[RoadType | None]]:
-        # collect entry points as external (x,y)
-        # self.entry_points = []
-        # for obj in self.objects:
-        #     self.entry_points.append((obj.x, obj.y))
-
         if len(self.entry_points) < 2:
             print(f"Not enough entry points to generate roads: {self.entry_points}")
             return self.paths

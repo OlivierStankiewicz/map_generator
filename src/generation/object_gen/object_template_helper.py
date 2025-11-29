@@ -81,6 +81,7 @@ class ObjectTemplateHelper:
         # True = miejsce zajete/nieprzejezdne, False = miejsce wolne/przejezdne
         self.occupied_tiles = [[False for _ in range(self.map_format)] for _ in range(self.map_format)]
         self.occupied_tiles_excluding_landscape = [[False for _ in range(self.map_format)] for _ in range(self.map_format)]
+        self.occupied_tiles_excluding_landscape_and_players = [[False for _ in range(self.map_format)] for _ in range(self.map_format)]
         self.city_field_mapping = []  # Lista do przechowywania mapowania miast do p�l
         self.final_city_positions: list[tuple[int, int, int]] = [] # TownType.value, pos_x, pos_y
 
@@ -125,7 +126,8 @@ class ObjectTemplateHelper:
         # warstwa 4 budowle specjalne
         self.generate_special_building()
 
-        return self.objectTemplates, self.objects, self.city_field_mapping, self.players, self.occupied_tiles_excluding_landscape, self.actionable_tiles
+        return (self.objectTemplates, self.objects, self.city_field_mapping,
+                self.players, self.occupied_tiles_excluding_landscape_and_players, self.actionable_tiles)
 
     def create_default_object_template(self):
         self.objectTemplates.append(ObjectsTemplate.create_default())
@@ -159,6 +161,7 @@ class ObjectTemplateHelper:
                 # Oznacz kafelek jako zajety jesli jest nieprzejezdny lub akcjonowalny
                 if passable or actionable:
                     self.occupied_tiles_excluding_landscape[tile_y][tile_x] = True
+                    self.occupied_tiles_excluding_landscape_and_players[tile_y][tile_x] = True
                     # oznaczaj obszar z offsetem w macierzy glównej
                     for dy in range(-offset, offset + 1):
                         for dx in range(-offset, offset + 1):
@@ -534,6 +537,7 @@ class ObjectTemplateHelper:
                 elif city == 8: self.players[i].allowed_alignments.conflux = True
 
                 self.mark_object_tiles_as_occupied(heroTemplate, final_x, final_y)
+                self.occupied_tiles_excluding_landscape_and_players[final_y][final_x] = False
 
         self.objectTemplates.extend(heroes_templates)
         self.objects.extend(heroes)

@@ -1,11 +1,11 @@
 from generation.tile_gen.terrain_gen.terrain_sprite_handlers.SpriteHandler import SpriteHandler
 from classes.tile.Tile import TerrainType
-from generation.tile_gen.tile_gen import SpriteType, get_terrain_type_sprite_type_range
+from generation.tile_gen.tile_gen import TerrainSpriteType, get_terrain_type_sprite_type_range
 from random import randint
 
 class SandSpriteHandler(SpriteHandler):
     def choose_sprite(self, terrain_map, x, y) -> tuple[int, bool, bool]:
-        allowed_sprite_ranges = get_terrain_type_sprite_type_range(TerrainType.SAND, SpriteType.CENTER)
+        allowed_sprite_ranges = get_terrain_type_sprite_type_range(TerrainType.SAND, TerrainSpriteType.CENTER)
         if allowed_sprite_ranges["special"] and randint(1, 10) == 1:
             return randint(allowed_sprite_ranges["special"][0], allowed_sprite_ranges["special"][1]), False, False
         

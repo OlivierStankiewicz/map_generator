@@ -20,8 +20,8 @@ from generation.additional_info_gen.additional_info_gen import generate_addition
 from generation.tile_gen.tile_gen import generate_tile, generate_random_tile, get_terrain_type_sprite_range, get_road_type_sprite_range
 from generation.map_gen.utils import upscale_map, smooth_map, choose_sprite
 
-from generation.terrain_gen.VoronoiTerrainGenerator import VoronoiTerrainGenerator
-from generation.roads_gen.roads_gen import RoadGenerator
+from generation.tile_gen.terrain_gen.VoronoiTerrainGenerator import VoronoiTerrainGenerator
+from generation.tile_gen.roads_gen.RoadGenerator import RoadGenerator
 from generation.object_gen.object_template_helper import ObjectTemplateHelper, TownParams
 from generation.object_gen.objects_template_gen import generate_objects_template_and_objects
 
@@ -101,7 +101,7 @@ def generate_one_terrain_all_sprite_map(terrain_type: TerrainType) -> Map:
 def generate_one_terrain_all_road_sprite_map(road_type: RoadType) -> Map:
     tiles = []
 
-    allowed_range = get_road_type_sprite_range(road_type)
+    allowed_range = get_road_type_sprite_range()
     sprite_min, sprite_max = allowed_range
     for i in range(sprite_min, sprite_max + 1):
         tiles.append(generate_tile(terrain_type=TerrainType.WATER, terrain_sprite=22, road_type=road_type, road_sprite=i))
@@ -197,11 +197,11 @@ def generate_voronoi_map(
                                town_params=TownParams(player_cities, neutral_cities, 30, total_regions),
                                victory_condition_params=victory_condition_params,
                                reserved_tiles=reserved_tiles, difficulty=difficulty)
-    objects_templates, objects, city_field_mapping, players, occupied_tiles_excluding_landscape, actionable_tiles = obj.initData()
+    objects_templates, objects, city_field_mapping, players, occupied_tiles_excluding_landscape_and_players, actionable_tiles = obj.initData()
 
     road_generator = RoadGenerator(size=size, terrain_map=terrain_map,
                                    entry_points=actionable_tiles,
-                                   occupied_tiles_excluding_landscape=occupied_tiles_excluding_landscape)
+                                   occupied_tiles=occupied_tiles_excluding_landscape_and_players)
     roads_map = road_generator.generate()
     for y in range(height):
         for x in range(width):

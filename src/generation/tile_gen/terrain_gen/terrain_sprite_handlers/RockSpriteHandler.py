@@ -1,6 +1,6 @@
 from generation.tile_gen.terrain_gen.terrain_sprite_handlers.SpriteHandler import SpriteHandler
 from classes.tile.Tile import TerrainType
-from generation.tile_gen.tile_gen import SpriteType, get_terrain_type_sprite_type_range
+from generation.tile_gen.tile_gen import TerrainSpriteType, get_terrain_type_sprite_type_range
 from generation.tile_gen.terrain_gen.terrain_sprite_mappings.sprite_type_rock import rock_sprite_mappings
 from random import randint
 
@@ -8,10 +8,10 @@ class RockSpriteHandler(SpriteHandler):
     def __init__(self):
         self.conflict_neighbor_strings = {"NNN\nNNN\nNNA", "NNN\nNNN\nANN", "NNA\nNNN\nNNN", "ANN\nNNN\nNNN"}
         self.conflict_sprite_mappings = [
-            ("NNN\nNNN\nNNA", SpriteType.UPPER_LEFT_INNER_CORNER, False, False),
-            ("NNN\nNNN\nANN", SpriteType.UPPER_RIGHT_INNER_CORNER, False, False),
-            ("NNA\nNNN\nNNN", SpriteType.LOWER_LEFT_INNER_CORNER, False, False),
-            ("ANN\nNNN\nNNN", SpriteType.LOWER_RIGHT_INNER_CORNER, False, False)
+            ("NNN\nNNN\nNNA", TerrainSpriteType.UPPER_LEFT_INNER_CORNER, False, False),
+            ("NNN\nNNN\nANN", TerrainSpriteType.UPPER_RIGHT_INNER_CORNER, False, False),
+            ("NNA\nNNN\nNNN", TerrainSpriteType.LOWER_LEFT_INNER_CORNER, False, False),
+            ("ANN\nNNN\nNNN", TerrainSpriteType.LOWER_RIGHT_INNER_CORNER, False, False)
         ]
 
     def choose_sprite(self, terrain_map: list[list[TerrainType]], x: int, y: int) -> tuple[int, bool, bool]:

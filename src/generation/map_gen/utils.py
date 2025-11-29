@@ -1,12 +1,12 @@
 from typing import List, Dict, Tuple, cast
 
 from classes.tile.Tile import TerrainType
-from generation.map_gen.sprite_handlers.DirtSpriteHandler import DirtSpriteHandler
-from generation.map_gen.sprite_handlers.SandSpriteHandler import SandSpriteHandler
-from generation.map_gen.sprite_handlers.WaterSpriteHandler import WaterSpriteHandler
-from generation.map_gen.sprite_handlers.RockSpriteHandler import RockSpriteHandler
-from generation.map_gen.sprite_handlers.DirtBasedSpriteHandler import DirtBasedSpriteHandler
-from generation.map_gen.sprite_handlers.SpriteHandler import SpriteHandler
+from generation.tile_gen.terrain_gen.terrain_sprite_handlers.DirtSpriteHandler import DirtSpriteHandler
+from generation.tile_gen.terrain_gen.terrain_sprite_handlers.SandSpriteHandler import SandSpriteHandler
+from generation.tile_gen.terrain_gen.terrain_sprite_handlers.WaterSpriteHandler import WaterSpriteHandler
+from generation.tile_gen.terrain_gen.terrain_sprite_handlers.RockSpriteHandler import RockSpriteHandler
+from generation.tile_gen.terrain_gen.terrain_sprite_handlers.DirtBasedSpriteHandler import DirtBasedSpriteHandler
+from generation.tile_gen.terrain_gen.terrain_sprite_handlers.SpriteHandler import SpriteHandler
 
 def print_map(terrain_map: List[List[TerrainType]]):
     """
