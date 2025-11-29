@@ -1,4 +1,4 @@
-from generation.map_gen.sprite_handlers.SpriteHandler import SpriteHandler
+from generation.tile_gen.terrain_gen.terrain_sprite_handlers.SpriteHandler import SpriteHandler
 from classes.tile.Tile import TerrainType
 from generation.tile_gen.tile_gen import SpriteType, get_terrain_type_sprite_type_range
 from random import randint

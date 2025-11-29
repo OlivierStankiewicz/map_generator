@@ -17,7 +17,7 @@ from generation.additional_info_gen.victory_condition_gen import VictoryConditio
 from generation.basic_info_gen import generate_basic_info
 from generation.player_gen.player_gen import generate_player
 from generation.additional_info_gen.additional_info_gen import generate_additional_info
-from generation.tile_gen.tile_gen import generate_tile, generate_random_tile, get_terrain_type_sprite_range
+from generation.tile_gen.tile_gen import generate_tile, generate_random_tile, get_terrain_type_sprite_range, get_road_type_sprite_range
 from generation.map_gen.utils import upscale_map, smooth_map, choose_sprite
 
 from generation.terrain_gen.VoronoiTerrainGenerator import VoronoiTerrainGenerator
@@ -60,7 +60,7 @@ def generate_all_terrain_all_sprite_map() -> Map:
         for i in range(sprite_min, sprite_max + 1):
             tiles.append(generate_tile(terrain_type=terrain_type, terrain_sprite=i))
 
-    for i in range(10368 - len(tiles)):
+    for i in range(5184 - len(tiles)):
         tiles.append(generate_random_tile(random_terrain_sprite=False, random_terrain_type=False))
 
     return Map(
@@ -83,8 +83,43 @@ def generate_one_terrain_all_sprite_map(terrain_type: TerrainType) -> Map:
     for i in range(sprite_min, sprite_max + 1):
         tiles.append(generate_tile(terrain_type=terrain_type, terrain_sprite=i))
 
-    for i in range(10368 - len(tiles)):
+    for i in range(5184 - len(tiles)):
         tiles.append(generate_random_tile(random_terrain_sprite=False, random_terrain_type=False))
+    
+    return Map(
+        format= 28,
+        basic_info= generate_basic_info(),
+        players= [generate_player() for _ in range(8)],
+        additional_info= generate_additional_info(),
+        tiles= tiles,
+        objects_templates = [generate_objects_template_and_objects()],
+        objects= [],
+        global_events= [],
+        padding= [0] * 124
+    )
+
+def generate_one_terrain_all_road_sprite_map(road_type: RoadType) -> Map:
+    tiles = []
+
+    allowed_range = get_road_type_sprite_range(road_type)
+    sprite_min, sprite_max = allowed_range
+    for i in range(sprite_min, sprite_max + 1):
+        tiles.append(generate_tile(terrain_type=TerrainType.WATER, terrain_sprite=22, road_type=road_type, road_sprite=i))
+
+    for i in range(5184 - len(tiles)):
+        tiles.append(generate_random_tile(random_terrain_sprite=False, random_terrain_type=False))
+        
+    return Map(
+        format= 28,
+        basic_info= generate_basic_info(),
+        players= [generate_player() for _ in range(8)],
+        additional_info= generate_additional_info(),
+        tiles= tiles,
+        objects_templates = [generate_objects_template_and_objects()],
+        objects= [],
+        global_events= [],
+        padding= [0] * 124
+    )
 
 def generate_voronoi_map(
     terrain_values: Dict[TerrainType, int] = {
@@ -162,9 +197,11 @@ def generate_voronoi_map(
                                town_params=TownParams(player_cities, neutral_cities, 30, total_regions),
                                victory_condition_params=victory_condition_params,
                                reserved_tiles=reserved_tiles, difficulty=difficulty)
-    objects_templates, objects, city_field_mapping, players, occupied_tiles, actionable_tiles = obj.initData()
+    objects_templates, objects, city_field_mapping, players, occupied_tiles_excluding_landscape, actionable_tiles = obj.initData()
 
-    road_generator = RoadGenerator(size=size, terrain_map=terrain_map, entry_points=actionable_tiles, occupied_tiles=occupied_tiles)
+    road_generator = RoadGenerator(size=size, terrain_map=terrain_map,
+                                   entry_points=actionable_tiles,
+                                   occupied_tiles_excluding_landscape=occupied_tiles_excluding_landscape)
     roads_map = road_generator.generate()
     for y in range(height):
         for x in range(width):

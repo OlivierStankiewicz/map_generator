@@ -7,8 +7,8 @@ import os
 import json
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__))))
-from generation.map_gen.map_gen import generate_voronoi_map
-from classes.tile.Tile import TerrainType
+from generation.map_gen.map_gen import generate_voronoi_map, generate_one_terrain_all_road_sprite_map
+from classes.tile.Tile import RoadType, TerrainType
 
 h3mtxt_exe_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'h3mtxt.exe'))
 
@@ -40,7 +40,8 @@ terrain_values = {
     TerrainType.ROUGH: 2,
     TerrainType.LAVA: 1,
 }
-map = generate_voronoi_map(terrain_values, size=72)
+# map = generate_voronoi_map(terrain_values, size=72)
+map = generate_one_terrain_all_road_sprite_map(road_type=RoadType.DIRT)
 
 def filter_none_values(obj):
     """Recursively remove keys with None values from dictionaries"""

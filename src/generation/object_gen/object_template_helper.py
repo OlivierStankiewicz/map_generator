@@ -125,7 +125,7 @@ class ObjectTemplateHelper:
         # warstwa 4 budowle specjalne
         self.generate_special_building()
 
-        return self.objectTemplates, self.objects, self.city_field_mapping, self.players, self.occupied_tiles, self.actionable_tiles
+        return self.objectTemplates, self.objects, self.city_field_mapping, self.players, self.occupied_tiles_excluding_landscape, self.actionable_tiles
 
     def create_default_object_template(self):
         self.objectTemplates.append(ObjectsTemplate.create_default())

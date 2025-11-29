@@ -1,8 +1,9 @@
-from generation.map_gen.sprite_handlers.SpriteHandler import SpriteHandler
+from random import randint
+
 from classes.tile.Tile import TerrainType
 from generation.tile_gen.tile_gen import SpriteType, get_terrain_type_sprite_type_range
-from random import randint
-from generation.map_gen.sprite_mappings.sprite_type_dirt_based import dirt_based_terrain_sprite_mappings
+from generation.tile_gen.terrain_gen.terrain_sprite_handlers.SpriteHandler import SpriteHandler
+from generation.tile_gen.terrain_gen.terrain_sprite_mappings.sprite_type_dirt_based import dirt_based_terrain_sprite_mappings
 
 class DirtBasedSpriteHandler(SpriteHandler):
     def __init__(self, terrain_type: TerrainType):

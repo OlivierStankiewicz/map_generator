@@ -19,7 +19,7 @@ class RoadGenerator:
         terrain_map: List[List[TerrainType]],
         # objects: List,
         entry_points: List[Tuple[int,int]],
-        occupied_tiles: List[List[bool]],
+        occupied_tiles_excluding_landscape: List[List[bool]],
         reserve_radius: int = 1
     ) -> None:
         self.width = size
@@ -27,9 +27,9 @@ class RoadGenerator:
         self.terrain_map = terrain_map
         # self.objects = objects 
         self.entry_points = entry_points
-        self.occupied_tiles = occupied_tiles
+        self.occupied_tiles_excluding_landscape = occupied_tiles_excluding_landscape
         self.reserve_radius = reserve_radius
-        self.avoid_terrain = {TerrainType.WATER, TerrainType.ROCK}
+        self.restricted_terrain = {TerrainType.WATER, TerrainType.ROCK}
         
         # self.entry_points: List[Tuple[int,int]] = []
         # grid marking of road tiles (RoadType or None)
@@ -39,7 +39,7 @@ class RoadGenerator:
         return 0 <= x < self.width and 0 <= y < self.height
 
     def is_walkable_cell(self, x: int, y: int) -> bool:
-        return self.in_bounds(x, y) and (self.terrain_map[y][x] not in self.avoid_terrain) # and (not self.occupied_tiles[y][x])
+        return self.in_bounds(x, y) and (self.terrain_map[y][x] not in self.restricted_terrain) and (not self.occupied_tiles_excluding_landscape[y][x])
     
     def _a_star_with_costs(self, start: Tuple[int,int], goal: Tuple[int,int], cost_map: List[List[float]]) -> List[Tuple[int,int]]:
         """A* search using a precomputed per-cell cost_map.
@@ -71,8 +71,8 @@ class RoadGenerator:
             for dx, dy in [(-1,0),(1,0),(0,-1),(0,1)]:
                 nx, ny = cx + dx, cy + dy
                 neighbor = (nx, ny)
-                if not self.is_walkable_cell(nx, ny):
-                    continue
+                # if not self.is_walkable_cell(nx, ny):
+                #     continue
                 tentative_g = g_score[current] + cost_map[ny][nx]
                 if tentative_g < g_score.get(neighbor, float('inf')):
                     came_from[neighbor] = current
@@ -181,7 +181,6 @@ class RoadGenerator:
             if not path:
                 continue
             for x, y in path:
-                # convert to grid indices (y,x) when checking/marking
                 if self.is_walkable_cell(x, y):
                     self.paths[y][x] = RoadType.GRAVEL
 
