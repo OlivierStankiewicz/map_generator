@@ -21,7 +21,7 @@ from generation.tile_gen.tile_gen import generate_tile, generate_random_tile, ge
 from generation.map_gen.utils import upscale_map, smooth_map, choose_sprite
 
 from generation.terrain_gen.VoronoiTerrainGenerator import VoronoiTerrainGenerator
-from generation.empty_spaces_gen.empty_spaces_gen import EmptySpacesGenerator
+from generation.roads_gen.roads_gen import RoadGenerator
 from generation.object_gen.object_template_helper import ObjectTemplateHelper, TownParams
 from generation.object_gen.objects_template_gen import generate_objects_template_and_objects
 
@@ -162,15 +162,15 @@ def generate_voronoi_map(
                                town_params=TownParams(player_cities, neutral_cities, 30, total_regions),
                                victory_condition_params=victory_condition_params,
                                reserved_tiles=reserved_tiles, difficulty=difficulty)
-    objects_templates, objects, city_field_mapping, players = obj.initData()
+    objects_templates, objects, city_field_mapping, players, occupied_tiles, actionable_tiles = obj.initData()
 
-    empty_spaces_generator = EmptySpacesGenerator(size=size, terrain_map=terrain_map, objects=objects)
-    empty_spaces_mask = empty_spaces_generator.generate()
+    road_generator = RoadGenerator(size=size, terrain_map=terrain_map, objects=objects, occupied_tiles=occupied_tiles) # entry_points=actionable_tiles
+    roads_map = road_generator.generate()
     for y in range(height):
         for x in range(width):
-            if empty_spaces_mask[y][x]:
+            if roads_map[y][x] is not None:
                 tile_index = y * width + x
-                tiles[tile_index].road_type = RoadType.GRAVEL.value
+                tiles[tile_index].road_type = roads_map[y][x].value
     
     # Wyswietl mapowanie miast do pol
     print("\n=== MAPOWANIE MIAST DO POL ===")

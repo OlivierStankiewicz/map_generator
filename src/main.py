@@ -35,6 +35,10 @@ terrain_values = {
     TerrainType.GRASS: 3,
     TerrainType.SNOW: 2,
     TerrainType.SAND: 4,
+    TerrainType.DIRT: 2,
+    TerrainType.SWAMP: 3,
+    TerrainType.ROUGH: 2,
+    TerrainType.LAVA: 1,
 }
 map = generate_voronoi_map(terrain_values, size=72)
 

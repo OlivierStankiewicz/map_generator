@@ -75,6 +75,7 @@ class ObjectTemplateHelper:
         self.result = None
 
         self.resources_positions = [(-2, 1), (1, 1), (-3, 1)]
+        self.actionable_tiles = []
 
         # Tablica dwuwymiarowa do sledzenia zajetych miejsc na mapie
         # True = miejsce zajete/nieprzejezdne, False = miejsce wolne/przejezdne
@@ -113,11 +114,6 @@ class ObjectTemplateHelper:
             self.reserved_tiles
         )
 
-        # test = ObjectsTemplate.create_default()
-        # test.passability = [255, 255, 255, 255, 255, 254]
-        # test.actionability = [0, 0, 0, 0, 0, 0]
-        # self.mark_object_tiles_as_occupied(test, 0, 0, 3)
-
         self.create_default_object_template()
         # warstwa 2 zamki i bohaterowie
         self.generate_cities_precise_positioning()
@@ -129,11 +125,7 @@ class ObjectTemplateHelper:
         # warstwa 4 budowle specjalne
         self.generate_special_building()
 
-        # self.occ.sort()
-        # for i in self.occ:
-        #     print(i)
-
-        return self.objectTemplates, self.objects, self.city_field_mapping, self.players
+        return self.objectTemplates, self.objects, self.city_field_mapping, self.players, self.occupied_tiles, self.actionable_tiles
 
     def create_default_object_template(self):
         self.objectTemplates.append(ObjectsTemplate.create_default())
@@ -174,6 +166,8 @@ class ObjectTemplateHelper:
                             ny = tile_y + dy
                             if 0 <= nx < self.map_format and 0 <= ny < self.map_format:
                                 self.occupied_tiles[ny][nx] = True
+                    if actionable:
+                        self.actionable_tiles.append((tile_x, tile_y))
 
 
     def get_occupied_tiles_count(self) -> int:
@@ -228,7 +222,18 @@ class ObjectTemplateHelper:
                         return False
                     if (tile_x, tile_y) in self.reserved_tiles:
                         return False
-        
+                
+                if actionable:
+                    neighbors_occupied = 0
+                    for i in [(-1,0), (1,0), (0,-1), (0,1)]:
+                        nx = tile_x + i[0]
+                        ny = tile_y + i[1]
+                        if 0 <= nx < self.map_format and 0 <= ny < self.map_format:
+                            if self.occupied_tiles[ny][nx] or (nx, ny) in self.reserved_tiles:
+                                neighbors_occupied += 1
+                    if neighbors_occupied == 4: # all neighbors occupied
+                        return False
+                            
         return True
 
     def validate_placement_for_landscape(self, template: ObjectsTemplate, x: int, y: int) -> bool:
