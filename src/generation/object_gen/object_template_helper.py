@@ -76,6 +76,10 @@ class ObjectTemplateHelper:
 
         self.resources_positions = [(-2, 1), (1, 1), (-3, 1)]
 
+        self.towns_generated = []
+        self.heroes_generated = []
+
+
         # Tablica dwuwymiarowa do sledzenia zajetych miejsc na mapie
         # True = miejsce zajete/nieprzejezdne, False = miejsce wolne/przejezdne
         self.occupied_tiles = [[False for _ in range(self.map_format)] for _ in range(self.map_format)]
@@ -133,7 +137,7 @@ class ObjectTemplateHelper:
         # for i in self.occ:
         #     print(i)
 
-        return self.objectTemplates, self.objects, self.city_field_mapping, self.players
+        return self.objectTemplates, self.objects, self.city_field_mapping, self.players, self.towns_generated, self.heroes_generated
 
     def create_default_object_template(self):
         self.objectTemplates.append(ObjectsTemplate.create_default())
@@ -404,6 +408,10 @@ class ObjectTemplateHelper:
             self.objectTemplates.extend(cities_templates)
             self.objects.extend(cities)
 
+            for city in cities:
+                # append tuple of x-2, y, z
+                self.towns_generated.append((city.x-2, city.y, city.z))
+
             self.id = id
             self.absod_id = absod_id
 
@@ -532,6 +540,8 @@ class ObjectTemplateHelper:
 
         self.objectTemplates.extend(heroes_templates)
         self.objects.extend(heroes)
+
+        self.heroes_generated = heroes
 
         self.id = id
         self.absod_id = absod_id
@@ -779,8 +789,11 @@ class ObjectTemplateHelper:
                     town_type_index = self.get_town_type(final_x, final_y)
                     template = self.towns[town_type_index]
 
-                    final_x, final_y = self.find_alternative_position(template, final_x, final_y,
-                                                                                max_offset=15)
+                    # final_x, final_y = self.find_alternative_position(template, final_x, final_y,
+                    #                                                             max_offset=15)
+                    
+                    self.towns_generated.append((final_x-2, final_y, 0))
+                    
                 elif r == 0:  # Prison
                     hero = Hero.create_default()
                     hero.type = randint(0, 1)

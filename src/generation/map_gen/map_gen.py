@@ -183,7 +183,10 @@ def generate_voronoi_map(
                                town_params=TownParams(player_cities, neutral_cities, 30, total_regions),
                                victory_condition_params=victory_condition_params,
                                reserved_tiles=reserved_tiles, difficulty=difficulty)
-    objects_templates, objects, city_field_mapping, players = obj.initData()
+    objects_templates, objects, city_field_mapping, players, towns_generated, heroes_generated = obj.initData()
+    # print("\n=== WYGENEROWANE MIASTA ===")
+    # for town in towns_generated:
+    #     print(town.x, town.y, town.properties.name)
 
     # Wyswietl mapowanie miast do pol
     print("\n=== MAPOWANIE MIAST DO POL ===")
@@ -233,4 +236,4 @@ def generate_voronoi_map(
         objects=objects,
         global_events=[],
         padding=[0] * 124
-    )
+    ), towns_generated, heroes_generated

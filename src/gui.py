@@ -412,6 +412,9 @@ class MapGeneratorGUI(QWidget):
         self.victory_combo.addItem("Accumulate resources", VictoryConditions.ACCUMULATE_RESOURCES)
         self.victory_combo.addItem("Flag all dwellings", VictoryConditions.FLAG_DWELLINGS)
         self.victory_combo.addItem("Flag all mines", VictoryConditions.FLAG_MINES)
+        # New options that require selecting a town after generation
+        self.victory_combo.addItem("Build the grail structure", VictoryConditions.BUILD_GRAIL)
+        self.victory_combo.addItem("Transport artifact", VictoryConditions.TRANSPORT_ARTIFACT)
 
         # extra controls for victory types (create explicit labels so we can
         # hide/show both label + control in the form layout)
@@ -494,7 +497,8 @@ class MapGeneratorGUI(QWidget):
         # Visibility logic: show only controls relevant to chosen victory type
         def _on_victory_changed(_):
             v = self.victory_combo.currentData()
-            is_art = (v == VictoryConditions.ACQUIRE_ARTIFACT)
+            # artifact parameter is required for both Acquire and Transport
+            is_art = (v == VictoryConditions.ACQUIRE_ARTIFACT or v == VictoryConditions.TRANSPORT_ARTIFACT)
             is_cre = (v == VictoryConditions.ACCUMULATE_CREATURES)
             is_res = (v == VictoryConditions.ACCUMULATE_RESOURCES)
             # artifact
@@ -1126,6 +1130,9 @@ class MapGeneratorGUI(QWidget):
                 # fill specific fields
                 if v_choice == VictoryConditions.ACQUIRE_ARTIFACT:
                     vc_params.artifact_type = self.artifact_combo.currentData()
+                elif v_choice == VictoryConditions.TRANSPORT_ARTIFACT:
+                    # Transport artifact needs an artifact selected before generation
+                    vc_params.artifact_type = self.artifact_combo.currentData()
                 elif v_choice == VictoryConditions.ACCUMULATE_CREATURES:
                     vc_params.creature_type = self.creature_combo.currentData()
                     vc_params.count = int(self.creature_count_spin.value())
@@ -1146,7 +1153,25 @@ class MapGeneratorGUI(QWidget):
                         # fallback: if data missing, default to 6 days
                         lc_params.days = 6
 
-            map = generate_voronoi_map(
+            # If selected victory condition requires a specific town, inform the user
+            # that they will need to pick a town after generation.
+            try:
+                town_required = {
+                    VictoryConditions.BUILD_GRAIL,
+                    VictoryConditions.TRANSPORT_ARTIFACT,
+                    VictoryConditions.UPGRADE_TOWN,
+                    VictoryConditions.CAPTURE_TOWN,
+                }
+                if v_choice in town_required:
+                    QMessageBox.information(
+                        self,
+                        "Town selection required",
+                        "The chosen victory condition requires selecting a town. After the map is generated you will be prompted to pick one from the generated towns.",
+                    )
+            except Exception:
+                pass
+
+            map, towns_gen, heroes_gen = generate_voronoi_map(
                 terrain_values,
                 size=size_val,
                 players_count=int(self.players_spin.value()),
@@ -1169,6 +1194,53 @@ class MapGeneratorGUI(QWidget):
                 # clear placeholder styling
                 self.preview_label.setStyleSheet("")
                 self.preview_label.setText("")
+                # If victory condition requires a town, prompt the user to pick one
+                try:
+                    town_required = {
+                        VictoryConditions.BUILD_GRAIL,
+                        VictoryConditions.TRANSPORT_ARTIFACT,
+                        VictoryConditions.UPGRADE_TOWN,
+                        VictoryConditions.CAPTURE_TOWN,
+                    }
+                    if v_choice in town_required:
+                        # towns_gen is expected to be a list of town Objects produced by the generator
+                        towns_list = towns_gen
+                        if not towns_list:
+                            QMessageBox.warning(self, "No towns", "No towns were found to select from.")
+                        else:
+                            dlg = TownPickerDialog(towns_list, parent=self)
+                            res = dlg.exec()
+
+                            if res == QtWidgets.QDialog.Accepted:
+                                sel_idx = dlg.selected_index()
+                                if sel_idx is not None and 0 <= sel_idx < len(towns_list):
+                                    town_item = towns_list[sel_idx]
+                                    if isinstance(town_item, (list, tuple)):
+                                        tx = int(town_item[0])
+                                        ty = int(town_item[1])
+                                        tz = int(town_item[2])
+
+                                    addinfo = getattr(map, 'additional_info', None)
+                                    if addinfo is not None and getattr(addinfo, 'victory_condition', None) is not None:
+                                        details = addinfo.victory_condition.details
+                                        details.x = tx
+                                        details.y = ty
+                                        details.z = tz
+                            else:
+                                # user cancelled town selection
+                                choice_msg = QMessageBox(self)
+                                choice_msg.setWindowTitle("Town selection cancelled")
+                                choice_msg.setText("You cancelled town selection. Do you want to save the JSON only or cancel saving?")
+                                save_btn = choice_msg.addButton("Save JSON only", QMessageBox.AcceptRole)
+                                cancel_btn = choice_msg.addButton("Cancel saving", QMessageBox.RejectRole)
+                                choice_msg.exec()
+                                if choice_msg.clickedButton() is cancel_btn:
+                                    self.status_label.setText("Cancelled by user")
+                                    self.generate_btn.setEnabled(True)
+                                    return
+                                # otherwise continue and save JSON only (conversion will either fail or be attempted below)
+                except Exception:
+                    pass
             except Exception:
                 self._last_map = None
                 self._last_size = None
@@ -1559,6 +1631,67 @@ class MapGeneratorGUI(QWidget):
 
         self.generate_btn.setEnabled(True)
         self._worker_thread = None
+
+
+class TownPickerDialog(QtWidgets.QDialog):
+    """Dialog to let the user pick one town from the generated towns list.
+
+    Supports towns represented either as Objects (with attributes x,y,z and optional properties.name)
+    or as simple tuples/lists (x,y,z). The dialog presents a readable label per entry and returns
+    the selected index via `selected_index()`.
+    """
+    def __init__(self, towns: list, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("Select town")
+        self.setModal(True)
+        self._towns = towns
+        self._selected = None
+
+        layout = QVBoxLayout()
+        self.list = QtWidgets.QListWidget()
+        self.list.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
+
+        for i, t in enumerate(self._towns):
+            label = f"Town #{i+1}"
+            # tuple/list case
+            if isinstance(t, (list, tuple)):
+                tx = t[0] if len(t) > 0 else None
+                ty = t[1] if len(t) > 1 else None
+                tz = t[2] if len(t) > 2 else None
+                # show coordinates when available
+                if tx is not None and ty is not None:
+                    label = f"Town #{i+1} — ({tx}, {ty}, {tz})"
+
+            self.list.addItem(label)
+
+        layout.addWidget(QLabel("Choose the town that should be used for the victory condition:"))
+        layout.addWidget(self.list)
+
+        btn_h = QHBoxLayout()
+        ok = QPushButton("OK")
+        cancel = QPushButton("Cancel")
+        ok.clicked.connect(self._on_ok)
+        cancel.clicked.connect(self.reject)
+        btn_h.addStretch()
+        btn_h.addWidget(ok)
+        btn_h.addWidget(cancel)
+
+        layout.addLayout(btn_h)
+        self.setLayout(layout)
+
+        if self.list.count() > 0:
+            self.list.setCurrentRow(0)
+
+    def _on_ok(self):
+        row = self.list.currentRow()
+        if row < 0:
+            QMessageBox.warning(self, "No selection", "Please select a town or Cancel.")
+            return
+        self._selected = row
+        self.accept()
+
+    def selected_index(self):
+        return self._selected
 
 
 def main():
