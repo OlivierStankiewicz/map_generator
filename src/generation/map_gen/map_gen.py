@@ -164,7 +164,7 @@ def generate_voronoi_map(
                                reserved_tiles=reserved_tiles, difficulty=difficulty)
     objects_templates, objects, city_field_mapping, players, occupied_tiles, actionable_tiles = obj.initData()
 
-    road_generator = RoadGenerator(size=size, terrain_map=terrain_map, objects=objects, occupied_tiles=occupied_tiles) # entry_points=actionable_tiles
+    road_generator = RoadGenerator(size=size, terrain_map=terrain_map, entry_points=actionable_tiles, occupied_tiles=occupied_tiles)
     roads_map = road_generator.generate()
     for y in range(height):
         for x in range(width):

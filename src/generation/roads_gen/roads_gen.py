@@ -17,36 +17,34 @@ class RoadGenerator:
         self,
         size: int,
         terrain_map: List[List[TerrainType]],
-        objects: List,
-        # entry_points: List[Tuple[int,int]],
+        # objects: List,
+        entry_points: List[Tuple[int,int]],
         occupied_tiles: List[List[bool]],
         reserve_radius: int = 1
     ) -> None:
         self.width = size
         self.height = size
         self.terrain_map = terrain_map
-        self.objects = objects 
-        # self.entry_points = entry_points
+        # self.objects = objects 
+        self.entry_points = entry_points
         self.occupied_tiles = occupied_tiles
         self.reserve_radius = reserve_radius
         self.avoid_terrain = {TerrainType.WATER, TerrainType.ROCK}
         
-        self.entry_points: List[Tuple[int,int]] = []
+        # self.entry_points: List[Tuple[int,int]] = []
         # grid marking of road tiles (RoadType or None)
         self.paths: List[List[RoadType | None]] = [[None for _ in range(self.width)] for _ in range(self.height)]
-        # list of found path coordinate lists
-        self.paths_list: List[List[Tuple[int,int]]] = []
 
-    def in_bounds(self, y: int, x: int) -> bool:
-        return 0 <= y < self.height and 0 <= x < self.width
+    def in_bounds(self, x: int, y: int) -> bool:
+        return 0 <= x < self.width and 0 <= y < self.height
 
-    def is_walkable_cell(self, y: int, x: int) -> bool:
-        return self.in_bounds(y, x) and (self.terrain_map[y][x] not in self.avoid_terrain) # and (not self.occupied_tiles[y][x])
-
+    def is_walkable_cell(self, x: int, y: int) -> bool:
+        return self.in_bounds(x, y) and (self.terrain_map[y][x] not in self.avoid_terrain) # and (not self.occupied_tiles[y][x])
+    
     def _a_star_with_costs(self, start: Tuple[int,int], goal: Tuple[int,int], cost_map: List[List[float]]) -> List[Tuple[int,int]]:
-        """A* search using a precomputed per-cell `cost_map`.
+        """A* search using a precomputed per-cell cost_map.
 
-        Returns path as list of (y,x) or empty list if none found.
+        Returns path as list of (x, y) or empty list if none found.
         """
         if start == goal:
             return [start]
@@ -69,11 +67,11 @@ class RoadGenerator:
                 path.reverse()
                 return path
 
-            cy, cx = current
-            for dy, dx in [(-1,0),(1,0),(0,-1),(0,1)]:
-                ny, nx = cy + dy, cx + dx
-                neighbor = (ny, nx)
-                if not self.is_walkable_cell(ny, nx):
+            cx, cy = current
+            for dx, dy in [(-1,0),(1,0),(0,-1),(0,1)]:
+                nx, ny = cx + dx, cy + dy
+                neighbor = (nx, ny)
+                if not self.is_walkable_cell(nx, ny):
                     continue
                 tentative_g = g_score[current] + cost_map[ny][nx]
                 if tentative_g < g_score.get(neighbor, float('inf')):
@@ -115,10 +113,10 @@ class RoadGenerator:
             if L >= 3:
                 prev = p[0]
                 cur = p[1]
-                prev_ang = math.atan2(cur[0]-prev[0], cur[1]-prev[1])
+                prev_ang = math.atan2(cur[1]-prev[1], cur[0]-prev[0])
                 for i in range(2, L):
                     nxt = p[i]
-                    ang = math.atan2(nxt[0]-cur[0], nxt[1]-cur[1])
+                    ang = math.atan2(nxt[1]-cur[1], nxt[0]-cur[0])
                     total_angle += abs(ang - prev_ang)
                     prev_ang = ang
                     prev, cur = cur, nxt
@@ -132,7 +130,7 @@ class RoadGenerator:
         best = max(candidates, key=score_path)
         return best
     
-    def get_paths_endpoints_with_mst(self, points: List[Tuple[int, int]]) -> List[List[Tuple[int, int]]]:
+    def get_paths_endpoints_with_mst(self, points: List[Tuple[int, int]]) -> List[Tuple[Tuple[int,int], Tuple[int,int]]]:
         """
         Return list of edges connecting all points with minimal total distance using MST (Prim's algorithm).
         """
@@ -143,8 +141,11 @@ class RoadGenerator:
                 if x1!=x2 or y1!=y2:
                     adj_list[i].append((j, sqrt((x1-x2)**2 + (y1-y2)**2)))
 
+        if not points:
+            return []
+
         visited = {0}
-        paths_endpoints: List[List[Tuple[int, int]]] = []
+        paths_endpoints: List[Tuple[Tuple[int, int], Tuple[int, int]]] = []
         
         edge_heap = []
         for other_node_idx, edge_len in adj_list[0]:
@@ -161,13 +162,16 @@ class RoadGenerator:
         return paths_endpoints
     
     def generate(self) -> List[List[RoadType | None]]:
-        # collect entry points
-        self.entry_points = []
-        for obj in self.objects:
-            self.entry_points.append((obj.y, obj.x))
+        # collect entry points as external (x,y)
+        # self.entry_points = []
+        # for obj in self.objects:
+        #     self.entry_points.append((obj.x, obj.y))
 
-        # build MST edges between entry points
-        print(f"Entry points: {self.entry_points}")
+        if len(self.entry_points) < 2:
+            print(f"Not enough entry points to generate roads: {self.entry_points}")
+            return self.paths
+
+        print(f"Entry points (x,y): {self.entry_points}")
         paths_endpoints = self.get_paths_endpoints_with_mst(self.entry_points)
 
         # For each MST edge, compute a varied path and mark it in the grid
@@ -176,9 +180,9 @@ class RoadGenerator:
             print(f"Generated road path from {a} to {b}, path: {path}")
             if not path:
                 continue
-            self.paths_list.append(path)
-            for y, x in path:
-                if self.is_walkable_cell(y, x):
+            for x, y in path:
+                # convert to grid indices (y,x) when checking/marking
+                if self.is_walkable_cell(x, y):
                     self.paths[y][x] = RoadType.GRAVEL
 
         return self.paths
