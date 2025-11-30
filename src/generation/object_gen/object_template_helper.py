@@ -88,6 +88,12 @@ class ObjectTemplateHelper:
 
         self.resources_positions = [(-2, 1), (1, 1), (-3, 1)]
 
+        self.towns_generated = []
+        self.heroes_generated = []
+        self.heroes_generated_obj = []
+        self.monsters_generated = []
+        self.monsters_generated_obj = []
+
         # Tablica dwuwymiarowa do sledzenia zajetych miejsc na mapie
         # True = miejsce zajete/nieprzejezdne, False = miejsce wolne/przejezdne
         self.occupied_tiles = [[False for _ in range(self.map_format)] for _ in range(self.map_format)]
@@ -582,6 +588,10 @@ class ObjectTemplateHelper:
 
                     heroes_templates.append(heroTemplate)
                     heroes.append(hero)
+
+                    self.heroes_generated.append((final_x-1, final_y, 0))
+                    self.heroes_generated_obj.append(hero)
+
                     self.players[i].can_be_computer = 1
                     self.players[i].can_be_human = 1
                     self.players[i].starting_hero.type = type
@@ -772,7 +782,8 @@ class ObjectTemplateHelper:
                                             buildings_templates.append(monster_template)
                                             buildings.append(object)
                                             self.mark_object_tiles_as_occupied(monster_template, final_x, final_y, 0)
-
+                                            self.monsters_generated.append((final_x, final_y, 0))
+                                            self.monsters_generated_obj.append(object)
 
         self.objectTemplates.extend(buildings_templates)
         self.objects.extend(buildings)
@@ -1325,6 +1336,8 @@ class ObjectTemplateHelper:
 
                 self.objects.append(object)
                 self.objectTemplates.append(objectTemplate)
+                self.monsters_generated.append((final_x, final_y, 0))
+                self.monsters_generated_obj.append(object)
 
     def generate_seers_hut(self):
         seers_hut = SeersHut.create_default()
@@ -1338,10 +1351,14 @@ class ObjectTemplateHelper:
                 elif i == 1: seers_hut.quest.details.skills.defense = randint(5, 15)
                 elif i == 2: seers_hut.quest.details.skills.spell_power = randint(5, 15)
                 elif i == 3: seers_hut.quest.details.skills.knowledge = randint(5, 15)
-        elif r == 3: #########################################################
-            print("DO DOROBIENIA")
-        elif r == 4:  #########################################################
-            print("DO DOROBIENIA")
+        elif r == 3:
+            print(123)
+            obj: Objects = sample(self.heroes_generated_obj, k=1)[0]
+            seers_hut.quest.details.absod_id = obj.properties['absod_id']
+        elif r == 4:
+            print(456)
+            obj: Objects = sample(self.monsters_generated_obj, k=1)[0]
+            seers_hut.quest.details.absod_id = obj.properties.absod_id
         elif r == 5:
             a = [i for i in range(7, 128)]
             a.extend([i for i in range(129, 142)])
