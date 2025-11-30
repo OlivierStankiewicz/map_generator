@@ -31,7 +31,7 @@ class RoadSpriteHandler():
             for dx in range(-1, 2):
                 nx, ny = x + dx, y + dy
                 if 0 <= ny < len(road_map) and 0 <= nx < len(road_map[0]):
-                    neighbors[dy + 1][dx + 1] = road_map[ny][nx]
+                    neighbors[dy + 1][dx + 1] = road_map[ny][nx] if road_map[ny][nx] is not None else 'n'
 
         rows = neighbors
         cols = list(zip(*rows))

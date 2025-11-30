@@ -30,51 +30,123 @@ road_sprite_mappings = {
     
     # FLATTENED_CORNER
     
+    # 3 tiles might change: upper left, lower left, lower right
+    "AAN\nANN\nANA": (RoadSpriteType.FLATTENED_CORNER, False, False),
+    "AAN\nANN\nANN": (RoadSpriteType.FLATTENED_CORNER, False, False),
+    "AAN\nANN\nNNA": (RoadSpriteType.FLATTENED_CORNER, False, False),
+    "AAN\nANN\nNNN": (RoadSpriteType.FLATTENED_CORNER, False, False),
+    "NAN\nANN\nANA": (RoadSpriteType.FLATTENED_CORNER, False, False),
+    "NAN\nANN\nANN": (RoadSpriteType.FLATTENED_CORNER, False, False),
+    "NAN\nANN\nNNA": (RoadSpriteType.FLATTENED_CORNER, False, False),
+    "NAN\nANN\nNNN": (RoadSpriteType.FLATTENED_CORNER, False, False),
     
+    # 3 tiles might change: upper left, upper right, lower right
+    "AAA\nANN\nNNA": (RoadSpriteType.FLATTENED_CORNER, False, False),
+    # "AAN\nANN\nNNA": (RoadSpriteType.FLATTENED_CORNER, False, False),
+    "AAA\nANN\nNNN": (RoadSpriteType.FLATTENED_CORNER, False, False),
+    # "AAN\nANN\nNNN": (RoadSpriteType.FLATTENED_CORNER, False, False),
+    "NAA\nANN\nNNA": (RoadSpriteType.FLATTENED_CORNER, False, False),
+    "NAA\nANN\nNNN": (RoadSpriteType.FLATTENED_CORNER, False, False),
+    # "NAN\nANN\nNNA": (RoadSpriteType.FLATTENED_CORNER, False, False),
+    # "NAN\nANN\nNNN": (RoadSpriteType.FLATTENED_CORNER, False, False),
+    
+    "NAA\nNNA\nANA": (RoadSpriteType.FLATTENED_CORNER, True, False),
+    "NAA\nNNA\nNNA": (RoadSpriteType.FLATTENED_CORNER, True, False),
+    "NAA\nNNA\nANN": (RoadSpriteType.FLATTENED_CORNER, True, False),
+    "NAA\nNNA\nNNN": (RoadSpriteType.FLATTENED_CORNER, True, False),
+    "NAN\nNNA\nANA": (RoadSpriteType.FLATTENED_CORNER, True, False),
+    "NAN\nNNA\nNNA": (RoadSpriteType.FLATTENED_CORNER, True, False),
+    "NAN\nNNA\nANN": (RoadSpriteType.FLATTENED_CORNER, True, False),
+    "NAN\nNNA\nNNN": (RoadSpriteType.FLATTENED_CORNER, True, False),
+    
+    "AAA\nNNA\nANN": (RoadSpriteType.FLATTENED_CORNER, True, False),
+    # "NAA\nNNA\nANN": (RoadSpriteType.FLATTENED_CORNER, True, False),
+    "AAA\nNNA\nNNN": (RoadSpriteType.FLATTENED_CORNER, True, False),
+    # "NAA\nNNA\nNNN": (RoadSpriteType.FLATTENED_CORNER, True, False),
+    "AAN\nNNA\nANN": (RoadSpriteType.FLATTENED_CORNER, True, False),
+    "AAN\nNNA\nNNN": (RoadSpriteType.FLATTENED_CORNER, True, False),
+    # "NAN\nNNA\nANN": (RoadSpriteType.FLATTENED_CORNER, True, False),
+    # "NAN\nNNA\nNNN": (RoadSpriteType.FLATTENED_CORNER, True, False),
+    
+    "ANA\nANN\nAAN": (RoadSpriteType.FLATTENED_CORNER, False, True),
+    "ANN\nANN\nAAN": (RoadSpriteType.FLATTENED_CORNER, False, True),
+    "NNA\nANN\nAAN": (RoadSpriteType.FLATTENED_CORNER, False, True),
+    "NNN\nANN\nAAN": (RoadSpriteType.FLATTENED_CORNER, False, True),
+    "ANA\nANN\nNAN": (RoadSpriteType.FLATTENED_CORNER, False, True),
+    "ANN\nANN\nNAN": (RoadSpriteType.FLATTENED_CORNER, False, True),
+    "NNA\nANN\nNAN": (RoadSpriteType.FLATTENED_CORNER, False, True),
+    "NNN\nANN\nNAN": (RoadSpriteType.FLATTENED_CORNER, False, True),
+    
+    "NNA\nANN\nAAA": (RoadSpriteType.FLATTENED_CORNER, False, True),
+    # "NNA\nANN\nAAN": (RoadSpriteType.FLATTENED_CORNER, False, True),
+    "NNN\nANN\nAAA": (RoadSpriteType.FLATTENED_CORNER, False, True),
+    # "NNN\nANN\nAAN": (RoadSpriteType.FLATTENED_CORNER, False, True),
+    "NNA\nANN\nNAA": (RoadSpriteType.FLATTENED_CORNER, False, True),
+    "NNN\nANN\nNAA": (RoadSpriteType.FLATTENED_CORNER, False, True),
+    # "NNA\nANN\nNAN": (RoadSpriteType.FLATTENED_CORNER, False, True),
+    # "NNN\nANN\nNAN": (RoadSpriteType.FLATTENED_CORNER, False, True),
+    
+    "ANA\nNNA\nNAA": (RoadSpriteType.FLATTENED_CORNER, True, True),
+    "NNA\nNNA\nNAA": (RoadSpriteType.FLATTENED_CORNER, True, True),
+    "ANN\nNNA\nNAA": (RoadSpriteType.FLATTENED_CORNER, True, True),
+    "NNN\nNNA\nNAA": (RoadSpriteType.FLATTENED_CORNER, True, True),
+    "ANA\nNNA\nNAN": (RoadSpriteType.FLATTENED_CORNER, True, True),
+    "NNA\nNNA\nNAN": (RoadSpriteType.FLATTENED_CORNER, True, True),
+    "ANN\nNNA\nNAN": (RoadSpriteType.FLATTENED_CORNER, True, True),
+    "NNN\nNNA\nNAN": (RoadSpriteType.FLATTENED_CORNER, True, True),
+    
+    "ANN\nNNA\nAAA": (RoadSpriteType.FLATTENED_CORNER, True, True),
+    # "ANN\nNNA\nNAA": (RoadSpriteType.FLATTENED_CORNER, True, True),
+    "NNN\nNNA\nAAA": (RoadSpriteType.FLATTENED_CORNER, True, True),
+    # "NNN\nNNA\nNAA": (RoadSpriteType.FLATTENED_CORNER, True, True),
+    "ANN\nNNA\nAAN": (RoadSpriteType.FLATTENED_CORNER, True, True),
+    "NNN\nNNA\nAAN": (RoadSpriteType.FLATTENED_CORNER, True, True),
+    # "ANN\nNNA\nNAN": (RoadSpriteType.FLATTENED_CORNER, True, True),
+    # "NNN\nNNA\nNAN": (RoadSpriteType.FLATTENED_CORNER, True, True),
     
     # ONE_WAY_CROSSING_VERTICAL - always middle column as N, left middle as A, right middle as N (or the other way round)
     
     # upper corners as A
-    "ANA\nANN\nANA": (RoadSpriteType.ONE_WAY_CROSSING_HORIZONTAL, False, False),
-    "ANA\nANN\nNNA": (RoadSpriteType.ONE_WAY_CROSSING_HORIZONTAL, False, False),
-    "ANA\nANN\nANN": (RoadSpriteType.ONE_WAY_CROSSING_HORIZONTAL, False, False),
-    "ANA\nANN\nNNN": (RoadSpriteType.ONE_WAY_CROSSING_HORIZONTAL, False, False),
+    "ANA\nANN\nANA": (RoadSpriteType.ONE_WAY_CROSSING_VERTICAL, False, False),
+    "ANA\nANN\nNNA": (RoadSpriteType.ONE_WAY_CROSSING_VERTICAL, False, False),
+    "ANA\nANN\nANN": (RoadSpriteType.ONE_WAY_CROSSING_VERTICAL, False, False),
+    "ANA\nANN\nNNN": (RoadSpriteType.ONE_WAY_CROSSING_VERTICAL, False, False),
     # upper left = A, upper right = N
-    "ANN\nANN\nANA": (RoadSpriteType.ONE_WAY_CROSSING_HORIZONTAL, False, False),
-    "ANN\nANN\nANN": (RoadSpriteType.ONE_WAY_CROSSING_HORIZONTAL, False, False),
-    "ANN\nANN\nNNA": (RoadSpriteType.ONE_WAY_CROSSING_HORIZONTAL, False, False),
-    "ANN\nANN\nNNN": (RoadSpriteType.ONE_WAY_CROSSING_HORIZONTAL, False, False),
+    "ANN\nANN\nANA": (RoadSpriteType.ONE_WAY_CROSSING_VERTICAL, False, False),
+    "ANN\nANN\nANN": (RoadSpriteType.ONE_WAY_CROSSING_VERTICAL, False, False),
+    "ANN\nANN\nNNA": (RoadSpriteType.ONE_WAY_CROSSING_VERTICAL, False, False),
+    "ANN\nANN\nNNN": (RoadSpriteType.ONE_WAY_CROSSING_VERTICAL, False, False),
     # upper left = N, upper right = A
-    "NNA\nANN\nANA": (RoadSpriteType.ONE_WAY_CROSSING_HORIZONTAL, False, False),
-    "NNA\nANN\nANN": (RoadSpriteType.ONE_WAY_CROSSING_HORIZONTAL, False, False),
-    "NNA\nANN\nNNA": (RoadSpriteType.ONE_WAY_CROSSING_HORIZONTAL, False, False),
-    "NNA\nANN\nNNN": (RoadSpriteType.ONE_WAY_CROSSING_HORIZONTAL, False, False),
+    "NNA\nANN\nANA": (RoadSpriteType.ONE_WAY_CROSSING_VERTICAL, False, False),
+    "NNA\nANN\nANN": (RoadSpriteType.ONE_WAY_CROSSING_VERTICAL, False, False),
+    "NNA\nANN\nNNA": (RoadSpriteType.ONE_WAY_CROSSING_VERTICAL, False, False),
+    "NNA\nANN\nNNN": (RoadSpriteType.ONE_WAY_CROSSING_VERTICAL, False, False),
     # upper corners as N
-    "NNN\nANN\nANA": (RoadSpriteType.ONE_WAY_CROSSING_HORIZONTAL, False, False),
-    "NNN\nANN\nANN": (RoadSpriteType.ONE_WAY_CROSSING_HORIZONTAL, False, False),
-    "NNN\nANN\nNNA": (RoadSpriteType.ONE_WAY_CROSSING_HORIZONTAL, False, False),
-    "NNN\nANN\nNNN": (RoadSpriteType.ONE_WAY_CROSSING_HORIZONTAL, False, False),
+    "NNN\nANN\nANA": (RoadSpriteType.ONE_WAY_CROSSING_VERTICAL, False, False),
+    "NNN\nANN\nANN": (RoadSpriteType.ONE_WAY_CROSSING_VERTICAL, False, False),
+    "NNN\nANN\nNNA": (RoadSpriteType.ONE_WAY_CROSSING_VERTICAL, False, False),
+    "NNN\nANN\nNNN": (RoadSpriteType.ONE_WAY_CROSSING_VERTICAL, False, False),
     
     # mirrored
-    "ANA\nNNA\nAAA": (RoadSpriteType.ONE_WAY_CROSSING_HORIZONTAL, True, False),
-    "ANA\nNNA\nNAA": (RoadSpriteType.ONE_WAY_CROSSING_HORIZONTAL, True, False),
-    "ANA\nNNA\nAAN": (RoadSpriteType.ONE_WAY_CROSSING_HORIZONTAL, True, False),
-    "ANA\nNNA\nNAN": (RoadSpriteType.ONE_WAY_CROSSING_HORIZONTAL, True, False),
+    "ANA\nNNA\nANA": (RoadSpriteType.ONE_WAY_CROSSING_VERTICAL, True, False),
+    "ANA\nNNA\nNNA": (RoadSpriteType.ONE_WAY_CROSSING_VERTICAL, True, False),
+    "ANA\nNNA\nANN": (RoadSpriteType.ONE_WAY_CROSSING_VERTICAL, True, False),
+    "ANA\nNNA\nNNN": (RoadSpriteType.ONE_WAY_CROSSING_VERTICAL, True, False),
     
-    "ANN\nNNA\nAAA": (RoadSpriteType.ONE_WAY_CROSSING_HORIZONTAL, True, False),
-    "ANN\nNNA\nAAN": (RoadSpriteType.ONE_WAY_CROSSING_HORIZONTAL, True, False),
-    "ANN\nNNA\nNAA": (RoadSpriteType.ONE_WAY_CROSSING_HORIZONTAL, True, False),
-    "ANN\nNNA\nNAN": (RoadSpriteType.ONE_WAY_CROSSING_HORIZONTAL, True, False),
+    "ANN\nNNA\nANA": (RoadSpriteType.ONE_WAY_CROSSING_VERTICAL, True, False),
+    "ANN\nNNA\nANN": (RoadSpriteType.ONE_WAY_CROSSING_VERTICAL, True, False),
+    "ANN\nNNA\nNNA": (RoadSpriteType.ONE_WAY_CROSSING_VERTICAL, True, False),
+    "ANN\nNNA\nNNN": (RoadSpriteType.ONE_WAY_CROSSING_VERTICAL, True, False),
+
+    "NNA\nNNA\nANA": (RoadSpriteType.ONE_WAY_CROSSING_VERTICAL, True, False),
+    "NNA\nNNA\nANN": (RoadSpriteType.ONE_WAY_CROSSING_VERTICAL, True, False),
+    "NNA\nNNA\nNNA": (RoadSpriteType.ONE_WAY_CROSSING_VERTICAL, True, False),
+    "NNA\nNNA\nNNN": (RoadSpriteType.ONE_WAY_CROSSING_VERTICAL, True, False),
     
-    "NNA\nNNA\nAAA": (RoadSpriteType.ONE_WAY_CROSSING_HORIZONTAL, True, False),
-    "NNA\nNNA\nAAN": (RoadSpriteType.ONE_WAY_CROSSING_HORIZONTAL, True, False),
-    "NNA\nNNA\nNAA": (RoadSpriteType.ONE_WAY_CROSSING_HORIZONTAL, True, False),
-    "NNA\nNNA\nNAN": (RoadSpriteType.ONE_WAY_CROSSING_HORIZONTAL, True, False),
-    
-    "NNN\nNNA\nAAA": (RoadSpriteType.ONE_WAY_CROSSING_HORIZONTAL, True, False),
-    "NNN\nNNA\nAAN": (RoadSpriteType.ONE_WAY_CROSSING_HORIZONTAL, True, False),
-    "NNN\nNNA\nNAA": (RoadSpriteType.ONE_WAY_CROSSING_HORIZONTAL, True, False),
-    "NNN\nNNA\nNAN": (RoadSpriteType.ONE_WAY_CROSSING_HORIZONTAL, True, False),
+    "NNN\nNNA\nANA": (RoadSpriteType.ONE_WAY_CROSSING_VERTICAL, True, False),
+    "NNN\nNNA\nANN": (RoadSpriteType.ONE_WAY_CROSSING_VERTICAL, True, False),
+    "NNN\nNNA\nNNA": (RoadSpriteType.ONE_WAY_CROSSING_VERTICAL, True, False),
+    "NNN\nNNA\nNNN": (RoadSpriteType.ONE_WAY_CROSSING_VERTICAL, True, False),
 
     # ONE_WAY_CROSSING_HORIZONTAL - middle row as N, upper middle as A, lower middle as N (or the other way round)
     
@@ -275,4 +347,28 @@ road_sprite_mappings = {
     "NNN\nNNN\nNNA": (RoadSpriteType.TWO_WAY_CROSSING, False, False),
     "NNN\nNNN\nANN": (RoadSpriteType.TWO_WAY_CROSSING, False, False),
     "NNN\nNNN\nNNN": (RoadSpriteType.TWO_WAY_CROSSING, False, False),
+    
+    
+    # SPECIAL CASE - singular road (HORIZONTAL_END)
+    
+    "AAA\nANA\nAAA": (RoadSpriteType.HORIZONTAL_END, False, False),
+    "AAA\nANA\nAAN": (RoadSpriteType.HORIZONTAL_END, False, False),
+    "AAA\nANA\nNAA": (RoadSpriteType.HORIZONTAL_END, False, False),
+    "AAA\nANA\nNAN": (RoadSpriteType.HORIZONTAL_END, False, False),
+    # upper left = A, upper right = N
+    "AAN\nANA\nAAA": (RoadSpriteType.HORIZONTAL_END, False, False),
+    "AAN\nANA\nAAN": (RoadSpriteType.HORIZONTAL_END, False, False),
+    "AAN\nANA\nNAA": (RoadSpriteType.HORIZONTAL_END, False, False),
+    "AAN\nANA\nNAN": (RoadSpriteType.HORIZONTAL_END, False, False),
+    # upper left = N, upper right = A
+    "NAA\nANA\nAAA": (RoadSpriteType.HORIZONTAL_END, False, False),
+    "NAA\nANA\nAAN": (RoadSpriteType.HORIZONTAL_END, False, False),
+    "NAA\nANA\nNAA": (RoadSpriteType.HORIZONTAL_END, False, False),
+    "NAA\nANA\nNAN": (RoadSpriteType.HORIZONTAL_END, False, False),
+    # upper corners as N
+    "NAN\nANA\nAAA": (RoadSpriteType.HORIZONTAL_END, False, False),
+    "NAN\nANA\nAAN": (RoadSpriteType.HORIZONTAL_END, False, False),
+    "NAN\nANA\nNAA": (RoadSpriteType.HORIZONTAL_END, False, False),
+    "NAN\nANA\nNAN": (RoadSpriteType.HORIZONTAL_END, False, False),
+    
 }
