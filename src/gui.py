@@ -36,6 +36,14 @@ from classes.Enums.ArtifactType import ArtifactType
 from classes.Enums.CreatureType import CreatureType
 from classes.Enums.ResourceType import ResourceType
 from classes.Enums.LossConditions import LossConditions
+from classes.Enums.HallLevel import HallLevel
+from classes.Enums.CastleLevel import CastleLevel
+from classes.additional_info.VictoryConditions.UpgradeTown import UpgradeTown
+from classes.additional_info.VictoryConditions.CaptureTown import CaptureTown
+from classes.additional_info.VictoryConditions.DefeatHero import DefeatHero
+from classes.additional_info.LossConditions.LoseTown import LoseTown
+from classes.additional_info.LossConditions.LoseHero import LoseHero
+from classes.additional_info.VictoryConditions.DefeatHero import DefeatHero
 
 def filter_none_values(obj):
     """Recursively remove keys with None values from dictionaries"""
@@ -415,6 +423,12 @@ class MapGeneratorGUI(QWidget):
         # New options that require selecting a town after generation
         self.victory_combo.addItem("Build the grail structure", VictoryConditions.BUILD_GRAIL)
         self.victory_combo.addItem("Transport artifact", VictoryConditions.TRANSPORT_ARTIFACT)
+        # Upgrade town option (opens UpgradeTownDialog after generation)
+        self.victory_combo.addItem("Upgrade town", VictoryConditions.UPGRADE_TOWN)
+        # Capture specific town (opens CaptureTownDialog after generation)
+        self.victory_combo.addItem("Capture town", VictoryConditions.CAPTURE_TOWN)
+        # Defeat a specific hero
+        self.victory_combo.addItem("Defeat a specific hero", VictoryConditions.DEFEAT_HERO)
 
         # extra controls for victory types (create explicit labels so we can
         # hide/show both label + control in the form layout)
@@ -445,6 +459,10 @@ class MapGeneratorGUI(QWidget):
         self.loss_combo = QComboBox()
         self.loss_combo.addItem("Normal", LossConditions.NORMAL)
         self.loss_combo.addItem("Time expires", LossConditions.TIME_EXPIRES)
+        # Lose specific town option
+        self.loss_combo.addItem("Lose a specific town", LossConditions.LOSE_TOWN)
+        # Lose specific hero option
+        self.loss_combo.addItem("Lose a specific hero", LossConditions.LOSE_HERO)
         # Dropdown for time-based loss parameters. Each item stores the
         # corresponding number of days as its data value.
         self.loss_days_combo = QComboBox()
@@ -743,7 +761,7 @@ class MapGeneratorGUI(QWidget):
             "5. Set the number of players and towns, and optionally teams.\n"
             "6. In the Win/Lose section, choose victory or defeat conditions and set any additional parameters.\n"
             "7. Press 'Generate map' to create the .h3m map file and save it to the selected folder.\n\n"
-            "8. To use the generated map, simply copy the .h3m file into your Heroes III: SoD 'Maps' folder.\n"
+            "To use the generated map, simply copy the .h3m file into your Heroes III: SoD 'Maps' folder.\n"
             "Enjoy!\n\n"
             "Additionally:\n"
             "- You can save the map preview by right-clicking on the preview area.\n\n"
@@ -1168,6 +1186,20 @@ class MapGeneratorGUI(QWidget):
                         "Town selection required",
                         "The chosen victory condition requires selecting a town. After the map is generated you will be prompted to pick one from the generated towns.",
                     )
+
+                # If user selected a loss condition that requires a town or hero, show a separate message
+                if l_choice == LossConditions.LOSE_TOWN:
+                    QMessageBox.information(
+                        self,
+                        "Loss-town selection required",
+                        "The chosen loss condition requires selecting a town. After the map is generated you will be prompted to pick one for the loss condition.",
+                    )
+                elif l_choice == LossConditions.LOSE_HERO:
+                    QMessageBox.information(
+                        self,
+                        "Loss-hero selection required",
+                        "The chosen loss condition requires selecting a hero. After the map is generated you will be prompted to pick one for the loss condition.",
+                    )
             except Exception:
                 pass
 
@@ -1201,31 +1233,123 @@ class MapGeneratorGUI(QWidget):
                         VictoryConditions.TRANSPORT_ARTIFACT,
                         VictoryConditions.UPGRADE_TOWN,
                         VictoryConditions.CAPTURE_TOWN,
+                        VictoryConditions.DEFEAT_HERO,
                     }
                     if v_choice in town_required:
-                        # towns_gen is expected to be a list of town Objects produced by the generator
-                        towns_list = towns_gen
-                        if not towns_list:
-                            QMessageBox.warning(self, "No towns", "No towns were found to select from.")
+                        # Determine whether we are selecting a town or a hero
+                        if v_choice == VictoryConditions.DEFEAT_HERO:
+                            entries = heroes_gen
                         else:
-                            dlg = TownPickerDialog(towns_list, parent=self)
-                            res = dlg.exec()
+                            entries = towns_gen
+
+                        if not entries:
+                            QMessageBox.warning(self, "No entries", "No towns or heroes were found to select from.")
+                        else:
+                            # Choose dialog type depending on victory choice
+                            if v_choice == VictoryConditions.UPGRADE_TOWN:
+                                dlg = UpgradeTownDialog(entries, parent=self)
+                            elif v_choice == VictoryConditions.CAPTURE_TOWN:
+                                dlg = CaptureTownDialog(entries, parent=self)
+                            elif v_choice == VictoryConditions.DEFEAT_HERO:
+                                dlg = None
+                                try:
+                                    dlg = HeroPickerDialog(entries, parent=self)
+                                except Exception:
+                                    dlg = None
+                                if dlg is None:
+                                    dlg = TownPickerDialog(entries, parent=self)
+                            else:
+                                dlg = TownPickerDialog(entries, parent=self)
+
+                            try:
+                                res = dlg.exec()
+                            except Exception:
+                                try:
+                                    res = dlg.exec_()
+                                except Exception:
+                                    res = None
 
                             if res == QtWidgets.QDialog.Accepted:
                                 sel_idx = dlg.selected_index()
-                                if sel_idx is not None and 0 <= sel_idx < len(towns_list):
-                                    town_item = towns_list[sel_idx]
-                                    if isinstance(town_item, (list, tuple)):
-                                        tx = int(town_item[0])
-                                        ty = int(town_item[1])
-                                        tz = int(town_item[2])
+                                if sel_idx is not None and 0 <= sel_idx < len(entries):
+                                    item = entries[sel_idx]
+
+                                    # Extract coords defensively depending on representation
+                                    try:
+                                        if isinstance(item, (list, tuple)):
+                                            ix = int(item[0])
+                                            iy = int(item[1])
+                                            iz = int(item[2])
+                                        else:
+                                            ix = int(getattr(item, 'x', 0))
+                                            iy = int(getattr(item, 'y', 0))
+                                            iz = int(getattr(item, 'z', 0))
+                                    except Exception:
+                                        ix = iy = iz = 0
 
                                     addinfo = getattr(map, 'additional_info', None)
                                     if addinfo is not None and getattr(addinfo, 'victory_condition', None) is not None:
                                         details = addinfo.victory_condition.details
-                                        details.x = tx
-                                        details.y = ty
-                                        details.z = tz
+
+                                        # If this is hero-defeat detail, create/assign DefeatHero
+                                        if v_choice == VictoryConditions.DEFEAT_HERO:
+                                            try:
+                                                if isinstance(details, DefeatHero):
+                                                    details.x = ix
+                                                    details.y = iy
+                                                    details.z = iz
+                                                else:
+                                                    addinfo.victory_condition.details = DefeatHero(ix, iy, iz)
+                                            except Exception:
+                                                # fallback to plain dict
+                                                try:
+                                                    addinfo.victory_condition.details = {'x': ix, 'y': iy, 'z': iz}
+                                                except Exception:
+                                                    pass
+                                        else:
+                                            # town-related details
+                                            try:
+                                                details.x = ix
+                                                details.y = iy
+                                                details.z = iz
+                                            except Exception:
+                                                # fallback: if details is a dict-like
+                                                try:
+                                                    addinfo.victory_condition.details['x'] = ix
+                                                    addinfo.victory_condition.details['y'] = iy
+                                                    addinfo.victory_condition.details['z'] = iz
+                                                except Exception:
+                                                    addinfo.victory_condition.details = {'x': ix, 'y': iy, 'z': iz}
+
+                                            # If we used the Upgrade dialog, persist the extra params
+                                            if isinstance(dlg, UpgradeTownDialog):
+                                                addinfo.victory_condition.allow_normal_win = int(bool(dlg.allow_normal_win()))
+
+                                                try:
+                                                    hall_enum = HallLevel(dlg.hall_level())
+                                                    castle_enum = CastleLevel(dlg.castle_level())
+                                                except Exception:
+                                                    hall_enum = None
+                                                    castle_enum = None
+
+                                                if isinstance(addinfo.victory_condition.details, UpgradeTown):
+                                                    det = addinfo.victory_condition.details
+                                                    det.x = ix
+                                                    det.y = iy
+                                                    det.z = iz
+                                                    if hall_enum is not None:
+                                                        det.hall_level = hall_enum
+                                                    if castle_enum is not None:
+                                                        det.castle_level = castle_enum
+                                            # If we used the Capture dialog, persist the extra params
+                                            elif isinstance(dlg, CaptureTownDialog):
+                                                addinfo.victory_condition.allow_normal_win = int(bool(dlg.allow_normal_win()))
+                                                addinfo.victory_condition.applies_to_computer = int(bool(dlg.applies_to_computer()))
+                                                if isinstance(addinfo.victory_condition.details, CaptureTown):
+                                                    det = addinfo.victory_condition.details
+                                                    det.x = ix
+                                                    det.y = iy
+                                                    det.z = iz
                             else:
                                 # user cancelled town selection
                                 choice_msg = QMessageBox(self)
@@ -1239,6 +1363,97 @@ class MapGeneratorGUI(QWidget):
                                     self.generate_btn.setEnabled(True)
                                     return
                                 # otherwise continue and save JSON only (conversion will either fail or be attempted below)
+                except Exception:
+                    pass
+                # After victory selection handling, check loss condition that needs a town
+                try:
+                    if l_choice == LossConditions.LOSE_TOWN:
+                        # prompt user to pick a town for the loss condition
+                        if not towns_gen:
+                            QMessageBox.warning(self, "No towns", "No towns were found to select from for loss condition.")
+                        else:
+                            ldlg = TownPickerDialog(towns_gen, parent=self)
+                            try:
+                                lres = ldlg.exec()
+                            except Exception:
+                                try:
+                                    lres = ldlg.exec_()
+                                except Exception:
+                                    lres = None
+                            if lres == QtWidgets.QDialog.Accepted:
+                                lsel = ldlg.selected_index()
+                                if lsel is not None and 0 <= lsel < len(towns_gen):
+                                    town_item = towns_gen[lsel]
+                                    if isinstance(town_item, (list, tuple)):
+                                        ltx = int(town_item[0])
+                                        lty = int(town_item[1])
+                                        ltz = int(town_item[2])
+
+                                    addinfo = getattr(map, 'additional_info', None)
+                                    if addinfo is not None and getattr(addinfo, 'loss_condition', None) is not None:
+                                        if isinstance(addinfo.loss_condition.details, LoseTown):
+                                            det = addinfo.loss_condition.details
+                                            det.x = ltx
+                                            det.y = lty
+                                            det.z = ltz
+                            # handle lose-hero selection similarly
+                    elif l_choice == LossConditions.LOSE_HERO:
+                        # prompt user to pick a hero for the loss condition
+                        if not heroes_gen:
+                            QMessageBox.warning(self, "No heroes", "No heroes were found to select from for loss condition.")
+                        else:
+                            hdlg = None
+                            try:
+                                hdlg = HeroPickerDialog(heroes_gen, parent=self)
+                            except Exception:
+                                hdlg = None
+                            if hdlg is None:
+                                hdlg = TownPickerDialog(heroes_gen, parent=self)
+                            try:
+                                hres = hdlg.exec()
+                            except Exception:
+                                try:
+                                    hres = hdlg.exec_()
+                                except Exception:
+                                    hres = None
+                            if hres == QtWidgets.QDialog.Accepted:
+                                hsel = hdlg.selected_index()
+                                if hsel is not None and 0 <= hsel < len(heroes_gen):
+                                    hero_item = heroes_gen[hsel]
+                                    try:
+                                        htx = int(hero_item[0]) if isinstance(hero_item, (list, tuple)) else int(getattr(hero_item, 'x', 0))
+                                        hty = int(hero_item[1]) if isinstance(hero_item, (list, tuple)) else int(getattr(hero_item, 'y', 0))
+                                        htz = int(hero_item[2]) if isinstance(hero_item, (list, tuple)) else int(getattr(hero_item, 'z', 0))
+                                    except Exception:
+                                        htx = hty = htz = 0
+
+                                    addinfo = getattr(map, 'additional_info', None)
+                                    if addinfo is not None and getattr(addinfo, 'loss_condition', None) is not None:
+                                        try:
+                                            if isinstance(addinfo.loss_condition.details, LoseHero):
+                                                det = addinfo.loss_condition.details
+                                                det.x = htx
+                                                det.y = hty
+                                                det.z = htz
+                                            else:
+                                                addinfo.loss_condition.details = LoseHero(htx, hty, htz)
+                                        except Exception:
+                                            try:
+                                                addinfo.loss_condition.details = {'x': htx, 'y': hty, 'z': htz}
+                                            except Exception:
+                                                pass
+                            else:
+                                # user cancelled loss-town selection: ask whether to continue saving
+                                choice_msg = QMessageBox(self)
+                                choice_msg.setWindowTitle("Loss-town selection cancelled")
+                                choice_msg.setText("You cancelled loss-town selection. Do you want to save the JSON only or cancel saving?")
+                                save_btn = choice_msg.addButton("Save JSON only", QMessageBox.AcceptRole)
+                                cancel_btn = choice_msg.addButton("Cancel saving", QMessageBox.RejectRole)
+                                choice_msg.exec()
+                                if choice_msg.clickedButton() is cancel_btn:
+                                    self.status_label.setText("Cancelled by user")
+                                    self.generate_btn.setEnabled(True)
+                                    return
                 except Exception:
                     pass
             except Exception:
@@ -1686,6 +1901,255 @@ class TownPickerDialog(QtWidgets.QDialog):
         row = self.list.currentRow()
         if row < 0:
             QMessageBox.warning(self, "No selection", "Please select a town or Cancel.")
+            return
+        self._selected = row
+        self.accept()
+
+    def selected_index(self):
+        return self._selected
+
+
+class UpgradeTownDialog(QtWidgets.QDialog):
+    """Dialog for configuring the Upgrade Town victory condition.
+
+    Shows a town list (same behaviour as TownPickerDialog) plus:
+    - checkbox to allow normal victory (`allow_normal_win` -> 0/1)
+    - Hall level choice: Town(0), City(1), Capitol(2)
+    - Castle level choice: Fort(0), Citadel(1), Castle(2)
+    """
+    def __init__(self, towns: list, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("Upgrade Town - parameters")
+        self.setModal(True)
+        self._towns = towns or []
+        self._selected = None
+
+        layout = QVBoxLayout()
+
+        # allow normal victory checkbox
+        self.allow_normal_cb = QtWidgets.QCheckBox("Also allow normal victory")
+        layout.addWidget(self.allow_normal_cb)
+
+        # town list
+        layout.addWidget(QLabel("Choose town to upgrade:"))
+        self.list = QtWidgets.QListWidget()
+        self.list.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
+        for i, t in enumerate(self._towns):
+            label = f"Town #{i+1}"
+            try:
+                if isinstance(t, (list, tuple)):
+                    tx = t[0] if len(t) > 0 else None
+                    ty = t[1] if len(t) > 1 else None
+                    if tx is not None and ty is not None:
+                        label = f"Town #{i+1} — ({tx}, {ty})"
+                else:
+                    name = getattr(getattr(t, 'properties', None), 'name', None)
+                    tx = getattr(t, 'x', None)
+                    ty = getattr(t, 'y', None)
+                    if name:
+                        label = f"#{i+1} {name}"
+                        if tx is not None and ty is not None:
+                            label += f" — ({tx}, {ty})"
+                    else:
+                        if tx is not None and ty is not None:
+                            label = f"Town #{i+1} — ({tx}, {ty})"
+            except Exception:
+                label = f"Town #{i+1}"
+            self.list.addItem(label)
+        layout.addWidget(self.list)
+
+        # Hall / Castle combos
+        form = QFormLayout()
+        self.hall_combo = QComboBox()
+        self.hall_combo.addItems(["Town", "City", "Capitol"])  # 0,1,2
+        self.castle_combo = QComboBox()
+        self.castle_combo.addItems(["Fort", "Citadel", "Castle"])  # 0,1,2
+        form.addRow(QLabel("Hall level:"), self.hall_combo)
+        form.addRow(QLabel("Castle level:"), self.castle_combo)
+        layout.addLayout(form)
+
+        # buttons
+        btn_h = QHBoxLayout()
+        ok = QPushButton("OK")
+        cancel = QPushButton("Cancel")
+        ok.clicked.connect(self._on_ok)
+        cancel.clicked.connect(self.reject)
+        btn_h.addStretch()
+        btn_h.addWidget(ok)
+        btn_h.addWidget(cancel)
+        layout.addLayout(btn_h)
+
+        self.setLayout(layout)
+        if self.list.count() > 0:
+            self.list.setCurrentRow(0)
+
+    def _on_ok(self):
+        row = self.list.currentRow()
+        if row < 0:
+            QMessageBox.warning(self, "No selection", "Please select a town or Cancel.")
+            return
+        self._selected = row
+        self.accept()
+
+    def selected_index(self):
+        return self._selected
+
+    def allow_normal_win(self):
+        return 1 if self.allow_normal_cb.isChecked() else 0
+
+    def hall_level(self):
+        return int(self.hall_combo.currentIndex())
+
+    def castle_level(self):
+        return int(self.castle_combo.currentIndex())
+
+
+class CaptureTownDialog(QtWidgets.QDialog):
+    """Dialog for configuring the Capture Town victory condition.
+
+    Shows two checkboxes (allow normal victory, applies to computer) and a town list.
+    """
+    def __init__(self, towns: list, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("Capture Town - parameters")
+        self.setModal(True)
+        self._towns = towns or []
+        self._selected = None
+
+        layout = QVBoxLayout()
+
+        # allow normal victory checkbox
+        self.allow_normal_cb = QtWidgets.QCheckBox("Also allow normal victory")
+        layout.addWidget(self.allow_normal_cb)
+
+        # applies to computer checkbox
+        self.applies_cb = QtWidgets.QCheckBox("Special victory condition also applies to computer opponents")
+        layout.addWidget(self.applies_cb)
+
+        # town list
+        layout.addWidget(QLabel("Choose town to capture:"))
+        self.list = QtWidgets.QListWidget()
+        self.list.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
+        for i, t in enumerate(self._towns):
+            label = f"Town #{i+1}"
+            try:
+                if isinstance(t, (list, tuple)):
+                    tx = t[0] if len(t) > 0 else None
+                    ty = t[1] if len(t) > 1 else None
+                    if tx is not None and ty is not None:
+                        label = f"Town #{i+1} — ({tx}, {ty})"
+                else:
+                    name = getattr(getattr(t, 'properties', None), 'name', None)
+                    tx = getattr(t, 'x', None)
+                    ty = getattr(t, 'y', None)
+                    if name:
+                        label = f"#{i+1} {name}"
+                        if tx is not None and ty is not None:
+                            label += f" — ({tx}, {ty})"
+                    else:
+                        if tx is not None and ty is not None:
+                            label = f"Town #{i+1} — ({tx}, {ty})"
+            except Exception:
+                label = f"Town #{i+1}"
+            self.list.addItem(label)
+        layout.addWidget(self.list)
+
+        # buttons
+        btn_h = QHBoxLayout()
+        ok = QPushButton("OK")
+        cancel = QPushButton("Cancel")
+        ok.clicked.connect(self._on_ok)
+        cancel.clicked.connect(self.reject)
+        btn_h.addStretch()
+        btn_h.addWidget(ok)
+        btn_h.addWidget(cancel)
+        layout.addLayout(btn_h)
+
+        self.setLayout(layout)
+        if self.list.count() > 0:
+            self.list.setCurrentRow(0)
+
+    def _on_ok(self):
+        row = self.list.currentRow()
+        if row < 0:
+            QMessageBox.warning(self, "No selection", "Please select a town or Cancel.")
+            return
+        self._selected = row
+        self.accept()
+
+    def selected_index(self):
+        return self._selected
+
+    def allow_normal_win(self):
+        return 1 if self.allow_normal_cb.isChecked() else 0
+
+    def applies_to_computer(self):
+        return 1 if self.applies_cb.isChecked() else 0
+
+
+class HeroPickerDialog(QtWidgets.QDialog):
+    """Dialog to let the user pick one hero from the generated heroes list.
+
+    Supports hero represented either as Objects (with attributes x,y,z and optional properties.name or name)
+    or as simple tuples/lists (x,y,z). Returns the selected index via `selected_index()`.
+    """
+    def __init__(self, heroes: list, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("Select hero")
+        self.setModal(True)
+        self._heroes = heroes or []
+        self._selected = None
+
+        layout = QVBoxLayout()
+        self.list = QtWidgets.QListWidget()
+        self.list.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
+
+        for i, h in enumerate(self._heroes):
+            label = f"Hero #{i+1}"
+            try:
+                if isinstance(h, (list, tuple)):
+                    hx = h[0] if len(h) > 0 else None
+                    hy = h[1] if len(h) > 1 else None
+                    hz = h[2] if len(h) > 2 else None
+                    if hx is not None and hy is not None:
+                        label = f"Hero #{i+1} — ({hx}, {hy}, {hz})"
+                else:
+                    name = getattr(h, 'name', None) or getattr(getattr(h, 'properties', None), 'name', None)
+                    hx = getattr(h, 'x', None)
+                    hy = getattr(h, 'y', None)
+                    if name:
+                        label = f"#{i+1} {name}"
+                        if hx is not None and hy is not None:
+                            label += f" — ({hx}, {hy})"
+                    else:
+                        if hx is not None and hy is not None:
+                            label = f"Hero #{i+1} — ({hx}, {hy})"
+            except Exception:
+                label = f"Hero #{i+1}"
+            self.list.addItem(label)
+
+        layout.addWidget(QLabel("Choose the hero that should be used for the victory condition:"))
+        layout.addWidget(self.list)
+
+        btn_h = QHBoxLayout()
+        ok = QPushButton("OK")
+        cancel = QPushButton("Cancel")
+        ok.clicked.connect(self._on_ok)
+        cancel.clicked.connect(self.reject)
+        btn_h.addStretch()
+        btn_h.addWidget(ok)
+        btn_h.addWidget(cancel)
+
+        layout.addLayout(btn_h)
+        self.setLayout(layout)
+
+        if self.list.count() > 0:
+            self.list.setCurrentRow(0)
+
+    def _on_ok(self):
+        row = self.list.currentRow()
+        if row < 0:
+            QMessageBox.warning(self, "No selection", "Please select a hero or Cancel.")
             return
         self._selected = row
         self.accept()

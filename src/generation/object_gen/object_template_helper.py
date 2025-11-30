@@ -538,10 +538,11 @@ class ObjectTemplateHelper:
 
                 self.mark_object_tiles_as_occupied(heroTemplate, final_x, final_y)
 
+                self.heroes_generated.append((final_x-1, final_y, 0))
+
         self.objectTemplates.extend(heroes_templates)
         self.objects.extend(heroes)
 
-        self.heroes_generated = heroes
 
         self.id = id
         self.absod_id = absod_id
