@@ -307,32 +307,52 @@ class MapGeneratorGUI(QWidget):
 
         # Layout
         # Build File group (now contains Save folder as a sub-group)
-        file_group = QGroupBox("File")
+        # Use a titled, framed group for file-related info per user request
+        file_group = QGroupBox("File info")
         file_layout = QVBoxLayout()
 
-        # Save folder subgroup inside File
-        folder_group = QGroupBox("Save folder")
-        fg_layout = QHBoxLayout()
-        fg_layout.addWidget(self.folder_path_edit)
-        fg_layout.addWidget(self.folder_browse_btn)
-        folder_group.setLayout(fg_layout)
-        file_layout.addWidget(folder_group)
+        # Save widget: combine Save folder and Filename into one plain widget
+        save_widget = QWidget()
+        save_layout = QVBoxLayout()
+        save_layout.setContentsMargins(0, 0, 0, 0)
 
-        # Filename
-        file_layout.addWidget(self.filename_label)
-        file_layout.addWidget(self.filename_edit)
-        # Map info (name + description)
+        # Folder row (label, path edit, browse)
+        folder_row = QHBoxLayout()
+        folder_row.setContentsMargins(0, 0, 0, 0)
+        folder_row.addWidget(self.folder_label)
+        folder_row.addWidget(self.folder_path_edit)
+        folder_row.addWidget(self.folder_browse_btn)
+
+        # Filename row (label, edit)
+        filename_row = QHBoxLayout()
+        filename_row.setContentsMargins(0, 0, 0, 0)
+        filename_row.addWidget(self.filename_label)
+        filename_row.addWidget(self.filename_edit)
+
+        save_layout.addLayout(folder_row)
+        save_layout.addLayout(filename_row)
+        save_widget.setLayout(save_layout)
+
+        file_layout.addWidget(save_widget)
+        file_group.setLayout(file_layout)
+
+        # Map info (name + description + size) — keep as a separate boxed section
         map_info_group = QGroupBox("Map info")
         map_info_layout = QFormLayout()
         map_info_layout.addRow(self.map_name_label, self.map_name_edit)
         map_info_layout.addRow(self.map_desc_label, self.map_desc_edit)
+        # Include Map size in the Map info group
+        map_info_layout.addRow(self.size_label, self.size_combo)
         map_info_group.setLayout(map_info_layout)
-        file_layout.addWidget(map_info_group)
-        size_layout = QHBoxLayout()
-        size_layout.addWidget(self.size_label)
-        size_layout.addWidget(self.size_combo)
-        file_layout.addLayout(size_layout)
-        file_group.setLayout(file_layout)
+
+        # Left column container: stack File info and Map info vertically
+        left_column = QWidget()
+        left_column_layout = QVBoxLayout()
+        left_column_layout.setContentsMargins(0, 0, 0, 0)
+        left_column_layout.setSpacing(8)
+        left_column_layout.addWidget(file_group)
+        left_column_layout.addWidget(map_info_group)
+        left_column.setLayout(left_column_layout)
 
         # Players group: player count (synced with player cities) and neutral cities
         players_group = QGroupBox("Players / Cities")
@@ -343,6 +363,10 @@ class MapGeneratorGUI(QWidget):
         self.players_spin = QSpinBox()
         self.players_spin.setRange(0, 8)
         self.players_spin.setValue(5)
+        try:
+            self._style_spinbox_no_caret(self.player_cities_spin)
+        except Exception:
+            pass
         # sync flag to avoid recursion
         self._syncing_player_counts = False
         def _on_player_cities_changed(val):
@@ -375,11 +399,19 @@ class MapGeneratorGUI(QWidget):
         self.neutral_cities_spin = QSpinBox()
         self.neutral_cities_spin.setRange(0, 50)
         self.neutral_cities_spin.setValue(2)
+        try:
+            self._style_spinbox_no_caret(self.neutral_cities_spin)
+        except Exception:
+            pass
 
         # Difficulty selector (0..4)
         self.difficulty_spin = QSpinBox()
         self.difficulty_spin.setRange(0, 4)
         self.difficulty_spin.setValue(1)
+        try:
+            self._style_spinbox_no_caret(self.difficulty_spin)
+        except Exception:
+            pass
 
         pg_layout.addRow("Player cities:", self.player_cities_spin)
         pg_layout.addRow("Players:", self.players_spin)
@@ -393,6 +425,10 @@ class MapGeneratorGUI(QWidget):
         # initial max: min(7, players-1)
         self.teams_spin.setMaximum(min(7, max(0, int(self.players_spin.value()) - 1)))
         self.teams_spin.setValue(0)
+        try:
+            self._style_spinbox_no_caret(self.teams_spin)
+        except Exception:
+            pass
         pg_layout.addRow("Teams:", self.teams_spin)
 
         # Teams grid area: shows per-player radio buttons for selecting team
@@ -506,6 +542,14 @@ class MapGeneratorGUI(QWidget):
         victory_layout.addRow(self.creature_count_label, self.creature_count_spin)
         victory_layout.addRow(self.resource_label, self.resource_combo)
         victory_layout.addRow(self.resource_amount_label, self.resource_amount_spin)
+        # informational text shown when a victory type requires user selection
+        self.victory_info_label = QLabel("")
+        self.victory_info_label.setWordWrap(True)
+        try:
+            self.victory_info_label.setStyleSheet("color: #444; font-style: italic;")
+        except Exception:
+            pass
+        victory_layout.addRow(self.victory_info_label)
         victory_group.setLayout(victory_layout)
 
         # Add loss-related rows
@@ -513,6 +557,14 @@ class MapGeneratorGUI(QWidget):
         # loss days with explicit label for toggling
         self.loss_days_label = QLabel("Loss days:")
         loss_layout.addRow(self.loss_days_label, self.loss_days_combo)
+        # informational text shown when a loss type requires user selection
+        self.loss_info_label = QLabel("")
+        self.loss_info_label.setWordWrap(True)
+        try:
+            self.loss_info_label.setStyleSheet("color: #444; font-style: italic;")
+        except Exception:
+            pass
+        loss_layout.addRow(self.loss_info_label)
         loss_group.setLayout(loss_layout)
 
         # Visibility logic: show only controls relevant to chosen victory type
@@ -535,12 +587,46 @@ class MapGeneratorGUI(QWidget):
             self.resource_combo.setVisible(is_res)
             self.resource_amount_label.setVisible(is_res)
             self.resource_amount_spin.setVisible(is_res)
+            # update informational text for victory types that require a post-generation selection
+            try:
+                info_msg = ""
+                if v == VictoryConditions.BUILD_GRAIL:
+                    info_msg = "After generation you will be asked to select a town where the grail structure must be built."
+                elif v == VictoryConditions.TRANSPORT_ARTIFACT:
+                    info_msg = "After generation you will be asked to select a town to receive the transported artifact."
+                elif v == VictoryConditions.UPGRADE_TOWN:
+                    info_msg = "After generation you will be asked to select a town to be upgraded."
+                elif v == VictoryConditions.CAPTURE_TOWN:
+                    info_msg = "After generation you will be asked to select a town to be captured for the victory condition."
+                elif v == VictoryConditions.DEFEAT_HERO:
+                    info_msg = "After generation you will be asked to select a hero to be defeated for the victory condition."
+                elif v == VictoryConditions.DEFEAT_MONSTER:
+                    info_msg = "After generation you will be asked to select a monster to be defeated for the victory condition."
+                else:
+                    info_msg = ""
+                self.victory_info_label.setText(info_msg)
+                self.victory_info_label.setVisible(bool(info_msg))
+            except Exception:
+                pass
 
         def _on_loss_changed(_):
             l = self.loss_combo.currentData()
             is_time = (l == LossConditions.TIME_EXPIRES)
             self.loss_days_label.setVisible(is_time)
             self.loss_days_combo.setVisible(is_time)
+            # update informational text for loss types that require a post-generation selection
+            try:
+                info_msg = ""
+                if l == LossConditions.LOSE_TOWN:
+                    info_msg = "After generation you will be asked to select a town that the player will lose."
+                elif l == LossConditions.LOSE_HERO:
+                    info_msg = "After generation you will be asked to select a hero that the player will lose."
+                else:
+                    info_msg = ""
+                self.loss_info_label.setText(info_msg)
+                self.loss_info_label.setVisible(bool(info_msg))
+            except Exception:
+                pass
 
         self.victory_combo.currentIndexChanged.connect(_on_victory_changed)
         self.loss_combo.currentIndexChanged.connect(_on_loss_changed)
@@ -603,11 +689,11 @@ class MapGeneratorGUI(QWidget):
 
         # Wrap preview area in a GroupBox so it gets the same bordered pane
         # treatment as other sections (visually consistent)
-        preview_group = QGroupBox("Preview of the generated map")
+        preview_group = QWidget()
         preview_group.setContentsMargins(6, 6, 6, 6)
         preview_group_layout = QVBoxLayout()
         preview_group_layout.setSpacing(4)
-        # give a slightly larger top margin so the group's title has breathing room
+        # give a slightly larger top margin so the preview area has breathing room
         preview_group_layout.setContentsMargins(6, 12, 6, 6)
 
         # Top row: right-aligned info/manual button
@@ -643,9 +729,10 @@ class MapGeneratorGUI(QWidget):
         preview_group.setLayout(preview_group_layout)
         right_v.addWidget(preview_group)
 
-        # Top area: File (left) and Preview+Terrain (right)
+        # Top area: File info + Map info stacked left and Preview+Terrain on right
         top_h = QHBoxLayout()
-        top_h.addWidget(file_group, stretch=1)
+        # use the left column container created earlier (stacks File info and Map info)
+        top_h.addWidget(left_column, stretch=1)
         top_h.addLayout(right_v)
 
         # Bottom area: arrange Players, Win/Lose and Terrain in three columns
@@ -666,7 +753,7 @@ class MapGeneratorGUI(QWidget):
 
         # Composite group that places Players and Win/Lose side-by-side, with
         # Win/Lose given more horizontal space. Teams sits below them.
-        composite_group = QGroupBox("Players & Win/Lose")
+        composite_group = QWidget()
         comp_layout = QVBoxLayout()
         top_h_comp = QHBoxLayout()
         top_h_comp.addWidget(players_group, 1)
@@ -676,7 +763,7 @@ class MapGeneratorGUI(QWidget):
         composite_group.setLayout(comp_layout)
 
         # Combine Terrain values and Actions into a single stacked group on the right
-        terrain_actions_group = QGroupBox("Terrain & Actions")
+        terrain_actions_group = QWidget()
         ta_layout = QVBoxLayout()
         ta_layout.setContentsMargins(6, 6, 6, 6)
         ta_layout.addWidget(self.terrain_group)
@@ -750,21 +837,23 @@ class MapGeneratorGUI(QWidget):
         manual_widget = QWidget()
         manual_layout = QVBoxLayout()
         manual_layout.setContentsMargins(8, 8, 8, 8)
-        manual_title = QLabel("Manual — How to use the Map Generator")
+        manual_title = QLabel("Manual - How to use the Map Generator")
         manual_title.setStyleSheet("font-weight: bold; font-size: 16px;")
         manual_layout.addWidget(manual_title)
 
         # Show manual as formatted QLabel (larger font, label-like appearance)
         manual_body = (
-            "Welcome to the Heroes III: Shadow of Death map generator:\n\n"
+            "Welcome to the Heroes III: Shadow of Death map generator! This generator uses PCG algorithms to create unique maps. Below are the steps to create a map:\n\n"
             "1. Select the save folder and file name.\n"
             "2. Enter the map name and description.\n"
             "3. Set the map size (e.g., 72x72).\n"
             "4. Add terrain values on the right (e.g., DIRT, GRASS) and set their estimated coverage.\n"
             "5. Set the number of players and towns, and optionally teams.\n"
             "6. In the Win/Lose section, choose victory or defeat conditions and set any additional parameters.\n"
-            "7. Press 'Generate map' to create the .h3m map file and save it to the selected folder.\n\n"
-            "To use the generated map, simply copy the .h3m file into your Heroes III: SoD 'Maps' folder.\n"
+            "7. Press 'Generate map' to generate the map representation and preview.\n"
+            "8. Optionally, select parameters for Win/Lose conditions that require post-generation selection.\n"
+            "9. Your map will be saved as a .h3m file in the specified folder.\n\n"
+            "To use the generated map, simply copy the .h3m file into your Heroes III: SoD 'Maps' folder - it will be visible in the game.\n"
             "Enjoy!\n\n"
             "Additionally:\n"
             "- You can save the map preview by right-clicking on the preview area.\n\n"
@@ -847,6 +936,43 @@ class MapGeneratorGUI(QWidget):
         # Thread holder
         self._worker_thread = None
 
+    def _style_spinbox_no_caret(self, spin: QSpinBox):
+        """Apply styling to a QSpinBox to make the internal QLineEdit selection
+        background transparent and hide its caret while keeping the spinbox
+        itself focusable for keyboard input.
+        """
+        try:
+            le = None
+            try:
+                le = spin.lineEdit()
+            except Exception:
+                le = None
+            style = (
+                "selection-background-color: rgba(0,0,0,0);"
+                "selection-color: rgba(0,0,0,1);"
+            )
+            if le is not None:
+                try:
+                    le.setStyleSheet(style)
+                except Exception:
+                    pass
+                try:
+                    le.setFocusPolicy(QtCore.Qt.NoFocus)
+                except Exception:
+                    pass
+            else:
+                try:
+                    spin.setStyleSheet(f"QSpinBox QLineEdit {{ {style} }}")
+                except Exception:
+                    pass
+            try:
+                # keep the spinbox itself focusable so keyboard stepping works
+                spin.setFocusPolicy(QtCore.Qt.StrongFocus)
+            except Exception:
+                pass
+        except Exception:
+            pass
+
     def browse_folder(self):
         folder = QFileDialog.getExistingDirectory(self, "Select a folder to save the file")
         if folder:
@@ -907,6 +1033,27 @@ class MapGeneratorGUI(QWidget):
         spin = QSpinBox()
         spin.setRange(1, 5)
         spin.setValue(1)
+        # Make text selection in the spinbox's editor transparent so selection
+        # doesn't show a solid highlight over the terrain value field.
+        try:
+            le = None
+            try:
+                le = spin.lineEdit()
+            except Exception:
+                le = None
+            # Ensure selected text remains visible: transparent selection background
+            # but explicit selection color (black) so the digits don't disappear.
+            style = (
+                "selection-background-color: rgba(0,0,0,0);"
+                "selection-color: rgba(0,0,0,1);"
+            )
+            if le is not None:
+                le.setStyleSheet(style)
+            else:
+                # Fallback: apply stylesheet to the spinbox targeting its QLineEdit
+                spin.setStyleSheet(f"QSpinBox QLineEdit {{ {style} }}")
+        except Exception:
+            pass
         remove_btn = QPushButton("Remove")
 
         def _remove_here():
@@ -1174,36 +1321,8 @@ class MapGeneratorGUI(QWidget):
                         # fallback: if data missing, default to 6 days
                         lc_params.days = 6
 
-            # If selected victory condition requires a specific town, inform the user
-            # that they will need to pick a town after generation.
-            try:
-                town_required = {
-                    VictoryConditions.BUILD_GRAIL,
-                    VictoryConditions.TRANSPORT_ARTIFACT,
-                    VictoryConditions.UPGRADE_TOWN,
-                    VictoryConditions.CAPTURE_TOWN,
-                }
-                if v_choice in town_required:
-                    QMessageBox.information(
-                        self,
-                        "Town selection required",
-                        "The chosen victory condition requires selecting a town. After the map is generated you will be prompted to pick one from the generated towns.",
-                    )
-
-                # If user selected a loss condition that requires a town or hero, show a separate message
-                if l_choice == LossConditions.LOSE_TOWN:
-                    QMessageBox.information(
-                        self,
-                        "Loss-town selection required",
-                        "The chosen loss condition requires selecting a town. After the map is generated you will be prompted to pick one for the loss condition.",
-                    )
-                elif l_choice == LossConditions.LOSE_HERO:
-                    QMessageBox.information(
-                        self,
-                        "Loss-hero selection required",
-                        "The chosen loss condition requires selecting a hero. After the map is generated you will be prompted to pick one for the loss condition.",
-                    )
-            except Exception:
+                # Informational guidance is shown inline in the Victory/Loss groups
+                # (handled by the change handlers) so do not pop up messages here.
                 pass
 
             map, towns_gen, heroes_gen, monsters_gen = generate_voronoi_map(
@@ -1816,6 +1935,13 @@ class TownPickerDialog(QtWidgets.QDialog):
         self.list = QtWidgets.QListWidget()
         self.list.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
 
+        # determine how many player towns to color, based on parent UI if available
+        try:
+            parent = self.parent()
+            players_count = int(parent.players_spin.value()) if parent is not None else 0
+        except Exception:
+            players_count = 0
+        player_colors = ['red', 'blue', 'tan', 'green', 'orange', 'purple', 'teal', 'pink']
         for i, t in enumerate(self._towns):
             label = f"Town #{i+1}"
             # tuple/list case
@@ -1826,8 +1952,16 @@ class TownPickerDialog(QtWidgets.QDialog):
                 # show coordinates when available
                 if tx is not None and ty is not None:
                     label = f"Town #{i+1} — ({tx}, {ty}, {tz})"
-
-            self.list.addItem(label)
+            item = QtWidgets.QListWidgetItem(label)
+            try:
+                if i < players_count:
+                    col = player_colors[i] if i < len(player_colors) else 'black'
+                    item.setForeground(QColor(col))
+                else:
+                    item.setForeground(QColor('black'))
+            except Exception:
+                pass
+            self.list.addItem(item)
 
         layout.addWidget(QLabel("Choose the town that should be used for the victory condition:"))
         layout.addWidget(self.list)
@@ -1884,6 +2018,13 @@ class UpgradeTownDialog(QtWidgets.QDialog):
         layout.addWidget(QLabel("Choose town to upgrade:"))
         self.list = QtWidgets.QListWidget()
         self.list.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
+        # color player towns similarly
+        try:
+            parent = self.parent()
+            players_count = int(parent.players_spin.value()) if parent is not None else 0
+        except Exception:
+            players_count = 0
+        player_colors = ['red', 'blue', 'tan', 'green', 'orange', 'purple', 'teal', 'pink']
         for i, t in enumerate(self._towns):
             label = f"Town #{i+1}"
             try:
@@ -1891,7 +2032,7 @@ class UpgradeTownDialog(QtWidgets.QDialog):
                     tx = t[0] if len(t) > 0 else None
                     ty = t[1] if len(t) > 1 else None
                     if tx is not None and ty is not None:
-                        label = f"Town #{i+1} — ({tx}, {ty})"
+                        label = f"Town #{i+1}, at ({tx}, {ty})"
                 else:
                     name = getattr(getattr(t, 'properties', None), 'name', None)
                     tx = getattr(t, 'x', None)
@@ -1905,7 +2046,16 @@ class UpgradeTownDialog(QtWidgets.QDialog):
                             label = f"Town #{i+1} — ({tx}, {ty})"
             except Exception:
                 label = f"Town #{i+1}"
-            self.list.addItem(label)
+            item = QtWidgets.QListWidgetItem(label)
+            try:
+                if i < players_count:
+                    col = player_colors[i] if i < len(player_colors) else 'black'
+                    item.setForeground(QColor(col))
+                else:
+                    item.setForeground(QColor('black'))
+            except Exception:
+                pass
+            self.list.addItem(item)
         layout.addWidget(self.list)
 
         # Hall / Castle combos
@@ -1980,6 +2130,12 @@ class CaptureTownDialog(QtWidgets.QDialog):
         layout.addWidget(QLabel("Choose town to capture:"))
         self.list = QtWidgets.QListWidget()
         self.list.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
+        try:
+            parent = self.parent()
+            players_count = int(parent.players_spin.value()) if parent is not None else 0
+        except Exception:
+            players_count = 0
+        player_colors = ['red', 'blue', 'tan', 'green', 'orange', 'purple', 'teal', 'pink']
         for i, t in enumerate(self._towns):
             label = f"Town #{i+1}"
             try:
@@ -1987,7 +2143,7 @@ class CaptureTownDialog(QtWidgets.QDialog):
                     tx = t[0] if len(t) > 0 else None
                     ty = t[1] if len(t) > 1 else None
                     if tx is not None and ty is not None:
-                        label = f"Town #{i+1} — ({tx}, {ty})"
+                        label = f"Town #{i+1}, at ({tx}, {ty})"
                 else:
                     name = getattr(getattr(t, 'properties', None), 'name', None)
                     tx = getattr(t, 'x', None)
@@ -2001,7 +2157,16 @@ class CaptureTownDialog(QtWidgets.QDialog):
                             label = f"Town #{i+1} — ({tx}, {ty})"
             except Exception:
                 label = f"Town #{i+1}"
-            self.list.addItem(label)
+            item = QtWidgets.QListWidgetItem(label)
+            try:
+                if i < players_count:
+                    col = player_colors[i] if i < len(player_colors) else 'black'
+                    item.setForeground(QColor(col))
+                else:
+                    item.setForeground(QColor('black'))
+            except Exception:
+                pass
+            self.list.addItem(item)
         layout.addWidget(self.list)
 
         # buttons
@@ -2068,7 +2233,7 @@ class DefeatMonsterDialog(QtWidgets.QDialog):
                     my = m[1] if len(m) > 1 else None
                     mz = m[2] if len(m) > 2 else None
                     if mx is not None and my is not None:
-                        label = f"Monster #{i+1} — ({mx}, {my}, {mz})"
+                        label = f"Monster #{i+1}, at ({mx}, {my}, {mz})"
                 else:
                     mx = getattr(m, 'x', None)
                     my = getattr(m, 'y', None)
@@ -2134,7 +2299,7 @@ class HeroPickerDialog(QtWidgets.QDialog):
                     hy = h[1] if len(h) > 1 else None
                     hz = h[2] if len(h) > 2 else None
                     if hx is not None and hy is not None:
-                        label = f"Hero #{i+1} — ({hx}, {hy}, {hz})"
+                        label = f"Hero #{i+1}, at ({hx}, {hy}, {hz})"
                 else:
                     name = getattr(h, 'name', None) or getattr(getattr(h, 'properties', None), 'name', None)
                     hx = getattr(h, 'x', None)
@@ -2145,10 +2310,26 @@ class HeroPickerDialog(QtWidgets.QDialog):
                             label += f" — ({hx}, {hy})"
                     else:
                         if hx is not None and hy is not None:
-                            label = f"Hero #{i+1} — ({hx}, {hy})"
+                            label = f"Hero #{i+1} ({hx}, {hy})"
             except Exception:
                 label = f"Hero #{i+1}"
-            self.list.addItem(label)
+            # color player-owned heroes by index (first N entries -> players)
+            try:
+                parent = self.parent()
+                players_count = int(parent.players_spin.value()) if parent is not None else 0
+            except Exception:
+                players_count = 0
+            player_colors = ['red', 'blue', 'tan', 'green', 'orange', 'purple', 'teal', 'pink']
+            item = QtWidgets.QListWidgetItem(label)
+            try:
+                if i < players_count:
+                    col = player_colors[i] if i < len(player_colors) else 'black'
+                    item.setForeground(QColor(col))
+                else:
+                    item.setForeground(QColor('black'))
+            except Exception:
+                pass
+            self.list.addItem(item)
 
         layout.addWidget(QLabel("Choose the hero that should be used for the victory condition:"))
         layout.addWidget(self.list)
