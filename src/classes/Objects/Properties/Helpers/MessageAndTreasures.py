@@ -6,7 +6,7 @@ class MessageAndTreasures:
         return cls(
             message= "",
             resources = Resources.create_default(),
-            artifact= 0
+            artifact= 65535
         )
 
     def __init__(self, message: str, resources: Resources, artifact: int) -> None:

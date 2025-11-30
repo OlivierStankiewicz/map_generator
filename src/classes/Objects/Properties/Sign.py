@@ -4,13 +4,12 @@ class Sign(Properties):
     @classmethod
     def create_default(cls) -> 'Sign':
         return cls(
-            message= '',
-            unknown= []
+            message= ''
         )
 
-    def __init__(self, message: str, unknown: list[int]) -> None:
+    def __init__(self, message: str) -> None:
         self.message = message
-        self.unknown = unknown
+        self.unknown = [0, 0, 0, 0]
 
     def to_dict(self) -> dict:
         return {
