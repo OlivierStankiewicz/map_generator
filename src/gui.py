@@ -1257,31 +1257,14 @@ class MapGeneratorGUI(QWidget):
                             elif v_choice == VictoryConditions.CAPTURE_TOWN:
                                 dlg = CaptureTownDialog(entries, parent=self)
                             elif v_choice == VictoryConditions.DEFEAT_HERO:
-                                dlg = None
-                                try:
-                                    dlg = HeroPickerDialog(entries, parent=self)
-                                except Exception:
-                                    dlg = None
-                                if dlg is None:
-                                    dlg = TownPickerDialog(entries, parent=self)
+                                dlg = HeroPickerDialog(entries, parent=self)
                             elif v_choice == VictoryConditions.DEFEAT_MONSTER:
-                                dlg = None
-                                try:
-                                    dlg = DefeatMonsterDialog(entries, parent=self)
-                                except Exception:
-                                    dlg = None
-                                if dlg is None:
-                                    dlg = TownPickerDialog(entries, parent=self)
+                                dlg = DefeatMonsterDialog(entries, parent=self)
                             else:
                                 dlg = TownPickerDialog(entries, parent=self)
+                                
 
-                            try:
-                                res = dlg.exec()
-                            except Exception:
-                                try:
-                                    res = dlg.exec_()
-                                except Exception:
-                                    res = None
+                            res = dlg.exec()
 
                             if res == QtWidgets.QDialog.Accepted:
                                 sel_idx = dlg.selected_index()
@@ -1289,17 +1272,10 @@ class MapGeneratorGUI(QWidget):
                                     item = entries[sel_idx]
 
                                     # Extract coords defensively depending on representation
-                                    try:
-                                        if isinstance(item, (list, tuple)):
-                                            ix = int(item[0])
-                                            iy = int(item[1])
-                                            iz = int(item[2])
-                                        else:
-                                            ix = int(getattr(item, 'x', 0))
-                                            iy = int(getattr(item, 'y', 0))
-                                            iz = int(getattr(item, 'z', 0))
-                                    except Exception:
-                                        ix = iy = iz = 0
+                                    if isinstance(item, (list, tuple)):
+                                        ix = int(item[0])
+                                        iy = int(item[1])
+                                        iz = int(item[2])
 
                                     addinfo = getattr(map, 'additional_info', None)
                                     if addinfo is not None and getattr(addinfo, 'victory_condition', None) is not None:
@@ -1307,53 +1283,23 @@ class MapGeneratorGUI(QWidget):
 
                                         # If this is hero-defeat detail, create/assign DefeatHero
                                         if v_choice == VictoryConditions.DEFEAT_HERO:
-                                            try:
-                                                if isinstance(details, DefeatHero):
-                                                    details.x = ix
-                                                    details.y = iy
-                                                    details.z = iz
-                                                else:
-                                                    addinfo.victory_condition.details = DefeatHero(ix, iy, iz)
-                                            except Exception:
-                                                # fallback to plain dict
-                                                try:
-                                                    addinfo.victory_condition.details = {'x': ix, 'y': iy, 'z': iz}
-                                                except Exception:
-                                                    pass
-                                        elif v_choice == VictoryConditions.DEFEAT_MONSTER:
-                                            # persist monster-specific details and the allow_normal flag
-                                            try:
-                                                if isinstance(details, DefeatMonster):
-                                                    details.x = ix
-                                                    details.y = iy
-                                                    details.z = iz
-                                                else:
-                                                    addinfo.victory_condition.details = DefeatMonster(ix, iy, iz)
-                                            except Exception:
-                                                try:
-                                                    addinfo.victory_condition.details = {'x': ix, 'y': iy, 'z': iz}
-                                                except Exception:
-                                                    pass
-                                            # also persist allow_normal_win from dialog if present
-                                            try:
-                                                if isinstance(dlg, DefeatMonsterDialog):
-                                                    addinfo.victory_condition.allow_normal_win = int(bool(dlg.allow_normal_win()))
-                                            except Exception:
-                                                pass
-                                        else:
-                                            # town-related details
-                                            try:
+                                            if isinstance(details, DefeatHero):
                                                 details.x = ix
                                                 details.y = iy
                                                 details.z = iz
-                                            except Exception:
-                                                # fallback: if details is a dict-like
-                                                try:
-                                                    addinfo.victory_condition.details['x'] = ix
-                                                    addinfo.victory_condition.details['y'] = iy
-                                                    addinfo.victory_condition.details['z'] = iz
-                                                except Exception:
-                                                    addinfo.victory_condition.details = {'x': ix, 'y': iy, 'z': iz}
+                                        elif v_choice == VictoryConditions.DEFEAT_MONSTER:
+                                            # persist monster-specific details and the allow_normal flag
+                                            if isinstance(details, DefeatMonster):
+                                                details.x = ix
+                                                details.y = iy
+                                                details.z = iz
+                                            # also persist allow_normal_win from dialog if present
+                                            if isinstance(dlg, DefeatMonsterDialog):
+                                                addinfo.victory_condition.allow_normal_win = int(bool(dlg.allow_normal_win()))
+                                        else:
+                                            details.x = ix
+                                            details.y = iy
+                                            details.z = iz
 
                                             # If we used the Upgrade dialog, persist the extra params
                                             if isinstance(dlg, UpgradeTownDialog):
@@ -1371,10 +1317,8 @@ class MapGeneratorGUI(QWidget):
                                                     det.x = ix
                                                     det.y = iy
                                                     det.z = iz
-                                                    if hall_enum is not None:
-                                                        det.hall_level = hall_enum
-                                                    if castle_enum is not None:
-                                                        det.castle_level = castle_enum
+                                                    det.hall_level = hall_enum
+                                                    det.castle_level = castle_enum
                                             # If we used the Capture dialog, persist the extra params
                                             elif isinstance(dlg, CaptureTownDialog):
                                                 addinfo.victory_condition.allow_normal_win = int(bool(dlg.allow_normal_win()))
@@ -1407,13 +1351,7 @@ class MapGeneratorGUI(QWidget):
                             QMessageBox.warning(self, "No towns", "No towns were found to select from for loss condition.")
                         else:
                             ldlg = TownPickerDialog(towns_gen, parent=self)
-                            try:
-                                lres = ldlg.exec()
-                            except Exception:
-                                try:
-                                    lres = ldlg.exec_()
-                                except Exception:
-                                    lres = None
+                            lres = ldlg.exec()
                             if lres == QtWidgets.QDialog.Accepted:
                                 lsel = ldlg.selected_index()
                                 if lsel is not None and 0 <= lsel < len(towns_gen):
@@ -1436,46 +1374,24 @@ class MapGeneratorGUI(QWidget):
                         if not heroes_gen:
                             QMessageBox.warning(self, "No heroes", "No heroes were found to select from for loss condition.")
                         else:
-                            hdlg = None
-                            try:
-                                hdlg = HeroPickerDialog(heroes_gen, parent=self)
-                            except Exception:
-                                hdlg = None
-                            if hdlg is None:
-                                hdlg = TownPickerDialog(heroes_gen, parent=self)
-                            try:
-                                hres = hdlg.exec()
-                            except Exception:
-                                try:
-                                    hres = hdlg.exec_()
-                                except Exception:
-                                    hres = None
+                            hdlg = HeroPickerDialog(heroes_gen, parent=self)
+                            hres = hdlg.exec()
                             if hres == QtWidgets.QDialog.Accepted:
                                 hsel = hdlg.selected_index()
                                 if hsel is not None and 0 <= hsel < len(heroes_gen):
                                     hero_item = heroes_gen[hsel]
-                                    try:
-                                        htx = int(hero_item[0]) if isinstance(hero_item, (list, tuple)) else int(getattr(hero_item, 'x', 0))
-                                        hty = int(hero_item[1]) if isinstance(hero_item, (list, tuple)) else int(getattr(hero_item, 'y', 0))
-                                        htz = int(hero_item[2]) if isinstance(hero_item, (list, tuple)) else int(getattr(hero_item, 'z', 0))
-                                    except Exception:
-                                        htx = hty = htz = 0
+                                    if isinstance(hero_item, (list, tuple)):
+                                        htx = int(hero_item[0])
+                                        hty = int(hero_item[1])
+                                        htz = int(hero_item[2])
 
                                     addinfo = getattr(map, 'additional_info', None)
                                     if addinfo is not None and getattr(addinfo, 'loss_condition', None) is not None:
-                                        try:
-                                            if isinstance(addinfo.loss_condition.details, LoseHero):
-                                                det = addinfo.loss_condition.details
-                                                det.x = htx
-                                                det.y = hty
-                                                det.z = htz
-                                            else:
-                                                addinfo.loss_condition.details = LoseHero(htx, hty, htz)
-                                        except Exception:
-                                            try:
-                                                addinfo.loss_condition.details = {'x': htx, 'y': hty, 'z': htz}
-                                            except Exception:
-                                                pass
+                                        if isinstance(addinfo.loss_condition.details, LoseHero):
+                                            det = addinfo.loss_condition.details
+                                            det.x = htx
+                                            det.y = hty
+                                            det.z = htz
                             else:
                                 # user cancelled loss-town selection: ask whether to continue saving
                                 choice_msg = QMessageBox(self)
