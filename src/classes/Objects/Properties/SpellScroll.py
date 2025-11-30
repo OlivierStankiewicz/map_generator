@@ -1,16 +1,15 @@
-from classes.Objects.PropertiesBase import PropertiesType
+from classes.Objects.PropertiesBase import Properties
 
-class SpellScroll(PropertiesType):
+class SpellScroll(Properties):
     @classmethod
     def create_default(cls) -> 'SpellScroll':
         return cls(
-            spell= 0,
-            unknown= []
+            spell= 0
         )
 
-    def __init__(self, spell: int, unknown: list[int]) -> None:
+    def __init__(self, spell: int) -> None:
         self.spell = spell
-        self.unknown = unknown
+        self.unknown = [0, 0, 0]
 
     def to_dict(self) -> dict:
         return {

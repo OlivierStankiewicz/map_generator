@@ -59,18 +59,6 @@
   "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 },
 {
-  "def": "AVXmaps0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 64],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [191, 0],
-  "object_class": 13, // CARTOGRAPHER
-  "object_subclass": 1,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
   "def": "AvXAltar.def",
   "passability": [255, 255, 255, 255, 255, 63],
   "actionability": [0, 0, 0, 0, 0, 128],
@@ -78,6 +66,18 @@
   "landscape_group": [255, 0],
   "object_class": 2, // ALTAR_OF_SACRIFICE
   "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVXmaps0.def",
+  "passability": [255, 255, 255, 255, 255, 63],
+  "actionability": [0, 0, 0, 0, 0, 64],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [191, 0],
+  "object_class": 13, // CARTOGRAPHER
+  "object_subclass": 1,
   "object_group": 0, // Terrain
   "is_ground": 0,
   "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]

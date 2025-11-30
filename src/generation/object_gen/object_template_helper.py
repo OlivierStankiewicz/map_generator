@@ -5,6 +5,7 @@ from binascii import a2b_hex
 from collections import deque
 from copy import copy
 from dataclasses import dataclass
+from importlib.resources.simple import TraversableReader
 from random import randint, choices, sample, random
 from math import sqrt
 
@@ -16,14 +17,17 @@ from classes.Objects.Properties.Helpers.Creatures import Creatures
 from classes.Objects.Properties.Helpers.Guardians import Guardians
 from classes.Objects.Properties.Hero import Hero
 from classes.Objects.Properties.Monster import Monster
+from classes.Objects.Properties.PandorasBox import PandorasBox
 from classes.Objects.Properties.RandomDwellingPresetAlignment import RandomDwellingPresetAlignment
 from classes.Objects.Properties.Resource import Resource
 from classes.Objects.Properties.Scholar import Scholar
 from classes.Objects.Properties.SeersHut import SeersHut
 from classes.Objects.Properties.Shrine import Shrine
 from classes.Objects.Properties.Sign import Sign
+from classes.Objects.Properties.SpellScroll import SpellScroll
 from classes.Objects.Properties.TrivialOwnedObject import TrivialOwnedObject
 from classes.Objects.Properties.WitchHut import WitchHut
+from classes.Objects.PropertiesBase import Properties
 from classes.player.Heroes import Heroes
 from classes.player.MainTown import MainTown
 from generation.additional_info_gen.victory_condition_gen import VictoryConditionParams
@@ -72,6 +76,7 @@ class ObjectTemplateHelper:
         self.resources = read_object_templates_from_json("resources")
         self.random_monsters = read_object_templates_from_json("random_monsters")
         self.water_objects = read_object_templates_from_json("water_obj")
+        self.artifacts = read_object_templates_from_json("artifacts")
         self.reserved_tiles = reserved_tiles if reserved_tiles is not None else set()
 
         self.map_format = int(sqrt(len(self.tiles)))
@@ -99,12 +104,20 @@ class ObjectTemplateHelper:
         limitations =       [#36      72      108     144
                             [(2,4),  (2,8),  (2,8),  (2,8)], #player
                             [(2,4),  (2,8),  (2,8),  (2,8)], #miasto
-                            [(1,1),  (2,2),  (2,2),  (2,2)], #dwelling
+                            [(1,1),  (1,2),  (2,2),  (2,3)], #dwelling
                             [(1,1),  (1,1),  (1,1),  (1,1)], #level3
-                            [(1,1),  (1,2),  (2,2),  (4,4)], #level2
-                            [(1,1),  (1,2),  (2,2),  (5,5)], #level1.5
-                            [(1,1),  (1,2),  (2,2),  (8,10)]] #level1
+                            [(1,1),  (1,2),  (2,2),  (3,4)], #level2
+                            [(1,1),  (1,2),  (2,2),  (3,4)], #level1.5
+                            [(1,1),  (1,2),  (2,2),  (3,6)], #level1
+                            [(5, 10), (10, 15), (15, 20), (20, 25)], #artifacts
+                            [(15, 25), (20, 35), (45, 67), (80, 130)],
+                            [(5, 10), (10, 15), (15, 20), (20, 25)]] #resources
+
         self.limits = [i[int(self.map_format/36) - 1] for i in limitations]
+        water, _ = self.bfs()
+        water_percentage = len(water) / (self.map_format * self.map_format)
+        for i in range(7, len(self.limits)):
+            self.limits[i] = (int(self.limits[i][0] * (1 - water_percentage)), int(self.limits[i][1] * (1 - water_percentage)))
 
 
     def initData(self):
@@ -133,6 +146,8 @@ class ObjectTemplateHelper:
         self.generate_dwelling_precise_positioning()
         # warstwa 4 budowle specjalne
         self.generate_special_building()
+        # warstwa 7 artefakty, zasoby i potwory
+        self.generate_artifacts_resources_monsters()
         # budowle na wodzie, shipyard, lighthouse
         self.generate_water_object()
 
@@ -496,7 +511,7 @@ class ObjectTemplateHelper:
                 continue
 
             # Add RandomDwelling on remaining fields with precise positioning
-            for additional_field_id in assigned_fields[1:self.limits[2][0] + 1]:  # Skip first field (main)
+            for additional_field_id in assigned_fields[1:randint(self.limits[2][0], self.limits[2][1]) + 1]:  # Skip first field (main)
                 additional_field = next((f for f in fields_info if f.field_id == additional_field_id), None)
                 if additional_field:
                     precise_dwelling_x, precise_dwelling_y = self.find_dwelling_position(all_regions,
@@ -735,6 +750,7 @@ class ObjectTemplateHelper:
                                             id = id + 1
                                             absod_id = absod_id + 1
                                             object = Objects(final_x, final_y, 0, id, [], Monster.create_default())
+                                            object.properties.absod_id = absod_id
 
                                             buildings_templates.append(monster_template)
                                             buildings.append(object)
@@ -1184,3 +1200,74 @@ class ObjectTemplateHelper:
                 #     print([1 if self.occupied_tiles[i][j] else 0 for j in range(self.map_format)])
 
 
+    def generate_artifacts_resources_monsters(self):
+        self.generate_artifacts()
+        self.generate_resources()
+        self.generate_monsters()
+
+    def find_place_one_by_one(self):
+        test_template = ObjectsTemplate.create_default()
+        test_template.passability = [255, 255, 255, 255, 255, 254]
+        for _ in range(100):
+            x, y = randint(0, self.map_format), randint(0, self.map_format)
+            final_x, final_y = self.find_alternative_position(test_template, x, y, max_offset=5, validation_function=self.validate_placement_for_landscape)
+            if final_x is not None and final_y is not None:
+                return final_x, final_y
+        return None, None
+
+
+    def generate_artifacts(self):
+        for _ in range(0, 1):
+            final_x, final_y = self.find_place_one_by_one()
+            if final_x is not None and final_y is not None:
+                self.id += 1
+                ch = 60
+                r = randint(0, len(self.artifacts) - 1 + ch)
+                if r == 0:
+                    object = Objects(final_x, final_y, 0, self.id, [], SpellScroll.create_default())
+                elif len(self.artifacts) - 1 <= r:
+                    object = Objects(final_x, final_y, 0, self.id, [], PandorasBox.create_defaults())
+                    r = len(self.artifacts) - 1
+                else:
+                    object = Objects(final_x, final_y, 0, self.id, [], {})
+                objectTemplate = self.artifacts[r]
+
+                self.mark_object_tiles_as_occupied(objectTemplate, final_x, final_y, 0)
+
+                self.objects.append(object)
+                self.objectTemplates.append(objectTemplate)
+
+
+    def generate_resources(self):
+        for _ in range(0, randint(self.limits[8][0], self.limits[8][1])):
+            final_x, final_y = self.find_place_one_by_one()
+            if final_x is not None and final_y is not None:
+                self.id += 1
+                r = randint(0, len(self.resources) - 1)
+                if r == 8:
+                    object = Objects(final_x, final_y, 0, self.id, [], None)
+                else:
+                    object = Objects(final_x, final_y, 0, self.id, [], Resource.create_default())
+                objectTemplate = self.resources[r]
+
+                self.mark_object_tiles_as_occupied(objectTemplate, final_x, final_y, 0)
+
+                self.objects.append(object)
+                self.objectTemplates.append(objectTemplate)
+
+
+    def generate_monsters(self):
+        for _ in range(0, randint(self.limits[9][0], self.limits[9][1])):
+            final_x, final_y = self.find_place_one_by_one()
+            if final_x is not None and final_y is not None:
+                self.id += 1
+                self.absod_id += 1
+                r = randint(0, len(self.random_monsters) - 1)
+                object = Objects(final_x, final_y, 0, self.id, [], Monster.create_default())
+                object.properties.absod_id = self.absod_id
+                objectTemplate = self.random_monsters[r]
+
+                self.mark_object_tiles_as_occupied(objectTemplate, final_x, final_y, 0)
+
+                self.objects.append(object)
+                self.objectTemplates.append(objectTemplate)
