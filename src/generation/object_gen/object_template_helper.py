@@ -15,6 +15,8 @@ from classes.Enums.VictoryConditions import VictoryConditions
 from classes.Objects.Properties.Artifact import Artifact
 from classes.Objects.Properties.Helpers.Creatures import Creatures
 from classes.Objects.Properties.Helpers.Guardians import Guardians
+from classes.Objects.Properties.Helpers.PrimarySkills import PrimarySkills
+from classes.Objects.Properties.Helpers.SecondarySkills import SecondarySkills
 from classes.Objects.Properties.Hero import Hero
 from classes.Objects.Properties.Monster import Monster
 from classes.Objects.Properties.PandorasBox import PandorasBox
@@ -664,6 +666,20 @@ class ObjectTemplateHelper:
 
                         self.mark_object_tiles_as_occupied(template, final_x, final_y, 3)
 
+                        if r == 8:
+                            final_x, final_y = self.find_place_one_by_one()
+                            if final_x is not None and final_y is not None:
+                                id += 1
+                                object = Objects(final_x, final_y, 0, id, [], None)
+                                objectTemplate = ObjectsTemplate("AVXeyem0.def", [255, 255, 255, 255, 255, 127],
+                                                                 [0, 0, 0, 0, 0, 128], [255, 1],
+                                                                 [255, 0], 27, 0, 0, 0)
+
+                                self.mark_object_tiles_as_occupied(objectTemplate, final_x, final_y, 2)
+
+                                buildings.append(object)
+                                buildings_templates.append(objectTemplate)
+
         self.objectTemplates.extend(buildings_templates)
         self.objects.extend(buildings)
 
@@ -745,7 +761,7 @@ class ObjectTemplateHelper:
                                         final_x, final_y = self.find_alternative_position(monster_template, pos_x - 1,
                                                                                           pos_y + 1, max_offset=1,
                                                                                           validation_function=self.validate_placement_for_landscape)
-                                        print(final_x, final_y)
+
                                         if final_x is not None and final_y is not None:
                                             id = id + 1
                                             absod_id = absod_id + 1
@@ -1014,7 +1030,6 @@ class ObjectTemplateHelper:
                                                  TrivialOwnedObject.create_default())
 
                     else:
-                        print(self.victory_condition_params.resource_type.value)
                         template: ObjectsTemplate = self.mines[tile_type_idx * 7 + self.victory_condition_params.resource_type.value]
                         object: Objects = Objects(final_x, final_y, 0, self.id, [],
                                                   TrivialOwnedObject.create_default())
@@ -1155,7 +1170,6 @@ class ObjectTemplateHelper:
 
         for x, y in chosen:
             r = randint(0, 50)
-            print(r)
             if 0 <= r < 25: # 0 - 9
                 r = randint(0, 9)
             elif 25 <= r < 40: # 18 - 31
@@ -1168,15 +1182,13 @@ class ObjectTemplateHelper:
             if 10 <= r <= 17:
                 final_x, final_y = x, y
                 for i in (0, 8):
-                    for j in (0, 6):
+                    for j in (0, 8):
                         if (final_x is None and final_y is None) or (
                                 final_x - i >= 0 and final_y - j >= 0 and self.tiles[
                             final_x - i + self.map_format * (final_y - j)].terrain_type != TerrainType.WATER.value):
                             final_x, final_y = None, None
                             break
-                        print((final_x - i, final_y - j))
                 if final_x is None and final_y is None:
-                    print(x, y)
                     r = randint(0, 9) if randint(0, 1) > 0  else randint(20, 31)
             template: ObjectsTemplate = self.water_objects[r]
 
@@ -1192,7 +1204,6 @@ class ObjectTemplateHelper:
                 self.objectTemplates.append(template)
                 self.objects.append(object)
 
-                print((final_x, final_y), self.occupied_tiles[final_x][final_y])
 
                 self.mark_object_tiles_as_occupied(template, final_x, final_y, 5)
 
@@ -1226,7 +1237,8 @@ class ObjectTemplateHelper:
                 if r == 0:
                     object = Objects(final_x, final_y, 0, self.id, [], SpellScroll.create_default())
                 elif len(self.artifacts) - 1 <= r:
-                    object = Objects(final_x, final_y, 0, self.id, [], PandorasBox.create_defaults())
+                    object = Objects(final_x, final_y, 0, self.id, [], self.create_pandoras_box())
+                    print("Pandoras box created", final_x, final_y)
                     r = len(self.artifacts) - 1
                 else:
                     object = Objects(final_x, final_y, 0, self.id, [], {})
@@ -1237,6 +1249,55 @@ class ObjectTemplateHelper:
                 self.objects.append(object)
                 self.objectTemplates.append(objectTemplate)
 
+
+    def create_pandoras_box(self):
+        pandoras_box = PandorasBox.create_defaults()
+        for i in range(randint(0, 3)):
+            r = randint(0, 10)
+            if r == 0: pandoras_box.experience = randint(0, 1000)
+            elif r == 1: pandoras_box.spell_points = randint(-75, 75)
+            elif r == 2: pandoras_box.morale = sample([-1, 1], k=1)[0] * self.skill()
+            elif r == 3: pandoras_box.luck = sample([-1, 1], k=1)[0] * self.skill()
+            elif r == 4:
+                res = Resource.create_default()
+                r = randint(0, 6)
+                if r == 0: res.wood = randint(0, 10)
+                elif r == 1: res.mercury = randint(0, 10)
+                elif r == 2: res.ore = randint(0, 10)
+                elif r == 3: res.sulfur = randint(0, 10)
+                elif r == 4: res.crystal = randint(0, 10)
+                elif r == 5: res.gems = randint(0, 10)
+                else: res.gold = randint(0, 10)
+                pandoras_box.resources = res
+            elif r == 5:
+                ps = PrimarySkills.create_default()
+                for _ in range(randint(0, 3)):
+                    for i in range(randint(0, 4)):
+                        if i == 0: ps.attack = randint(0, 2)
+                        elif i == 1: ps.defense = randint(0, 2)
+                        elif i == 2: ps.spell_power = randint(0, 2)
+                        elif i == 3: ps.knowledge = randint(0, 2)
+                pandoras_box.primary_skills = ps
+            elif r == 6:
+                ss = SecondarySkills.create_default()
+                ss.type = randint(0, 27)
+                ss.level = self.skill()
+                pandoras_box.secondary_skills.append(ss)
+            elif r == 7:
+                a = [i for i in range(7, 128)]
+                a.extend([i for i in range(129, 142)])
+                a.append(1)
+                pandoras_box.artifacts.append(sample(a, k=1)[0])
+            elif r == 8: pandoras_box.spells.append(randint(0, 69))
+            else: pandoras_box.creatures.append(Creatures(randint(0, 125), randint(0, 10)))
+        return pandoras_box
+
+    def skill(self): # nie chce mi sie wymyslac innej nazwy sry
+        r = randint(0, 8)
+        if r < 5: r = 1
+        elif r < 8: r = 2
+        else: r = 3
+        return r
 
     def generate_resources(self):
         for _ in range(0, randint(self.limits[8][0], self.limits[8][1])):
