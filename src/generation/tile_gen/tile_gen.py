@@ -221,18 +221,17 @@ def get_terrain_type_sprite_type_range(terrain_type: TerrainType, sprite_type: T
     
     return sprite_groups[terrain_type][sprite_type]
 
-def get_road_type_sprite_range() -> tuple[int, int]:
-    return (0, 16)
-
-def get_road_type_sprite_type_range() -> dict[RoadType, tuple]:
-    return {
-        TerrainSpriteType.CORNER: (0, 1),
-        TerrainSpriteType.FLATTENED_CORNER: (2, 5),
-        TerrainSpriteType.ONE_WAY_CROSSING_VERTICAL: (6, 7),
-        TerrainSpriteType.ONE_WAY_CROSSING_HORIZONTAL: (8, 9),
-        TerrainSpriteType.VERTICAL: (10, 11),
-        TerrainSpriteType.HORIZONTAL: (12, 13),
-        TerrainSpriteType.VERTICAL_END: (14, 14),
-        TerrainSpriteType.HORIZONTAL_END: (15, 15),
-        TerrainSpriteType.TWO_WAY_CROSSING: (16, 16),
+def get_road_sprite_type_range(sprite_type: RoadSpriteType) -> tuple[int, int]:
+    sprite_groups = {
+        RoadSpriteType.CORNER: (0, 1),
+        RoadSpriteType.FLATTENED_CORNER: (2, 5),
+        RoadSpriteType.ONE_WAY_CROSSING_VERTICAL: (6, 7),
+        RoadSpriteType.ONE_WAY_CROSSING_HORIZONTAL: (8, 9),
+        RoadSpriteType.VERTICAL: (10, 11),
+        RoadSpriteType.HORIZONTAL: (12, 13),
+        RoadSpriteType.VERTICAL_END: (14, 14),
+        RoadSpriteType.HORIZONTAL_END: (15, 15),
+        RoadSpriteType.TWO_WAY_CROSSING: (16, 16),
     }
+    
+    return sprite_groups[sprite_type]

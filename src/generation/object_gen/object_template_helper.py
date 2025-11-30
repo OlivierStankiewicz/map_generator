@@ -135,7 +135,7 @@ class ObjectTemplateHelper:
             ObjectsTemplate("AVLholg0.def", [255, 255, 255, 255, 255, 255], [0, 0, 0, 0, 0, 0], [4, 0], [4, 0], 124, 0,
                             0, 1))
 
-    def mark_object_tiles_as_occupied(self, template: ObjectsTemplate, x: int, y: int, offset: int = 0):
+    def mark_object_tiles_as_occupied(self, template: ObjectsTemplate, x: int, y: int, offset: int = 0, is_hero: bool = False):
         """
         Oznacza kafelki obiektu jako zajete na podstawie passability i actionability.
 
@@ -161,7 +161,8 @@ class ObjectTemplateHelper:
                 # Oznacz kafelek jako zajety jesli jest nieprzejezdny lub akcjonowalny
                 if passable or actionable:
                     self.occupied_tiles_excluding_landscape[tile_y][tile_x] = True
-                    self.occupied_tiles_excluding_landscape_and_players[tile_y][tile_x] = True
+                    if not is_hero:
+                        self.occupied_tiles_excluding_landscape_and_players[tile_y][tile_x] = True
                     # oznaczaj obszar z offsetem w macierzy glównej
                     for dy in range(-offset, offset + 1):
                         for dx in range(-offset, offset + 1):
@@ -536,8 +537,7 @@ class ObjectTemplateHelper:
                 elif city == 7: self.players[i].allowed_alignments.fortress = True
                 elif city == 8: self.players[i].allowed_alignments.conflux = True
 
-                self.mark_object_tiles_as_occupied(heroTemplate, final_x, final_y)
-                self.occupied_tiles_excluding_landscape_and_players[final_y][final_x] = False
+                self.mark_object_tiles_as_occupied(heroTemplate, final_x, final_y, is_hero=True)
 
         self.objectTemplates.extend(heroes_templates)
         self.objects.extend(heroes)

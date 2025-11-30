@@ -17,8 +17,8 @@ from generation.additional_info_gen.victory_condition_gen import VictoryConditio
 from generation.basic_info_gen import generate_basic_info
 from generation.player_gen.player_gen import generate_player
 from generation.additional_info_gen.additional_info_gen import generate_additional_info
-from generation.tile_gen.tile_gen import generate_tile, generate_random_tile, get_terrain_type_sprite_range, get_road_type_sprite_range
-from generation.map_gen.utils import upscale_map, smooth_map, choose_sprite
+from generation.tile_gen.tile_gen import generate_tile, generate_random_tile, get_terrain_type_sprite_range
+from generation.map_gen.utils import upscale_map, smooth_map, choose_terrain_sprite, choose_road_sprite
 
 from generation.tile_gen.terrain_gen.VoronoiTerrainGenerator import VoronoiTerrainGenerator
 from generation.tile_gen.roads_gen.RoadGenerator import RoadGenerator
@@ -98,29 +98,6 @@ def generate_one_terrain_all_sprite_map(terrain_type: TerrainType) -> Map:
         padding= [0] * 124
     )
 
-def generate_one_terrain_all_road_sprite_map(road_type: RoadType) -> Map:
-    tiles = []
-
-    allowed_range = get_road_type_sprite_range()
-    sprite_min, sprite_max = allowed_range
-    for i in range(sprite_min, sprite_max + 1):
-        tiles.append(generate_tile(terrain_type=TerrainType.WATER, terrain_sprite=22, road_type=road_type, road_sprite=i))
-
-    for i in range(5184 - len(tiles)):
-        tiles.append(generate_random_tile(random_terrain_sprite=False, random_terrain_type=False))
-        
-    return Map(
-        format= 28,
-        basic_info= generate_basic_info(),
-        players= [generate_player() for _ in range(8)],
-        additional_info= generate_additional_info(),
-        tiles= tiles,
-        objects_templates = [generate_objects_template_and_objects()],
-        objects= [],
-        global_events= [],
-        padding= [0] * 124
-    )
-
 def generate_voronoi_map(
     terrain_values: Dict[TerrainType, int] = {
         TerrainType.WATER: 1,
@@ -154,18 +131,10 @@ def generate_voronoi_map(
     """
     Generate a map using Voronoi regions to assign terrain types.
     """
-    width = size
-    height = size
     
-    tiles = []
-    terrain_generator = VoronoiTerrainGenerator(height=height//2, width=width//2, terrain_weights=terrain_values)
-    terrain_map = terrain_generator.generate_map()
-
-    reserved_tiles = set()
-
     def get_neighbours(x: int, y: int):
         directions = [(-1, -1), (0, -1), (1, -1),
-                      (-1, 0),          (1, 0),
+                      (-1, 0),           (1, 0),
                       (-1, 1),  (0, 1),  (1, 1)]
         neighbours = []
         for dx, dy in directions:
@@ -174,13 +143,22 @@ def generate_voronoi_map(
                 neighbours.append((nx, ny))
         return neighbours
     
+    width = size
+    height = size
+    
+    tiles = []
+    reserved_tiles = set()
+    
+    terrain_generator = VoronoiTerrainGenerator(height=height//2, width=width//2, terrain_weights=terrain_values)
+    terrain_map = terrain_generator.generate_map()
+
     # upscale map
     terrain_map = upscale_map(terrain_map=terrain_map)
     terrain_map = smooth_map(terrain_map=terrain_map)
     for y in range(height):
         for x in range(width):
             terrain_type = terrain_map[y][x]
-            sprite_val, x_terrain_flip, y_terrain_flip = choose_sprite(terrain_map, x, y)
+            sprite_val, x_terrain_flip, y_terrain_flip = choose_terrain_sprite(terrain_map, x, y)
             if terrain_type == TerrainType.ROCK or terrain_type == TerrainType.WATER:
                 reserved_tiles.add((x, y))
                 for nx, ny in get_neighbours(x, y):
@@ -202,12 +180,17 @@ def generate_voronoi_map(
     road_generator = RoadGenerator(size=size, terrain_map=terrain_map,
                                    entry_points=actionable_tiles,
                                    occupied_tiles=occupied_tiles_excluding_landscape_and_players)
-    roads_map = road_generator.generate()
+    road_map = road_generator.generate()
     for y in range(height):
         for x in range(width):
-            if roads_map[y][x] is not None:
-                tile_index = y * width + x
-                tiles[tile_index].road_type = roads_map[y][x].value
+            if road_map[y][x] is None:
+                continue
+            road_sprite_val, x_road_flip, y_road_flip = choose_road_sprite(road_map, x, y)
+            tile_index = y * width + x
+            tiles[tile_index].road_type = road_map[y][x].value
+            tiles[tile_index].road_sprite = road_sprite_val
+            tiles[tile_index].flags.road_x = x_road_flip
+            tiles[tile_index].flags.road_y = y_road_flip
     
     # Wyswietl mapowanie miast do pol
     print("\n=== MAPOWANIE MIAST DO POL ===")

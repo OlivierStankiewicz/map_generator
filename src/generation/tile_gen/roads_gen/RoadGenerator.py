@@ -185,13 +185,16 @@ class RoadGenerator:
 
         # For each MST edge, compute a varied path and mark it in the grid
         for a, b in paths_endpoints:
+            # road_type = random.choice([RoadType.DIRT, RoadType.GRAVEL, RoadType.COBBLESTONE])
             path = self.find_varied_path(a, b, attempts=6, noise=0.8, curvature_weight=0.5)
             print(f"Generated road path from {a} to {b}, path: {path}")
             if not path:
                 continue
             for x, y in path:
                 if self.is_walkable_cell(x, y):
-                    self.paths[y][x] = RoadType.GRAVEL
+                    if self.terrain_map[y][x] in self.restricted_terrain:
+                        self.paths[y][x] = RoadType.NONE
+                    else: self.paths[y][x] = RoadType.GRAVEL
 
         return self.paths
         
