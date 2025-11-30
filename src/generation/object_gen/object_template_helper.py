@@ -16,6 +16,7 @@ from classes.Objects.Properties.Artifact import Artifact
 from classes.Objects.Properties.Helpers.Creatures import Creatures
 from classes.Objects.Properties.Helpers.Guardians import Guardians
 from classes.Objects.Properties.Helpers.PrimarySkills import PrimarySkills
+from classes.Objects.Properties.Helpers.Resources import Resources
 from classes.Objects.Properties.Helpers.SecondarySkills import SecondarySkills
 from classes.Objects.Properties.Hero import Hero
 from classes.Objects.Properties.Monster import Monster
@@ -617,9 +618,9 @@ class ObjectTemplateHelper:
         self.absod_id = absod_id
 
     def generate_special_building(self):
+        self.generate_special_building_level1_5()
         self.generate_special_building_level3()
         self.generate_special_building_level2()
-        self.generate_special_building_level1_5()
         self.generate_special_building_level1()
 
     def generate_special_building_level1(self):
@@ -657,7 +658,7 @@ class ObjectTemplateHelper:
                         elif r == 12:
                             object = Objects(final_x, final_y, 0, id, [], Scholar.create_default())
                         elif 13 <= r <= 15:
-                            object = Objects(final_x, final_y, 0, id, [], SeersHut.create_default())
+                            object = Objects(final_x, final_y, 0, id, [], self.generate_seers_hut())
                         else:
                             object = Objects(final_x, final_y, 0, id, [], None)
                         # print(f"Lv1 ({final_x, final_y})")
@@ -1259,24 +1260,16 @@ class ObjectTemplateHelper:
             elif r == 2: pandoras_box.morale = sample([-1, 1], k=1)[0] * self.skill()
             elif r == 3: pandoras_box.luck = sample([-1, 1], k=1)[0] * self.skill()
             elif r == 4:
-                res = Resource.create_default()
-                r = randint(0, 6)
-                if r == 0: res.wood = randint(0, 10)
-                elif r == 1: res.mercury = randint(0, 10)
-                elif r == 2: res.ore = randint(0, 10)
-                elif r == 3: res.sulfur = randint(0, 10)
-                elif r == 4: res.crystal = randint(0, 10)
-                elif r == 5: res.gems = randint(0, 10)
-                else: res.gold = randint(0, 10)
-                pandoras_box.resources = res
+                for _ in range(randint(0, 3)):
+                    pandoras_box.resources = self.create_resources(0, 10)
             elif r == 5:
                 ps = PrimarySkills.create_default()
                 for _ in range(randint(0, 3)):
-                    for i in range(randint(0, 4)):
-                        if i == 0: ps.attack = randint(0, 2)
-                        elif i == 1: ps.defense = randint(0, 2)
-                        elif i == 2: ps.spell_power = randint(0, 2)
-                        elif i == 3: ps.knowledge = randint(0, 2)
+                    i = randint(0, 4)
+                    if i == 0: ps.attack = randint(0, 2)
+                    elif i == 1: ps.defense = randint(0, 2)
+                    elif i == 2: ps.spell_power = randint(0, 2)
+                    elif i == 3: ps.knowledge = randint(0, 2)
                 pandoras_box.primary_skills = ps
             elif r == 6:
                 ss = SecondarySkills.create_default()
@@ -1332,3 +1325,58 @@ class ObjectTemplateHelper:
 
                 self.objects.append(object)
                 self.objectTemplates.append(objectTemplate)
+
+    def generate_seers_hut(self):
+        seers_hut = SeersHut.create_default()
+        r = randint(1, 9)
+        if r == 1: seers_hut.quest.details.level = randint(7, 15)
+        elif r == 2:
+            seers_hut.quest.details.skills = PrimarySkills.create_default()
+            for _ in range(randint(0, 3)):
+                i = randint(0, 4)
+                if i == 0: seers_hut.quest.details.skills.attack = randint(5, 15)
+                elif i == 1: seers_hut.quest.details.skills.defense = randint(5, 15)
+                elif i == 2: seers_hut.quest.details.skills.spell_power = randint(5, 15)
+                elif i == 3: seers_hut.quest.details.skills.knowledge = randint(5, 15)
+        elif r == 3: #########################################################
+            print("DO DOROBIENIA")
+        elif r == 4:  #########################################################
+            print("DO DOROBIENIA")
+        elif r == 5:
+            a = [i for i in range(7, 128)]
+            a.extend([i for i in range(129, 142)])
+            a.append(1)
+            seers_hut.quest.details.artifacts = sample(a, k=1)
+        elif r == 6:
+            seers_hut.quest.details.creatures = [Creatures(randint(0, 125), randint(10, 50))]
+        elif r == 7:
+            seers_hut.quest.details.resources = self.create_resources(0, 20)
+        elif r == 8:
+            seers_hut.quest.details.hero = randint(0, 155)
+        else:
+            seers_hut.quest.details.player = randint(0, self.number_of_players - 1)
+        seers_hut.quest.type = r
+        return seers_hut
+
+    def create_resources(self, i, j) -> Resources:
+        res = Resources.create_default()
+        r = randint(0, 6)
+        if r == 0:
+            res.wood = randint(i, j)
+        elif r == 1:
+            res.mercury = randint(i, j)
+        elif r == 2:
+            res.ore = randint(i, j)
+        elif r == 3:
+            res.sulfur = randint(i, j)
+        elif r == 4:
+            res.crystal = randint(i, j)
+        elif r == 5:
+            res.gems = randint(i, j)
+        else:
+            res.gold = randint(i, j)
+        return res
+
+
+
+
