@@ -129,7 +129,7 @@ def generate_city_positions_with_fields(map_size: int, num_of_player_cities: int
     total_cities, city_regions = placer.generate_step_2(num_of_player_cities, num_of_neutral_cities, all_regions)
 
     # Step 3: Assign each city 3 fields (regions) - must form connected component of adjacent regions
-    city_to_fields = placer.generate_step_3(region_min_distance, reserved_tiles, total_cities, city_regions, all_regions)
+    city_to_fields = placer.generate_step_3(region_min_distance, reserved_tiles, total_cities, city_regions, all_regions, total_regions)
     
     # Krok 4: Utworz obiekty miast
     cities = placer.generate_step_4(city_regions, num_of_player_cities, all_regions, city_to_fields, min_distance)

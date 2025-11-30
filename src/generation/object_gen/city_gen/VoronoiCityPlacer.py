@@ -418,7 +418,7 @@ class VoronoiCityPlacer:
 
         return total_cities, city_regions
 
-    def generate_step_3(self, region_min_distance, reserved_tiles, total_cities, city_regions, all_regions):
+    def generate_step_3(self, region_min_distance, reserved_tiles, total_cities, city_regions, all_regions, total_regions):
         # If for any city we can't find 3 adjacent fields, repeat entire generation process
         max_regen_attempts = 50
         city_to_fields = None
