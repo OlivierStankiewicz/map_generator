@@ -41,6 +41,7 @@ from classes.Enums.CastleLevel import CastleLevel
 from classes.additional_info.VictoryConditions.UpgradeTown import UpgradeTown
 from classes.additional_info.VictoryConditions.CaptureTown import CaptureTown
 from classes.additional_info.VictoryConditions.DefeatHero import DefeatHero
+from classes.additional_info.VictoryConditions.DefeatMonster import DefeatMonster
 from classes.additional_info.LossConditions.LoseTown import LoseTown
 from classes.additional_info.LossConditions.LoseHero import LoseHero
 from classes.additional_info.VictoryConditions.DefeatHero import DefeatHero
@@ -429,6 +430,8 @@ class MapGeneratorGUI(QWidget):
         self.victory_combo.addItem("Capture town", VictoryConditions.CAPTURE_TOWN)
         # Defeat a specific hero
         self.victory_combo.addItem("Defeat a specific hero", VictoryConditions.DEFEAT_HERO)
+        # Defeat a specific monster (opens monster picker after generation)
+        self.victory_combo.addItem("Defeat a specific monster", VictoryConditions.DEFEAT_MONSTER)
 
         # extra controls for victory types (create explicit labels so we can
         # hide/show both label + control in the form layout)
@@ -1203,7 +1206,7 @@ class MapGeneratorGUI(QWidget):
             except Exception:
                 pass
 
-            map, towns_gen, heroes_gen = generate_voronoi_map(
+            map, towns_gen, heroes_gen, monsters_gen = generate_voronoi_map(
                 terrain_values,
                 size=size_val,
                 players_count=int(self.players_spin.value()),
@@ -1234,11 +1237,14 @@ class MapGeneratorGUI(QWidget):
                         VictoryConditions.UPGRADE_TOWN,
                         VictoryConditions.CAPTURE_TOWN,
                         VictoryConditions.DEFEAT_HERO,
+                        VictoryConditions.DEFEAT_MONSTER,
                     }
                     if v_choice in town_required:
                         # Determine whether we are selecting a town or a hero
                         if v_choice == VictoryConditions.DEFEAT_HERO:
                             entries = heroes_gen
+                        elif v_choice == VictoryConditions.DEFEAT_MONSTER:
+                            entries = monsters_gen
                         else:
                             entries = towns_gen
 
@@ -1254,6 +1260,14 @@ class MapGeneratorGUI(QWidget):
                                 dlg = None
                                 try:
                                     dlg = HeroPickerDialog(entries, parent=self)
+                                except Exception:
+                                    dlg = None
+                                if dlg is None:
+                                    dlg = TownPickerDialog(entries, parent=self)
+                            elif v_choice == VictoryConditions.DEFEAT_MONSTER:
+                                dlg = None
+                                try:
+                                    dlg = DefeatMonsterDialog(entries, parent=self)
                                 except Exception:
                                     dlg = None
                                 if dlg is None:
@@ -1306,6 +1320,26 @@ class MapGeneratorGUI(QWidget):
                                                     addinfo.victory_condition.details = {'x': ix, 'y': iy, 'z': iz}
                                                 except Exception:
                                                     pass
+                                        elif v_choice == VictoryConditions.DEFEAT_MONSTER:
+                                            # persist monster-specific details and the allow_normal flag
+                                            try:
+                                                if isinstance(details, DefeatMonster):
+                                                    details.x = ix
+                                                    details.y = iy
+                                                    details.z = iz
+                                                else:
+                                                    addinfo.victory_condition.details = DefeatMonster(ix, iy, iz)
+                                            except Exception:
+                                                try:
+                                                    addinfo.victory_condition.details = {'x': ix, 'y': iy, 'z': iz}
+                                                except Exception:
+                                                    pass
+                                            # also persist allow_normal_win from dialog if present
+                                            try:
+                                                if isinstance(dlg, DefeatMonsterDialog):
+                                                    addinfo.victory_condition.allow_normal_win = int(bool(dlg.allow_normal_win()))
+                                            except Exception:
+                                                pass
                                         else:
                                             # town-related details
                                             try:
@@ -2085,6 +2119,78 @@ class CaptureTownDialog(QtWidgets.QDialog):
 
     def applies_to_computer(self):
         return 1 if self.applies_cb.isChecked() else 0
+
+
+class DefeatMonsterDialog(QtWidgets.QDialog):
+    """Dialog for configuring the Defeat Monster victory condition.
+
+    Shows a checkbox to allow normal victory and a list of generated monsters
+    (monsters_gen is a list of tuples (x,y,z)).
+    """
+    def __init__(self, monsters: list, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("Defeat Monster - parameters")
+        self.setModal(True)
+        self._monsters = monsters or []
+        self._selected = None
+
+        layout = QVBoxLayout()
+
+        # allow normal victory checkbox
+        self.allow_normal_cb = QtWidgets.QCheckBox("Also allow normal victory")
+        layout.addWidget(self.allow_normal_cb)
+
+        # monster list
+        layout.addWidget(QLabel("Choose monster to defeat:"))
+        self.list = QtWidgets.QListWidget()
+        self.list.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
+        for i, m in enumerate(self._monsters):
+            label = f"Monster #{i+1}"
+            try:
+                if isinstance(m, (list, tuple)):
+                    mx = m[0] if len(m) > 0 else None
+                    my = m[1] if len(m) > 1 else None
+                    mz = m[2] if len(m) > 2 else None
+                    if mx is not None and my is not None:
+                        label = f"Monster #{i+1} — ({mx}, {my}, {mz})"
+                else:
+                    mx = getattr(m, 'x', None)
+                    my = getattr(m, 'y', None)
+                    if mx is not None and my is not None:
+                        label = f"Monster #{i+1} — ({mx}, {my})"
+            except Exception:
+                label = f"Monster #{i+1}"
+            self.list.addItem(label)
+        layout.addWidget(self.list)
+
+        # buttons
+        btn_h = QHBoxLayout()
+        ok = QPushButton("OK")
+        cancel = QPushButton("Cancel")
+        ok.clicked.connect(self._on_ok)
+        cancel.clicked.connect(self.reject)
+        btn_h.addStretch()
+        btn_h.addWidget(ok)
+        btn_h.addWidget(cancel)
+        layout.addLayout(btn_h)
+
+        self.setLayout(layout)
+        if self.list.count() > 0:
+            self.list.setCurrentRow(0)
+
+    def _on_ok(self):
+        row = self.list.currentRow()
+        if row < 0:
+            QMessageBox.warning(self, "No selection", "Please select a monster or Cancel.")
+            return
+        self._selected = row
+        self.accept()
+
+    def selected_index(self):
+        return self._selected
+
+    def allow_normal_win(self):
+        return 1 if self.allow_normal_cb.isChecked() else 0
 
 
 class HeroPickerDialog(QtWidgets.QDialog):

@@ -87,6 +87,7 @@ class ObjectTemplateHelper:
 
         self.towns_generated = []
         self.heroes_generated = []
+        self.monsters_generated = []
 
 
         # Tablica dwuwymiarowa do sledzenia zajetych miejsc na mapie
@@ -159,7 +160,7 @@ class ObjectTemplateHelper:
         # for i in self.occ:
         #     print(i)
 
-        return self.objectTemplates, self.objects, self.city_field_mapping, self.players, self.towns_generated, self.heroes_generated
+        return self.objectTemplates, self.objects, self.city_field_mapping, self.players, self.towns_generated, self.heroes_generated, self.monsters_generated
 
     def create_default_object_template(self):
         self.objectTemplates.append(ObjectsTemplate.create_default())
@@ -587,6 +588,9 @@ class ObjectTemplateHelper:
 
                     heroes_templates.append(heroTemplate)
                     heroes.append(hero)
+
+                    self.heroes_generated.append((final_x-1, final_y, 0))
+
                     self.players[i].can_be_computer = 1
                     self.players[i].can_be_human = 1
                     self.players[i].starting_hero.type = type
@@ -615,8 +619,6 @@ class ObjectTemplateHelper:
                     break
             else:
                 raise Exception(f"Can not set a hero")
-
-                self.heroes_generated.append((final_x-1, final_y, 0))
 
         self.objectTemplates.extend(heroes_templates)
         self.objects.extend(heroes)
@@ -766,6 +768,8 @@ class ObjectTemplateHelper:
                                             buildings_templates.append(monster_template)
                                             buildings.append(object)
                                             self.mark_object_tiles_as_occupied(monster_template, final_x, final_y, 0)
+                                            self.monsters_generated.append((final_x, final_y, 0))
+
 
 
         self.objectTemplates.extend(buildings_templates)
@@ -1285,3 +1289,4 @@ class ObjectTemplateHelper:
 
                 self.objects.append(object)
                 self.objectTemplates.append(objectTemplate)
+                self.monsters_generated.append((final_x, final_y, 0))
