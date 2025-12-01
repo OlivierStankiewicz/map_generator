@@ -15,6 +15,7 @@ from PySide6.QtWidgets import (
     QComboBox,
     QPlainTextEdit,
     QSizePolicy,
+    QGridLayout
 )
 from PySide6.QtGui import QImage, QPixmap, QPainter, QPainterPath, QPen, QColor, QFontMetrics
 import sys
@@ -211,6 +212,7 @@ class MapGeneratorGUI(QWidget):
         self.folder_label = QLabel("Save folder:")
         self.folder_path_edit = QLineEdit()
         self.folder_browse_btn = QPushButton("Browse")
+        self.folder_browse_btn.setCursor(QtCore.Qt.PointingHandCursor)
 
         self.filename_label = QLabel("File name (without extension):")
         self.filename_edit = QLineEdit()
@@ -266,6 +268,7 @@ class MapGeneratorGUI(QWidget):
                 pass
             self.terrain_add_combo.addItem(t.name)
         self.terrain_add_btn = QPushButton("Add terrain")
+        self.terrain_add_btn.setCursor(QtCore.Qt.PointingHandCursor)
         self.terrain_add_btn.clicked.connect(self._on_add_terrain_clicked)
         add_layout.addWidget(self.terrain_add_combo)
         add_layout.addWidget(self.terrain_add_btn)
@@ -298,6 +301,8 @@ class MapGeneratorGUI(QWidget):
             pass
 
         self.generate_btn = QPushButton("Generate map")
+        self.generate_btn.setToolTip("Generate the map with the specified parameters")
+        self.generate_btn.setStyleSheet("font-weight: bold;")
         try:
             # match height with the Manual QToolButton for consistent appearance
             self.generate_btn.setFixedHeight(34)
@@ -330,6 +335,7 @@ class MapGeneratorGUI(QWidget):
         filename_row.addWidget(self.filename_edit)
         # Reset button to restore filename to a timestamped default
         self.filename_reset_btn = QPushButton("Default")
+        self.filename_reset_btn.setCursor(QtCore.Qt.PointingHandCursor)
         try:
             self.filename_reset_btn.setToolTip("Reset file name to a timestamped default")
             self.filename_reset_btn.clicked.connect(lambda: self._reset_filename())
@@ -353,6 +359,7 @@ class MapGeneratorGUI(QWidget):
         name_h.setContentsMargins(0, 0, 0, 0)
         name_h.addWidget(self.map_name_edit)
         self.map_name_reset_btn = QPushButton("Default")
+        self.map_name_reset_btn.setCursor(QtCore.Qt.PointingHandCursor)
         try:
             self.map_name_reset_btn.setToolTip("Reset map name to a timestamped default")
             self.map_name_reset_btn.clicked.connect(lambda: self._reset_map_name())
@@ -368,6 +375,7 @@ class MapGeneratorGUI(QWidget):
         desc_h.setContentsMargins(0, 0, 0, 0)
         desc_h.addWidget(self.map_desc_edit)
         self.map_desc_reset_btn = QPushButton("Default")
+        self.map_desc_reset_btn.setCursor(QtCore.Qt.PointingHandCursor)
         try:
             self.map_desc_reset_btn.setToolTip("Reset description to a timestamped default")
             self.map_desc_reset_btn.clicked.connect(lambda: self._reset_map_desc())
@@ -631,7 +639,7 @@ class MapGeneratorGUI(QWidget):
                 elif v == VictoryConditions.TRANSPORT_ARTIFACT:
                     info_msg = "After generation you will be asked to select a town to receive the transported artifact."
                 elif v == VictoryConditions.UPGRADE_TOWN:
-                    info_msg = "After generation you will be asked to select a town to be upgraded."
+                    info_msg = "After generation you will be asked to select a town to be upgraded and its parameters."
                 elif v == VictoryConditions.CAPTURE_TOWN:
                     info_msg = "After generation you will be asked to select a town to be captured for the victory condition."
                 elif v == VictoryConditions.DEFEAT_HERO:
@@ -686,11 +694,30 @@ class MapGeneratorGUI(QWidget):
         # Terrain group (already a QGroupBox)
         # 123456
         # Actions group
+        # Layout: Generate button on the left (wide, ~4x), other buttons stacked on the right
         actions_group = QGroupBox("Actions")
         actions_layout = QHBoxLayout()
-        actions_layout.addWidget(self.generate_btn)
-        # Add manual/info button next to Generate in the actions bar for quick access
-        # use QPushButton so icon+text can be centered easily
+        actions_layout.setContentsMargins(6, 6, 6, 6)
+        actions_layout.setSpacing(8)
+
+        # Determine a sensible height for buttons (fallback to 34)
+        try:
+            btn_h = self.generate_btn.sizeHint().height()
+            if not btn_h or btn_h <= 0:
+                btn_h = 34
+        except Exception:
+            btn_h = 34
+
+        # Configure Generate button: make it taller (4x height)
+        try:
+            self.generate_btn.setFixedHeight(btn_h * 4)
+            self.generate_btn.setStyleSheet("background-color:rgb(219, 255, 214); font-weight: bold;")
+            self.generate_btn.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+            self.generate_btn.setCursor(QtCore.Qt.PointingHandCursor)
+        except Exception:
+            pass
+
+        # Manual/info button
         self.info_btn = QPushButton()
         try:
             icon = QApplication.style().standardIcon(QtWidgets.QStyle.SP_MessageBoxInformation)
@@ -701,16 +728,62 @@ class MapGeneratorGUI(QWidget):
         try:
             self.info_btn.setText("Manual")
             self.info_btn.setIconSize(QtCore.QSize(18, 18))
-            # match Generate button height for consistency
-            self.info_btn.setFixedHeight(34)
-            self.info_btn.setMinimumWidth(110)
-            # center icon+text
-            self.info_btn.setStyleSheet("font-weight: bold; padding: 4px; text-align: center;")
+            self.info_btn.setFixedHeight(btn_h)
+            self.info_btn.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+            self.info_btn.setStyleSheet("padding: 4px; text-align: center;")
         except Exception:
             pass
         self.info_btn.setCursor(QtCore.Qt.PointingHandCursor)
-        actions_layout.addSpacing(8)
-        actions_layout.addWidget(self.info_btn)
+
+        # Save / Load config buttons
+        self.save_config_btn = QPushButton("Save config")
+        try:
+            self.save_config_btn.setToolTip("Save current UI configuration to a JSON file")
+            self.save_config_btn.clicked.connect(self.on_save_config)
+            self.save_config_btn.setFixedHeight(btn_h)
+            self.save_config_btn.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+            self.save_config_btn.setCursor(QtCore.Qt.PointingHandCursor)
+        except Exception:
+            pass
+
+        self.load_config_btn = QPushButton("Load config")
+        try:
+            self.load_config_btn.setToolTip("Load UI configuration from a JSON file")
+            self.load_config_btn.clicked.connect(self.on_load_config)
+            self.load_config_btn.setFixedHeight(btn_h)
+            self.load_config_btn.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+            self.load_config_btn.setCursor(QtCore.Qt.PointingHandCursor)
+        except Exception:
+            pass
+
+        # Right-side vertical stack for the three smaller buttons
+        right_stack = QVBoxLayout()
+        right_stack.setContentsMargins(0, 0, 0, 0)
+        right_stack.setSpacing(6)
+
+        # Reset all parameters button
+        self.reset_all_btn = QPushButton("Reset all parameters")
+        try:
+            self.reset_all_btn.setToolTip("Reset all UI parameters to defaults")
+            self.reset_all_btn.setFixedHeight(btn_h)
+            self.reset_all_btn.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+            self.reset_all_btn.clicked.connect(self.on_reset_all_parameters)
+            self.reset_all_btn.setCursor(QtCore.Qt.PointingHandCursor)
+        except Exception:
+            pass
+        right_stack.addWidget(self.reset_all_btn)
+
+        right_stack.addWidget(self.info_btn)
+        right_stack.addWidget(self.save_config_btn)
+        right_stack.addWidget(self.load_config_btn)
+        right_stack.addStretch()
+
+        # Add Generate on the left and the right stack on the right. Generate
+        # is now taller (3x); keep width distribution balanced by using equal
+        # stretch so it doesn't become overly wide.
+        actions_layout.addWidget(self.generate_btn, 1)
+        actions_layout.addLayout(right_stack, 1)
+
         actions_group.setLayout(actions_layout)
         # gentle color for Actions to make it stand out pleasantly
         # try:
@@ -755,6 +828,7 @@ class MapGeneratorGUI(QWidget):
         self.save_preview_btn = QPushButton("Save preview")
         self.save_preview_btn.setToolTip("Save preview BMP of last generated map")
         self.save_preview_btn.setFixedWidth(140)
+        self.save_preview_btn.setCursor(QtCore.Qt.PointingHandCursor)
         try:
             self.save_preview_btn.clicked.connect(self.on_save_preview)
         except Exception:
@@ -878,7 +952,7 @@ class MapGeneratorGUI(QWidget):
 
         # Show manual as formatted QLabel (larger font, label-like appearance)
         manual_body = (
-            "Welcome to the Heroes III: Shadow of Death map generator! This generator uses PCG algorithms to create unique maps. Below are the steps to create a map:\n\n"
+            "Welcome to the Heroes III: Shadow of Death map generator! This generator uses PCG algorithms to create unique maps. Below are the steps to create a map:\n"
             "1. Select the save folder and file name.\n"
             "2. Enter the map name and description.\n"
             "3. Set the map size (e.g., 72x72).\n"
@@ -891,7 +965,8 @@ class MapGeneratorGUI(QWidget):
             "To use the generated map, simply copy the .h3m file into your Heroes III: SoD 'Maps' folder - it will be visible in the game.\n"
             "Enjoy!\n\n"
             "Additionally:\n"
-            "- You can save the map preview to a BMP file.\n\n"
+            "- You can save the map preview to a BMP file.\n"
+            "- You can save and load the current configuration to/from a JSON file for easy reuse of settings (if any field is invalid, it will be ignored and a default value will be used).\n\n"
             "What if the 'h3mtxt.exe' converter is not present?\n"
             "Only a JSON representation of the map will be saved. You can then use the h3mtxt.exe tool separately to convert JSON to .h3m.\n\n"
         )
@@ -1032,6 +1107,385 @@ class MapGeneratorGUI(QWidget):
         except Exception:
             pass
 
+    def on_reset_all_parameters(self):
+        """Reset all UI parameters to sensible defaults (timestamped name/filename/desc,
+        default size, single terrain=Dirt, default player counts, difficulty, teams,
+        victory/loss defaults and preview cleared).
+        """
+        try:
+            # textual defaults (use same helpers so timestamps update)
+            try:
+                self._reset_filename()
+                self._reset_map_name()
+                self._reset_map_desc()
+            except Exception:
+                pass
+
+            # size default to 72x72 (Medium)
+            try:
+                idx = self.size_combo.findText("72x72 (Medium)")
+                if idx >= 0:
+                    self.size_combo.setCurrentIndex(idx)
+            except Exception:
+                pass
+
+            # terrains: remove all and add DIRT with value 1
+            try:
+                for t in list(self.terrain_widgets.keys()):
+                    try:
+                        self._remove_terrain(t)
+                    except Exception:
+                        pass
+                try:
+                    self._add_terrain(TerrainType.DIRT)
+                    info = self.terrain_widgets.get(TerrainType.DIRT)
+                    if info:
+                        info['spin'].setValue(1)
+                except Exception:
+                    try:
+                        first = list(TerrainType)[0]
+                        self._add_terrain(first)
+                    except Exception:
+                        pass
+                try:
+                    self._refresh_available_terrains()
+                except Exception:
+                    pass
+            except Exception:
+                pass
+
+            # players / cities / difficulty / teams
+            try:
+                self.player_cities_spin.setValue(5)
+            except Exception:
+                pass
+            try:
+                self.players_spin.setValue(5)
+            except Exception:
+                pass
+            try:
+                self.neutral_cities_spin.setValue(2)
+            except Exception:
+                pass
+            try:
+                self.difficulty_spin.setValue(1)
+            except Exception:
+                pass
+            try:
+                self.teams_spin.setValue(0)
+            except Exception:
+                pass
+            try:
+                self._rebuild_teams_grid()
+            except Exception:
+                pass
+
+            # victory / loss defaults
+            try:
+                for i in range(self.victory_combo.count()):
+                    data = self.victory_combo.itemData(i)
+                    if data == VictoryConditions.NORMAL:
+                        self.victory_combo.setCurrentIndex(i)
+                        break
+            except Exception:
+                pass
+            try:
+                for i in range(self.loss_combo.count()):
+                    data = self.loss_combo.itemData(i)
+                    if data == LossConditions.NORMAL:
+                        self.loss_combo.setCurrentIndex(i)
+                        break
+            except Exception:
+                pass
+
+            # victory param defaults
+            try:
+                self.artifact_combo.setCurrentIndex(0)
+            except Exception:
+                pass
+            try:
+                self.creature_combo.setCurrentIndex(0)
+                self.creature_count_spin.setValue(50)
+            except Exception:
+                pass
+            try:
+                self.resource_combo.setCurrentIndex(0)
+                self.resource_amount_spin.setValue(100)
+            except Exception:
+                pass
+
+            # clear last generated preview/map
+            try:
+                self._last_map = None
+                self._last_size = None
+                try:
+                    self.preview_label.clear()
+                except Exception:
+                    pass
+                try:
+                    self.preview_label.setText("After generating a map, its preview will appear here.")
+                    self.preview_label.setStyleSheet("color: #666; border: 1px solid #ccc; padding: 6px;")
+                except Exception:
+                    pass
+            except Exception:
+                pass
+
+            QMessageBox.information(self, "Reset", "All parameters have been reset to defaults.")
+        except Exception as e:
+            QMessageBox.critical(self, "Reset error", f"Failed to reset parameters: {e}")
+
+    def on_save_config(self):
+        try:
+            cfg = {}
+            cfg['folder'] = self.folder_path_edit.text()
+            cfg['filename'] = self.filename_edit.text()
+            cfg['map_name'] = self.map_name_edit.text()
+            try:
+                cfg['map_desc'] = self.map_desc_edit.toPlainText()
+            except Exception:
+                cfg['map_desc'] = ''
+            cfg['size'] = self.size_combo.currentText()
+
+            # terrains: store as name -> value
+            terrains = {}
+            for t, info in self.terrain_widgets.items():
+                try:
+                    t_name = t.name if hasattr(t, 'name') else str(t)
+                    terrains[t_name] = int(info['spin'].value())
+                except Exception:
+                    pass
+            cfg['terrains'] = terrains
+
+            cfg['player_cities'] = int(self.player_cities_spin.value())
+            cfg['players'] = int(self.players_spin.value())
+            cfg['neutral_cities'] = int(self.neutral_cities_spin.value())
+            cfg['difficulty'] = int(self.difficulty_spin.value())
+            cfg['teams'] = int(self.teams_spin.value())
+
+            # team assignments: list length 8
+            team_for_player = []
+            for p_idx in range(8):
+                try:
+                    if p_idx < len(self.team_button_groups):
+                        gid = self.team_button_groups[p_idx].checkedId()
+                        team_for_player.append(int(gid) if gid is not None and gid >= 0 else 0)
+                    else:
+                        team_for_player.append(0)
+                except Exception:
+                    team_for_player.append(0)
+            cfg['team_for_player'] = team_for_player
+
+            # Victory / Loss settings
+            try:
+                vdata = self.victory_combo.currentData()
+                cfg['victory'] = vdata.name if hasattr(vdata, 'name') else str(self.victory_combo.currentText())
+            except Exception:
+                cfg['victory'] = str(self.victory_combo.currentText())
+            try:
+                ldata = self.loss_combo.currentData()
+                cfg['loss'] = ldata.name if hasattr(ldata, 'name') else str(self.loss_combo.currentText())
+            except Exception:
+                cfg['loss'] = str(self.loss_combo.currentText())
+
+            # victory parameters
+            try:
+                art = self.artifact_combo.currentData()
+                cfg['artifact'] = art.name if hasattr(art, 'name') else str(self.artifact_combo.currentText())
+            except Exception:
+                cfg['artifact'] = None
+            try:
+                cre = self.creature_combo.currentData()
+                cfg['creature'] = cre.name if hasattr(cre, 'name') else str(self.creature_combo.currentText())
+            except Exception:
+                cfg['creature'] = None
+            try:
+                cfg['creature_count'] = int(self.creature_count_spin.value())
+            except Exception:
+                cfg['creature_count'] = None
+            try:
+                res = self.resource_combo.currentData()
+                cfg['resource'] = res.name if hasattr(res, 'name') else str(self.resource_combo.currentText())
+            except Exception:
+                cfg['resource'] = None
+            try:
+                cfg['resource_amount'] = int(self.resource_amount_spin.value())
+            except Exception:
+                cfg['resource_amount'] = None
+
+            # loss params
+            try:
+                cfg['loss_days'] = int(self.loss_days_combo.currentData() or 0)
+            except Exception:
+                cfg['loss_days'] = None
+
+            # show save dialog
+            default_path = os.path.join(os.getcwd(), 'mapgen_config.json')
+            file_path, _ = QFileDialog.getSaveFileName(self, 'Save configuration', default_path, 'JSON files (*.json)')
+            if not file_path:
+                return
+            # ensure extension
+            if not file_path.lower().endswith('.json'):
+                file_path = file_path + '.json'
+            with open(file_path, 'w', encoding='utf-8') as f:
+                json.dump(cfg, f, indent=2)
+            QMessageBox.information(self, 'Saved', f'Configuration saved to {file_path}')
+        except Exception as e:
+            QMessageBox.critical(self, 'Save error', f'Failed to save configuration: {e}')
+
+    def on_load_config(self):
+        try:
+            file_path, _ = QFileDialog.getOpenFileName(self, 'Load configuration', os.getcwd(), 'JSON files (*.json)')
+            if not file_path:
+                return
+            with open(file_path, 'r', encoding='utf-8') as f:
+                cfg = json.load(f)
+
+            # apply values if present
+            try:
+                if 'folder' in cfg:
+                    self.folder_path_edit.setText(cfg.get('folder') or '')
+                if 'filename' in cfg:
+                    self.filename_edit.setText(cfg.get('filename') or '')
+                if 'map_name' in cfg:
+                    self.map_name_edit.setText(cfg.get('map_name') or '')
+                if 'map_desc' in cfg:
+                    try:
+                        self.map_desc_edit.setPlainText(cfg.get('map_desc') or '')
+                    except Exception:
+                        pass
+                if 'size' in cfg:
+                    val = cfg.get('size')
+                    if val is not None:
+                        idx = self.size_combo.findText(val)
+                        if idx >= 0:
+                            self.size_combo.setCurrentIndex(idx)
+
+                # terrains: reset existing then add from config
+                try:
+                    # remove existing
+                    for t in list(self.terrain_widgets.keys()):
+                        try:
+                            self._remove_terrain(t)
+                        except Exception:
+                            pass
+                    terr = cfg.get('terrains') or {}
+                    for tname, val in terr.items():
+                        try:
+                            # map name to TerrainType if possible
+                            tt = None
+                            try:
+                                tt = TerrainType[tname]
+                            except Exception:
+                                tt = None
+                            if tt is not None:
+                                self._add_terrain(tt)
+                                # set value
+                                info = self.terrain_widgets.get(tt)
+                                if info:
+                                    info['spin'].setValue(int(val))
+                            else:
+                                # fallback: add first available terrain if name unknown
+                                pass
+                        except Exception:
+                            pass
+                    # ensure available list updated
+                    self._refresh_available_terrains()
+                except Exception:
+                    pass
+
+                if 'player_cities' in cfg:
+                    try:
+                        self.player_cities_spin.setValue(int(cfg.get('player_cities') or 0))
+                    except Exception:
+                        pass
+                if 'players' in cfg:
+                    try:
+                        self.players_spin.setValue(int(cfg.get('players') or 0))
+                    except Exception:
+                        pass
+                if 'neutral_cities' in cfg:
+                    try:
+                        self.neutral_cities_spin.setValue(int(cfg.get('neutral_cities') or 0))
+                    except Exception:
+                        pass
+                if 'difficulty' in cfg:
+                    try:
+                        self.difficulty_spin.setValue(int(cfg.get('difficulty') or 0))
+                    except Exception:
+                        pass
+                if 'teams' in cfg:
+                    try:
+                        self.teams_spin.setValue(int(cfg.get('teams') or 0))
+                    except Exception:
+                        pass
+
+                # apply team assignments
+                try:
+                    tfp = cfg.get('team_for_player') or []
+                    # ensure grid rebuilt
+                    self._rebuild_teams_grid()
+                    for p_idx in range(min(8, len(tfp))):
+                        try:
+                            gid = int(tfp[p_idx])
+                            if p_idx < len(self.team_radio_buttons):
+                                row = self.team_radio_buttons[p_idx]
+                                if gid >= 0 and gid < len(row):
+                                    row[gid].setChecked(True)
+                        except Exception:
+                            pass
+                except Exception:
+                    pass
+
+                # victory / loss
+                try:
+                    if 'victory' in cfg and cfg.get('victory'):
+                        vname = cfg.get('victory')
+                        # try match by enum name
+                        try:
+                            found_idx = -1
+                            for i in range(self.victory_combo.count()):
+                                data = self.victory_combo.itemData(i)
+                                name = data.name if hasattr(data, 'name') else None
+                                if name == vname or self.victory_combo.itemText(i) == vname:
+                                    found_idx = i
+                                    break
+                            if found_idx >= 0:
+                                self.victory_combo.setCurrentIndex(found_idx)
+                        except Exception:
+                            pass
+                except Exception:
+                    pass
+
+                try:
+                    if 'loss' in cfg and cfg.get('loss'):
+                        lname = cfg.get('loss')
+                        found_idx = -1
+                        for i in range(self.loss_combo.count()):
+                            data = self.loss_combo.itemData(i)
+                            name = data.name if hasattr(data, 'name') else None
+                            if name == lname or self.loss_combo.itemText(i) == lname:
+                                found_idx = i
+                                break
+                        if found_idx >= 0:
+                            self.loss_combo.setCurrentIndex(found_idx)
+                        # loss days
+                        try:
+                            if 'loss_days' in cfg and cfg.get('loss_days') is not None:
+                                days = int(cfg.get('loss_days'))
+                                idx = self.loss_days_combo.findData(days)
+                                if idx >= 0:
+                                    self.loss_days_combo.setCurrentIndex(idx)
+                        except Exception:
+                            pass
+                except Exception:
+                    pass
+
+            except Exception:
+                pass
+            QMessageBox.information(self, 'Loaded', f'Configuration loaded from {file_path}. If any field was invalid, it was set to a default value.')
+        except Exception as e:
+            QMessageBox.critical(self, 'Load error', f'Failed to load configuration: {e}')
+
     def browse_folder(self):
         folder = QFileDialog.getExistingDirectory(self, "Select a folder to save the file")
         if folder:
@@ -1114,6 +1568,7 @@ class MapGeneratorGUI(QWidget):
         except Exception:
             pass
         remove_btn = QPushButton("Remove")
+        remove_btn.setCursor(QtCore.Qt.PointingHandCursor)
 
         def _remove_here():
             # prevent removing last terrain
