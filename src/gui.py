@@ -1287,29 +1287,40 @@ class MapGeneratorGUI(QWidget):
             except Exception:
                 cfg['loss'] = str(self.loss_combo.currentText())
 
-            # victory parameters
+            # victory parameters - only save when a special victory is selected
             try:
-                art = self.artifact_combo.currentData()
-                cfg['artifact'] = art.name if hasattr(art, 'name') else str(self.artifact_combo.currentText())
+                vdata = self.victory_combo.currentData()
             except Exception:
+                vdata = None
+            if vdata is not None and vdata != VictoryConditions.NORMAL:
+                try:
+                    art = self.artifact_combo.currentData()
+                    cfg['artifact'] = art.name if hasattr(art, 'name') else str(self.artifact_combo.currentText())
+                except Exception:
+                    cfg['artifact'] = None
+                try:
+                    cre = self.creature_combo.currentData()
+                    cfg['creature'] = cre.name if hasattr(cre, 'name') else str(self.creature_combo.currentText())
+                except Exception:
+                    cfg['creature'] = None
+                try:
+                    cfg['creature_count'] = int(self.creature_count_spin.value())
+                except Exception:
+                    cfg['creature_count'] = None
+                try:
+                    res = self.resource_combo.currentData()
+                    cfg['resource'] = res.name if hasattr(res, 'name') else str(self.resource_combo.currentText())
+                except Exception:
+                    cfg['resource'] = None
+                try:
+                    cfg['resource_amount'] = int(self.resource_amount_spin.value())
+                except Exception:
+                    cfg['resource_amount'] = None
+            else:
                 cfg['artifact'] = None
-            try:
-                cre = self.creature_combo.currentData()
-                cfg['creature'] = cre.name if hasattr(cre, 'name') else str(self.creature_combo.currentText())
-            except Exception:
                 cfg['creature'] = None
-            try:
-                cfg['creature_count'] = int(self.creature_count_spin.value())
-            except Exception:
                 cfg['creature_count'] = None
-            try:
-                res = self.resource_combo.currentData()
-                cfg['resource'] = res.name if hasattr(res, 'name') else str(self.resource_combo.currentText())
-            except Exception:
                 cfg['resource'] = None
-            try:
-                cfg['resource_amount'] = int(self.resource_amount_spin.value())
-            except Exception:
                 cfg['resource_amount'] = None
 
             # loss params
@@ -1424,12 +1435,22 @@ class MapGeneratorGUI(QWidget):
                     tfp = cfg.get('team_for_player') or []
                     # ensure grid rebuilt
                     self._rebuild_teams_grid()
+                    players_active = int(self.players_spin.value())
+                    num_teams_active = int(self.teams_spin.value())
                     for p_idx in range(min(8, len(tfp))):
                         try:
+                            # only apply assignments for active players
+                            if p_idx >= players_active:
+                                continue
                             gid = int(tfp[p_idx])
+                            # only apply if teams are enabled and gid within range
+                            if num_teams_active <= 0:
+                                continue
+                            if gid < 0 or gid >= num_teams_active:
+                                continue
                             if p_idx < len(self.team_radio_buttons):
                                 row = self.team_radio_buttons[p_idx]
-                                if gid >= 0 and gid < len(row):
+                                if gid >= 0 and gid < len(row) and row[gid].isEnabled():
                                     row[gid].setChecked(True)
                         except Exception:
                             pass
@@ -1523,10 +1544,10 @@ class MapGeneratorGUI(QWidget):
                     v = 0
             color_map = {
                 0: (153, 102, 51),   # DIRT
-                1: (210, 180, 140),  # SAND
-                2: (34, 139, 34),    # GRASS
+                1: (201, 152, 88),  # SAND
+                2: (12, 186, 12),    # GRASS
                 3: (240, 240, 240),  # SNOW
-                4: (85, 107, 47),    # SWAMP
+                4: (55, 69, 31),    # SWAMP
                 5: (128, 128, 128),  # ROUGH
                 6: (0, 0, 0),        # SUBTERRANEAN
                 7: (64, 64, 64),     # LAVA
@@ -1856,7 +1877,7 @@ class MapGeneratorGUI(QWidget):
                 self._last_size = (width, height)
                 # build and display preview image
                 tile_px = max(1, 300 // max(width, height))
-                qimg = self._build_preview_qimage(self._last_map, width, height, tile_px)
+                qimg = self._build_preview_qimage(self._last_map, width, height, tile_px, neutral_towns=towns_gen[players_count:] if towns_gen else [])
                 pix = QPixmap.fromImage(qimg)
                 self.preview_label.setPixmap(pix.scaled(self.preview_label.size(), QtCore.Qt.KeepAspectRatio))
                 # clear placeholder styling
@@ -1905,10 +1926,28 @@ class MapGeneratorGUI(QWidget):
                                     item = entries[sel_idx]
 
                                     # Extract coords defensively depending on representation
-                                    if isinstance(item, (list, tuple)):
-                                        ix = int(item[0])
-                                        iy = int(item[1])
-                                        iz = int(item[2])
+                                    try:
+                                        if isinstance(item, (list, tuple)):
+                                            ix = int(item[0])
+                                            iy = int(item[1])
+                                            iz = int(item[2])
+                                        else:
+                                            # object-like entry: try attributes first
+                                            try:
+                                                ix = int(getattr(item, 'x'))
+                                                iy = int(getattr(item, 'y'))
+                                                # z may be missing; default to 0
+                                                iz = int(getattr(item, 'z', 0))
+                                            except Exception:
+                                                # try mapping-like access
+                                                try:
+                                                    ix = int(item[0] if 0 in item else item.get('x'))
+                                                    iy = int(item[1] if 1 in item else item.get('y'))
+                                                    iz = int(item[2] if 2 in item else item.get('z', 0))
+                                                except Exception:
+                                                    QMessageBox.warning(self, "Selection error", "Selected entry does not contain usable coordinates.")
+                                    except Exception:
+                                        QMessageBox.warning(self, "Selection error", "Failed to extract coordinates from the selected entry.")
 
                                     addinfo = getattr(map, 'additional_info', None)
                                     if addinfo is not None and getattr(addinfo, 'victory_condition', None) is not None:
@@ -2154,10 +2193,10 @@ class MapGeneratorGUI(QWidget):
         color_map = {
             # DIRT, SAND, GRASS, SNOW, SWAMP, ROUGH, SUBTERRANEAN, LAVA, WATER, ROCK
             0: (153, 102, 51),   # DIRT
-            1: (210, 180, 140),  # SAND
-            2: (34, 139, 34),    # GRASS
+            1: (201, 152, 88),  # SAND
+            2: (12, 186, 12),    # GRASS
             3: (240, 240, 240),  # SNOW
-            4: (85, 107, 47),    # SWAMP
+            4: (55, 69, 31),    # SWAMP
             5: (128, 128, 128),  # ROUGH
             6: (0, 0, 0),        # SUBTERRANEAN
             7: (64, 64, 64),      # LAVA (dark gray)
@@ -2279,14 +2318,14 @@ class MapGeneratorGUI(QWidget):
                 for _ in range(padding):
                     f.write(b'\x00')
 
-    def _build_preview_qimage(self, map_obj, width: int, height: int, tile_px: int = 6) -> QImage:
+    def _build_preview_qimage(self, map_obj, width: int, height: int, tile_px: int = 6, neutral_towns=None) -> QImage:
         # color map for terrain types (by TerrainType.value)
         color_map = {
             0: (153, 102, 51),   # DIRT
-            1: (210, 180, 140),  # SAND
-            2: (34, 139, 34),    # GRASS
+            1: (201, 152, 88),  # SAND
+            2: (12, 186, 12),    # GRASS
             3: (240, 240, 240),  # SNOW
-            4: (85, 107, 47),    # SWAMP
+            4: (55, 69, 31),    # SWAMP
             5: (128, 128, 128),  # ROUGH
             6: (0, 0, 0),        # SUBTERRANEAN
             7: (64, 64, 64),     # LAVA (dark gray)
@@ -2359,6 +2398,37 @@ class MapGeneratorGUI(QWidget):
             # if overlay fails, return base image
             pass
 
+        if neutral_towns:
+            # Overlay generated towns like player towns but in gray
+            try:
+                painter = QPainter(qimg)
+                painter.setRenderHint(QPainter.Antialiasing)
+                gray_color = QColor(191, 191, 191)
+                for town in neutral_towns:
+                    try:
+                        tx = int(town[0])
+                        ty = int(town[1])
+                    except Exception:
+                        continue
+
+                    tile_coords = [
+                        (tx - 1, ty),
+                        (tx, ty),
+                        (tx + 1, ty),
+                        (tx, ty - 1),
+                    ]
+
+                    painter.setPen(QtCore.Qt.NoPen)
+                    for txx, tyy in tile_coords:
+                        if txx < 0 or txx >= width or tyy < 0 or tyy >= height:
+                            continue
+                        x_px = int(txx * tile_px)
+                        y_px = int(tyy * tile_px)
+                        rect = QtCore.QRect(x_px, y_px, int(tile_px), int(tile_px))
+                        painter.fillRect(rect, gray_color)
+                painter.end()
+            except Exception:
+                pass
         return qimg
 
     def _on_worker_finished(self, map_obj, folder, filename):
