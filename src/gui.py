@@ -240,9 +240,9 @@ class MapGeneratorGUI(QWidget):
         # Map size selector (fixed preset sizes)
         self.size_label = QLabel("Map size:")
         self.size_combo = QComboBox()
-        self.size_combo.addItems(["36x36", "72x72", "108x108", "144x144"])
+        self.size_combo.addItems(["36x36 (Small)", "72x72 (Medium)", "108x108 (Large)", "144x144 (Extra Large)"])
         # default to 72x72
-        self.size_combo.setCurrentText("72x72")
+        self.size_combo.setCurrentText("72x72 (Medium)")
 
         # Terrain value controls (dynamic list)
         self.terrain_group = QGroupBox("Terrain values")
@@ -328,6 +328,14 @@ class MapGeneratorGUI(QWidget):
         filename_row.setContentsMargins(0, 0, 0, 0)
         filename_row.addWidget(self.filename_label)
         filename_row.addWidget(self.filename_edit)
+        # Reset button to restore filename to a timestamped default
+        self.filename_reset_btn = QPushButton("Default")
+        try:
+            self.filename_reset_btn.setToolTip("Reset file name to a timestamped default")
+            self.filename_reset_btn.clicked.connect(lambda: self._reset_filename())
+        except Exception:
+            pass
+        filename_row.addWidget(self.filename_reset_btn)
 
         save_layout.addLayout(folder_row)
         save_layout.addLayout(filename_row)
@@ -339,8 +347,36 @@ class MapGeneratorGUI(QWidget):
         # Map info (name + description + size) — keep as a separate boxed section
         map_info_group = QGroupBox("Map info")
         map_info_layout = QFormLayout()
-        map_info_layout.addRow(self.map_name_label, self.map_name_edit)
-        map_info_layout.addRow(self.map_desc_label, self.map_desc_edit)
+        # Map name row with Reset button
+        name_row = QWidget()
+        name_h = QHBoxLayout()
+        name_h.setContentsMargins(0, 0, 0, 0)
+        name_h.addWidget(self.map_name_edit)
+        self.map_name_reset_btn = QPushButton("Default")
+        try:
+            self.map_name_reset_btn.setToolTip("Reset map name to a timestamped default")
+            self.map_name_reset_btn.clicked.connect(lambda: self._reset_map_name())
+        except Exception:
+            pass
+        name_h.addWidget(self.map_name_reset_btn)
+        name_row.setLayout(name_h)
+        map_info_layout.addRow(self.map_name_label, name_row)
+
+        # Map description row with Reset button
+        desc_row = QWidget()
+        desc_h = QHBoxLayout()
+        desc_h.setContentsMargins(0, 0, 0, 0)
+        desc_h.addWidget(self.map_desc_edit)
+        self.map_desc_reset_btn = QPushButton("Default")
+        try:
+            self.map_desc_reset_btn.setToolTip("Reset description to a timestamped default")
+            self.map_desc_reset_btn.clicked.connect(lambda: self._reset_map_desc())
+        except Exception:
+            pass
+        desc_h.addWidget(self.map_desc_reset_btn)
+        desc_row.setLayout(desc_h)
+        map_info_layout.addRow(self.map_desc_label, desc_row)
+
         # Include Map size in the Map info group
         map_info_layout.addRow(self.size_label, self.size_combo)
         map_info_group.setLayout(map_info_layout)
@@ -687,10 +723,9 @@ class MapGeneratorGUI(QWidget):
         right_v.setSpacing(6)
         right_v.setContentsMargins(0, 0, 0, 0)
 
-        # Wrap preview area in a GroupBox so it gets the same bordered pane
-        # treatment as other sections (visually consistent)
-        preview_group = QWidget()
-        preview_group.setContentsMargins(6, 6, 6, 6)
+        # Wrap preview area in a titled GroupBox so it matches other sections
+        preview_group = QGroupBox("Map preview")
+        preview_group.setContentsMargins(6, 8, 6, 6)
         preview_group_layout = QVBoxLayout()
         preview_group_layout.setSpacing(4)
         # give a slightly larger top margin so the preview area has breathing room
@@ -856,7 +891,7 @@ class MapGeneratorGUI(QWidget):
             "To use the generated map, simply copy the .h3m file into your Heroes III: SoD 'Maps' folder - it will be visible in the game.\n"
             "Enjoy!\n\n"
             "Additionally:\n"
-            "- You can save the map preview by right-clicking on the preview area.\n\n"
+            "- You can save the map preview to a BMP file.\n\n"
             "What if the 'h3mtxt.exe' converter is not present?\n"
             "Only a JSON representation of the map will be saved. You can then use the h3mtxt.exe tool separately to convert JSON to .h3m.\n\n"
         )
@@ -970,6 +1005,30 @@ class MapGeneratorGUI(QWidget):
                 spin.setFocusPolicy(QtCore.Qt.StrongFocus)
             except Exception:
                 pass
+        except Exception:
+            pass
+
+    def _reset_filename(self):
+        try:
+            now = datetime.now()
+            filename_default = f"my_map_{now.day:02d}_{now.month:02d}_{now.year}_{now.hour:02d}_{now.minute:02d}_{now.second:02d}"
+            self.filename_edit.setText(filename_default)
+        except Exception:
+            pass
+
+    def _reset_map_name(self):
+        try:
+            now = datetime.now()
+            default_name = f"My Map {now.day}/{now.month}/{now.year} {now.hour:02d}:{now.minute:02d}:{now.second:02d}"
+            self.map_name_edit.setText(default_name)
+        except Exception:
+            pass
+
+    def _reset_map_desc(self):
+        try:
+            now = datetime.now()
+            description_default = f"Map generated on {now.day}/{now.month}/{now.year} at {now.hour:02d}:{now.minute:02d}:{now.second:02d}."
+            self.map_desc_edit.setPlainText(description_default)
         except Exception:
             pass
 
@@ -1245,7 +1304,7 @@ class MapGeneratorGUI(QWidget):
             # parse selected size (e.g. "72x72") from closed list
             size_text = self.size_combo.currentText()
             try:
-                w_str, h_str = size_text.split('x')
+                w_str, rest = size_text.split('x')
                 size_val = int(w_str)
             except Exception:
                 size_val = 72
