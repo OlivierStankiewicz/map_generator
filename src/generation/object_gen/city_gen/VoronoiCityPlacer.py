@@ -374,9 +374,10 @@ class VoronoiCityPlacer:
     def can_select_with_distance(self, regions: List[VoronoiRegion], n: int, min_dist: float) -> List[VoronoiRegion] | None:
         """Tries to select n regions with minimum distance min_dist.
         If successful - returns selected regions, if not - None."""
-        selected = [regions[0]]
+        # selected = [regions[0]]
+        selected = []
         for region in regions[1:]:
-            if all(self.distance(region, s) >= min_dist for s in selected):
+            if all(self.distance(region, s) >= min_dist for s in selected) or len(selected) == 0:
                 selected.append(region)
                 if len(selected) == n:
                     return selected
