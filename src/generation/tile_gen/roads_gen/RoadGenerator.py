@@ -17,14 +17,16 @@ class RoadGenerator:
         size: int,
         terrain_map: List[List[TerrainType]],
         entry_points: List[Tuple[int,int]],
-        occupied_tiles: List[List[bool]],
+        occupied_tiles_excluding_landscape: List[List[bool]],
+        occupied_tiles_excluding_actionable: List[List[bool]],
         reserve_radius: int = 1
     ) -> None:
         self.width = size
         self.height = size
         self.terrain_map = terrain_map
         self.entry_points = entry_points
-        self.occupied_tiles = occupied_tiles
+        self.occupied_tiles_excluding_landscape = occupied_tiles_excluding_landscape
+        self.occupied_tiles_excluding_actionable = occupied_tiles_excluding_actionable
         self.reserve_radius = reserve_radius
         self.restricted_terrain = {TerrainType.WATER, TerrainType.ROCK}
         
@@ -36,7 +38,7 @@ class RoadGenerator:
         return 0 <= x < self.width and 0 <= y < self.height
 
     def is_walkable_cell(self, x: int, y: int) -> bool:
-        return self.in_bounds(x, y) and (not self.occupied_tiles[y][x])
+        return self.in_bounds(x, y) and (not self.occupied_tiles_excluding_actionable[y][x])
     
     def _a_star_with_costs(self, start: Tuple[int,int], goal: Tuple[int,int], cost_map: List[List[float]]) -> List[Tuple[int,int]]:
         """A* search using a precomputed per-cell cost_map.
@@ -65,10 +67,11 @@ class RoadGenerator:
                 continue
 
             cx, cy = current
-            if sqrt((cx-goal[0])**2 + (cy-goal[1])**2) <= 1: # reached neighbor of goal
+            if current == goal: # reached neighbor of goal
                 path = [current]
                 while path[-1] in came_from:
                     path.append(came_from[path[-1]])
+                path.append(start)
                 path.reverse()
                 return path
 
@@ -80,7 +83,6 @@ class RoadGenerator:
 
                 # quick bounds + walkable check
                 if not self.is_walkable_cell(nx, ny):
-                    # print(f"Skipping non-walkable cell: {(nx, ny)}")
                     continue
 
                 # if neighbor already expanded, skip
@@ -176,6 +178,7 @@ class RoadGenerator:
         return paths_endpoints
     
     def generate(self) -> List[List[RoadType | None]]:
+
         if len(self.entry_points) < 2:
             print(f"Not enough entry points to generate roads: {self.entry_points}")
             return self.paths
@@ -185,16 +188,18 @@ class RoadGenerator:
 
         # For each MST edge, compute a varied path and mark it in the grid
         for a, b in paths_endpoints:
-            # road_type = random.choice([RoadType.DIRT, RoadType.GRAVEL, RoadType.COBBLESTONE])
+            # road_type = random.choice(list(RoadType))
+            road_type = RoadType.GRAVEL
             path = self.find_varied_path(a, b, attempts=6, noise=0.8, curvature_weight=0.5)
             print(f"Generated road path from {a} to {b}, path: {path}")
             if not path:
                 continue
             for x, y in path:
                 if self.is_walkable_cell(x, y):
+                    self.occupied_tiles_excluding_landscape[y][x] = True
                     if self.terrain_map[y][x] in self.restricted_terrain:
                         self.paths[y][x] = RoadType.NONE
-                    else: self.paths[y][x] = RoadType.GRAVEL
+                    else: self.paths[y][x] = road_type
 
         return self.paths
         

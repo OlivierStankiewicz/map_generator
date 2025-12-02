@@ -33,14 +33,14 @@ print("Generating map representation...")
 terrain_values = {
     TerrainType.WATER: 5,
     TerrainType.GRASS: 3,
-    TerrainType.SNOW: 2,
-    TerrainType.SAND: 4,
-    TerrainType.DIRT: 2,
-    TerrainType.SWAMP: 3,
-    TerrainType.ROUGH: 2,
-    TerrainType.LAVA: 1,
+    TerrainType.SNOW: 3,
+    TerrainType.SAND: 5,
+    # TerrainType.DIRT: 2,
+    # TerrainType.SWAMP: 3,
+    # TerrainType.ROUGH: 2,
+    # TerrainType.LAVA: 1,
 }
-map = generate_voronoi_map(terrain_values, size=72)
+map = generate_voronoi_map(terrain_values, size=36)
 
 def filter_none_values(obj):
     """Recursively remove keys with None values from dictionaries"""
