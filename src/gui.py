@@ -402,10 +402,12 @@ class MapGeneratorGUI(QWidget):
         players_group = QGroupBox("Players / Cities")
         pg_layout = QFormLayout()
         self.player_cities_spin = QSpinBox()
-        self.player_cities_spin.setRange(0, 8)
+        # Require at least 1 player city (1..8)
+        self.player_cities_spin.setRange(1, 8)
         self.player_cities_spin.setValue(5)
         self.players_spin = QSpinBox()
-        self.players_spin.setRange(0, 8)
+        # Require at least 1 player (1..8)
+        self.players_spin.setRange(1, 8)
         self.players_spin.setValue(5)
         try:
             self._style_spinbox_no_caret(self.player_cities_spin)
@@ -1406,12 +1408,18 @@ class MapGeneratorGUI(QWidget):
 
                 if 'player_cities' in cfg:
                     try:
-                        self.player_cities_spin.setValue(int(cfg.get('player_cities') or 0))
+                        v = int(cfg.get('player_cities') or 1)
+                        # clamp to allowed range 1..8
+                        v = max(1, min(8, v))
+                        self.player_cities_spin.setValue(v)
                     except Exception:
                         pass
                 if 'players' in cfg:
                     try:
-                        self.players_spin.setValue(int(cfg.get('players') or 0))
+                        v = int(cfg.get('players') or 1)
+                        # clamp to allowed range 1..8
+                        v = max(1, min(8, v))
+                        self.players_spin.setValue(v)
                     except Exception:
                         pass
                 if 'neutral_cities' in cfg:
@@ -2352,6 +2360,8 @@ class MapGeneratorGUI(QWidget):
 
         qimg = QImage(bytes(data), img_w, img_h, QImage.Format_RGB888)
 
+
+        print("Overlaying player main towns...")
         # Paint player main towns on top of generated image
         try:
             painter = QPainter(qimg)
@@ -2371,10 +2381,13 @@ class MapGeneratorGUI(QWidget):
                 if not mt:
                     continue
                 try:
-                    city_x = int(mt.x + 2)
+                    #city_x = int(mt.x + 2)
+                    city_x = int(mt.x)
                     city_y = int(mt.y)
                 except Exception:
                     continue
+
+                print("Overlaying main town for player", p_idx+1, "at", city_x, city_y)
 
                 tile_coords = [
                     (city_x - 1, city_y),
@@ -2399,6 +2412,7 @@ class MapGeneratorGUI(QWidget):
             pass
 
         if neutral_towns:
+            # print("Overlaying neutral towns...")
             # Overlay generated towns like player towns but in gray
             try:
                 painter = QPainter(qimg)
@@ -2410,6 +2424,8 @@ class MapGeneratorGUI(QWidget):
                         ty = int(town[1])
                     except Exception:
                         continue
+
+                    # print("Overlaying neutral town at", tx, ty)
 
                     tile_coords = [
                         (tx - 1, ty),
