@@ -26,6 +26,12 @@ import shutil
 import traceback
 from datetime import datetime
 
+H3MTXT_NAME = 'h3mtxt.exe'
+_PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+H3MTXT_DEFAULT_PATH = os.path.join(_PROJECT_ROOT, H3MTXT_NAME)
+
+MAX_TOTAL_TOWNS = 48
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__))))
 from generation.map_gen.map_gen import generate_voronoi_map
 from classes.tile.Tile import TerrainType
@@ -385,6 +391,19 @@ class MapGeneratorGUI(QWidget):
         desc_row.setLayout(desc_h)
         map_info_layout.addRow(self.map_desc_label, desc_row)
 
+        # place size warning under the Map description (Map info section)
+        try:
+            # inline QLabel warning (no dialogs) — created here so it's in Map info
+            self.size_warning_label = QLabel("")
+            self.size_warning_label.setWordWrap(True)
+            try:
+                self.size_warning_label.setStyleSheet("color: #b35; font-style: italic;")
+            except Exception:
+                pass
+            self.size_warning_label.setVisible(False)
+            map_info_layout.addRow("", self.size_warning_label)
+        except Exception:
+            pass
         # Include Map size in the Map info group
         map_info_layout.addRow(self.size_label, self.size_combo)
         map_info_group.setLayout(map_info_layout)
@@ -427,6 +446,34 @@ class MapGeneratorGUI(QWidget):
             finally:
                 self._syncing_player_counts = False
 
+            # Ensure neutral cities respect total cap (MAX_TOTAL_TOWNS - 1). Player cities take priority.
+            try:
+                try:
+                    neutral_val = int(self.neutral_cities_spin.value())
+                except Exception:
+                    neutral_val = 0
+                allowed = max(0, MAX_TOTAL_TOWNS - 1 - int(val))
+                if neutral_val > allowed:
+                    # reduce neutral cities to allowed maximum
+                    self.neutral_cities_spin.blockSignals(True)
+                    try:
+                        self.neutral_cities_spin.setValue(allowed)
+                    finally:
+                        self.neutral_cities_spin.blockSignals(False)
+                # also update the neutral spin maximum so user cannot increase beyond allowed
+                try:
+                    self.neutral_cities_spin.setMaximum(allowed)
+                except Exception:
+                    pass
+            except Exception:
+                pass
+
+            # refresh size/players warning
+            try:
+                self._update_size_players_warning()
+            except Exception:
+                pass
+
         def _on_players_changed(val):
             if self._syncing_player_counts:
                 return
@@ -439,16 +486,61 @@ class MapGeneratorGUI(QWidget):
             finally:
                 self._syncing_player_counts = False
 
+            # refresh size/players warning
+            try:
+                self._update_size_players_warning()
+            except Exception:
+                pass
+
         self.player_cities_spin.valueChanged.connect(_on_player_cities_changed)
         self.players_spin.valueChanged.connect(_on_players_changed)
 
+        # update warning when map size changes as well
+        try:
+            self.size_combo.currentIndexChanged.connect(lambda _: self._update_size_players_warning())
+        except Exception:
+            pass
+
         self.neutral_cities_spin = QSpinBox()
-        self.neutral_cities_spin.setRange(0, 50)
+        # neutral cities initial allowed range; actual max is adjusted dynamically
+        self.neutral_cities_spin.setRange(0, MAX_TOTAL_TOWNS - 1)
+        # ensure neutral initial value is reasonable
         self.neutral_cities_spin.setValue(2)
         try:
             self._style_spinbox_no_caret(self.neutral_cities_spin)
         except Exception:
             pass
+
+        # adjust neutral maximum according to current player_cities
+        try:
+            try:
+                pc = int(self.player_cities_spin.value())
+            except Exception:
+                pc = 0
+            allowed = max(0, 47 - pc)
+            self.neutral_cities_spin.setMaximum(allowed)
+        except Exception:
+            pass
+
+        # handler: prevent increasing neutral beyond allowed total (MAX_TOTAL_TOWNS - 1)
+        def _on_neutral_changed(val):
+            try:
+                try:
+                    pc = int(self.player_cities_spin.value())
+                except Exception:
+                    pc = 0
+                allowed = max(0, MAX_TOTAL_TOWNS - 1 - pc)
+                if val > allowed:
+                    # revert to allowed
+                    self.neutral_cities_spin.blockSignals(True)
+                    try:
+                        self.neutral_cities_spin.setValue(allowed)
+                    finally:
+                        self.neutral_cities_spin.blockSignals(False)
+            except Exception:
+                pass
+
+        self.neutral_cities_spin.valueChanged.connect(_on_neutral_changed)
 
         # Difficulty selector (0..4)
         self.difficulty_spin = QSpinBox()
@@ -463,6 +555,7 @@ class MapGeneratorGUI(QWidget):
         pg_layout.addRow("Players:", self.players_spin)
         pg_layout.addRow("Neutral cities:", self.neutral_cities_spin)
         pg_layout.addRow("Difficulty:", self.difficulty_spin)
+        # (size warning label is defined in Map info section)
         # Teams: number of teams and per-player assignments
         # Allow up to 7 teams (columns) in the fixed grid; actual enabled teams
         # will be min(7, players-1) and adjusted when players change.
@@ -1182,6 +1275,12 @@ class MapGeneratorGUI(QWidget):
             except Exception:
                 pass
 
+            # refresh size/players warning after reset
+            try:
+                self._update_size_players_warning()
+            except Exception:
+                pass
+
             # victory / loss defaults
             try:
                 for i in range(self.victory_combo.count()):
@@ -1424,7 +1523,19 @@ class MapGeneratorGUI(QWidget):
                         pass
                 if 'neutral_cities' in cfg:
                     try:
-                        self.neutral_cities_spin.setValue(int(cfg.get('neutral_cities') or 0))
+                        # clamp neutral to allowed total (MAX_TOTAL_TOWNS - 1 - player_cities)
+                        try:
+                            pc = int(self.player_cities_spin.value())
+                        except Exception:
+                            pc = 0
+                        allowed = max(0, MAX_TOTAL_TOWNS - 1 - pc)
+                        nv = int(cfg.get('neutral_cities') or 0)
+                        nv = max(0, min(allowed, nv))
+                        self.neutral_cities_spin.setValue(nv)
+                        try:
+                            self.neutral_cities_spin.setMaximum(allowed)
+                        except Exception:
+                            pass
                     except Exception:
                         pass
                 if 'difficulty' in cfg:
@@ -1509,6 +1620,11 @@ class MapGeneratorGUI(QWidget):
                 except Exception:
                     pass
 
+            except Exception:
+                pass
+            # refresh size/players warning after loading config
+            try:
+                self._update_size_players_warning()
             except Exception:
                 pass
             QMessageBox.information(self, 'Loaded', f'Configuration loaded from {file_path}. If any field was invalid, it was set to a default value.')
@@ -1883,9 +1999,18 @@ class MapGeneratorGUI(QWidget):
             try:
                 self._last_map = map
                 self._last_size = (width, height)
+                # store towns and players count so saved BMP can draw neutral towns
+                try:
+                    self._last_map_towns = towns_gen or []
+                except Exception:
+                    self._last_map_towns = []
+                try:
+                    self._last_players_count = int(self.players_spin.value())
+                except Exception:
+                    self._last_players_count = 0
                 # build and display preview image
                 tile_px = max(1, 300 // max(width, height))
-                qimg = self._build_preview_qimage(self._last_map, width, height, tile_px, neutral_towns=towns_gen[players_count:] if towns_gen else [])
+                qimg = self._build_preview_qimage(self._last_map, width, height, tile_px, neutral_towns=(towns_gen[players_count:] if towns_gen else []))
                 pix = QPixmap.fromImage(qimg)
                 self.preview_label.setPixmap(pix.scaled(self.preview_label.size(), QtCore.Qt.KeepAspectRatio))
                 # clear placeholder styling
@@ -2144,21 +2269,49 @@ class MapGeneratorGUI(QWidget):
             self.generate_btn.setEnabled(True)
             return
 
-        # Conversion using os.system to match main.py
         try:
             self.status_label.setText("Converting JSON to h3m...")
             QApplication.processEvents()
-            ret = os.system(f'h3mtxt.exe "{json_file_path}" "{h3m_file_path}"')
-            if ret == 0:
-                QMessageBox.information(self, "Success", f"New file created at: {h3m_file_path}")
-                self.status_label.setText("Done")
+            converter = None
+            try:
+                converter = os.environ.get('H3MTXT_PATH')
+            except Exception:
+                converter = None
+            if not converter:
                 try:
-                    print("successfully generated a map using GUI")
+                    converter = shutil.which(H3MTXT_NAME)
                 except Exception:
-                    pass
+                    converter = None
+            if not converter:
+                try:
+                    if os.path.exists(H3MTXT_DEFAULT_PATH):
+                        converter = H3MTXT_DEFAULT_PATH
+                except Exception:
+                    converter = None
+            if not converter:
+                try:
+                    cwd_candidate = os.path.join(os.getcwd(), H3MTXT_NAME)
+                    if os.path.exists(cwd_candidate):
+                        converter = cwd_candidate
+                except Exception:
+                    converter = None
+
+            if not converter:
+                QMessageBox.information(self, "Saved JSON", f"JSON saved to {json_file_path}. Converter not found; .h3m not created.")
+                self.status_label.setText("Saved JSON (no converter)")
             else:
-                QMessageBox.information(self, "Conversion", f"Conversion finished with code {ret}. JSON saved to {json_file_path}")
-                self.status_label.setText("Saved JSON (converter returned non-zero)")
+                converter_dir = os.path.dirname(converter) or os.getcwd()
+                result = subprocess.run([converter, json_file_path, h3m_file_path], cwd=converter_dir)
+                if result.returncode == 0:
+                    QMessageBox.information(self, "Success", f"New file created at: {h3m_file_path}")
+                    self.status_label.setText("Done")
+                    try:
+                        print("successfully generated a map using GUI")
+                    except Exception:
+                        pass
+                else:
+                    QMessageBox.information(self, "Conversion", f"Conversion finished with code {result.returncode}. JSON saved to {json_file_path}")
+                    self.status_label.setText("Saved JSON (converter returned non-zero)")
         except Exception as e:
             QMessageBox.warning(self, "Conversion error", f"Failed to convert file: {e}")
             self.status_label.setText("Converter failed")
@@ -2191,12 +2344,22 @@ class MapGeneratorGUI(QWidget):
         try:
             width, height = self._last_size
             tile_px = max(1, 600 // max(width, height))
-            self._write_preview_bmp(file_path, self._last_map, width, height, tile_px)
+            # determine neutral towns from last generated towns and players count
+            neutral_towns = []
+            try:
+                towns = getattr(self, '_last_map_towns', []) or []
+                pcount = getattr(self, '_last_players_count', 0) or 0
+                if towns and pcount is not None:
+                    neutral_towns = towns[pcount:]
+            except Exception:
+                neutral_towns = []
+
+            self._write_preview_bmp(file_path, self._last_map, width, height, tile_px, neutral_towns=neutral_towns)
             QMessageBox.information(self, "Saved", f"Preview saved to {file_path}")
         except Exception as e:
             QMessageBox.critical(self, "Preview error", f"Failed to save preview: {e}")
 
-    def _write_preview_bmp(self, path: str, map_obj, width: int, height: int, tile_px: int = 6):
+    def _write_preview_bmp(self, path: str, map_obj, width: int, height: int, tile_px: int = 6, neutral_towns=None):
         # color map for terrain types (by TerrainType.value)
         color_map = {
             # DIRT, SAND, GRASS, SNOW, SWAMP, ROUGH, SUBTERRANEAN, LAVA, WATER, ROCK
@@ -2286,6 +2449,48 @@ class MapGeneratorGUI(QWidget):
             # don't fail the whole save if overlay fails
             pass
 
+        # Overlay neutral towns (gray) if provided
+        try:
+            towns = neutral_towns or []
+            if towns:
+                gray = (191, 191, 191)
+                for town in towns:
+                    try:
+                        if isinstance(town, (list, tuple)):
+                            tx = int(town[0])
+                            ty = int(town[1])
+                        else:
+                            # object-like
+                            tx = int(getattr(town, 'x', 0))
+                            ty = int(getattr(town, 'y', 0))
+                    except Exception:
+                        continue
+
+                    tile_coords = [
+                        (tx - 1, ty),
+                        (tx, ty),
+                        (tx + 1, ty),
+                        (tx, ty - 1),
+                    ]
+
+                    for txx, tyy in tile_coords:
+                        if txx < 0 or txx >= width or tyy < 0 or tyy >= height:
+                            continue
+                        px0 = txx * tile_px
+                        py0 = tyy * tile_px
+                        px1 = px0 + tile_px - 1
+                        py1 = py0 + tile_px - 1
+                        for ry in range(py0, py1 + 1):
+                            if ry < 0 or ry >= img_h:
+                                continue
+                            row = rows[ry]
+                            for rx in range(px0, px1 + 1):
+                                if rx < 0 or rx >= img_w:
+                                    continue
+                                row[rx] = gray
+        except Exception:
+            pass
+
         # write 24-bit BMP
         import struct
 
@@ -2361,7 +2566,7 @@ class MapGeneratorGUI(QWidget):
         qimg = QImage(bytes(data), img_w, img_h, QImage.Format_RGB888)
 
 
-        print("Overlaying player main towns...")
+        # print("Overlaying player main towns...")
         # Paint player main towns on top of generated image
         try:
             painter = QPainter(qimg)
@@ -2387,7 +2592,7 @@ class MapGeneratorGUI(QWidget):
                 except Exception:
                     continue
 
-                print("Overlaying main town for player", p_idx+1, "at", city_x, city_y)
+                #print("Overlaying main town for player", p_idx+1, "at", city_x, city_y)
 
                 tile_coords = [
                     (city_x - 1, city_y),
@@ -2445,7 +2650,39 @@ class MapGeneratorGUI(QWidget):
                 painter.end()
             except Exception:
                 pass
+        # print how many players' towns were drawn
+        print(f"Drew {len(getattr(map_obj, 'players', []) or [])} player towns on preview.")
+        # print how many neutral towns were drawn
+        print(f"Drew {len(neutral_towns)} neutral towns on preview.")
         return qimg
+
+    def _update_size_players_warning(self):
+        """Show a suggestion when map size 36x36 is selected."""
+        try:
+            size_text = self.size_combo.currentText() if hasattr(self, 'size_combo') else ''
+            # show when 36x36 specifically selected
+            try:
+                is_small = '36x36' in size_text
+            except Exception:
+                is_small = False
+
+            if is_small:
+                msg = "Small map selected (36x36). Recommended amount of players: 4 or fewer - otherwise the generator may not be able to place all player towns (Voronoi diagram centroids), causing an error."
+                try:
+                    self.size_warning_label.setText(msg)
+                    self.size_warning_label.setVisible(True)
+                except Exception:
+                    pass
+            else:
+                try:
+                    self.size_warning_label.setVisible(False)
+                except Exception:
+                    pass
+        except Exception:
+            try:
+                self.size_warning_label.setVisible(False)
+            except Exception:
+                pass
 
     def _on_worker_finished(self, map_obj, folder, filename):
         try:
@@ -2478,16 +2715,34 @@ class MapGeneratorGUI(QWidget):
             self._worker_thread = None
             return
 
-        # Try running the external converter if available.
-        converter = shutil.which('h3mtxt.exe')
+        # Try running the external converter if available. Resolution order:
+        # 1. Environment variable `H3MTXT_PATH`
+        # 2. System PATH via shutil.which
+        # 3. Project-root location (one level above this file)
+        # 4. Current working directory
+        converter = None
+        try:
+            converter = os.environ.get('H3MTXT_PATH')
+        except Exception:
+            converter = None
         if not converter:
-            cwd_candidate = os.path.join(os.getcwd(), 'h3mtxt.exe')
-            if os.path.exists(cwd_candidate):
-                converter = cwd_candidate
+            try:
+                converter = shutil.which(H3MTXT_NAME)
+            except Exception:
+                converter = None
         if not converter:
-            project_root_candidate = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'h3mtxt.exe'))
-            if os.path.exists(project_root_candidate):
-                converter = project_root_candidate
+            try:
+                if os.path.exists(H3MTXT_DEFAULT_PATH):
+                    converter = H3MTXT_DEFAULT_PATH
+            except Exception:
+                converter = None
+        if not converter:
+            try:
+                cwd_candidate = os.path.join(os.getcwd(), H3MTXT_NAME)
+                if os.path.exists(cwd_candidate):
+                    converter = cwd_candidate
+            except Exception:
+                converter = None
 
         if converter and os.path.exists(converter):
             try:
