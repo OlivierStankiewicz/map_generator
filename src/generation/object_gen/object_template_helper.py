@@ -45,6 +45,7 @@ from classes.ObjectsTemplate import ObjectsTemplate
 from classes.tile.Tile import Tile, TerrainType
 from generation.object_gen.json_parser import read_object_templates_from_json, read_object_from_json
 from generation.object_gen.city_gen.voronoi_city_placement import generate_city_positions_with_fields, get_region_tiles
+from generation.object_gen.forest_placer import ForestPlacer, create_default_tree_types, TreeType
 
 
 @dataclass
@@ -150,6 +151,14 @@ class ObjectTemplateHelper:
         self.generate_artifacts_resources_monsters()
         # budowle na wodzie, shipyard, lighthouse
         self.generate_water_object()
+        # lasy
+        self.place_objects_from_terrain("grass_obj", count=100, max_offset=5)
+        self.place_objects_from_terrain("dirt_obj", count=100, max_offset=5)
+        self.place_objects_from_terrain("swamp_obj", count=100, max_offset=5)
+        self.place_objects_from_terrain("sand_obj", count=100, max_offset=5)
+        self.place_objects_from_terrain("lava_obj", count=100, max_offset=5)
+        self.place_objects_from_terrain("sand_obj", count=100, max_offset=5)
+        self.place_objects_from_terrain("snow_obj", count=100, max_offset=5)
 
         # self.occ.sort()
         # for i in self.occ:
@@ -1271,3 +1280,215 @@ class ObjectTemplateHelper:
 
                 self.objects.append(object)
                 self.objectTemplates.append(objectTemplate)
+
+    def generate_forests(self, num_clusters: int = 5, cluster_radius: int = 8, 
+                        density: float = 0.4, tree_templates: list = None):
+        """
+        Generuje lasy na mapie z uwzględnieniem hitboxów obiektów i zajętych pól.
+        
+        Args:
+            num_clusters: liczba klastrów lasów do wygenerowania
+            cluster_radius: promień każdego klastra (w kafelkach)
+            density: gęstość drzew w klastrze (0.0-1.0)
+            tree_templates: opcjonalna lista szablonów drzew; jeśli None, używa water_objects
+        
+        Returns:
+            Liczba umieszczonych drzew
+        """
+        if tree_templates is None:
+            # Domyślnie używamy water_objects jako drzewa (mogą zawierać obiekty krajobrazowe)
+            tree_templates = self.water_objects[:min(5, len(self.water_objects))]
+        
+        if not tree_templates:
+            print("UWAGA: Brak szablonów drzew dostępnych")
+            return 0
+        
+        # Utwórz typy drzew
+        tree_types = create_default_tree_types(tree_templates)
+        
+        # Utwórz placer
+        placer = ForestPlacer(self.map_format, self.map_format, self.occupied_tiles)
+        
+        # Generuj lasy
+        trees_placed = placer.generate_forests(
+            tree_types,
+            num_clusters=num_clusters,
+            cluster_radius=cluster_radius,
+            density=density
+        )
+        
+        # Dodaj drzewa do obiektu
+        for tree_x, tree_y, tree_template in trees_placed:
+            self.id += 1
+            tree_object = Objects(tree_x, tree_y, 0, self.id, [], TrivialOwnedObject.create_default())
+            
+            self.objects.append(tree_object)
+            self.objectTemplates.append(tree_template)
+        
+        print(f"Umieszczono {len(trees_placed)} drzew w {num_clusters} klastrach")
+        return len(trees_placed)
+
+    def generate_forests_on_region(self, region_tiles: list, tree_templates: list = None,
+                                  density: float = 0.3):
+        """
+        Generuje las na podanym regionie (np. polu diagramu Voronoi).
+        
+        Args:
+            region_tiles: lista (x, y) kafelków z regionu
+            tree_templates: opcjonalna lista szablonów drzew
+            density: gęstość drzew (0.0-1.0)
+            
+        Returns:
+            Liczba umieszczonych drzew
+        """
+        if not region_tiles:
+            return 0
+        
+        if tree_templates is None:
+            tree_templates = self.water_objects[:min(5, len(self.water_objects))]
+        
+        if not tree_templates:
+            return 0
+        
+        tree_types = create_default_tree_types(tree_templates)
+        placer = ForestPlacer(self.map_format, self.map_format, self.occupied_tiles)
+        
+        trees_placed = placer.generate_forest_on_region(
+            tree_types,
+            region_tiles,
+            density=density
+        )
+        
+        for tree_x, tree_y, tree_template in trees_placed:
+            self.id += 1
+            tree_object = Objects(tree_x, tree_y, 0, self.id, [], TrivialOwnedObject.create_default())
+            
+            self.objects.append(tree_object)
+            self.objectTemplates.append(tree_template)
+        
+        print(f"Umieszczono {len(trees_placed)} drzew na regionie")
+        return len(trees_placed)
+
+    def load_templates_for_terrain(self, terrain_key: str) -> list:
+        """
+        Wczytuje listę szablonów obiektów z JSONa odpowiadającego nazwie terenu.
+        Przyjmuje nazwę typu w formie: 'grass', 'grass_obj' lub 'grass_obj.json'.
+        Zwraca listę szablonów lub pustą listę jeśli brak.
+        """
+        key = terrain_key.lower()
+        if key.endswith('.json'):
+            key = key[:-5]
+
+        candidates = [key, key.replace('_obj', ''), f"{key}_obj"]
+        for k in candidates:
+            try:
+                templates = read_object_templates_from_json(k)
+                if templates:
+                    return templates
+            except Exception:
+                continue
+        return []
+
+    def place_objects_from_terrain_on_region(self, region_tiles: list, terrain_key: str, count: int = 1,
+                                             max_offset: int = 5) -> int:
+        """
+        Umieszcza do `count` obiektów z pliku o nazwie terenu (np. 'grass_obj') na kafelkach
+        z listy `region_tiles`, tylko na kafelkach danego typu terenu i tylko tam, gdzie
+        `self.occupied_tiles_excluding_landscape[y][x]` jest False.
+
+        Zwraca liczbę faktycznie umieszczonych obiektów.
+        """
+        templates = self.load_templates_for_terrain(terrain_key)
+        if not templates:
+            return 0
+
+        # Ustal enum terenu na podstawie klucza
+        name = terrain_key.lower().replace('.json', '').replace('_obj', '')
+        try:
+            terrain_enum = TerrainType[name.upper()]
+        except Exception:
+            terrain_enum = None
+
+        # Filtruj kafelki regionu: zgodne z terenem i nie zajęte w occupied_tiles_excluding_landscape
+        candidates = []
+        for tx, ty in region_tiles:
+            if not (0 <= tx < self.map_format and 0 <= ty < self.map_format):
+                continue
+            tile_idx = ty * self.map_format + tx
+            tile_enum = TerrainType(self.tiles[tile_idx].terrain_type)
+            if terrain_enum is not None and tile_enum != terrain_enum:
+                continue
+            if self.occupied_tiles_excluding_landscape[ty][tx]:
+                continue
+            if (tx, ty) in self.reserved_tiles:
+                continue
+            candidates.append((tx, ty))
+
+        if not candidates:
+            return 0
+
+        placed = 0
+        picks = sample(candidates, k=min(len(candidates), count))
+        for px, py in picks:
+            template = sample(templates, k=1)[0]
+            final_x, final_y = self.find_alternative_position(template, px, py, max_offset=max_offset,
+                                                              validation_function=self.validate_placement_for_landscape)
+            if final_x is not None and final_y is not None:
+                self.id += 1
+                self.absod_id += 1
+                self.objectTemplates.append(template)
+                self.objects.append(Objects(final_x, final_y, 0, self.id, [], None))
+                # Zaznaczamy kafelki obiektu jako zajete wg reguły excluding_landscape
+                self.mark_object_tiles_as_occupied(template, final_x, final_y, 0)
+                placed += 1
+
+        return placed
+
+    def place_objects_from_terrain(self, terrain_key: str, count: int = 1, max_offset: int = 5) -> int:
+        """
+        Umieszcza `count` obiektów z pliku terenu na całej mapie, wybierając losowe
+        kafelki odpowiadające typowi terenu i nie zajęte według
+        `self.occupied_tiles_excluding_landscape`.
+        """
+        templates = self.load_templates_for_terrain(terrain_key)
+        if not templates:
+            return 0
+
+        # Spróbuj znaleźć kandydatów na całej mapie
+        candidates = []
+        for y in range(self.map_format):
+            for x in range(self.map_format):
+                if self.occupied_tiles_excluding_landscape[y][x]:
+                    continue
+                if (x, y) in self.reserved_tiles:
+                    continue
+                # opcjonalne dopasowanie po nazwie terenu
+                name = terrain_key.lower().replace('.json', '').replace('_obj', '')
+                try:
+                    terrain_enum = TerrainType[name.upper()]
+                except Exception:
+                    terrain_enum = None
+
+                tile_enum = TerrainType(self.tiles[y * self.map_format + x].terrain_type)
+                if terrain_enum is not None and tile_enum != terrain_enum:
+                    continue
+
+                candidates.append((x, y))
+
+        if not candidates:
+            return 0
+
+        placed = 0
+        for px, py in sample(candidates, k=min(len(candidates), count)):
+            template = sample(templates, k=1)[0]
+            final_x, final_y = self.find_alternative_position(template, px, py, max_offset=max_offset,
+                                                              validation_function=self.validate_placement_for_landscape)
+            if final_x is not None and final_y is not None:
+                self.id += 1
+                self.absod_id += 1
+                self.objectTemplates.append(template)
+                self.objects.append(Objects(final_x, final_y, 0, self.id, [], None))
+                self.mark_object_tiles_as_occupied(template, final_x, final_y, 0)
+                placed += 1
+
+        return placed
