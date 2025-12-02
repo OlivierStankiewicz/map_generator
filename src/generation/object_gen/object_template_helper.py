@@ -1,9 +1,12 @@
 import os
+import queue
 import sys
+from binascii import a2b_hex
 from collections import deque
 from copy import copy
 from dataclasses import dataclass
-from random import randint, choices, sample
+from importlib.resources.simple import TraversableReader
+from random import randint, choices, sample, random
 from math import sqrt
 
 from classes.Enums.ArtifactType import converterTypeToNum as ar_converterTypeToNum
@@ -14,13 +17,17 @@ from classes.Objects.Properties.Helpers.Creatures import Creatures
 from classes.Objects.Properties.Helpers.Guardians import Guardians
 from classes.Objects.Properties.Hero import Hero
 from classes.Objects.Properties.Monster import Monster
+from classes.Objects.Properties.PandorasBox import PandorasBox
 from classes.Objects.Properties.RandomDwellingPresetAlignment import RandomDwellingPresetAlignment
 from classes.Objects.Properties.Resource import Resource
 from classes.Objects.Properties.Scholar import Scholar
 from classes.Objects.Properties.SeersHut import SeersHut
 from classes.Objects.Properties.Shrine import Shrine
+from classes.Objects.Properties.Sign import Sign
+from classes.Objects.Properties.SpellScroll import SpellScroll
 from classes.Objects.Properties.TrivialOwnedObject import TrivialOwnedObject
 from classes.Objects.Properties.WitchHut import WitchHut
+from classes.Objects.PropertiesBase import Properties
 from classes.player.Heroes import Heroes
 from classes.player.MainTown import MainTown
 from generation.additional_info_gen.victory_condition_gen import VictoryConditionParams
@@ -68,6 +75,8 @@ class ObjectTemplateHelper:
         self.mines = read_object_templates_from_json("mines")
         self.resources = read_object_templates_from_json("resources")
         self.random_monsters = read_object_templates_from_json("random_monsters")
+        self.water_objects = read_object_templates_from_json("water_obj")
+        self.artifacts = read_object_templates_from_json("artifacts")
         self.reserved_tiles = reserved_tiles if reserved_tiles is not None else set()
 
         self.map_format = int(sqrt(len(self.tiles)))
@@ -84,6 +93,7 @@ class ObjectTemplateHelper:
         self.occupied_tiles_excluding_actionable = [[False for _ in range(self.map_format)] for _ in range(self.map_format)]
         self.city_field_mapping = []  # Lista do przechowywania mapowania miast do p�l
         self.final_city_positions: list[tuple[int, int, int]] = [] # TownType.value, pos_x, pos_y
+        self.water = []
 
         ### params ###
         self.town_params = town_params
@@ -96,12 +106,20 @@ class ObjectTemplateHelper:
         limitations =       [#36      72      108     144
                             [(2,4),  (2,8),  (2,8),  (2,8)], #player
                             [(2,4),  (2,8),  (2,8),  (2,8)], #miasto
-                            [(1,1),  (2,2),  (2,2),  (2,2)], #dwelling
+                            [(1,1),  (1,2),  (2,2),  (2,3)], #dwelling
                             [(1,1),  (1,1),  (1,1),  (1,1)], #level3
-                            [(1,1),  (1,2),  (2,2),  (4,4)], #level2
-                            [(1,1),  (1,2),  (2,2),  (5,5)], #level1.5
-                            [(1,1),  (1,2),  (2,2),  (8,10)]] #level1
+                            [(1,1),  (1,2),  (2,2),  (3,4)], #level2
+                            [(1,1),  (1,2),  (2,2),  (3,4)], #level1.5
+                            [(1,1),  (1,2),  (2,2),  (3,6)], #level1
+                            [(5, 10), (10, 15), (15, 20), (20, 25)], #artifacts
+                            [(15, 25), (20, 35), (45, 67), (80, 130)],
+                            [(5, 10), (10, 15), (15, 20), (20, 25)]] #resources
+
         self.limits = [i[int(self.map_format/36) - 1] for i in limitations]
+        water, _ = self.bfs()
+        water_percentage = len(water) / (self.map_format * self.map_format)
+        for i in range(7, len(self.limits)):
+            self.limits[i] = (int(self.limits[i][0] * (1 - water_percentage)), int(self.limits[i][1] * (1 - water_percentage)))
 
 
     def initData(self):
@@ -125,6 +143,10 @@ class ObjectTemplateHelper:
         self.generate_dwelling_precise_positioning()
         # warstwa 4 budowle specjalne
         self.generate_special_building()
+        # warstwa 7 artefakty, zasoby i potwory
+        self.generate_artifacts_resources_monsters()
+        # budowle na wodzie, shipyard, lighthouse
+        self.generate_water_object()
 
         return (self.objectTemplates, self.objects, self.city_field_mapping,
                 self.players, self.occupied_tiles_excluding_landscape, self.occupied_tiles_excluding_actionable, self.actionable_tiles)
@@ -163,6 +185,7 @@ class ObjectTemplateHelper:
                     self.occupied_tiles_excluding_landscape[tile_y][tile_x] = True
                     if not actionable:
                         self.occupied_tiles_excluding_actionable[tile_y][tile_x] = True
+                    self.occupied_tiles[tile_y][tile_x] = True
                     # oznaczaj obszar z offsetem w macierzy glównej
                     for dy in range(-offset, offset + 1):
                         for dx in range(-offset, offset + 1):
@@ -270,6 +293,44 @@ class ObjectTemplateHelper:
                     if self.occupied_tiles_excluding_landscape[tile_y][tile_x] or (tile_x, tile_y) in self.reserved_tiles:
                         # print(f"Pozycja ({x}, {y}) - kolizja na kafelku ({tile_x}, {tile_y})")
                         return False
+
+        return True
+
+    def validate_placement_for_water_objects(self, template: ObjectsTemplate, x: int, y: int) -> bool:
+        # Sprawdz czy pozycja jest w granicach mapy (główny punkt)
+        if x < 0 or x >= self.map_format or y < 0 or y >= self.map_format:
+            return False
+
+        if not template.passability:
+            return False
+
+        rows = 6
+        cols = 8
+
+        for row in range(rows):
+            for col in range(cols):
+                tile_x = x - col
+                tile_y = y - 5 + row
+
+                passable = bool(not ((template.passability[row] >> (7 - col)) & 1))
+                actionable = bool((template.actionability[row] >> (7 - col)) & 1)
+
+                # Jeśli kafelek, który obiekt by zajmował, leży poza mapą -> invalid
+                if not (0 <= tile_x < self.map_format and 0 <= tile_y < self.map_format):
+                    if passable or actionable:
+                        # obiekt wychodzi poza mapę
+                        return False
+                    continue
+
+                if passable or actionable:
+                    if self.occupied_tiles[tile_y][tile_x] and (tile_y, tile_x) not in self.water:
+                        # print(f"Pozycja ({x}, {y}) - kolizja na kafelku ({tile_x}, {tile_y})")
+                        return False
+                    offset = 3
+                    for i in range(-offset, offset + 1):
+                        for j in range(-offset, offset + 1):
+                            if (tile_x + i, tile_y + j) not in self.reserved_tiles:
+                                return False
 
         return True
 
@@ -459,7 +520,7 @@ class ObjectTemplateHelper:
                 continue
 
             # Add RandomDwelling on remaining fields with precise positioning
-            for additional_field_id in assigned_fields[1:self.limits[2][0] + 1]:  # Skip first field (main)
+            for additional_field_id in assigned_fields[1:randint(self.limits[2][0], self.limits[2][1]) + 1]:  # Skip first field (main)
                 additional_field = next((f for f in fields_info if f.field_id == additional_field_id), None)
                 if additional_field:
                     precise_dwelling_x, precise_dwelling_y = self.find_dwelling_position(all_regions,
@@ -493,58 +554,74 @@ class ObjectTemplateHelper:
         self.id = id
         self.absod_id = absod_id
 
-
     def generate_heroes_positioning(self):
         heroes = []
         heroes_templates = []
         id = self.id
         absod_id = self.absod_id
+        used_heroes = []
 
         for i, (city, pos_x, pos_y) in enumerate(self.final_city_positions):
             a = randint(0, 1)
             # print(f"Hero city {i}: {city} ({pos_x}, {pos_y}): {city * 2 + a}")
             heroTemplate = self.heroes[city * 2 + a]
-            type = (city * 2 + a) * 8 + randint(0, 7)
+
+            type = None
+            while type is None or type in used_heroes:
+                type = (city * 2 + a) * 8 + randint(0, 7)
+            used_heroes.append(type)
             hero: Objects = self.heroes_specification[type]
 
-            final_x, final_y = self.find_alternative_position(heroTemplate, pos_x, pos_y, max_offset=5, validation_function=self.validate_placement_for_landscape)
+            for _ in range(10):
+                final_x, final_y = self.find_alternative_position(heroTemplate, pos_x, pos_y, max_offset=5,
+                                                                  validation_function=self.validate_placement_for_landscape)
+                if final_x is not None and final_y is not None:
+                    id = id + 1
+                    absod_id = absod_id + 1
 
-            if final_x is not None and final_y is not None:
-                id = id + 1
-                absod_id = absod_id + 1
+                    hero.x = final_x
+                    hero.y = final_y
+                    hero.template_idx = id
+                    hero.properties['absod_id'] = absod_id
+                    hero.properties['type'] = type
+                    hero.properties['owner'] = i
 
-                hero.x = final_x
-                hero.y = final_y
-                hero.template_idx = id
-                hero.properties['absod_id'] = absod_id
-                hero.properties['type'] = type
-                hero.properties['owner'] = i
+                    heroes_templates.append(heroTemplate)
+                    heroes.append(hero)
+                    self.players[i].can_be_computer = 1
+                    self.players[i].can_be_human = 1
+                    self.players[i].starting_hero.type = type
+                    self.players[i].starting_hero.portrait = type
+                    self.players[i].heroes = [Heroes(type, '')]  # HeroEnum(type).name
+                    if city == 0:
+                        self.players[i].allowed_alignments.castle = True
+                    elif city == 1:
+                        self.players[i].allowed_alignments.rampart = True
+                    elif city == 2:
+                        self.players[i].allowed_alignments.tower = True
+                    elif city == 3:
+                        self.players[i].allowed_alignments.inferno = True
+                    elif city == 4:
+                        self.players[i].allowed_alignments.necropolis = True
+                    elif city == 5:
+                        self.players[i].allowed_alignments.dungeon = True
+                    elif city == 6:
+                        self.players[i].allowed_alignments.stronghold = True
+                    elif city == 7:
+                        self.players[i].allowed_alignments.fortress = True
+                    elif city == 8:
+                        self.players[i].allowed_alignments.conflux = True
 
-                heroes_templates.append(heroTemplate)
-                heroes.append(hero)
-                self.players[i].can_be_computer = 1
-                self.players[i].can_be_human = 1
-                self.players[i].starting_hero.type = type
-                self.players[i].starting_hero.portrait = type
-                self.players[i].heroes = [Heroes(type, '')] #HeroEnum(type).name
-                if city == 0: self.players[i].allowed_alignments.castle = True
-                elif city == 1: self.players[i].allowed_alignments.rampart = True
-                elif city == 2: self.players[i].allowed_alignments.tower = True
-                elif city == 3: self.players[i].allowed_alignments.inferno = True
-                elif city == 4: self.players[i].allowed_alignments.necropolis = True
-                elif city == 5: self.players[i].allowed_alignments.dungeon = True
-                elif city == 6: self.players[i].allowed_alignments.stronghold = True
-                elif city == 7: self.players[i].allowed_alignments.fortress = True
-                elif city == 8: self.players[i].allowed_alignments.conflux = True
-
-                self.mark_object_tiles_as_occupied(heroTemplate, final_x, final_y)
+                    self.mark_object_tiles_as_occupied(heroTemplate, final_x, final_y)
+                    break
+            else:
+                raise Exception(f"Can not set a hero")
 
         self.objectTemplates.extend(heroes_templates)
         self.objects.extend(heroes)
 
         self.id = id
         self.absod_id = absod_id
-
 
     def generate_special_building(self):
         self.generate_special_building_level3()
@@ -682,6 +759,7 @@ class ObjectTemplateHelper:
                                             id = id + 1
                                             absod_id = absod_id + 1
                                             object = Objects(final_x, final_y, 0, id, [], Monster.create_default())
+                                            object.properties.absod_id = absod_id
 
                                             buildings_templates.append(monster_template)
                                             buildings.append(object)
@@ -1040,3 +1118,165 @@ class ObjectTemplateHelper:
                                     self.objectTemplates.append(template)
                                     self.objects.append(object)
                                     self.mark_object_tiles_as_occupied(template, final_x - size + x, final_y - size + y)
+
+    def bfs(self):
+        visited = [[False for _ in range(self.map_format)] for _ in range(self.map_format)]
+        queue = []
+        water = set()
+        shore = set()
+        directions = [(-1, -1), (0, -1), (1, -1),
+                      (-1, 0), (1, 0),
+                      (-1, 1), (0, 1), (1, 1)]
+
+        for y in range(len(visited)):
+            for x in range(len(visited)):
+                if self.tiles[y * self.map_format + x].terrain_type == TerrainType.WATER.value:
+                    queue.append((x, y))
+                    break
+            if len(queue) > 0:
+                break
+
+        while queue:
+            x, y = queue.pop(0)
+
+            if not visited[x][y]:
+                visited[x][y] = True
+
+                near_shore = False
+                for m, n in directions:
+                    if 0 <= x + m < self.map_format and 0 <= y + n < self.map_format:
+                        if self.tiles[(y + n) * self.map_format + (x + m)].terrain_type != TerrainType.WATER.value:
+                            shore.add((x + m, y + n))
+                            near_shore = True
+                        else:
+                            queue.append((x + m, y + n))
+
+                if not near_shore:
+                    water.add((x, y))
+
+        return list(water), list(shore)
+
+
+    def generate_water_object(self):
+        self.water, shore = self.bfs()
+
+        chosen = sample(self.water, k=int(len(self.water)/40))
+
+        for x, y in chosen:
+            r = randint(0, 50)
+            print(r)
+            if 0 <= r < 25: # 0 - 9
+                r = randint(0, 9)
+            elif 25 <= r < 40: # 18 - 31
+                r = randint(10, 19)
+            elif 40 <= r <= 50: # 10 - 17
+                r = randint(20, 31)
+            else: # 32 - 34
+                r = randint(32, 34)
+
+            if 10 <= r <= 17:
+                final_x, final_y = x, y
+                for i in (0, 8):
+                    for j in (0, 6):
+                        if (final_x is None and final_y is None) or (
+                                final_x - i >= 0 and final_y - j >= 0 and self.tiles[
+                            final_x - i + self.map_format * (final_y - j)].terrain_type != TerrainType.WATER.value):
+                            final_x, final_y = None, None
+                            break
+                        print((final_x - i, final_y - j))
+                if final_x is None and final_y is None:
+                    print(x, y)
+                    r = randint(0, 9) if randint(0, 1) > 0  else randint(20, 31)
+            template: ObjectsTemplate = self.water_objects[r]
+
+            final_x, final_y = self.find_alternative_position(template, x, y, max_offset=5, validation_function=self.validate_placement_for_water_objects)
+            if final_x is not None and final_y is not None:
+                self.id = self.id + 1
+
+                if r != 31:
+                    object = Objects(final_x, final_y, 0, self.id, [], None)
+                else:
+                    object = Objects(final_x, final_y, 0, self.id, [], Sign.create_default())
+
+                self.objectTemplates.append(template)
+                self.objects.append(object)
+
+                print((final_x, final_y), self.occupied_tiles[final_x][final_y])
+
+                self.mark_object_tiles_as_occupied(template, final_x, final_y, 5)
+
+                # for i in range(self.map_format):
+                #     print([1 if self.occupied_tiles[i][j] else 0 for j in range(self.map_format)])
+
+
+    def generate_artifacts_resources_monsters(self):
+        self.generate_artifacts()
+        self.generate_resources()
+        self.generate_monsters()
+
+    def find_place_one_by_one(self):
+        test_template = ObjectsTemplate.create_default()
+        test_template.passability = [255, 255, 255, 255, 255, 254]
+        for _ in range(100):
+            x, y = randint(0, self.map_format), randint(0, self.map_format)
+            final_x, final_y = self.find_alternative_position(test_template, x, y, max_offset=5, validation_function=self.validate_placement_for_landscape)
+            if final_x is not None and final_y is not None:
+                return final_x, final_y
+        return None, None
+
+
+    def generate_artifacts(self):
+        for _ in range(0, 1):
+            final_x, final_y = self.find_place_one_by_one()
+            if final_x is not None and final_y is not None:
+                self.id += 1
+                ch = 60
+                r = randint(0, len(self.artifacts) - 1 + ch)
+                if r == 0:
+                    object = Objects(final_x, final_y, 0, self.id, [], SpellScroll.create_default())
+                elif len(self.artifacts) - 1 <= r:
+                    object = Objects(final_x, final_y, 0, self.id, [], PandorasBox.create_defaults())
+                    r = len(self.artifacts) - 1
+                else:
+                    object = Objects(final_x, final_y, 0, self.id, [], {})
+                objectTemplate = self.artifacts[r]
+
+                self.mark_object_tiles_as_occupied(objectTemplate, final_x, final_y, 0)
+
+                self.objects.append(object)
+                self.objectTemplates.append(objectTemplate)
+
+
+    def generate_resources(self):
+        for _ in range(0, randint(self.limits[8][0], self.limits[8][1])):
+            final_x, final_y = self.find_place_one_by_one()
+            if final_x is not None and final_y is not None:
+                self.id += 1
+                r = randint(0, len(self.resources) - 1)
+                if r == 8:
+                    object = Objects(final_x, final_y, 0, self.id, [], None)
+                else:
+                    object = Objects(final_x, final_y, 0, self.id, [], Resource.create_default())
+                objectTemplate = self.resources[r]
+
+                self.mark_object_tiles_as_occupied(objectTemplate, final_x, final_y, 0)
+
+                self.objects.append(object)
+                self.objectTemplates.append(objectTemplate)
+
+
+    def generate_monsters(self):
+        for _ in range(0, randint(self.limits[9][0], self.limits[9][1])):
+            final_x, final_y = self.find_place_one_by_one()
+            if final_x is not None and final_y is not None:
+                self.id += 1
+                self.absod_id += 1
+                r = randint(0, len(self.random_monsters) - 1)
+                object = Objects(final_x, final_y, 0, self.id, [], Monster.create_default())
+                object.properties.absod_id = self.absod_id
+                objectTemplate = self.random_monsters[r]
+
+                self.mark_object_tiles_as_occupied(objectTemplate, final_x, final_y, 0)
+
+                self.objects.append(object)
+                self.objectTemplates.append(objectTemplate)

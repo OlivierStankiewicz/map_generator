@@ -20,8 +20,7 @@ class PandorasBox(Properties):
             secondary_skills = [],
             artifacts = [],
             spells = [],
-            creatures = [],
-            unknown= [0, 0, 0, 0, 0, 0, 0, 0]
+            creatures = []
             )
 
     def __init__(self, experience: int,
@@ -33,8 +32,7 @@ class PandorasBox(Properties):
             secondary_skills: list[SecondarySkills],
             artifacts: list[int],
             spells: list[int],
-            creatures: list[Creatures],
-            unknown: list[int]) -> None:
+            creatures: list[Creatures]) -> None:
         self.experience= experience
         self.spell_points= spell_points
         self.morale= morale
@@ -45,10 +43,11 @@ class PandorasBox(Properties):
         self.artifacts= artifacts
         self.spells= spells
         self.creatures= creatures
-        self.unknown= unknown
+        self.unknown= [0, 0, 0, 0, 0, 0, 0, 0]
 
     def to_dict(self) -> dict:
         return {
+            'experience': self.experience,
             'spell_points' : self.spell_points,
             'morale': self.morale,
             'luck': self.luck,

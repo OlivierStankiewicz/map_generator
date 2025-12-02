@@ -1,0 +1,444 @@
+{
+  "def": "AVLref10.def",
+  "passability": [255, 255, 255, 63, 31, 159],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [0, 1],
+  "object_class": 161, // IMPASSABLE_REEF
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 1,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLref20.def",
+  "passability": [255, 255, 255, 159, 31, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [0, 1],
+  "object_class": 161, // IMPASSABLE_REEF
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 1,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLref30.def",
+  "passability": [255, 255, 255, 255, 63, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [0, 1],
+  "object_class": 161, // IMPASSABLE_REEF
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 1,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLref40.def",
+  "passability": [255, 255, 255, 255, 127, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [0, 1],
+  "object_class": 161, // IMPASSABLE_REEF
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 1,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLref50.def",
+  "passability": [255, 255, 255, 255, 255, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [0, 1],
+  "object_class": 161, // IMPASSABLE_REEF
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 1,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLref60.def",
+  "passability": [255, 255, 255, 255, 127, 127],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [0, 1],
+  "object_class": 161, // IMPASSABLE_REEF
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 1,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLrk1w0.def",
+  "passability": [255, 255, 255, 255, 255, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [0, 1],
+  "object_class": 147, // IMPASSABLE_ROCK
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLrk2w0.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [0, 1],
+  "object_class": 147, // IMPASSABLE_ROCK
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLrk3w0.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [0, 1],
+  "object_class": 147, // IMPASSABLE_ROCK
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLrk4w0.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [0, 1],
+  "object_class": 147, // IMPASSABLE_ROCK
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVXfw0.def",
+  "passability": [255, 255, 255, 255, 255, 255],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [0, 1],
+  "landscape_group": [0, 1],
+  "object_class": 225, // FAVORABLE_WINDS
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 1,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVXfw1.def",
+  "passability": [255, 255, 255, 255, 255, 255],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [0, 1],
+  "landscape_group": [0, 1],
+  "object_class": 225, // FAVORABLE_WINDS
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 1,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVXfw2.def",
+  "passability": [255, 255, 255, 255, 255, 255],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [0, 1],
+  "landscape_group": [0, 1],
+  "object_class": 225, // FAVORABLE_WINDS
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 1,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVXfw3.def",
+  "passability": [255, 255, 255, 255, 255, 255],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [0, 1],
+  "landscape_group": [0, 1],
+  "object_class": 225, // FAVORABLE_WINDS
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 1,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVXfw4.def",
+  "passability": [255, 255, 255, 255, 255, 255],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [0, 1],
+  "landscape_group": [0, 1],
+  "object_class": 225, // FAVORABLE_WINDS
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 1,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVXfw5.def",
+  "passability": [255, 255, 255, 255, 255, 255],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [0, 1],
+  "landscape_group": [0, 1],
+  "object_class": 225, // FAVORABLE_WINDS
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 1,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVXfw6.def",
+  "passability": [255, 255, 255, 255, 255, 255],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [0, 1],
+  "landscape_group": [0, 1],
+  "object_class": 225, // FAVORABLE_WINDS
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 1,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVXfw7.def",
+  "passability": [255, 255, 255, 255, 255, 255],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [0, 1],
+  "landscape_group": [0, 1],
+  "object_class": 225, // FAVORABLE_WINDS
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 1,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLklp10.def",
+  "passability": [255, 255, 255, 255, 255, 255],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [0, 1],
+  "object_class": 125, // PASSABLE_KELP
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 1,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLklp20.def",
+  "passability": [255, 255, 255, 255, 255, 255],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [0, 1],
+  "object_class": 125, // PASSABLE_KELP
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 1,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVAdlic0.def",
+  "passability": [255, 255, 255, 255, 255, 63],
+  "actionability": [0, 0, 0, 0, 0, 64],
+  "allowed_landscapes": [0, 1],
+  "landscape_group": [0, 1],
+  "object_class": 24, // DERELICT_SHIP
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVAflot0.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 128],
+  "allowed_landscapes": [0, 1],
+  "landscape_group": [0, 1],
+  "object_class": 29, // FLOTSAM
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVAsurv0.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 128],
+  "allowed_landscapes": [0, 1],
+  "landscape_group": [0, 1],
+  "object_class": 86, // SHIPWRECK_SURVIVOR
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVAwrek0.def",
+  "passability": [255, 255, 255, 255, 255, 63],
+  "actionability": [0, 0, 0, 0, 0, 64],
+  "allowed_landscapes": [0, 1],
+  "landscape_group": [0, 1],
+  "object_class": 85, // SHIPWRECK
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVAwre20.def",
+  "passability": [255, 255, 255, 255, 255, 63],
+  "actionability": [0, 0, 0, 0, 0, 128],
+  "allowed_landscapes": [0, 1],
+  "landscape_group": [0, 1],
+  "object_class": 85, // SHIPWRECK
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVSbuoy0.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 128],
+  "allowed_landscapes": [0, 1],
+  "landscape_group": [0, 1],
+  "object_class": 11, // BUOY
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVXccht0.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 128],
+  "allowed_landscapes": [0, 1],
+  "landscape_group": [0, 1],
+  "object_class": 82, // SEA_CHEST
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVXmapw0.def",
+  "passability": [255, 255, 255, 255, 255, 63],
+  "actionability": [0, 0, 0, 0, 0, 64],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [0, 1],
+  "object_class": 13, // CARTOGRAPHER
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVXmerm0.def",
+  "passability": [255, 255, 255, 255, 255, 31],
+  "actionability": [0, 0, 0, 0, 0, 64],
+  "allowed_landscapes": [0, 1],
+  "landscape_group": [0, 1],
+  "object_class": 52, // MERMAID
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVXsirn0.def",
+  "passability": [255, 255, 255, 255, 255, 31],
+  "actionability": [0, 0, 0, 0, 0, 64],
+  "allowed_landscapes": [0, 1],
+  "landscape_group": [0, 1],
+  "object_class": 92, // SIRENS
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVXwhrl0.def",
+  "passability": [255, 255, 255, 255, 31, 31],
+  "actionability": [0, 0, 0, 0, 224, 224],
+  "allowed_landscapes": [0, 1],
+  "landscape_group": [0, 1],
+  "object_class": 111, // WHIRLPOOL
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 1,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVXbttl0.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 128],
+  "allowed_landscapes": [0, 1],
+  "landscape_group": [0, 1],
+  "object_class": 59, // OCEAN_BOTTLE
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVXboat0.def",
+  "passability": [255, 255, 255, 255, 255, 191],
+  "actionability": [0, 0, 0, 0, 0, 64],
+  "allowed_landscapes": [0, 1],
+  "landscape_group": [0, 1],
+  "object_class": 8, // BOAT
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVXboat1.def",
+  "passability": [255, 255, 255, 255, 255, 191],
+  "actionability": [0, 0, 0, 0, 0, 64],
+  "allowed_landscapes": [0, 1],
+  "landscape_group": [0, 1],
+  "object_class": 8, // BOAT
+  "object_subclass": 1,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVXboat2.def",
+  "passability": [255, 255, 255, 255, 255, 191],
+  "actionability": [0, 0, 0, 0, 0, 64],
+  "allowed_landscapes": [0, 1],
+  "landscape_group": [0, 1],
+  "object_class": 8, // BOAT
+  "object_subclass": 2,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVXshyd0.def",
+  "passability": [255, 255, 255, 255, 255, 31],
+  "actionability": [0, 0, 0, 0, 0, 64],
+  "allowed_landscapes": [255, 0],
+  "landscape_group": [255, 0],
+  "object_class": 87, // SHIPYARD
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVXlths0.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 128],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [191, 0],
+  "object_class": 42, // LIGHTHOUSE
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+}
