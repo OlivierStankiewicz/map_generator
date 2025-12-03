@@ -88,6 +88,7 @@ class ObjectTemplateHelper:
         self.result = None
 
         self.resources_positions = [(-2, 1), (1, 1), (-3, 1)]
+        self.actionable_tiles = []
 
         self.towns_generated = []
         self.heroes_generated = []
@@ -99,6 +100,7 @@ class ObjectTemplateHelper:
         # True = miejsce zajete/nieprzejezdne, False = miejsce wolne/przejezdne
         self.occupied_tiles = [[False for _ in range(self.map_format)] for _ in range(self.map_format)]
         self.occupied_tiles_excluding_landscape = [[False for _ in range(self.map_format)] for _ in range(self.map_format)]
+        self.occupied_tiles_excluding_actionable = [[False for _ in range(self.map_format)] for _ in range(self.map_format)]
         self.city_field_mapping = []  # Lista do przechowywania mapowania miast do p�l
         self.final_city_positions: list[tuple[int, int, int]] = [] # TownType.value, pos_x, pos_y
         self.water = []
@@ -141,11 +143,6 @@ class ObjectTemplateHelper:
             self.reserved_tiles
         )
 
-        # test = ObjectsTemplate.create_default()
-        # test.passability = [255, 255, 255, 255, 255, 254]
-        # test.actionability = [0, 0, 0, 0, 0, 0]
-        # self.mark_object_tiles_as_occupied(test, 0, 0, 3)
-
         self.create_default_object_template()
         # warstwa 2 zamki i bohaterowie
         self.generate_cities_precise_positioning()
@@ -169,11 +166,8 @@ class ObjectTemplateHelper:
         self.place_objects_from_terrain("sand_obj", count=100, max_offset=5)
         self.place_objects_from_terrain("snow_obj", count=100, max_offset=5)
 
-        # self.occ.sort()
-        # for i in self.occ:
-        #     print(i)
-
-        return self.objectTemplates, self.objects, self.city_field_mapping, self.players
+        return (self.objectTemplates, self.objects, self.city_field_mapping,
+                self.players, self.occupied_tiles_excluding_landscape, self.occupied_tiles_excluding_actionable, self.actionable_tiles, self.towns_generated, self.heroes_generated, self.monsters_generated)
 
     def create_default_object_template(self):
         self.objectTemplates.append(ObjectsTemplate.create_default())
@@ -207,6 +201,8 @@ class ObjectTemplateHelper:
                 # Oznacz kafelek jako zajety jesli jest nieprzejezdny lub akcjonowalny
                 if passable or actionable:
                     self.occupied_tiles_excluding_landscape[tile_y][tile_x] = True
+                    if not actionable:
+                        self.occupied_tiles_excluding_actionable[tile_y][tile_x] = True
                     self.occupied_tiles[tile_y][tile_x] = True
                     # oznaczaj obszar z offsetem w macierzy glównej
                     for dy in range(-offset, offset + 1):
@@ -215,6 +211,8 @@ class ObjectTemplateHelper:
                             ny = tile_y + dy
                             if 0 <= nx < self.map_format and 0 <= ny < self.map_format:
                                 self.occupied_tiles[ny][nx] = True
+                    if actionable:
+                        self.actionable_tiles.append((tile_x, tile_y))
 
 
     def get_occupied_tiles_count(self) -> int:
@@ -269,7 +267,18 @@ class ObjectTemplateHelper:
                         return False
                     if (tile_x, tile_y) in self.reserved_tiles:
                         return False
-        
+
+                if actionable:
+                    neighbors_occupied = 0
+                    for i in [(-1,0), (1,0), (0,-1), (0,1)]:
+                        nx = tile_x + i[0]
+                        ny = tile_y + i[1]
+                        if 0 <= nx < self.map_format and 0 <= ny < self.map_format:
+                            if self.occupied_tiles[ny][nx] or (nx, ny) in self.reserved_tiles:
+                                neighbors_occupied += 1
+                    if neighbors_occupied == 4: # all neighbors occupied
+                        return False
+
         return True
 
     def validate_placement_for_landscape(self, template: ObjectsTemplate, x: int, y: int) -> bool:
@@ -482,6 +491,10 @@ class ObjectTemplateHelper:
 
             self.objectTemplates.extend(cities_templates)
             self.objects.extend(cities)
+
+            for city in cities:
+                # append tuple of x-2, y, z
+                self.towns_generated.append((city.x-2, city.y, city.z))
 
             self.id = id
             self.absod_id = absod_id
@@ -894,8 +907,11 @@ class ObjectTemplateHelper:
                     town_type_index = self.get_town_type(final_x, final_y)
                     template = self.towns[town_type_index]
 
-                    final_x, final_y = self.find_alternative_position(template, final_x, final_y,
-                                                                                max_offset=15)
+                    # final_x, final_y = self.find_alternative_position(template, final_x, final_y,
+                    #                                                             max_offset=15)
+
+                    self.towns_generated.append((final_x-2, final_y, 0))
+
                 elif r == 0:  # Prison
                     hero = Hero.create_default()
                     hero.type = randint(0, 1)
@@ -1259,7 +1275,6 @@ class ObjectTemplateHelper:
                     object = Objects(final_x, final_y, 0, self.id, [], SpellScroll.create_default())
                 elif len(self.artifacts) - 1 <= r:
                     object = Objects(final_x, final_y, 0, self.id, [], self.create_pandoras_box())
-                    print("Pandoras box created", final_x, final_y)
                     r = len(self.artifacts) - 1
                 else:
                     object = Objects(final_x, final_y, 0, self.id, [], {})

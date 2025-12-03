@@ -1,5 +1,5 @@
 from classes.tile.Tile import TerrainType
-from generation.tile_gen.tile_gen import SpriteType
+from generation.tile_gen.tile_gen import TerrainSpriteType
 from abc import ABC, abstractmethod
 
 class SpriteHandler(ABC):
@@ -50,7 +50,7 @@ class SpriteHandler(ABC):
         
         return neighbors
     
-    def _resolve_inner_corner_conflict(self, neighbors_string: str, terrain_map: list[list[TerrainType]], x, y, neighbor_to_sprite_map: list[tuple[str, SpriteType, bool, bool]]) -> tuple[SpriteType, bool, bool] | None:
+    def _resolve_inner_corner_conflict(self, neighbors_string: str, terrain_map: list[list[TerrainType]], x, y, neighbor_to_sprite_map: list[tuple[str, TerrainSpriteType, bool, bool]]) -> tuple[TerrainSpriteType, bool, bool] | None:
         """
         Resolve inner corner conflicts based on extended neighbor checks.
             Parameters:
