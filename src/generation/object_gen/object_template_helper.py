@@ -157,14 +157,6 @@ class ObjectTemplateHelper:
         self.generate_artifacts_resources_monsters()
         # budowle na wodzie, shipyard, lighthouse
         self.generate_water_object()
-        # lasy
-        self.place_objects_from_terrain("grass_obj", count=100, max_offset=5)
-        self.place_objects_from_terrain("dirt_obj", count=100, max_offset=5)
-        self.place_objects_from_terrain("swamp_obj", count=100, max_offset=5)
-        self.place_objects_from_terrain("sand_obj", count=100, max_offset=5)
-        self.place_objects_from_terrain("lava_obj", count=100, max_offset=5)
-        self.place_objects_from_terrain("sand_obj", count=100, max_offset=5)
-        self.place_objects_from_terrain("snow_obj", count=100, max_offset=5)
 
         return (self.objectTemplates, self.objects, self.city_field_mapping,
                 self.players, self.occupied_tiles_excluding_landscape, self.occupied_tiles_excluding_actionable, self.actionable_tiles, self.towns_generated, self.heroes_generated, self.monsters_generated)
@@ -663,12 +655,6 @@ class ObjectTemplateHelper:
         city_to_fields = self.result['city_to_fields']
         # tiles_of_5 = get_region_tiles(all_regions, region_id=5)
 
-        buildings_templates = []
-        buildings = []
-
-        id = self.id
-        absod_id = self.absod_id
-
         for _, city_fields in city_to_fields.items():
             for field in city_fields:
                 for _ in range(randint(self.limits[6][0], self.limits[6][1])):
@@ -681,43 +667,39 @@ class ObjectTemplateHelper:
                                                                       max_offset=10)
 
                     if final_x is not None and final_y is not None:
-                        id = id + 1
 
                         if r == 6:
-                            object = Objects(final_x, final_y, 0, id, [], WitchHut.create_default())
+                            object = Objects(final_x, final_y, 0, self.id, [], WitchHut.create_default())
                         elif r == 9:
-                            object = Objects(final_x, final_y, 0, id, [], Shrine.create_default())
+                            object = Objects(final_x, final_y, 0, self.id, [], Shrine.create_default())
                         elif r == 12:
-                            object = Objects(final_x, final_y, 0, id, [], Scholar.create_default())
+                            object = Objects(final_x, final_y, 0, self.id, [], Scholar.create_default())
                         elif 13 <= r <= 15:
-                            object = Objects(final_x, final_y, 0, id, [], self.generate_seers_hut())
+                            object = Objects(final_x, final_y, 0, self.id, [], self.generate_seers_hut())
                         else:
-                            object = Objects(final_x, final_y, 0, id, [], None)
+                            object = Objects(final_x, final_y, 0, self.id, [], None)
+
+                        self.id = self.id + 1
+                        object.template_idx = self.id
                         # print(f"Lv1 ({final_x, final_y})")
-                        buildings_templates.append(template)
-                        buildings.append(object)
+                        self.objectTemplates.append(template)
+                        self.objects.append(object)
 
                         self.mark_object_tiles_as_occupied(template, final_x, final_y, 3)
 
                         if r == 8:
                             final_x, final_y = self.find_place_one_by_one()
                             if final_x is not None and final_y is not None:
-                                id += 1
-                                object = Objects(final_x, final_y, 0, id, [], None)
+                                self.id += 1
+                                object = Objects(final_x, final_y, 0, self.id, [], None)
                                 objectTemplate = ObjectsTemplate("AVXeyem0.def", [255, 255, 255, 255, 255, 127],
                                                                  [0, 0, 0, 0, 0, 128], [255, 1],
                                                                  [255, 0], 27, 0, 0, 0)
 
                                 self.mark_object_tiles_as_occupied(objectTemplate, final_x, final_y, 2)
 
-                                buildings.append(object)
-                                buildings_templates.append(objectTemplate)
-
-        self.objectTemplates.extend(buildings_templates)
-        self.objects.extend(buildings)
-
-        self.id = id
-        self.absod_id = absod_id
+                                self.objectTemplates.append(objectTemplate)
+                                self.objects.append(object)
 
 
 
@@ -821,7 +803,7 @@ class ObjectTemplateHelper:
 
     def generate_special_building_level2(self):
         special_buildings_templates = read_object_templates_from_json("special_buildings_level2")
-        terrain_buildings_partition = [(21, 28), (29, 32), (33, 38), (39, 42), (43, 46), (47, 51), (52, 52), (53, 54)]
+        terrain_buildings_partition = [(21, 28), (29, 32), (33, 37), (38, 41), (42, 45), (46, 50), (51, 51), (52, 53)]
         empty_regions = self.get_regions_without_cities()
         fields_info = self.result['fields_info']
 
@@ -1347,21 +1329,25 @@ class ObjectTemplateHelper:
 
     def generate_monsters(self):
         for _ in range(0, randint(self.limits[9][0], self.limits[9][1])):
-            final_x, final_y = self.find_place_one_by_one()
-            if final_x is not None and final_y is not None:
-                self.id += 1
-                self.absod_id += 1
-                r = randint(0, len(self.random_monsters) - 1)
-                object = Objects(final_x, final_y, 0, self.id, [], Monster.create_default())
-                object.properties.absod_id = self.absod_id
-                objectTemplate = self.random_monsters[r]
+            self.generate_monster()
 
-                self.mark_object_tiles_as_occupied(objectTemplate, final_x, final_y, 0)
+    def generate_monster(self):
+        final_x, final_y = self.find_place_one_by_one()
+        if final_x is not None and final_y is not None:
+            self.id += 1
+            self.absod_id += 1
+            r = randint(0, len(self.random_monsters) - 1)
+            object = Objects(final_x, final_y, 0, self.id, [], Monster.create_default())
+            object.properties.absod_id = self.absod_id
+            objectTemplate = self.random_monsters[r]
 
-                self.objects.append(object)
-                self.objectTemplates.append(objectTemplate)
-                self.monsters_generated.append((final_x, final_y, 0))
-                self.monsters_generated_obj.append(object)
+            self.mark_object_tiles_as_occupied(objectTemplate, final_x, final_y, 0)
+
+            self.objects.append(object)
+            self.objectTemplates.append(objectTemplate)
+            self.monsters_generated.append((final_x, final_y, 0))
+            self.monsters_generated_obj.append(object)
+
 
     def generate_seers_hut(self):
         seers_hut = SeersHut.create_default()
@@ -1376,11 +1362,10 @@ class ObjectTemplateHelper:
                 elif i == 2: seers_hut.quest.details.skills.spell_power = randint(5, 15)
                 elif i == 3: seers_hut.quest.details.skills.knowledge = randint(5, 15)
         elif r == 3:
-            print(123)
             obj: Objects = sample(self.heroes_generated_obj, k=1)[0]
             seers_hut.quest.details.absod_id = obj.properties['absod_id']
         elif r == 4:
-            print(456)
+            self.generate_monster()
             obj: Objects = sample(self.monsters_generated_obj, k=1)[0]
             seers_hut.quest.details.absod_id = obj.properties.absod_id
         elif r == 5:
@@ -1419,55 +1404,36 @@ class ObjectTemplateHelper:
         return res
 
 
+    def count_each_terrain_free_tiles(self):
+        counters = [0 for _ in range(10)]
+
+        for i in range(self.map_format):
+            for j in range(self.map_format):
+                if not self.occupied_tiles_excluding_landscape[j][i]:
+                    counters[self.tiles[i * self.map_format + j].terrain_type] += 1
+
+        print(f"counters: {[counter/(self.map_format ** 2) for counter in counters]}")
+        return [counter/(self.map_format ** 2) for counter in counters]
 
 
+    def generate_forests(self):
+        counters = self.count_each_terrain_free_tiles()
+        limitation = {"dirt": int(600   * counters[0]),
+                      "sand": int(150   * counters[1]),
+                      "grass": int(650  * counters[2]),
+                      "snow": int(450   * counters[3]),
+                      "swamp": int(600  * counters[4]),
+                      "rough": int(300  * counters[5]),
+                      "lava": int(300   * counters[7])}
 
-    def generate_forests(self, num_clusters: int = 5, cluster_radius: int = 8,
-                        density: float = 0.4, tree_templates: list = None):
-        """
-        Generuje lasy na mapie z uwzględnieniem hitboxów obiektów i zajętych pól.
+        self.place_objects_from_terrain("dirt_obj", count=limitation["dirt"], max_offset=1)
+        self.place_objects_from_terrain("sand_obj", count=limitation["sand"], max_offset=1)
+        self.place_objects_from_terrain("grass_obj", count=limitation["grass"], max_offset=1)
+        self.place_objects_from_terrain("snow_obj", count=limitation["snow"], max_offset=1)
+        self.place_objects_from_terrain("swamp_obj", count=limitation["swamp"], max_offset=1)
+        self.place_objects_from_terrain("rough_obj", count=limitation["rough"], max_offset=1)
+        self.place_objects_from_terrain("lava_obj", count=limitation["lava"], max_offset=1)
 
-        Args:
-            num_clusters: liczba klastrów lasów do wygenerowania
-            cluster_radius: promień każdego klastra (w kafelkach)
-            density: gęstość drzew w klastrze (0.0-1.0)
-            tree_templates: opcjonalna lista szablonów drzew; jeśli None, używa water_objects
-
-        Returns:
-            Liczba umieszczonych drzew
-        """
-        if tree_templates is None:
-            # Domyślnie używamy water_objects jako drzewa (mogą zawierać obiekty krajobrazowe)
-            tree_templates = self.water_objects[:min(5, len(self.water_objects))]
-
-        if not tree_templates:
-            print("UWAGA: Brak szablonów drzew dostępnych")
-            return 0
-
-        # Utwórz typy drzew
-        tree_types = create_default_tree_types(tree_templates)
-
-        # Utwórz placer
-        placer = ForestPlacer(self.map_format, self.map_format, self.occupied_tiles)
-
-        # Generuj lasy
-        trees_placed = placer.generate_forests(
-            tree_types,
-            num_clusters=num_clusters,
-            cluster_radius=cluster_radius,
-            density=density
-        )
-
-        # Dodaj drzewa do obiektu
-        for tree_x, tree_y, tree_template in trees_placed:
-            self.id += 1
-            tree_object = Objects(tree_x, tree_y, 0, self.id, [], TrivialOwnedObject.create_default())
-
-            self.objects.append(tree_object)
-            self.objectTemplates.append(tree_template)
-
-        print(f"Umieszczono {len(trees_placed)} drzew w {num_clusters} klastrach")
-        return len(trees_placed)
 
     def generate_forests_on_region(self, region_tiles: list, tree_templates: list = None,
                                   density: float = 0.3):

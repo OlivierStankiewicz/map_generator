@@ -645,16 +645,4 @@
   "object_group": 0, // Terrain
   "is_ground": 0,
   "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-},
-{
-  "def": "AVGrefg0.def",
-  "passability": [255, 255, 255, 255, 255, 63],
-  "actionability": [0, 0, 0, 0, 0, 128],
-  "allowed_landscapes": [255, 1],
-  "landscape_group": [255, 0],
-  "object_class": 78, // REFUGEE_CAMP
-  "object_subclass": 0,
-  "object_group": 0, // Terrain
-  "is_ground": 0,
-  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 }

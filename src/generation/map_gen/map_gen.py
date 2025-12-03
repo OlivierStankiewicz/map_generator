@@ -226,6 +226,8 @@ def generate_voronoi_map(
                 pass
             players.append(p)
 
+    obj.generate_forests()
+
     return Map(
         format=28,
         basic_info=generate_basic_info(map_size=size,
