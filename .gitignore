@@ -5,4 +5,4 @@ generated_maps/
 .idea/
 .venv/
 venv/
-mapgen_config.json
+mapgen_configs/

@@ -2568,6 +2568,7 @@ class MapGeneratorGUI(QWidget):
 
         # print("Overlaying player main towns...")
         # Paint player main towns on top of generated image
+        player_towns = 0
         try:
             painter = QPainter(qimg)
             painter.setRenderHint(QPainter.Antialiasing)
@@ -2611,6 +2612,7 @@ class MapGeneratorGUI(QWidget):
                     y_px = int(ty * tile_px)
                     rect = QtCore.QRect(x_px, y_px, int(tile_px), int(tile_px))
                     painter.fillRect(rect, color)
+                player_towns += 1
             painter.end()
         except Exception:
             # if overlay fails, return base image
@@ -2651,7 +2653,7 @@ class MapGeneratorGUI(QWidget):
             except Exception:
                 pass
         # print how many players' towns were drawn
-        print(f"Drew {len(getattr(map_obj, 'players', []) or [])} player towns on preview.")
+        print(f"Drew {player_towns} player towns on preview.")
         # print how many neutral towns were drawn
         print(f"Drew {len(neutral_towns)} neutral towns on preview.")
         return qimg
