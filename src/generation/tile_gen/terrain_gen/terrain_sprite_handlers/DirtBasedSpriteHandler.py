@@ -1,26 +1,27 @@
-from generation.map_gen.sprite_handlers.SpriteHandler import SpriteHandler
-from classes.tile.Tile import TerrainType
-from generation.tile_gen.tile_gen import SpriteType, get_terrain_type_sprite_type_range
 from random import randint
-from generation.map_gen.sprite_mappings.sprite_type_dirt_based import dirt_based_terrain_sprite_mappings
+
+from classes.tile.Tile import TerrainType
+from generation.tile_gen.tile_gen import TerrainSpriteType, get_terrain_type_sprite_type_range
+from generation.tile_gen.terrain_gen.terrain_sprite_handlers.SpriteHandler import SpriteHandler
+from generation.tile_gen.terrain_gen.terrain_sprite_mappings.sprite_type_dirt_based import dirt_based_terrain_sprite_mappings
 
 class DirtBasedSpriteHandler(SpriteHandler):
     def __init__(self, terrain_type: TerrainType):
         self.terrain_type = terrain_type
         self.sand_conflict_neighbor_strings = {"NNN\nNNN\nNNX", "NNN\nNNN\nXNN", "NNX\nNNN\nNNN", "XNN\nNNN\nNNN"}
         self.sand_conflict_sprite_mappings = [
-            ("NNN\nNNN\nNNX", SpriteType.SAND_INNER_CORNER, False, False),
-            ("NNN\nNNN\nXNN", SpriteType.SAND_INNER_CORNER, True, False),
-            ("NNX\nNNN\nNNN", SpriteType.SAND_INNER_CORNER, False, True),
-            ("XNN\nNNN\nNNN", SpriteType.SAND_INNER_CORNER, True, True),
+            ("NNN\nNNN\nNNX", TerrainSpriteType.SAND_INNER_CORNER, False, False),
+            ("NNN\nNNN\nXNN", TerrainSpriteType.SAND_INNER_CORNER, True, False),
+            ("NNX\nNNN\nNNN", TerrainSpriteType.SAND_INNER_CORNER, False, True),
+            ("XNN\nNNN\nNNN", TerrainSpriteType.SAND_INNER_CORNER, True, True),
         ]
 
         self.dirt_conflict_neighbor_strings = {"NNN\nNNN\nNNY", "NNN\nNNN\nYNN", "NNY\nNNN\nNNN", "YNN\nNNN\nNNN"}
         self.dirt_conflict_sprite_mappings = [
-            ("NNN\nNNN\nNNY", SpriteType.DIRT_INNER_CORNER, False, False),
-            ("NNN\nNNN\nYNN", SpriteType.DIRT_INNER_CORNER, True, False),
-            ("NNY\nNNN\nNNN", SpriteType.DIRT_INNER_CORNER, False, True),
-            ("YNN\nNNN\nNNN", SpriteType.DIRT_INNER_CORNER, True, True),
+            ("NNN\nNNN\nNNY", TerrainSpriteType.DIRT_INNER_CORNER, False, False),
+            ("NNN\nNNN\nYNN", TerrainSpriteType.DIRT_INNER_CORNER, True, False),
+            ("NNY\nNNN\nNNN", TerrainSpriteType.DIRT_INNER_CORNER, False, True),
+            ("YNN\nNNN\nNNN", TerrainSpriteType.DIRT_INNER_CORNER, True, True),
         ]
 
     def choose_sprite(self, terrain_map, x, y) -> tuple[int, bool, bool]:

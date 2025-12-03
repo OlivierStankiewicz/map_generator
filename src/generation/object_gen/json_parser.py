@@ -10,7 +10,6 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__))))
 from classes.ObjectsTemplate import ObjectsTemplate
 
 
-
 def split_objects(content: str):
     """Dzieli tekst na fragmenty odpowiadające pojedynczym obiektom JSON"""
     objs = []
@@ -66,8 +65,8 @@ def load_json_with_comments(filename):
 
     return data
 
-def json_to_objectTemplate(data):
-    objectTempltes = []
+def json_to_object_template(data):
+    object_templates = []
     for row in data:
         obj = ObjectsTemplate(
             row['def'],
@@ -81,8 +80,8 @@ def json_to_objectTemplate(data):
             row['is_ground'],
         )
 
-        objectTempltes.append(obj)
-    return objectTempltes
+        object_templates.append(obj)
+    return object_templates
 
 def json_to_objects(data):
     objects = []
@@ -111,7 +110,7 @@ def json_to_objects(data):
 def read_object_templates_from_json(filename):
     path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f"templates\\{filename}.json")
     data = load_json_with_comments(path)
-    return json_to_objectTemplate(data)
+    return json_to_object_template(data)
 
 def read_object_from_json(filename):
     path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f"templates\\objects\\{filename}.json")
@@ -128,4 +127,4 @@ if __name__ == "__main__":
     filename = "towns"
     r = read_object_and_template_from_json(filename)
 
-    print("✅ Wygenerowano")
+    print("generated")
