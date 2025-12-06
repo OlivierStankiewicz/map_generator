@@ -49,7 +49,6 @@ from classes.additional_info.VictoryConditions.DefeatHero import DefeatHero
 from classes.additional_info.VictoryConditions.DefeatMonster import DefeatMonster
 from classes.additional_info.LossConditions.LoseTown import LoseTown
 from classes.additional_info.LossConditions.LoseHero import LoseHero
-from classes.additional_info.VictoryConditions.DefeatHero import DefeatHero
 
 from GUI.functions.filter_none_values import filter_none_values
 from GUI.classes.LimitedPlainTextEdit import LimitedPlainTextEdit
@@ -1915,7 +1914,7 @@ class MapGeneratorGUI(QWidget):
                             elif v_choice == VictoryConditions.CAPTURE_TOWN:
                                 dlg = CaptureTownDialog(entries, parent=self)
                             elif v_choice == VictoryConditions.DEFEAT_HERO:
-                                dlg = HeroPickerDialog(entries, parent=self)
+                                dlg = HeroPickerDialog(entries, parent=self, type='victory')
                             elif v_choice == VictoryConditions.DEFEAT_MONSTER:
                                 dlg = DefeatMonsterDialog(entries, parent=self)
                             else:
@@ -2050,7 +2049,7 @@ class MapGeneratorGUI(QWidget):
                         if not heroes_gen:
                             QMessageBox.warning(self, "No heroes", "No heroes were found to select from for loss condition.")
                         else:
-                            hdlg = HeroPickerDialog(heroes_gen, parent=self)
+                            hdlg = HeroPickerDialog(heroes_gen, parent=self, type='loss')
                             hres = hdlg.exec()
                             if hres == QtWidgets.QDialog.Accepted:
                                 hsel = hdlg.selected_index()

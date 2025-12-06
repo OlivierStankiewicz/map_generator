@@ -49,13 +49,10 @@ class TownPickerDialog(QDialog):
                 pass
             self.list.addItem(item)
 
-
-        victory_condition_town_text = "Choose the town that should be used for the victory condition:"
-        loss_condition_town_text = "Choose the town that should be used for the loss condition:"
-        if(self.type == 'victory'):
-            layout.addWidget(QLabel(victory_condition_town_text))
-        elif(self.type == 'loss'):
-            layout.addWidget(QLabel(loss_condition_town_text))
+        if self.type == 'victory':
+            layout.addWidget(QLabel("Choose the town that should be used for the victory condition:"))
+        elif self.type == 'loss':
+            layout.addWidget(QLabel("Choose the town that should be used for the loss condition:"))
         layout.addWidget(self.list)
 
         btn_h = QHBoxLayout()

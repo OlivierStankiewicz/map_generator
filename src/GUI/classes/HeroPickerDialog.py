@@ -1,5 +1,5 @@
 from PySide6 import QtWidgets, QtCore
-from PySide6.QtWidgets import QDialog, QVBoxLayout, QListWidget, QLabel, QAbstractItemView, QHBoxLayout, QPushButton, QMessageBox
+from PySide6.QtWidgets import QDialog, QVBoxLayout, QListWidget, QLabel, QAbstractItemView, QHBoxLayout, QPushButton, QMessageBox, QListWidgetItem
 from PySide6.QtGui import QColor
 
 class HeroPickerDialog(QDialog):
@@ -8,12 +8,13 @@ class HeroPickerDialog(QDialog):
     Supports hero represented either as Objects (with attributes x,y,z and optional properties.name or name)
     or as simple tuples/lists (x,y,z). Returns the selected index via `selected_index()`.
     """
-    def __init__(self, heroes: list, parent=None):
+    def __init__(self, heroes: list, parent=None, type=None):
         super().__init__(parent)
         self.setWindowTitle("Select hero")
         self.setModal(True)
         self._heroes = heroes or []
         self._selected = None
+        self._type = type
 
         layout = QVBoxLayout()
         self.list = QListWidget()
@@ -59,7 +60,10 @@ class HeroPickerDialog(QDialog):
                 pass
             self.list.addItem(item)
 
-        layout.addWidget(QLabel("Choose the hero that should be used for the victory condition:"))
+        if self._type == 'victory':
+            layout.addWidget(QLabel("Choose the hero that should be used for the victory condition:"))
+        elif self._type == 'loss':
+            layout.addWidget(QLabel("Choose the hero that should be used for the loss condition:"))
         layout.addWidget(self.list)
 
         btn_h = QHBoxLayout()
