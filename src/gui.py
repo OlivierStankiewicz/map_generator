@@ -139,11 +139,8 @@ class MapGeneratorGUI(QWidget):
         self.terrain_add_combo = QComboBox()
         # populate with TerrainType names, but exclude SUBTERRANEAN and ROCK
         for t in TerrainType:
-            try:
-                if t.name in ("SUBTERRANEAN", "ROCK"):
-                    continue
-            except Exception:
-                pass
+            if t.name in ("SUBTERRANEAN", "ROCK"):
+                continue
             self.terrain_add_combo.addItem(t.name)
         self.terrain_add_btn = QPushButton("Add terrain")
         self.terrain_add_btn.setCursor(QtCore.Qt.PointingHandCursor)
@@ -158,34 +155,20 @@ class MapGeneratorGUI(QWidget):
         # storage for active terrain widgets: TerrainType -> {'row': QWidget, 'spin': QSpinBox}
         self.terrain_widgets = {}
         # ensure at least one terrain (DIRT) present by default
-        try:
-            self._add_terrain(TerrainType.DIRT)
-        except Exception:
-            # fallback: if TerrainType.DIRT not available, add first member
-            try:
-                first = list(TerrainType)[0]
-                self._add_terrain(first)
-            except Exception:
-                pass
+        self._add_terrain(TerrainType.DIRT)
 
         # Ensure the add-combo does not contain terrains already added (DIRT)
         # and default the selection to SAND for convenience.
-        try:
-            self._refresh_available_terrains()
-            idx_sand = self.terrain_add_combo.findText("SAND")
-            if idx_sand >= 0:
-                self.terrain_add_combo.setCurrentIndex(idx_sand)
-        except Exception:
-            pass
+        self._refresh_available_terrains()
+        idx_sand = self.terrain_add_combo.findText("SAND")
+        if idx_sand >= 0:
+            self.terrain_add_combo.setCurrentIndex(idx_sand)
 
         self.generate_btn = QPushButton("Generate map")
         self.generate_btn.setToolTip("Generate the map with the specified parameters")
         self.generate_btn.setStyleSheet("font-weight: bold;")
-        try:
-            # match height with the Manual QToolButton for consistent appearance
-            self.generate_btn.setFixedHeight(34)
-        except Exception:
-            pass
+        # match height with the Manual QToolButton for consistent appearance
+        self.generate_btn.setFixedHeight(34)
         self.status_label = QLabel("")
 
         # Layout
@@ -214,11 +197,8 @@ class MapGeneratorGUI(QWidget):
         # Reset button to restore filename to a timestamped default
         self.filename_reset_btn = QPushButton("Default")
         self.filename_reset_btn.setCursor(QtCore.Qt.PointingHandCursor)
-        try:
-            self.filename_reset_btn.setToolTip("Reset file name to a timestamped default")
-            self.filename_reset_btn.clicked.connect(lambda: self._reset_filename())
-        except Exception:
-            pass
+        self.filename_reset_btn.setToolTip("Reset file name to a timestamped default")
+        self.filename_reset_btn.clicked.connect(lambda: self._reset_filename())
         filename_row.addWidget(self.filename_reset_btn)
 
         save_layout.addLayout(folder_row)
@@ -238,11 +218,8 @@ class MapGeneratorGUI(QWidget):
         name_h.addWidget(self.map_name_edit)
         self.map_name_reset_btn = QPushButton("Default")
         self.map_name_reset_btn.setCursor(QtCore.Qt.PointingHandCursor)
-        try:
-            self.map_name_reset_btn.setToolTip("Reset map name to a timestamped default")
-            self.map_name_reset_btn.clicked.connect(lambda: self._reset_map_name())
-        except Exception:
-            pass
+        self.map_name_reset_btn.setToolTip("Reset map name to a timestamped default")
+        self.map_name_reset_btn.clicked.connect(lambda: self._reset_map_name())
         name_h.addWidget(self.map_name_reset_btn)
         name_row.setLayout(name_h)
         map_info_layout.addRow(self.map_name_label, name_row)
@@ -254,28 +231,19 @@ class MapGeneratorGUI(QWidget):
         desc_h.addWidget(self.map_desc_edit)
         self.map_desc_reset_btn = QPushButton("Default")
         self.map_desc_reset_btn.setCursor(QtCore.Qt.PointingHandCursor)
-        try:
-            self.map_desc_reset_btn.setToolTip("Reset description to a timestamped default")
-            self.map_desc_reset_btn.clicked.connect(lambda: self._reset_map_desc())
-        except Exception:
-            pass
+        self.map_desc_reset_btn.setToolTip("Reset description to a timestamped default")
+        self.map_desc_reset_btn.clicked.connect(lambda: self._reset_map_desc())
         desc_h.addWidget(self.map_desc_reset_btn)
         desc_row.setLayout(desc_h)
         map_info_layout.addRow(self.map_desc_label, desc_row)
 
         # place size warning under the Map description (Map info section)
-        try:
-            # inline QLabel warning (no dialogs) — created here so it's in Map info
-            self.size_warning_label = QLabel("")
-            self.size_warning_label.setWordWrap(True)
-            try:
-                self.size_warning_label.setStyleSheet("color: #b35; font-style: italic;")
-            except Exception:
-                pass
-            self.size_warning_label.setVisible(False)
-            map_info_layout.addRow("", self.size_warning_label)
-        except Exception:
-            pass
+        # inline QLabel warning (no dialogs) — created here so it's in Map info
+        self.size_warning_label = QLabel("")
+        self.size_warning_label.setWordWrap(True)
+        self.size_warning_label.setStyleSheet("color: #b35; font-style: italic;")
+        self.size_warning_label.setVisible(False)
+        map_info_layout.addRow("", self.size_warning_label)
         # Include Map size in the Map info group
         map_info_layout.addRow(self.size_label, self.size_combo)
         map_info_group.setLayout(map_info_layout)
@@ -300,10 +268,7 @@ class MapGeneratorGUI(QWidget):
         # Require at least 1 player (1..8)
         self.players_spin.setRange(1, 8)
         self.players_spin.setValue(5)
-        try:
-            self._style_spinbox_no_caret(self.player_cities_spin)
-        except Exception:
-            pass
+        self._style_spinbox_no_caret(self.player_cities_spin)
         # sync flag to avoid recursion
         self._syncing_player_counts = False
         def _on_player_cities_changed(val):
@@ -319,32 +284,20 @@ class MapGeneratorGUI(QWidget):
                 self._syncing_player_counts = False
 
             # Ensure neutral cities respect total cap (MAX_TOTAL_TOWNS - 1). Player cities take priority.
-            try:
+            neutral_val = int(self.neutral_cities_spin.value())
+            allowed = max(0, MAX_TOTAL_TOWNS - 1 - int(val))
+            if neutral_val > allowed:
+                # reduce neutral cities to allowed maximum
+                self.neutral_cities_spin.blockSignals(True)
                 try:
-                    neutral_val = int(self.neutral_cities_spin.value())
-                except Exception:
-                    neutral_val = 0
-                allowed = max(0, MAX_TOTAL_TOWNS - 1 - int(val))
-                if neutral_val > allowed:
-                    # reduce neutral cities to allowed maximum
-                    self.neutral_cities_spin.blockSignals(True)
-                    try:
-                        self.neutral_cities_spin.setValue(allowed)
-                    finally:
-                        self.neutral_cities_spin.blockSignals(False)
-                # also update the neutral spin maximum so user cannot increase beyond allowed
-                try:
-                    self.neutral_cities_spin.setMaximum(allowed)
-                except Exception:
-                    pass
-            except Exception:
-                pass
+                    self.neutral_cities_spin.setValue(allowed)
+                finally:
+                    self.neutral_cities_spin.blockSignals(False)
+            # also update the neutral spin maximum so user cannot increase beyond allowed
+            self.neutral_cities_spin.setMaximum(allowed)
 
             # refresh size/players warning
-            try:
-                self._update_size_players_warning()
-            except Exception:
-                pass
+            self._update_size_players_warning()
 
         def _on_players_changed(val):
             if self._syncing_player_counts:
@@ -368,49 +321,31 @@ class MapGeneratorGUI(QWidget):
         self.players_spin.valueChanged.connect(_on_players_changed)
 
         # update warning when map size changes as well
-        try:
-            self.size_combo.currentIndexChanged.connect(lambda _: self._update_size_players_warning())
-        except Exception:
-            pass
+        self.size_combo.currentIndexChanged.connect(lambda _: self._update_size_players_warning())
 
         self.neutral_cities_spin = QSpinBox()
         # neutral cities initial allowed range; actual max is adjusted dynamically
         self.neutral_cities_spin.setRange(0, MAX_TOTAL_TOWNS - 1)
         # ensure neutral initial value is reasonable
         self.neutral_cities_spin.setValue(2)
-        try:
-            self._style_spinbox_no_caret(self.neutral_cities_spin)
-        except Exception:
-            pass
+        self._style_spinbox_no_caret(self.neutral_cities_spin)
 
         # adjust neutral maximum according to current player_cities
-        try:
-            try:
-                pc = int(self.player_cities_spin.value())
-            except Exception:
-                pc = 0
-            allowed = max(0, 47 - pc)
-            self.neutral_cities_spin.setMaximum(allowed)
-        except Exception:
-            pass
+        pc = int(self.player_cities_spin.value())
+        allowed = max(0, 47 - pc)
+        self.neutral_cities_spin.setMaximum(allowed)
 
         # handler: prevent increasing neutral beyond allowed total (MAX_TOTAL_TOWNS - 1)
         def _on_neutral_changed(val):
-            try:
+            pc = int(self.player_cities_spin.value())
+            allowed = max(0, MAX_TOTAL_TOWNS - 1 - pc)
+            if val > allowed:
+                # revert to allowed
+                self.neutral_cities_spin.blockSignals(True)
                 try:
-                    pc = int(self.player_cities_spin.value())
-                except Exception:
-                    pc = 0
-                allowed = max(0, MAX_TOTAL_TOWNS - 1 - pc)
-                if val > allowed:
-                    # revert to allowed
-                    self.neutral_cities_spin.blockSignals(True)
-                    try:
-                        self.neutral_cities_spin.setValue(allowed)
-                    finally:
-                        self.neutral_cities_spin.blockSignals(False)
-            except Exception:
-                pass
+                    self.neutral_cities_spin.setValue(allowed)
+                finally:
+                    self.neutral_cities_spin.blockSignals(False)
 
         self.neutral_cities_spin.valueChanged.connect(_on_neutral_changed)
 
@@ -418,10 +353,7 @@ class MapGeneratorGUI(QWidget):
         self.difficulty_spin = QSpinBox()
         self.difficulty_spin.setRange(0, 4)
         self.difficulty_spin.setValue(1)
-        try:
-            self._style_spinbox_no_caret(self.difficulty_spin)
-        except Exception:
-            pass
+        self._style_spinbox_no_caret(self.difficulty_spin)
 
         pg_layout.addRow("Player cities:", self.player_cities_spin)
         pg_layout.addRow("Players:", self.players_spin)
@@ -436,10 +368,7 @@ class MapGeneratorGUI(QWidget):
         # initial max: min(7, players-1)
         self.teams_spin.setMaximum(min(7, max(0, int(self.players_spin.value()) - 1)))
         self.teams_spin.setValue(0)
-        try:
-            self._style_spinbox_no_caret(self.teams_spin)
-        except Exception:
-            pass
+        self._style_spinbox_no_caret(self.teams_spin)
         pg_layout.addRow("Teams:", self.teams_spin)
 
         # Teams grid area: shows per-player radio buttons for selecting team
@@ -536,15 +465,9 @@ class MapGeneratorGUI(QWidget):
 
         # create explicit labels for the Victory/Loss rows so we can color them
         self.victory_label = QLabel("Victory:")
-        try:
-            self.victory_label.setStyleSheet("color: green; font-weight: bold;")
-        except Exception:
-            pass
+        self.victory_label.setStyleSheet("color: green; font-weight: bold;")
         self.loss_label = QLabel("Loss:")
-        try:
-            self.loss_label.setStyleSheet("color: red; font-weight: bold;")
-        except Exception:
-            pass
+        self.loss_label.setStyleSheet("color: red; font-weight: bold;")
 
         # Add victory-related rows
         victory_layout.addRow(self.victory_label, self.victory_combo)
@@ -556,10 +479,7 @@ class MapGeneratorGUI(QWidget):
         # informational text shown when a victory type requires user selection
         self.victory_info_label = QLabel("")
         self.victory_info_label.setWordWrap(True)
-        try:
-            self.victory_info_label.setStyleSheet("color: #444; font-style: italic;")
-        except Exception:
-            pass
+        self.victory_info_label.setStyleSheet("color: #444; font-style: italic;")
         victory_layout.addRow(self.victory_info_label)
         victory_group.setLayout(victory_layout)
 
@@ -571,10 +491,7 @@ class MapGeneratorGUI(QWidget):
         # informational text shown when a loss type requires user selection
         self.loss_info_label = QLabel("")
         self.loss_info_label.setWordWrap(True)
-        try:
-            self.loss_info_label.setStyleSheet("color: #444; font-style: italic;")
-        except Exception:
-            pass
+        self.loss_info_label.setStyleSheet("color: #444; font-style: italic;")
         loss_layout.addRow(self.loss_info_label)
         loss_group.setLayout(loss_layout)
 
@@ -668,60 +585,42 @@ class MapGeneratorGUI(QWidget):
         actions_layout.setSpacing(8)
 
         # Determine a sensible height for buttons (fallback to 34)
-        try:
-            btn_h = self.generate_btn.sizeHint().height()
-            if not btn_h or btn_h <= 0:
-                btn_h = 34
-        except Exception:
+        btn_h = self.generate_btn.sizeHint().height()
+        if not btn_h or btn_h <= 0:
             btn_h = 34
 
         # Configure Generate button: make it taller (4x height)
-        try:
-            self.generate_btn.setFixedHeight(btn_h * 4)
-            self.generate_btn.setStyleSheet("background-color:rgb(219, 255, 214); font-weight: bold;")
-            self.generate_btn.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-            self.generate_btn.setCursor(QtCore.Qt.PointingHandCursor)
-        except Exception:
-            pass
+        self.generate_btn.setFixedHeight(btn_h * 4)
+        self.generate_btn.setStyleSheet("background-color:rgb(219, 255, 214); font-weight: bold;")
+        self.generate_btn.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        self.generate_btn.setCursor(QtCore.Qt.PointingHandCursor)
 
         # Manual/info button
         self.info_btn = QPushButton()
-        try:
-            icon = QApplication.style().standardIcon(QtWidgets.QStyle.SP_MessageBoxInformation)
-            self.info_btn.setIcon(icon)
-        except Exception:
-            pass
+        icon = QApplication.style().standardIcon(QtWidgets.QStyle.SP_MessageBoxInformation)
+        self.info_btn.setIcon(icon)
         self.info_btn.setToolTip("Show manual / how-to")
-        try:
-            self.info_btn.setText("Manual")
-            self.info_btn.setIconSize(QtCore.QSize(18, 18))
-            self.info_btn.setFixedHeight(btn_h)
-            self.info_btn.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
-            self.info_btn.setStyleSheet("padding: 4px; text-align: center;")
-        except Exception:
-            pass
+        self.info_btn.setText("Manual")
+        self.info_btn.setIconSize(QtCore.QSize(18, 18))
+        self.info_btn.setFixedHeight(btn_h)
+        self.info_btn.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+        self.info_btn.setStyleSheet("padding: 4px; text-align: center;")
         self.info_btn.setCursor(QtCore.Qt.PointingHandCursor)
 
         # Save / Load config buttons
         self.save_config_btn = QPushButton("Save config")
-        try:
-            self.save_config_btn.setToolTip("Save current UI configuration to a JSON file")
-            self.save_config_btn.clicked.connect(self.on_save_config)
-            self.save_config_btn.setFixedHeight(btn_h)
-            self.save_config_btn.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
-            self.save_config_btn.setCursor(QtCore.Qt.PointingHandCursor)
-        except Exception:
-            pass
+        self.save_config_btn.setToolTip("Save current UI configuration to a JSON file")
+        self.save_config_btn.clicked.connect(self.on_save_config)
+        self.save_config_btn.setFixedHeight(btn_h)
+        self.save_config_btn.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+        self.save_config_btn.setCursor(QtCore.Qt.PointingHandCursor)
 
         self.load_config_btn = QPushButton("Load config")
-        try:
-            self.load_config_btn.setToolTip("Load UI configuration from a JSON file")
-            self.load_config_btn.clicked.connect(self.on_load_config)
-            self.load_config_btn.setFixedHeight(btn_h)
-            self.load_config_btn.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
-            self.load_config_btn.setCursor(QtCore.Qt.PointingHandCursor)
-        except Exception:
-            pass
+        self.load_config_btn.setToolTip("Load UI configuration from a JSON file")
+        self.load_config_btn.clicked.connect(self.on_load_config)
+        self.load_config_btn.setFixedHeight(btn_h)
+        self.load_config_btn.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+        self.load_config_btn.setCursor(QtCore.Qt.PointingHandCursor)
 
         # Right-side vertical stack for the three smaller buttons
         right_stack = QVBoxLayout()
@@ -730,14 +629,11 @@ class MapGeneratorGUI(QWidget):
 
         # Reset all parameters button
         self.reset_all_btn = QPushButton("Reset all parameters")
-        try:
-            self.reset_all_btn.setToolTip("Reset all UI parameters to defaults")
-            self.reset_all_btn.setFixedHeight(btn_h)
-            self.reset_all_btn.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
-            self.reset_all_btn.clicked.connect(self.on_reset_all_parameters)
-            self.reset_all_btn.setCursor(QtCore.Qt.PointingHandCursor)
-        except Exception:
-            pass
+        self.reset_all_btn.setToolTip("Reset all UI parameters to defaults")
+        self.reset_all_btn.setFixedHeight(btn_h)
+        self.reset_all_btn.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+        self.reset_all_btn.clicked.connect(self.on_reset_all_parameters)
+        self.reset_all_btn.setCursor(QtCore.Qt.PointingHandCursor)
         right_stack.addWidget(self.reset_all_btn)
 
         right_stack.addWidget(self.info_btn)
@@ -796,10 +692,7 @@ class MapGeneratorGUI(QWidget):
         self.save_preview_btn.setToolTip("Save preview BMP of last generated map")
         self.save_preview_btn.setFixedWidth(140)
         self.save_preview_btn.setCursor(QtCore.Qt.PointingHandCursor)
-        try:
-            self.save_preview_btn.clicked.connect(self.on_save_preview)
-        except Exception:
-            pass
+        self.save_preview_btn.clicked.connect(self.on_save_preview)
         preview_group_layout.addWidget(self.save_preview_btn, alignment=QtCore.Qt.AlignHCenter)
 
         preview_group.setLayout(preview_group_layout)
@@ -1018,194 +911,99 @@ class MapGeneratorGUI(QWidget):
         background transparent and hide its caret while keeping the spinbox
         itself focusable for keyboard input.
         """
-        try:
-            le = None
-            try:
-                le = spin.lineEdit()
-            except Exception:
-                le = None
-            style = (
-                "selection-background-color: rgba(0,0,0,0);"
-                "selection-color: rgba(0,0,0,1);"
-            )
-            if le is not None:
-                try:
-                    le.setStyleSheet(style)
-                except Exception:
-                    pass
-                try:
-                    le.setFocusPolicy(QtCore.Qt.NoFocus)
-                except Exception:
-                    pass
-            else:
-                try:
-                    spin.setStyleSheet(f"QSpinBox QLineEdit {{ {style} }}")
-                except Exception:
-                    pass
-            try:
-                # keep the spinbox itself focusable so keyboard stepping works
-                spin.setFocusPolicy(QtCore.Qt.StrongFocus)
-            except Exception:
-                pass
-        except Exception:
-            pass
+        le = spin.lineEdit() if hasattr(spin, 'lineEdit') else None
+        style = (
+            "selection-background-color: rgba(0,0,0,0);"
+            "selection-color: rgba(0,0,0,1);"
+        )
+        if le is not None:
+            le.setStyleSheet(style)
+            le.setFocusPolicy(QtCore.Qt.NoFocus)
+        else:
+            spin.setStyleSheet(f"QSpinBox QLineEdit {{ {style} }}")
+        # keep the spinbox itself focusable so keyboard stepping works
+        spin.setFocusPolicy(QtCore.Qt.StrongFocus)
 
     def _reset_filename(self):
-        try:
-            now = datetime.now()
-            filename_default = f"my_map_{now.day:02d}_{now.month:02d}_{now.year}_{now.hour:02d}_{now.minute:02d}_{now.second:02d}"
-            self.filename_edit.setText(filename_default)
-        except Exception:
-            pass
+        now = datetime.now()
+        filename_default = f"my_map_{now.day:02d}_{now.month:02d}_{now.year}_{now.hour:02d}_{now.minute:02d}_{now.second:02d}"
+        self.filename_edit.setText(filename_default)
 
     def _reset_map_name(self):
-        try:
-            now = datetime.now()
-            default_name = f"My Map {now.day}/{now.month}/{now.year} {now.hour:02d}:{now.minute:02d}:{now.second:02d}"
-            self.map_name_edit.setText(default_name)
-        except Exception:
-            pass
+        now = datetime.now()
+        default_name = f"My Map {now.day}/{now.month}/{now.year} {now.hour:02d}:{now.minute:02d}:{now.second:02d}"
+        self.map_name_edit.setText(default_name)
 
     def _reset_map_desc(self):
-        try:
-            now = datetime.now()
-            description_default = f"Map generated on {now.day}/{now.month}/{now.year} at {now.hour:02d}:{now.minute:02d}:{now.second:02d}."
-            self.map_desc_edit.setPlainText(description_default)
-        except Exception:
-            pass
+        now = datetime.now()
+        description_default = f"Map generated on {now.day}/{now.month}/{now.year} at {now.hour:02d}:{now.minute:02d}:{now.second:02d}."
+        self.map_desc_edit.setPlainText(description_default)
 
     def on_reset_all_parameters(self):
         """Reset all UI parameters to sensible defaults (timestamped name/filename/desc,
         default size, single terrain=Dirt, default player counts, difficulty, teams,
         victory/loss defaults and preview cleared).
         """
-        try:
-            # textual defaults (use same helpers so timestamps update)
-            try:
-                self._reset_filename()
-                self._reset_map_name()
-                self._reset_map_desc()
-            except Exception:
-                pass
+        # textual defaults (use same helpers so timestamps update)
+        self._reset_filename()
+        self._reset_map_name()
+        self._reset_map_desc()
 
-            # size default to 72x72 (Medium)
-            try:
-                idx = self.size_combo.findText("72x72 (Medium)")
-                if idx >= 0:
-                    self.size_combo.setCurrentIndex(idx)
-            except Exception:
-                pass
+        # size default to 72x72 (Medium)
+        idx = self.size_combo.findText("72x72 (Medium)")
+        if idx >= 0:
+            self.size_combo.setCurrentIndex(idx)
 
-            # terrains: remove all and add DIRT with value 1
+        # terrains: remove all and add DIRT with value 1
+        for t in list(self.terrain_widgets.keys()):
             try:
-                for t in list(self.terrain_widgets.keys()):
-                    try:
-                        self._remove_terrain(t)
-                    except Exception:
-                        pass
-                try:
-                    self._add_terrain(TerrainType.DIRT)
-                    info = self.terrain_widgets.get(TerrainType.DIRT)
-                    if info:
-                        info['spin'].setValue(1)
-                except Exception:
-                    try:
-                        first = list(TerrainType)[0]
-                        self._add_terrain(first)
-                    except Exception:
-                        pass
-                try:
-                    self._refresh_available_terrains()
-                except Exception:
-                    pass
+                self._remove_terrain(t)
             except Exception:
+                # removal may fail during mid-state; ignore specific removal errors
                 pass
+        self._add_terrain(TerrainType.DIRT)
+        info = self.terrain_widgets.get(TerrainType.DIRT)
+        if info:
+            info['spin'].setValue(1)
+        self._refresh_available_terrains()
 
-            # players / cities / difficulty / teams
-            try:
-                self.player_cities_spin.setValue(5)
-            except Exception:
-                pass
-            try:
-                self.players_spin.setValue(5)
-            except Exception:
-                pass
-            try:
-                self.neutral_cities_spin.setValue(2)
-            except Exception:
-                pass
-            try:
-                self.difficulty_spin.setValue(1)
-            except Exception:
-                pass
-            try:
-                self.teams_spin.setValue(0)
-            except Exception:
-                pass
-            try:
-                self._rebuild_teams_grid()
-            except Exception:
-                pass
+        # players / cities / difficulty / teams
+        self.player_cities_spin.setValue(5)
+        self.players_spin.setValue(5)
+        self.neutral_cities_spin.setValue(2)
+        self.difficulty_spin.setValue(1)
+        self.teams_spin.setValue(0)
+        self._rebuild_teams_grid()
+        # refresh size/players warning after reset
+        self._update_size_players_warning()
 
-            # refresh size/players warning after reset
-            try:
-                self._update_size_players_warning()
-            except Exception:
-                pass
+        # victory / loss defaults
+        for i in range(self.victory_combo.count()):
+            data = self.victory_combo.itemData(i)
+            if data == VictoryConditions.NORMAL:
+                self.victory_combo.setCurrentIndex(i)
+                break
+        for i in range(self.loss_combo.count()):
+            data = self.loss_combo.itemData(i)
+            if data == LossConditions.NORMAL:
+                self.loss_combo.setCurrentIndex(i)
+                break
 
-            # victory / loss defaults
-            try:
-                for i in range(self.victory_combo.count()):
-                    data = self.victory_combo.itemData(i)
-                    if data == VictoryConditions.NORMAL:
-                        self.victory_combo.setCurrentIndex(i)
-                        break
-            except Exception:
-                pass
-            try:
-                for i in range(self.loss_combo.count()):
-                    data = self.loss_combo.itemData(i)
-                    if data == LossConditions.NORMAL:
-                        self.loss_combo.setCurrentIndex(i)
-                        break
-            except Exception:
-                pass
+        # victory param defaults
+        self.artifact_combo.setCurrentIndex(0)
+        self.creature_combo.setCurrentIndex(0)
+        self.creature_count_spin.setValue(50)
+        self.resource_combo.setCurrentIndex(0)
+        self.resource_amount_spin.setValue(100)
 
-            # victory param defaults
-            try:
-                self.artifact_combo.setCurrentIndex(0)
-            except Exception:
-                pass
-            try:
-                self.creature_combo.setCurrentIndex(0)
-                self.creature_count_spin.setValue(50)
-            except Exception:
-                pass
-            try:
-                self.resource_combo.setCurrentIndex(0)
-                self.resource_amount_spin.setValue(100)
-            except Exception:
-                pass
+        # clear last generated preview/map
+        self._last_map = None
+        self._last_size = None
+        self.preview_label.clear()
+        self.preview_label.setText("After generating a map, its preview will appear here.")
+        self.preview_label.setStyleSheet("color: #666; border: 1px solid #ccc; padding: 6px;")
 
-            # clear last generated preview/map
-            try:
-                self._last_map = None
-                self._last_size = None
-                try:
-                    self.preview_label.clear()
-                except Exception:
-                    pass
-                try:
-                    self.preview_label.setText("After generating a map, its preview will appear here.")
-                    self.preview_label.setStyleSheet("color: #666; border: 1px solid #ccc; padding: 6px;")
-                except Exception:
-                    pass
-            except Exception:
-                pass
-
-            QMessageBox.information(self, "Reset", "All parameters have been reset to defaults.")
-        except Exception as e:
-            QMessageBox.critical(self, "Reset error", f"Failed to reset parameters: {e}")
+        QMessageBox.information(self, "Reset", "All parameters have been reset to defaults.")
 
     def on_save_config(self):
         try:
