@@ -13,19 +13,16 @@ from PySide6.QtWidgets import (
     QGroupBox,
     QFormLayout,
     QComboBox,
-    QSizePolicy,
-    QGridLayout
+    QSizePolicy
 )
-from PySide6.QtGui import QImage, QPixmap, QPainter, QColor
+from PySide6.QtGui import QPixmap
 import sys
 import os
 import json
 import subprocess
-import shutil
-import traceback
 from datetime import datetime
 
-H3MTXT_NAME = 'h3mtxt.exe'
+H3MTXT_NAME = "h3mtxt.exe"
 _PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 H3MTXT_DEFAULT_PATH = os.path.join(_PROJECT_ROOT, H3MTXT_NAME)
 
@@ -60,24 +57,6 @@ from GUI.classes.CaptureTownDialog import CaptureTownDialog
 from GUI.classes.DefeatMonsterDialog import DefeatMonsterDialog
 from GUI.classes.HeroPickerDialog import HeroPickerDialog
 from GUI.preview import build_preview_qimage, write_preview_bmp
-
-class GeneratorWorker(QtCore.QObject):
-    """Worker class to run map generation in a separate thread."""
-    finished = QtCore.Signal(object)
-    error = QtCore.Signal(str)
-    status = QtCore.Signal(str)
-
-    @QtCore.Slot()
-    def run(self):
-        try:
-            self.status.emit("Starting generation...")
-            if generate_voronoi_map is None:
-                raise ImportError("Map generator function not available (import failed).")
-            map_obj = generate_voronoi_map()
-            self.finished.emit(map_obj)
-        except Exception as e:
-            tb = traceback.format_exc()
-            self.error.emit(f"{e}\n{tb}")
 
 class MapGeneratorGUI(QWidget):
     def __init__(self):
@@ -166,7 +145,8 @@ class MapGeneratorGUI(QWidget):
 
         self.generate_btn = QPushButton("Generate map")
         self.generate_btn.setToolTip("Generate the map with the specified parameters")
-        self.generate_btn.setStyleSheet("font-weight: bold;")
+        # Make label more prominent: larger font and distinct color
+        self.generate_btn.setStyleSheet("color: #1a237e; font-weight: bold; font-size: 16px;")
         # match height with the Manual QToolButton for consistent appearance
         self.generate_btn.setFixedHeight(34)
         self.status_label = QLabel("")
@@ -312,10 +292,7 @@ class MapGeneratorGUI(QWidget):
                 self._syncing_player_counts = False
 
             # refresh size/players warning
-            try:
-                self._update_size_players_warning()
-            except Exception:
-                pass
+            self._update_size_players_warning()
 
         self.player_cities_spin.valueChanged.connect(_on_player_cities_changed)
         self.players_spin.valueChanged.connect(_on_players_changed)
@@ -516,26 +493,23 @@ class MapGeneratorGUI(QWidget):
             self.resource_amount_label.setVisible(is_res)
             self.resource_amount_spin.setVisible(is_res)
             # update informational text for victory types that require a post-generation selection
-            try:
+            info_msg = ""
+            if v == VictoryConditions.BUILD_GRAIL:
+                info_msg = "After generation you will be asked to select a town where the grail structure must be built."
+            elif v == VictoryConditions.TRANSPORT_ARTIFACT:
+                info_msg = "After generation you will be asked to select a town to receive the transported artifact."
+            elif v == VictoryConditions.UPGRADE_TOWN:
+                info_msg = "After generation you will be asked to select a town to be upgraded and its parameters."
+            elif v == VictoryConditions.CAPTURE_TOWN:
+                info_msg = "After generation you will be asked to select a town to be captured for the victory condition."
+            elif v == VictoryConditions.DEFEAT_HERO:
+                info_msg = "After generation you will be asked to select a hero to be defeated for the victory condition."
+            elif v == VictoryConditions.DEFEAT_MONSTER:
+                info_msg = "After generation you will be asked to select a monster to be defeated for the victory condition."
+            else:
                 info_msg = ""
-                if v == VictoryConditions.BUILD_GRAIL:
-                    info_msg = "After generation you will be asked to select a town where the grail structure must be built."
-                elif v == VictoryConditions.TRANSPORT_ARTIFACT:
-                    info_msg = "After generation you will be asked to select a town to receive the transported artifact."
-                elif v == VictoryConditions.UPGRADE_TOWN:
-                    info_msg = "After generation you will be asked to select a town to be upgraded and its parameters."
-                elif v == VictoryConditions.CAPTURE_TOWN:
-                    info_msg = "After generation you will be asked to select a town to be captured for the victory condition."
-                elif v == VictoryConditions.DEFEAT_HERO:
-                    info_msg = "After generation you will be asked to select a hero to be defeated for the victory condition."
-                elif v == VictoryConditions.DEFEAT_MONSTER:
-                    info_msg = "After generation you will be asked to select a monster to be defeated for the victory condition."
-                else:
-                    info_msg = ""
-                self.victory_info_label.setText(info_msg)
-                self.victory_info_label.setVisible(bool(info_msg))
-            except Exception:
-                pass
+            self.victory_info_label.setText(info_msg)
+            self.victory_info_label.setVisible(bool(info_msg))
 
         def _on_loss_changed(_):
             l = self.loss_combo.currentData()
@@ -543,18 +517,15 @@ class MapGeneratorGUI(QWidget):
             self.loss_days_label.setVisible(is_time)
             self.loss_days_combo.setVisible(is_time)
             # update informational text for loss types that require a post-generation selection
-            try:
+            info_msg = ""
+            if l == LossConditions.LOSE_TOWN:
+                info_msg = "After generation you will be asked to select a town that the player will lose."
+            elif l == LossConditions.LOSE_HERO:
+                info_msg = "After generation you will be asked to select a hero that the player will lose."
+            else:
                 info_msg = ""
-                if l == LossConditions.LOSE_TOWN:
-                    info_msg = "After generation you will be asked to select a town that the player will lose."
-                elif l == LossConditions.LOSE_HERO:
-                    info_msg = "After generation you will be asked to select a hero that the player will lose."
-                else:
-                    info_msg = ""
-                self.loss_info_label.setText(info_msg)
-                self.loss_info_label.setVisible(bool(info_msg))
-            except Exception:
-                pass
+            self.loss_info_label.setText(info_msg)
+            self.loss_info_label.setVisible(bool(info_msg))
 
         self.victory_combo.currentIndexChanged.connect(_on_victory_changed)
         self.loss_combo.currentIndexChanged.connect(_on_loss_changed)
@@ -576,7 +547,6 @@ class MapGeneratorGUI(QWidget):
         players_group.setLayout(pg_layout)
 
         # Terrain group (already a QGroupBox)
-        # 123456
         # Actions group
         # Layout: Generate button on the left (wide, ~4x), other buttons stacked on the right
         actions_group = QGroupBox("Actions")
@@ -591,7 +561,7 @@ class MapGeneratorGUI(QWidget):
 
         # Configure Generate button: make it taller (4x height)
         self.generate_btn.setFixedHeight(btn_h * 4)
-        self.generate_btn.setStyleSheet("background-color:rgb(219, 255, 214); font-weight: bold;")
+        self.generate_btn.setStyleSheet("background-color: rgb(219, 255, 214); color: #000000; font-weight: bold; font-size: 16px;")
         self.generate_btn.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         self.generate_btn.setCursor(QtCore.Qt.PointingHandCursor)
 
@@ -648,12 +618,7 @@ class MapGeneratorGUI(QWidget):
         actions_layout.addLayout(right_stack, 1)
 
         actions_group.setLayout(actions_layout)
-        # gentle color for Actions to make it stand out pleasantly
-        # try:
-        #     actions_group.setStyleSheet("background-color: rgba(200, 240, 200, 0.9); border: 1px solid rgba(0,0,0,0.08);")
-        # except Exception:
-        #     pass
-
+        
         # Right column: preview (top) and Terrain values under it
         right_v = QVBoxLayout()
         right_v.setSpacing(6)
@@ -738,10 +703,6 @@ class MapGeneratorGUI(QWidget):
         ta_layout.addWidget(self.terrain_group)
         ta_layout.addWidget(actions_group)
         terrain_actions_group.setLayout(ta_layout)
-        # try:
-        #     terrain_actions_group.setStyleSheet("background-color: rgba(220, 235, 255, 0.85); border: 1px solid rgba(0,0,0,0.06);")
-        # except Exception:
-        #     pass
 
         # Place composite on the left spanning columns 0..1 and rows 0..1
         grid.addWidget(composite_group, 0, 0, 2, 2)
@@ -764,10 +725,7 @@ class MapGeneratorGUI(QWidget):
         # taking excessive horizontal space. Use column stretches so columns
         # 0 and 1 receive extra width while column 2 stays compact.
         # Use preview width (fixed) for Terrain/Actions.
-        try:
-            preview_w = self.preview_label.width()
-        except Exception:
-            preview_w = 300
+        preview_w = self.preview_label.width()
         self.terrain_group.setFixedWidth(preview_w)
         actions_group.setFixedWidth(preview_w)
         grid.setColumnStretch(0, 1)
@@ -836,24 +794,14 @@ class MapGeneratorGUI(QWidget):
         manual_label.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
         manual_label.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
 
-        # Try to load 'nasza_mapa.PNG' from a few likely locations. If not found,
-        # show a small placeholder label with instructions.
+        # Load 'nasza_mapa.PNG' directly from the `GUI` folder next to this module.
+        # If not present, show a small placeholder label with instructions.
         img_label = QLabel()
         img_label.setAlignment(QtCore.Qt.AlignCenter)
-        candidates = [
-            os.path.join(os.path.dirname(__file__), '..', 'nasza_mapa.PNG'),
-            os.path.join(os.path.dirname(__file__), '..', 'generated_maps', 'nasza_mapa.PNG'),
-            os.path.join(os.getcwd(), 'nasza_mapa.PNG'),
-        ]
-        img_path = None
-        for p in candidates:
-            try:
-                p_abs = os.path.abspath(p)
-            except Exception:
-                p_abs = p
-            if os.path.exists(p_abs):
-                img_path = p_abs
-                break
+        gui_dir = os.path.join(os.path.dirname(__file__), 'GUI')
+        img_path = os.path.join(gui_dir, 'nasza_mapa.PNG')
+        if not os.path.exists(img_path):
+            img_path = None
 
         if img_path:
             try:
@@ -869,7 +817,7 @@ class MapGeneratorGUI(QWidget):
             except Exception:
                 img_label.setText("[Image load error]")
         else:
-            img_label.setText("[Add nasza_mapa.PNG to project root to show image]")
+            img_label.setText("[Add nasza_mapa.PNG to the GUI folder to show image]")
             img_label.setStyleSheet('font-style: italic; color: #666;')
 
         # Place text on the left and image on the right
@@ -894,17 +842,12 @@ class MapGeneratorGUI(QWidget):
         self.setLayout(main_layout)
 
         # connect info button to show manual
-        try:
-            self.info_btn.clicked.connect(lambda: self.stack.setCurrentIndex(1))
-        except Exception:
-            pass
+        self.info_btn.clicked.connect(lambda: self.stack.setCurrentIndex(1))
 
         # Signals
         self.folder_browse_btn.clicked.connect(self.browse_folder)
         self.generate_btn.clicked.connect(self.on_generate)
 
-        # Thread holder
-        self._worker_thread = None
 
     def _style_spinbox_no_caret(self, spin: QSpinBox):
         """Apply styling to a QSpinBox to make the internal QLineEdit selection
@@ -956,11 +899,7 @@ class MapGeneratorGUI(QWidget):
 
         # terrains: remove all and add DIRT with value 1
         for t in list(self.terrain_widgets.keys()):
-            try:
-                self._remove_terrain(t)
-            except Exception:
-                # removal may fail during mid-state; ignore specific removal errors
-                pass
+            self._remove_terrain(t)
         self._add_terrain(TerrainType.DIRT)
         info = self.terrain_widgets.get(TerrainType.DIRT)
         if info:
@@ -1026,7 +965,6 @@ class MapGeneratorGUI(QWidget):
                 except Exception:
                     pass
             cfg['terrains'] = terrains
-
             cfg['player_cities'] = int(self.player_cities_spin.value())
             cfg['players'] = int(self.players_spin.value())
             cfg['neutral_cities'] = int(self.neutral_cities_spin.value())
@@ -1123,180 +1061,118 @@ class MapGeneratorGUI(QWidget):
                 cfg = json.load(f)
 
             # apply values if present
-            try:
-                if 'folder' in cfg:
-                    self.folder_path_edit.setText(cfg.get('folder') or '')
-                if 'filename' in cfg:
-                    self.filename_edit.setText(cfg.get('filename') or '')
-                if 'map_name' in cfg:
-                    self.map_name_edit.setText(cfg.get('map_name') or '')
-                if 'map_desc' in cfg:
-                    try:
-                        self.map_desc_edit.setPlainText(cfg.get('map_desc') or '')
-                    except Exception:
-                        pass
-                if 'size' in cfg:
-                    val = cfg.get('size')
-                    if val is not None:
-                        idx = self.size_combo.findText(val)
-                        if idx >= 0:
-                            self.size_combo.setCurrentIndex(idx)
+            if 'folder' in cfg:
+                self.folder_path_edit.setText(cfg.get('folder') or '')
+            if 'filename' in cfg:
+                self.filename_edit.setText(cfg.get('filename') or '')
+            if 'map_name' in cfg:
+                self.map_name_edit.setText(cfg.get('map_name') or '')
+            if 'map_desc' in cfg:
+                self.map_desc_edit.setPlainText(cfg.get('map_desc') or '')
+            if 'size' in cfg:
+                val = cfg.get('size')
+                if val is not None:
+                    idx = self.size_combo.findText(val)
+                    if idx >= 0:
+                        self.size_combo.setCurrentIndex(idx)
 
-                # terrains: reset existing then add from config
-                try:
-                    # remove existing
-                    for t in list(self.terrain_widgets.keys()):
-                        try:
-                            self._remove_terrain(t)
-                        except Exception:
-                            pass
-                    terr = cfg.get('terrains') or {}
-                    for tname, val in terr.items():
-                        try:
-                            # map name to TerrainType if possible
-                            tt = None
-                            try:
-                                tt = TerrainType[tname]
-                            except Exception:
-                                tt = None
-                            if tt is not None:
-                                self._add_terrain(tt)
-                                # set value
-                                info = self.terrain_widgets.get(tt)
-                                if info:
-                                    info['spin'].setValue(int(val))
-                            else:
-                                # fallback: add first available terrain if name unknown
-                                pass
-                        except Exception:
-                            pass
-                    # ensure available list updated
-                    self._refresh_available_terrains()
-                except Exception:
+            # terrains: reset existing then add from config
+            # remove existing
+            for t in list(self.terrain_widgets.keys()):
+                self._remove_terrain(t)
+            terr = cfg.get('terrains') or {}
+            for tname, val in terr.items():
+                # map name to TerrainType if possible
+                tt = None
+                tt = TerrainType[tname]
+                if tt is not None:
+                    self._add_terrain(tt)
+                    # set value
+                    info = self.terrain_widgets.get(tt)
+                    if info:
+                        info['spin'].setValue(int(val))
+                else:
+                    # fallback: add first available terrain if name unknown
                     pass
+            # ensure available list updated
+            self._refresh_available_terrains()
 
-                if 'player_cities' in cfg:
-                    try:
-                        v = int(cfg.get('player_cities') or 1)
-                        # clamp to allowed range 1..8
-                        v = max(1, min(8, v))
-                        self.player_cities_spin.setValue(v)
-                    except Exception:
-                        pass
-                if 'players' in cfg:
-                    try:
-                        v = int(cfg.get('players') or 1)
-                        # clamp to allowed range 1..8
-                        v = max(1, min(8, v))
-                        self.players_spin.setValue(v)
-                    except Exception:
-                        pass
-                if 'neutral_cities' in cfg:
-                    try:
-                        # clamp neutral to allowed total (MAX_TOTAL_TOWNS - 1 - player_cities)
-                        try:
-                            pc = int(self.player_cities_spin.value())
-                        except Exception:
-                            pc = 0
-                        allowed = max(0, MAX_TOTAL_TOWNS - 1 - pc)
-                        nv = int(cfg.get('neutral_cities') or 0)
-                        nv = max(0, min(allowed, nv))
-                        self.neutral_cities_spin.setValue(nv)
-                        try:
-                            self.neutral_cities_spin.setMaximum(allowed)
-                        except Exception:
-                            pass
-                    except Exception:
-                        pass
-                if 'difficulty' in cfg:
-                    try:
-                        self.difficulty_spin.setValue(int(cfg.get('difficulty') or 0))
-                    except Exception:
-                        pass
-                if 'teams' in cfg:
-                    try:
-                        self.teams_spin.setValue(int(cfg.get('teams') or 0))
-                    except Exception:
-                        pass
+            if 'player_cities' in cfg:
+                v = int(cfg.get('player_cities') or 1)
+                # clamp to allowed range 1..8
+                v = max(1, min(8, v))
+                self.player_cities_spin.setValue(v)
+            if 'players' in cfg:
+                v = int(cfg.get('players') or 1)
+                # clamp to allowed range 1..8
+                v = max(1, min(8, v))
+                self.players_spin.setValue(v)
+            if 'neutral_cities' in cfg:
+                # clamp neutral to allowed total (MAX_TOTAL_TOWNS - 1 - player_cities)
+                pc = int(self.player_cities_spin.value())
+                allowed = max(0, MAX_TOTAL_TOWNS - 1 - pc)
+                nv = int(cfg.get('neutral_cities') or 0)
+                nv = max(0, min(allowed, nv))
+                self.neutral_cities_spin.setValue(nv)
+                self.neutral_cities_spin.setMaximum(allowed)
+            if 'difficulty' in cfg:
+                self.difficulty_spin.setValue(int(cfg.get('difficulty') or 0))
+            if 'teams' in cfg:
+                self.teams_spin.setValue(int(cfg.get('teams') or 0))
 
-                # apply team assignments
-                try:
-                    tfp = cfg.get('team_for_player') or []
-                    # ensure grid rebuilt
-                    self._rebuild_teams_grid()
-                    players_active = int(self.players_spin.value())
-                    num_teams_active = int(self.teams_spin.value())
-                    for p_idx in range(min(8, len(tfp))):
-                        try:
-                            # only apply assignments for active players
-                            if p_idx >= players_active:
-                                continue
-                            gid = int(tfp[p_idx])
-                            # only apply if teams are enabled and gid within range
-                            if num_teams_active <= 0:
-                                continue
-                            if gid < 0 or gid >= num_teams_active:
-                                continue
-                            if p_idx < len(self.team_radio_buttons):
-                                row = self.team_radio_buttons[p_idx]
-                                if gid >= 0 and gid < len(row) and row[gid].isEnabled():
-                                    row[gid].setChecked(True)
-                        except Exception:
-                            pass
-                except Exception:
-                    pass
+            # apply team assignments
+            tfp = cfg.get('team_for_player') or []
+            # ensure grid rebuilt
+            self._rebuild_teams_grid()
+            players_active = int(self.players_spin.value())
+            num_teams_active = int(self.teams_spin.value())
+            for p_idx in range(min(8, len(tfp))):
+                # only apply assignments for active players
+                if p_idx >= players_active:
+                    continue
+                gid = int(tfp[p_idx])
+                # only apply if teams are enabled and gid within range
+                if num_teams_active <= 0:
+                    continue
+                if gid < 0 or gid >= num_teams_active:
+                    continue
+                if p_idx < len(self.team_radio_buttons):
+                    row = self.team_radio_buttons[p_idx]
+                    if gid >= 0 and gid < len(row) and row[gid].isEnabled():
+                        row[gid].setChecked(True)
 
-                # victory / loss
-                try:
-                    if 'victory' in cfg and cfg.get('victory'):
-                        vname = cfg.get('victory')
-                        # try match by enum name
-                        try:
-                            found_idx = -1
-                            for i in range(self.victory_combo.count()):
-                                data = self.victory_combo.itemData(i)
-                                name = data.name if hasattr(data, 'name') else None
-                                if name == vname or self.victory_combo.itemText(i) == vname:
-                                    found_idx = i
-                                    break
-                            if found_idx >= 0:
-                                self.victory_combo.setCurrentIndex(found_idx)
-                        except Exception:
-                            pass
-                except Exception:
-                    pass
-
-                try:
-                    if 'loss' in cfg and cfg.get('loss'):
-                        lname = cfg.get('loss')
-                        found_idx = -1
-                        for i in range(self.loss_combo.count()):
-                            data = self.loss_combo.itemData(i)
-                            name = data.name if hasattr(data, 'name') else None
-                            if name == lname or self.loss_combo.itemText(i) == lname:
-                                found_idx = i
-                                break
-                        if found_idx >= 0:
-                            self.loss_combo.setCurrentIndex(found_idx)
-                        # loss days
-                        try:
-                            if 'loss_days' in cfg and cfg.get('loss_days') is not None:
-                                days = int(cfg.get('loss_days'))
-                                idx = self.loss_days_combo.findData(days)
-                                if idx >= 0:
-                                    self.loss_days_combo.setCurrentIndex(idx)
-                        except Exception:
-                            pass
-                except Exception:
-                    pass
-
-            except Exception:
-                pass
+            # victory / loss
+            if 'victory' in cfg and cfg.get('victory'):
+                vname = cfg.get('victory')
+                # try match by enum name
+                found_idx = -1
+                for i in range(self.victory_combo.count()):
+                    data = self.victory_combo.itemData(i)
+                    name = data.name if hasattr(data, 'name') else None
+                    if name == vname or self.victory_combo.itemText(i) == vname:
+                        found_idx = i
+                        break
+                if found_idx >= 0:
+                    self.victory_combo.setCurrentIndex(found_idx)
+            if 'loss' in cfg and cfg.get('loss'):
+                lname = cfg.get('loss')
+                found_idx = -1
+                for i in range(self.loss_combo.count()):
+                    data = self.loss_combo.itemData(i)
+                    name = data.name if hasattr(data, 'name') else None
+                    if name == lname or self.loss_combo.itemText(i) == lname:
+                        found_idx = i
+                        break
+                if found_idx >= 0:
+                    self.loss_combo.setCurrentIndex(found_idx)
+                # loss days
+                if 'loss_days' in cfg and cfg.get('loss_days') is not None:
+                    days = int(cfg.get('loss_days'))
+                    idx = self.loss_days_combo.findData(days)
+                    if idx >= 0:
+                        self.loss_days_combo.setCurrentIndex(idx)
             # refresh size/players warning after loading config
-            try:
-                self._update_size_players_warning()
-            except Exception:
-                pass
+            self._update_size_players_warning()
             QMessageBox.information(self, 'Loaded', f'Configuration loaded from {file_path}. If any field was invalid, it was set to a default value.')
         except Exception as e:
             QMessageBox.critical(self, 'Load error', f'Failed to load configuration: {e}')
@@ -1329,13 +1205,7 @@ class MapGeneratorGUI(QWidget):
 
         # color square that matches preview colors for this terrain
         def _rgb_for_terrain(t):
-            try:
-                v = t.value
-            except Exception:
-                try:
-                    v = int(t)
-                except Exception:
-                    v = 0
+            v = t.value
             color_map = {
                 0: (153, 102, 51),   # DIRT
                 1: (201, 152, 88),  # SAND
@@ -1363,25 +1233,18 @@ class MapGeneratorGUI(QWidget):
         spin.setValue(1)
         # Make text selection in the spinbox's editor transparent so selection
         # doesn't show a solid highlight over the terrain value field.
-        try:
-            le = None
-            try:
-                le = spin.lineEdit()
-            except Exception:
-                le = None
-            # Ensure selected text remains visible: transparent selection background
-            # but explicit selection color (black) so the digits don't disappear.
-            style = (
-                "selection-background-color: rgba(0,0,0,0);"
-                "selection-color: rgba(0,0,0,1);"
-            )
-            if le is not None:
-                le.setStyleSheet(style)
-            else:
-                # Fallback: apply stylesheet to the spinbox targeting its QLineEdit
-                spin.setStyleSheet(f"QSpinBox QLineEdit {{ {style} }}")
-        except Exception:
-            pass
+        le = spin.lineEdit()
+        # Ensure selected text remains visible: transparent selection background
+        # but explicit selection color (black) so the digits don't disappear.
+        style = (
+            "selection-background-color: rgba(0,0,0,0);"
+            "selection-color: rgba(0,0,0,1);"
+        )
+        if le is not None:
+            le.setStyleSheet(style)
+        else:
+            # Fallback: apply stylesheet to the spinbox targeting its QLineEdit
+            spin.setStyleSheet(f"QSpinBox QLineEdit {{ {style} }}")
         remove_btn = QPushButton("Remove")
         remove_btn.setCursor(QtCore.Qt.PointingHandCursor)
 
@@ -1469,30 +1332,24 @@ class MapGeneratorGUI(QWidget):
             enabled_row = (r < players_active)
             p_label.setEnabled(enabled_row)
             # color player label according to player index
-            try:
-                _player_colors = [
-                    'red',    # 1
-                    'blue',   # 2
-                    'tan',    # 3
-                    'green',  # 4
-                    'orange', # 5
-                    'purple', # 6
-                    'teal',   # 7
-                    'pink',   # 8
-                ]
-                col = _player_colors[r] if r < len(_player_colors) else 'black'
-                p_label.setStyleSheet(f"color: {col};")
-                # add a subtle black outline using a drop shadow effect with zero offset
-                try:
-                    effect = QtWidgets.QGraphicsDropShadowEffect(self)
-                    effect.setBlurRadius(6)
-                    effect.setColor(QtCore.Qt.black)
-                    effect.setOffset(0, 0)
-                    p_label.setGraphicsEffect(effect)
-                except Exception:
-                    pass
-            except Exception:
-                pass
+            _player_colors = [
+                'red',    # 1
+                'blue',   # 2
+                'tan',    # 3
+                'green',  # 4
+                'orange', # 5
+                'purple', # 6
+                'teal',   # 7
+                'pink',   # 8
+            ]
+            col = _player_colors[r] if r < len(_player_colors) else 'black'
+            p_label.setStyleSheet(f"color: {col};")
+            # add a subtle black outline using a drop shadow effect with zero offset
+            effect = QtWidgets.QGraphicsDropShadowEffect(self)
+            effect.setBlurRadius(6)
+            effect.setColor(QtCore.Qt.black)
+            effect.setOffset(0, 0)
+            p_label.setGraphicsEffect(effect)
             self.teams_grid_layout.addWidget(p_label, r+1, 0)
 
             btn_group = QtWidgets.QButtonGroup(self)
@@ -1529,6 +1386,10 @@ class MapGeneratorGUI(QWidget):
         if not folder:
             QMessageBox.warning(self, "Missing folder", "Please select a folder to save the file.")
             return
+        if not os.path.isdir(folder):
+            QMessageBox.warning(self, "Invalid folder", f"The folder does not exist:\n{folder}\nPlease select an existing folder.")
+            self.generate_btn.setEnabled(True)
+            return
         if not filename:
             QMessageBox.warning(self, "Missing filename", "Please enter a file name.")
             return
@@ -1554,30 +1415,20 @@ class MapGeneratorGUI(QWidget):
             # collect terrain values from dynamic terrain_widgets
             terrain_values = {}
             for t, info in self.terrain_widgets.items():
-                try:
-                    terrain_values[t] = int(info['spin'].value())
-                except Exception:
-                    pass
+                terrain_values[t] = int(info['spin'].value())
 
             # Constraint: WATER value cannot be more than 1/3 of total terrain values
-            try:
-                total_val = sum(terrain_values.values())
-                water_val = terrain_values.get(TerrainType.WATER, 0)
-                if total_val > 0 and water_val > (total_val / 3.0):
-                    QMessageBox.warning(self, "Terrain constraint", "Water value cannot be more than one third of the sum of all terrain values.")
-                    self.generate_btn.setEnabled(True)
-                    return
-            except Exception:
-                # if anything goes wrong, don't block generation here
-                pass
+            total_val = sum(terrain_values.values())
+            water_val = terrain_values.get(TerrainType.WATER, 0)
+            if total_val > 0 and water_val > (total_val / 3.0):
+                QMessageBox.warning(self, "Terrain constraint", "Water value cannot be more than one third of the sum of all terrain values.")
+                self.generate_btn.setEnabled(True)
+                return
 
             # parse selected size (e.g. "72x72") from closed list
             size_text = self.size_combo.currentText()
-            try:
-                w_str, rest = size_text.split('x')
-                size_val = int(w_str)
-            except Exception:
-                size_val = 72
+            w_str, rest = size_text.split('x')
+            size_val = int(w_str)
             width = height = size_val
             # Build teams_params according to UI
             num_teams = int(self.teams_spin.value())
@@ -1670,14 +1521,8 @@ class MapGeneratorGUI(QWidget):
                 self._last_map = map
                 self._last_size = (width, height)
                 # store towns and players count so saved BMP can draw neutral towns
-                try:
-                    self._last_map_towns = towns_gen or []
-                except Exception:
-                    self._last_map_towns = []
-                try:
-                    self._last_players_count = int(self.players_spin.value())
-                except Exception:
-                    self._last_players_count = 0
+                self._last_map_towns = towns_gen or []
+                self._last_players_count = int(self.players_spin.value())
                 # build and display preview image
                 tile_px = max(1, 300 // max(width, height))
                 qimg = build_preview_qimage(self._last_map, width, height, tile_px, neutral_towns=(towns_gen[players_count:] if towns_gen else []))
@@ -1720,7 +1565,6 @@ class MapGeneratorGUI(QWidget):
                             else:
                                 dlg = TownPickerDialog(entries, parent=self, type='victory')
                                 
-
                             res = dlg.exec()
 
                             if res == QtWidgets.QDialog.Accepted:
@@ -1730,25 +1574,9 @@ class MapGeneratorGUI(QWidget):
 
                                     # Extract coords defensively depending on representation
                                     try:
-                                        if isinstance(item, (list, tuple)):
-                                            ix = int(item[0])
-                                            iy = int(item[1])
-                                            iz = int(item[2])
-                                        else:
-                                            # object-like entry: try attributes first
-                                            try:
-                                                ix = int(getattr(item, 'x'))
-                                                iy = int(getattr(item, 'y'))
-                                                # z may be missing; default to 0
-                                                iz = int(getattr(item, 'z', 0))
-                                            except Exception:
-                                                # try mapping-like access
-                                                try:
-                                                    ix = int(item[0] if 0 in item else item.get('x'))
-                                                    iy = int(item[1] if 1 in item else item.get('y'))
-                                                    iz = int(item[2] if 2 in item else item.get('z', 0))
-                                                except Exception:
-                                                    QMessageBox.warning(self, "Selection error", "Selected entry does not contain usable coordinates.")
+                                        ix = int(item[0])
+                                        iy = int(item[1])
+                                        iz = int(item[2])
                                     except Exception:
                                         QMessageBox.warning(self, "Selection error", "Failed to extract coordinates from the selected entry.")
 
@@ -1780,12 +1608,8 @@ class MapGeneratorGUI(QWidget):
                                             if isinstance(dlg, UpgradeTownDialog):
                                                 addinfo.victory_condition.allow_normal_win = int(bool(dlg.allow_normal_win()))
 
-                                                try:
-                                                    hall_enum = HallLevel(dlg.hall_level())
-                                                    castle_enum = CastleLevel(dlg.castle_level())
-                                                except Exception:
-                                                    hall_enum = None
-                                                    castle_enum = None
+                                                hall_enum = HallLevel(dlg.hall_level())
+                                                castle_enum = CastleLevel(dlg.castle_level())
 
                                                 if isinstance(addinfo.victory_condition.details, UpgradeTown):
                                                     det = addinfo.victory_condition.details
@@ -1893,29 +1717,18 @@ class MapGeneratorGUI(QWidget):
         try:
             map_dict = filter_none_values(map.to_dict())
             # Inject user-provided basic info if present
-            try:
-                name_val = self.map_name_edit.text().strip()
-                desc_val = self.map_desc_edit.toPlainText().strip()
-                # enforce limits again
-                if len(name_val) > 30:
-                    name_val = name_val[:30]
-                if len(desc_val) > self.map_desc_max:
-                    desc_val = desc_val[: self.map_desc_max]
-                if hasattr(map, 'basic_info') and map.basic_info is not None:
-                    try:
-                        map.basic_info.name = name_val
-                        map.basic_info.description = desc_val
-                    except Exception:
-                        # basic_info may be plain dict-like
-                        try:
-                            map.basic_info['name'] = name_val
-                            map.basic_info['description'] = desc_val
-                        except Exception:
-                            pass
-                # re-serialize after injection
-                map_dict = filter_none_values(map.to_dict())
-            except Exception:
-                pass
+            name_val = self.map_name_edit.text().strip()
+            desc_val = self.map_desc_edit.toPlainText().strip()
+            # enforce limits again
+            if len(name_val) > 30:
+                name_val = name_val[:30]
+            if len(desc_val) > self.map_desc_max:
+                desc_val = desc_val[: self.map_desc_max]
+            if hasattr(map, 'basic_info') and map.basic_info is not None:
+                map.basic_info.name = name_val
+                map.basic_info.description = desc_val
+            # re-serialize after injection
+            map_dict = filter_none_values(map.to_dict())
             json_map_representation = json.dumps(map_dict, indent=2)
             self.status_label.setText("Map representation generated successfully")
             QApplication.processEvents()
@@ -1942,30 +1755,9 @@ class MapGeneratorGUI(QWidget):
         try:
             self.status_label.setText("Converting JSON to h3m...")
             QApplication.processEvents()
-            converter = None
-            try:
-                converter = os.environ.get('H3MTXT_PATH')
-            except Exception:
-                converter = None
-            if not converter:
-                try:
-                    converter = shutil.which(H3MTXT_NAME)
-                except Exception:
-                    converter = None
-            if not converter:
-                try:
-                    if os.path.exists(H3MTXT_DEFAULT_PATH):
-                        converter = H3MTXT_DEFAULT_PATH
-                except Exception:
-                    converter = None
-            if not converter:
-                try:
-                    cwd_candidate = os.path.join(os.getcwd(), H3MTXT_NAME)
-                    if os.path.exists(cwd_candidate):
-                        converter = cwd_candidate
-                except Exception:
-                    converter = None
+            converter = H3MTXT_DEFAULT_PATH
 
+            print(f"Using converter: {converter}")
             if not converter:
                 QMessageBox.information(self, "Saved JSON", f"JSON saved to {json_file_path}. Converter not found; .h3m not created.")
                 self.status_label.setText("Saved JSON (no converter)")
@@ -1975,10 +1767,7 @@ class MapGeneratorGUI(QWidget):
                 if result.returncode == 0:
                     QMessageBox.information(self, "Success", f"New file created at: {h3m_file_path}")
                     self.status_label.setText("Done")
-                    try:
-                        print("successfully generated a map using GUI")
-                    except Exception:
-                        pass
+                    print("successfully generated a map using GUI")
                 else:
                     QMessageBox.information(self, "Conversion", f"Conversion finished with code {result.returncode}. JSON saved to {json_file_path}")
                     self.status_label.setText("Saved JSON (converter returned non-zero)")
@@ -1991,15 +1780,6 @@ class MapGeneratorGUI(QWidget):
     def _set_status_text(self, text):
         self.status_label.setText(text)
         QApplication.processEvents()
-
-
-    def _on_worker_error(self, msg):
-        QMessageBox.critical(self, "Generation error", f"Map generation failed:\n{msg}")
-        self.status_label.setText("Failed: generation error")
-        self.generate_btn.setEnabled(True)
-        # clean up thread reference
-        self._worker_thread = None
-
     def on_save_preview(self):
         # Save a simple BMP preview of the last generated map (surface layer)
         if not hasattr(self, '_last_map') or self._last_map is None:
@@ -2016,13 +1796,10 @@ class MapGeneratorGUI(QWidget):
             tile_px = max(1, 600 // max(width, height))
             # determine neutral towns from last generated towns and players count
             neutral_towns = []
-            try:
-                towns = getattr(self, '_last_map_towns', []) or []
-                pcount = getattr(self, '_last_players_count', 0) or 0
-                if towns and pcount is not None:
-                    neutral_towns = towns[pcount:]
-            except Exception:
-                neutral_towns = []
+            towns = getattr(self, '_last_map_towns', []) or []
+            pcount = getattr(self, '_last_players_count', 0) or 0
+            if towns and pcount is not None:
+                neutral_towns = towns[pcount:]
 
             write_preview_bmp(file_path, self._last_map, width, height, tile_px, neutral_towns)
             QMessageBox.information(self, "Saved", f"Preview saved to {file_path}")
@@ -2031,118 +1808,15 @@ class MapGeneratorGUI(QWidget):
 
     def _update_size_players_warning(self):
         """Show a suggestion when map size 36x36 is selected."""
-        try:
-            size_text = self.size_combo.currentText() if hasattr(self, 'size_combo') else ''
-            # show when 36x36 specifically selected
-            try:
-                is_small = '36x36' in size_text
-            except Exception:
-                is_small = False
+        size_text = self.size_combo.currentText() if hasattr(self, 'size_combo') else ''
+        is_small = '36x36' in size_text
 
-            if is_small:
-                msg = "Small map selected (36x36). Recommended amount of players: 4 or fewer - otherwise the generator may not be able to place all player towns (Voronoi diagram centroids), causing an error."
-                try:
-                    self.size_warning_label.setText(msg)
-                    self.size_warning_label.setVisible(True)
-                except Exception:
-                    pass
-            else:
-                try:
-                    self.size_warning_label.setVisible(False)
-                except Exception:
-                    pass
-        except Exception:
-            try:
-                self.size_warning_label.setVisible(False)
-            except Exception:
-                pass
-
-    def _on_worker_finished(self, map_obj, folder, filename):
-        try:
-            self.status_label.setText("Serializing map...")
-            QApplication.processEvents()
-
-            if hasattr(map_obj, 'to_dict'):
-                data = map_obj.to_dict()
-            else:
-                data = map_obj
-
-            json_map = json.dumps(data, indent=2, ensure_ascii=False)
-        except Exception as e:
-            QMessageBox.critical(self, "Serialize error", f"Failed to serialize map: {e}")
-            self.status_label.setText("Failed: serialize error")
-            self.generate_btn.setEnabled(True)
-            self._worker_thread = None
-            return
-
-        json_file_path = os.path.join(folder, f"{filename}.json")
-        h3m_file_path = os.path.join(folder, f"{filename}.h3m")
-
-        try:
-            with open(json_file_path, 'w', encoding='utf-8') as f:
-                f.write(json_map)
-        except Exception as e:
-            QMessageBox.critical(self, "File error", f"Failed to write JSON file: {e}")
-            self.status_label.setText("Failed: file write error")
-            self.generate_btn.setEnabled(True)
-            self._worker_thread = None
-            return
-
-        # Try running the external converter if available. Resolution order:
-        # 1. Environment variable `H3MTXT_PATH`
-        # 2. System PATH via shutil.which
-        # 3. Project-root location (one level above this file)
-        # 4. Current working directory
-        converter = None
-        try:
-            converter = os.environ.get('H3MTXT_PATH')
-        except Exception:
-            converter = None
-        if not converter:
-            try:
-                converter = shutil.which(H3MTXT_NAME)
-            except Exception:
-                converter = None
-        if not converter:
-            try:
-                if os.path.exists(H3MTXT_DEFAULT_PATH):
-                    converter = H3MTXT_DEFAULT_PATH
-            except Exception:
-                converter = None
-        if not converter:
-            try:
-                cwd_candidate = os.path.join(os.getcwd(), H3MTXT_NAME)
-                if os.path.exists(cwd_candidate):
-                    converter = cwd_candidate
-            except Exception:
-                converter = None
-
-        if converter and os.path.exists(converter):
-            try:
-                self.status_label.setText("Running converter...")
-                QApplication.processEvents()
-                converter_dir = os.path.dirname(converter) or os.getcwd()
-                result = subprocess.run([converter, json_file_path, h3m_file_path], cwd=converter_dir, capture_output=True, text=True)
-                if result.returncode != 0:
-                    msg = f'Converter returned code {result.returncode}\n\nstdout:\n{result.stdout}\n\nstderr:\n{result.stderr}'
-                    QMessageBox.warning(self, "Converter returned non-zero", msg)
-                    self.status_label.setText("Converter error")
-                else:
-                    QMessageBox.information(self, "Success", f"Map saved to {h3m_file_path}")
-                    self.status_label.setText("Done")
-                    try:
-                        print("successfully generated a map using GUI")
-                    except Exception:
-                        pass
-            except Exception as e:
-                QMessageBox.warning(self, "Converter error", f"Failed to run converter: {e}")
-                self.status_label.setText("Converter failed")
+        if is_small:
+            msg = "Small map selected (36x36). Recommended amount of players:\n4 or fewer - otherwise the generator may not be able to place all player towns, causing an error."
+            self.size_warning_label.setText(msg)
+            self.size_warning_label.setVisible(True)
         else:
-            QMessageBox.information(self, "Saved JSON", f"JSON saved to {json_file_path}. Converter not found; .h3m not created.")
-            self.status_label.setText("Saved JSON (no converter)")
-
-        self.generate_btn.setEnabled(True)
-        self._worker_thread = None
+            self.size_warning_label.setVisible(False)
 
 
 def main():
