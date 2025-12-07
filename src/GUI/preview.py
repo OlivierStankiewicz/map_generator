@@ -39,44 +39,72 @@ def write_preview_bmp(path: str, map_obj, width: int, height: int, tile_px: int 
             rows.append(row_pixels[:])
 
     # Overlay player main towns (if present) as colored tiles
-    try:
-        player_colors = [
-            (255, 0, 0),    # red
-            (0, 0, 255),    # blue
-            (210, 180, 140),# tan
-            (0, 128, 0),    # green
-            (255, 165, 0),  # orange
-            (128, 0, 128),  # purple
-            (0, 128, 128),  # teal
-            (255, 192, 203) # pink
+    player_colors = [
+        (255, 0, 0),    # red
+        (0, 0, 255),    # blue
+        (210, 180, 140),# tan
+        (0, 128, 0),    # green
+        (255, 165, 0),  # orange
+        (128, 0, 128),  # purple
+        (0, 128, 128),  # teal
+        (255, 192, 203) # pink
+    ]
+    for p_idx, p in enumerate(getattr(map_obj, 'players', []) or []):
+        mt = getattr(p, 'main_town', None)
+        if not mt:
+            continue
+        # recover grid city coordinates: generator stored main_town.x = final_x - 2
+        city_x = int(mt.x + 2)
+        city_y = int(mt.y)
+
+        tile_coords = [
+            (city_x - 1, city_y),
+            (city_x, city_y),
+            (city_x + 1, city_y),
+            (city_x, city_y - 1),
         ]
-        for p_idx, p in enumerate(getattr(map_obj, 'players', []) or []):
-            mt = getattr(p, 'main_town', None)
-            if not mt:
+
+        color = player_colors[p_idx] if p_idx < len(player_colors) else (0, 0, 0)
+
+        # paint whole tiles (tile_px x tile_px) in the rows array
+        for tx, ty in tile_coords:
+            if tx < 0 or tx >= width or ty < 0 or ty >= height:
                 continue
-            # recover grid city coordinates: generator stored main_town.x = final_x - 2
-            try:
-                city_x = int(mt.x + 2)
-                city_y = int(mt.y)
-            except Exception:
-                continue
+            # pixel ranges for this tile
+            px0 = tx * tile_px
+            py0 = ty * tile_px
+            px1 = px0 + tile_px - 1
+            py1 = py0 + tile_px - 1
+            for ry in range(py0, py1 + 1):
+                if ry < 0 or ry >= img_h:
+                    continue
+                row = rows[ry]
+                for rx in range(px0, px1 + 1):
+                    if rx < 0 or rx >= img_w:
+                        continue
+                    row[rx] = color
+
+    # Overlay neutral towns (gray) if provided
+    towns = neutral_towns or []
+    if towns:
+        gray = (191, 191, 191)
+        for town in towns:
+            if isinstance(town, (list, tuple)):
+                tx = int(town[0])
+                ty = int(town[1])
 
             tile_coords = [
-                (city_x - 1, city_y),
-                (city_x, city_y),
-                (city_x + 1, city_y),
-                (city_x, city_y - 1),
+                (tx - 1, ty),
+                (tx, ty),
+                (tx + 1, ty),
+                (tx, ty - 1),
             ]
 
-            color = player_colors[p_idx] if p_idx < len(player_colors) else (0, 0, 0)
-
-            # paint whole tiles (tile_px x tile_px) in the rows array
-            for tx, ty in tile_coords:
-                if tx < 0 or tx >= width or ty < 0 or ty >= height:
+            for txx, tyy in tile_coords:
+                if txx < 0 or txx >= width or tyy < 0 or tyy >= height:
                     continue
-                # pixel ranges for this tile
-                px0 = tx * tile_px
-                py0 = ty * tile_px
+                px0 = txx * tile_px
+                py0 = tyy * tile_px
                 px1 = px0 + tile_px - 1
                 py1 = py0 + tile_px - 1
                 for ry in range(py0, py1 + 1):
@@ -86,52 +114,7 @@ def write_preview_bmp(path: str, map_obj, width: int, height: int, tile_px: int 
                     for rx in range(px0, px1 + 1):
                         if rx < 0 or rx >= img_w:
                             continue
-                        row[rx] = color
-    except Exception:
-        # don't fail the whole save if overlay fails
-        pass
-
-    # Overlay neutral towns (gray) if provided
-    try:
-        towns = neutral_towns or []
-        if towns:
-            gray = (191, 191, 191)
-            for town in towns:
-                try:
-                    if isinstance(town, (list, tuple)):
-                        tx = int(town[0])
-                        ty = int(town[1])
-                    else:
-                        # object-like
-                        tx = int(getattr(town, 'x', 0))
-                        ty = int(getattr(town, 'y', 0))
-                except Exception:
-                    continue
-
-                tile_coords = [
-                    (tx - 1, ty),
-                    (tx, ty),
-                    (tx + 1, ty),
-                    (tx, ty - 1),
-                ]
-
-                for txx, tyy in tile_coords:
-                    if txx < 0 or txx >= width or tyy < 0 or tyy >= height:
-                        continue
-                    px0 = txx * tile_px
-                    py0 = tyy * tile_px
-                    px1 = px0 + tile_px - 1
-                    py1 = py0 + tile_px - 1
-                    for ry in range(py0, py1 + 1):
-                        if ry < 0 or ry >= img_h:
-                            continue
-                        row = rows[ry]
-                        for rx in range(px0, px1 + 1):
-                            if rx < 0 or rx >= img_w:
-                                continue
-                            row[rx] = gray
-    except Exception:
-        pass
+                        row[rx] = gray
 
     # write 24-bit BMP
     import struct
@@ -209,78 +192,66 @@ def build_preview_qimage(map_obj, width: int, height: int, tile_px: int = 6, neu
     qimg = QImage(bytes(data), img_w, img_h, QImage.Format_RGB888)
 
     # Paint player main towns on top of generated image
-    try:
-        painter = QPainter(qimg)
-        painter.setRenderHint(QPainter.Antialiasing)
-        player_colors = [
-            QColor(255, 0, 0),    # red
-            QColor(0, 0, 255),    # blue
-            QColor(210, 180, 140),# tan
-            QColor(0, 128, 0),    # green
-            QColor(255, 165, 0),  # orange
-            QColor(128, 0, 128),  # purple
-            QColor(0, 128, 128),  # teal
-            QColor(255, 192, 203) # pink
+    painter = QPainter(qimg)
+    painter.setRenderHint(QPainter.Antialiasing)
+    player_colors = [
+        QColor(255, 0, 0),    # red
+        QColor(0, 0, 255),    # blue
+        QColor(210, 180, 140),# tan
+        QColor(0, 128, 0),    # green
+        QColor(255, 165, 0),  # orange
+        QColor(128, 0, 128),  # purple
+        QColor(0, 128, 128),  # teal
+        QColor(255, 192, 203) # pink
+    ]
+    for p_idx, p in enumerate(getattr(map_obj, 'players', []) or []):
+        mt = getattr(p, 'main_town', None)
+        if not mt:
+            continue
+        city_x = int(mt.x + 2)
+        city_y = int(mt.y)
+
+        tile_coords = [
+            (city_x - 1, city_y),
+            (city_x, city_y),
+            (city_x + 1, city_y),
+            (city_x, city_y - 1),
         ]
-        for p_idx, p in enumerate(getattr(map_obj, 'players', []) or []):
-            mt = getattr(p, 'main_town', None)
-            if not mt:
-                continue
-            try:
-                city_x = int(mt.x + 2)
-                city_y = int(mt.y)
-            except Exception:
-                continue
 
-            tile_coords = [
-                (city_x - 1, city_y),
-                (city_x, city_y),
-                (city_x + 1, city_y),
-                (city_x, city_y - 1),
-            ]
-
-            color = player_colors[p_idx] if p_idx < len(player_colors) else QColor(0, 0, 0)
-            painter.setPen(QtCore.Qt.NoPen)
-            for tx, ty in tile_coords:
-                if tx < 0 or tx >= width or ty < 0 or ty >= height:
-                    continue
-                x_px = int(tx * tile_px)
-                y_px = int(ty * tile_px)
-                rect = QtCore.QRect(x_px, y_px, int(tile_px), int(tile_px))
-                painter.fillRect(rect, color)
-        painter.end()
-    except Exception:
-        pass
+        color = player_colors[p_idx] if p_idx < len(player_colors) else QColor(0, 0, 0)
+        painter.setPen(QtCore.Qt.NoPen)
+        for tx, ty in tile_coords:
+            if tx < 0 or tx >= width or ty < 0 or ty >= height:
+                continue
+            x_px = int(tx * tile_px)
+            y_px = int(ty * tile_px)
+            rect = QtCore.QRect(x_px, y_px, int(tile_px), int(tile_px))
+            painter.fillRect(rect, color)
+    painter.end()
 
     if neutral_towns:
-        try:
-            painter = QPainter(qimg)
-            painter.setRenderHint(QPainter.Antialiasing)
-            gray_color = QColor(191, 191, 191)
-            for town in neutral_towns:
-                try:
-                    tx = int(town[0])
-                    ty = int(town[1])
-                except Exception:
+        painter = QPainter(qimg)
+        painter.setRenderHint(QPainter.Antialiasing)
+        gray_color = QColor(191, 191, 191)
+        for town in neutral_towns:
+            tx = int(town[0])
+            ty = int(town[1])
+
+            tile_coords = [
+                (tx - 1, ty),
+                (tx, ty),
+                (tx + 1, ty),
+                (tx, ty - 1),
+            ]
+
+            painter.setPen(QtCore.Qt.NoPen)
+            for txx, tyy in tile_coords:
+                if txx < 0 or txx >= width or tyy < 0 or tyy >= height:
                     continue
-
-                tile_coords = [
-                    (tx - 1, ty),
-                    (tx, ty),
-                    (tx + 1, ty),
-                    (tx, ty - 1),
-                ]
-
-                painter.setPen(QtCore.Qt.NoPen)
-                for txx, tyy in tile_coords:
-                    if txx < 0 or txx >= width or tyy < 0 or tyy >= height:
-                        continue
-                    x_px = int(txx * tile_px)
-                    y_px = int(tyy * tile_px)
-                    rect = QtCore.QRect(x_px, y_px, int(tile_px), int(tile_px))
-                    painter.fillRect(rect, gray_color)
-            painter.end()
-        except Exception:
-            pass
+                x_px = int(txx * tile_px)
+                y_px = int(tyy * tile_px)
+                rect = QtCore.QRect(x_px, y_px, int(tile_px), int(tile_px))
+                painter.fillRect(rect, gray_color)
+        painter.end()
 
     return qimg
