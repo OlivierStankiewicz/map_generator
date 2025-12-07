@@ -794,12 +794,12 @@ class MapGeneratorGUI(QWidget):
         manual_label.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
         manual_label.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
 
-        # Load 'nasza_mapa.PNG' directly from the `GUI` folder next to this module.
+        # Load 'nasza_mapka.png' directly from the `GUI` folder next to this module.
         # If not present, show a small placeholder label with instructions.
         img_label = QLabel()
         img_label.setAlignment(QtCore.Qt.AlignCenter)
         gui_dir = os.path.join(os.path.dirname(__file__), 'GUI')
-        img_path = os.path.join(gui_dir, 'nasza_mapa.PNG')
+        img_path = os.path.join(gui_dir, 'nasza_mapka.png')
         if not os.path.exists(img_path):
             img_path = None
 
