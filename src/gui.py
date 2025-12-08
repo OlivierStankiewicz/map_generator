@@ -826,11 +826,9 @@ class MapGeneratorGUI(QWidget):
 """)
 
 
-        # Load 'nasza_mapka.png' directly from the `GUI` folder next to this module.
-        # If not present, show a small placeholder label with instructions.
         img_label = QLabel()
         img_label.setAlignment(QtCore.Qt.AlignCenter)
-        gui_dir = os.path.join(os.path.dirname(__file__), 'GUI')
+        gui_dir = os.path.join(os.path.dirname(__file__), 'ui')
         img_path = os.path.join(gui_dir, 'nasza_mapka.png')
         if not os.path.exists(img_path):
             img_path = None
@@ -849,7 +847,7 @@ class MapGeneratorGUI(QWidget):
             except Exception:
                 img_label.setText("[Image load error]")
         else:
-            img_label.setText("[Add nasza_mapa.PNG to the GUI folder to show image]")
+            img_label.setText("[placeholder for map image]")
             img_label.setStyleSheet('font-style: italic; color: #666;')
 
         # Place text on the left and image on the right
