@@ -6,7 +6,7 @@ class RandomDwellingPresetAlignment(Properties):
         return cls(
             owner= 255,
             min_level = 0,
-            max_level = 6
+            max_level = 4 # 6
         )
 
     def __init__(self, owner: int,

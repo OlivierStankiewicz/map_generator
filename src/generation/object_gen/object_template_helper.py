@@ -11,6 +11,7 @@ from math import sqrt
 
 from classes.Enums.ArtifactType import converterTypeToNum as ar_converterTypeToNum
 from classes.Enums.CreatureType import converterTypeToNum as cr_converterTypeToNum, CreatureNum, converterNumToType as cr_converterNumToType
+from classes.Enums.Disposition import Disposition
 from classes.Enums.VictoryConditions import VictoryConditions
 from classes.Objects.Properties.Artifact import Artifact
 from classes.Objects.Properties.Helpers.Creatures import Creatures
@@ -48,7 +49,6 @@ from classes.ObjectsTemplate import ObjectsTemplate
 from classes.tile.Tile import Tile, TerrainType
 from generation.object_gen.json_parser import read_object_templates_from_json, read_object_from_json
 from generation.object_gen.city_gen.voronoi_city_placement import generate_city_positions_with_fields, get_region_tiles
-from generation.object_gen.forest_placer import ForestPlacer, create_default_tree_types, TreeType
 
 
 @dataclass
@@ -118,7 +118,7 @@ class ObjectTemplateHelper:
                             [(2,4),  (2,8),  (2,8),  (2,8)], #miasto
                             [(1,1),  (1,2),  (2,2),  (2,3)], #dwelling
                             [(1,1),  (1,1),  (1,1),  (1,1)], #level3
-                            [(1,1),  (1,2),  (2,2),  (3,4)], #level2
+                            [(1,1),  (1,2),  (2,3),  (3,4)], #level2
                             [(1,1),  (1,2),  (2,2),  (3,4)], #level1.5
                             [(1,1),  (1,2),  (2,2),  (3,6)], #level1
                             [(5, 10), (10, 15), (15, 20), (20, 25)], #artifacts
@@ -142,6 +142,11 @@ class ObjectTemplateHelper:
             self.town_params.total_regions,
             self.reserved_tiles
         )
+
+        for i in self.result['fields_info']:
+            a = i.centroid
+            x, y = a[0], a[1]
+            print(int(x), int(y))
 
         self.create_default_object_template()
         # warstwa 2 zamki i bohaterowie
@@ -248,7 +253,7 @@ class ObjectTemplateHelper:
                 actionable = bool((template.actionability[row] >> (7 - col)) & 1)
 
                 # Jeśli kafelek, który obiekt by zajmował, leży poza mapą -> invalid
-                if not (0 <= tile_x < self.map_format - 2 and 2 <= tile_y < self.map_format - 2):
+                if not (2 <= tile_x < self.map_format - 2 and 2 <= tile_y < self.map_format - 2):
                     if passable or actionable:
                         # obiekt wychodzi poza mapę
                         return False
