@@ -57,15 +57,15 @@ from classes.additional_info.VictoryConditions.DefeatMonster import DefeatMonste
 from classes.additional_info.LossConditions.LoseTown import LoseTown
 from classes.additional_info.LossConditions.LoseHero import LoseHero
 
-from gui.functions.filter_none_values import filter_none_values
-from gui.classes.LimitedPlainTextEdit import LimitedPlainTextEdit
-from gui.classes.OutlinedLabel import OutlinedLabel
-from gui.classes.TownPickerDialog import TownPickerDialog
-from gui.classes.UpgradeTownDialog import UpgradeTownDialog
-from gui.classes.CaptureTownDialog import CaptureTownDialog
-from gui.classes.DefeatMonsterDialog import DefeatMonsterDialog
-from gui.classes.HeroPickerDialog import HeroPickerDialog
-from gui.preview import build_preview_qimage, write_preview_bmp
+from ui.functions.filter_none_values import filter_none_values
+from ui.classes.LimitedPlainTextEdit import LimitedPlainTextEdit
+from ui.classes.OutlinedLabel import OutlinedLabel
+from ui.classes.TownPickerDialog import TownPickerDialog
+from ui.classes.UpgradeTownDialog import UpgradeTownDialog
+from ui.classes.CaptureTownDialog import CaptureTownDialog
+from ui.classes.DefeatMonsterDialog import DefeatMonsterDialog
+from ui.classes.HeroPickerDialog import HeroPickerDialog
+from ui.preview import build_preview_qimage, write_preview_bmp
 
 class MapGeneratorGUI(QWidget):
     def __init__(self):
