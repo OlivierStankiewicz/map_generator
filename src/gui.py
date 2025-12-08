@@ -12,6 +12,7 @@ from PySide6.QtWidgets import (
     QSpinBox,
     QGroupBox,
     QFormLayout,
+    QTextEdit,
     QComboBox,
     QSizePolicy
 )
@@ -21,6 +22,14 @@ import os
 import json
 import subprocess
 from datetime import datetime
+
+def _qt_message_handler(msg_type, context, message):
+    text = str(message)
+    if 'Could not parse stylesheet' in text:
+        return
+
+# install handler for Qt stylesheet parse warnings
+QtCore.qInstallMessageHandler(_qt_message_handler)
 
 H3MTXT_NAME = "h3mtxt.exe"
 _PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -63,7 +72,7 @@ class MapGeneratorGUI(QWidget):
         super().__init__()
         self.setWindowTitle("Map Generator GUI")
         # Make the default window a bit taller so more controls fit vertically
-        self.resize(820, 820)
+        self.resize(900, 900)
 
         # Widgets
         self.folder_label = QLabel("Save folder:")
@@ -237,94 +246,68 @@ class MapGeneratorGUI(QWidget):
         left_column_layout.addWidget(map_info_group)
         left_column.setLayout(left_column_layout)
 
-        # Players group: player count (synced with player cities) and neutral cities
-        players_group = QGroupBox("Players / Cities")
+        # Players group: player count and neutral towns
+        players_group = QGroupBox("Players / Towns")
         pg_layout = QFormLayout()
-        self.player_cities_spin = QSpinBox()
-        # Require at least 1 player city (1..8)
-        self.player_cities_spin.setRange(1, 8)
-        self.player_cities_spin.setValue(5)
+        # Single spinbox for players (also used as player towns)
         self.players_spin = QSpinBox()
         # Require at least 1 player (1..8)
         self.players_spin.setRange(1, 8)
         self.players_spin.setValue(5)
-        self._style_spinbox_no_caret(self.player_cities_spin)
-        # sync flag to avoid recursion
-        self._syncing_player_counts = False
-        def _on_player_cities_changed(val):
-            if self._syncing_player_counts:
-                return
-            self._syncing_player_counts = True
-            try:
-                self.players_spin.setValue(val)
-                # update teams max and rebuild grid (cap at 7 teams)
-                self.teams_spin.setMaximum(min(7, max(0, val - 1)))
-                self._rebuild_teams_grid_needed = True
-            finally:
-                self._syncing_player_counts = False
+        self._style_spinbox_no_caret(self.players_spin)
 
-            # Ensure neutral cities respect total cap (MAX_TOTAL_TOWNS - 1). Player cities take priority.
-            neutral_val = int(self.neutral_cities_spin.value())
-            allowed = max(0, MAX_TOTAL_TOWNS - 1 - int(val))
-            if neutral_val > allowed:
-                # reduce neutral cities to allowed maximum
-                self.neutral_cities_spin.blockSignals(True)
-                try:
-                    self.neutral_cities_spin.setValue(allowed)
-                finally:
-                    self.neutral_cities_spin.blockSignals(False)
-            # also update the neutral spin maximum so user cannot increase beyond allowed
-            self.neutral_cities_spin.setMaximum(allowed)
-
-            # refresh size/players warning
-            self._update_size_players_warning()
-
+        # update handler when players change: updates teams and neutral towns limits
         def _on_players_changed(val):
-            if self._syncing_player_counts:
-                return
-            self._syncing_player_counts = True
-            try:
-                self.player_cities_spin.setValue(val)
-                # update teams max and rebuild grid (cap at 7 teams)
-                self.teams_spin.setMaximum(min(7, max(0, val - 1)))
-                self._rebuild_teams_grid_needed = True
-            finally:
-                self._syncing_player_counts = False
+            # update teams max and rebuild grid (cap at 7 teams)
+            self.teams_spin.setMaximum(min(7, max(0, val - 1)))
+            self._rebuild_teams_grid_needed = True
+
+            # Ensure neutral towns respect total cap (MAX_TOTAL_TOWNS). Player towns take priority.
+            neutral_val = int(self.neutral_towns_spin.value())
+            allowed = max(0, MAX_TOTAL_TOWNS - int(val))
+            if neutral_val > allowed:
+                # reduce neutral towns to allowed maximum
+                self.neutral_towns_spin.blockSignals(True)
+                try:
+                    self.neutral_towns_spin.setValue(allowed)
+                finally:
+                    self.neutral_towns_spin.blockSignals(False)
+            # also update the neutral spin maximum so user cannot increase beyond allowed
+            self.neutral_towns_spin.setMaximum(allowed)
 
             # refresh size/players warning
             self._update_size_players_warning()
 
-        self.player_cities_spin.valueChanged.connect(_on_player_cities_changed)
         self.players_spin.valueChanged.connect(_on_players_changed)
 
         # update warning when map size changes as well
         self.size_combo.currentIndexChanged.connect(lambda _: self._update_size_players_warning())
 
-        self.neutral_cities_spin = QSpinBox()
-        # neutral cities initial allowed range; actual max is adjusted dynamically
-        self.neutral_cities_spin.setRange(0, MAX_TOTAL_TOWNS - 1)
+        self.neutral_towns_spin = QSpinBox()
+        # neutral towns initial allowed range; actual max is adjusted dynamically
+        self.neutral_towns_spin.setRange(0, MAX_TOTAL_TOWNS)
         # ensure neutral initial value is reasonable
-        self.neutral_cities_spin.setValue(2)
-        self._style_spinbox_no_caret(self.neutral_cities_spin)
+        self.neutral_towns_spin.setValue(2)
+        self._style_spinbox_no_caret(self.neutral_towns_spin)
 
-        # adjust neutral maximum according to current player_cities
-        pc = int(self.player_cities_spin.value())
+        # adjust neutral maximum according to current players
+        pc = int(self.players_spin.value())
         allowed = max(0, 47 - pc)
-        self.neutral_cities_spin.setMaximum(allowed)
+        self.neutral_towns_spin.setMaximum(allowed)
 
-        # handler: prevent increasing neutral beyond allowed total (MAX_TOTAL_TOWNS - 1)
+        # handler: prevent increasing neutral beyond allowed total (MAX_TOTAL_TOWNS)
         def _on_neutral_changed(val):
-            pc = int(self.player_cities_spin.value())
-            allowed = max(0, MAX_TOTAL_TOWNS - 1 - pc)
+            pc = int(self.players_spin.value())
+            allowed = max(0, MAX_TOTAL_TOWNS - pc)
             if val > allowed:
                 # revert to allowed
-                self.neutral_cities_spin.blockSignals(True)
+                self.neutral_towns_spin.blockSignals(True)
                 try:
-                    self.neutral_cities_spin.setValue(allowed)
+                    self.neutral_towns_spin.setValue(allowed)
                 finally:
-                    self.neutral_cities_spin.blockSignals(False)
+                    self.neutral_towns_spin.blockSignals(False)
 
-        self.neutral_cities_spin.valueChanged.connect(_on_neutral_changed)
+        self.neutral_towns_spin.valueChanged.connect(_on_neutral_changed)
 
         # Difficulty selector (0..4)
         self.difficulty_spin = QSpinBox()
@@ -332,9 +315,8 @@ class MapGeneratorGUI(QWidget):
         self.difficulty_spin.setValue(1)
         self._style_spinbox_no_caret(self.difficulty_spin)
 
-        pg_layout.addRow("Player cities:", self.player_cities_spin)
-        pg_layout.addRow("Players:", self.players_spin)
-        pg_layout.addRow("Neutral cities:", self.neutral_cities_spin)
+        pg_layout.addRow("Players (Player towns):", self.players_spin)
+        pg_layout.addRow("Neutral towns:", self.neutral_towns_spin)
         pg_layout.addRow("Difficulty:", self.difficulty_spin)
         # (size warning label is defined in Map info section)
         # Teams: number of teams and per-player assignments
@@ -780,19 +762,69 @@ class MapGeneratorGUI(QWidget):
             "7. Press 'Generate map' to generate the map representation and preview.\n"
             "8. Optionally, select parameters for Win/Lose conditions that require post-generation selection.\n"
             "9. Your map will be saved as a .h3m file in the specified folder.\n\n"
-            "To use the generated map, simply copy the .h3m file into your Heroes III: SoD 'Maps' folder - it will be visible in the game.\n"
+            "To use the generated map, simply copy the .h3m file into your Heroes III: SoD 'Maps' folder - it will be visible in the game."
             "Enjoy!\n\n"
             "Additionally:\n"
             "- You can save the map preview to a BMP file.\n"
             "- You can save and load the current configuration to/from a JSON file for easy reuse of settings (if any field is invalid, it will be ignored and a default value will be used).\n\n"
+            "Notes on generation limits:\n"
+            "- If the number of neutral towns is too high for the chosen map size and player count, the generator may produce less neutral towns than requested.\n"
+            "- On small maps (36x36) with many players, the generator may fail to produce a map at all due to space constraints. In such cases try a larger size or fewer players.\n\n"
             "What if the 'h3mtxt.exe' converter is not present?\n"
             "Only a JSON representation of the map will be saved. You can then use the h3mtxt.exe tool separately to convert JSON to .h3m.\n\n"
         )
         manual_html = manual_body.replace('\n', '<br>')
-        manual_label = QLabel(f"<div style='font-size:13px; line-height:1.45;'>{manual_html}</div>")
-        manual_label.setWordWrap(True)
-        manual_label.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
-        manual_label.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
+        # Use a read-only QTextEdit so the manual text is scrollable and selectable
+        manual_text = QTextEdit()
+        manual_text.setReadOnly(True)
+        manual_text.setFrameStyle(2)
+        manual_text.setHtml(f"<div style='font-size:13px; line-height:1.45;'>{manual_html}</div>")
+        manual_text.setMinimumSize(420, 360)
+        manual_text.setMaximumWidth(520)
+        manual_text.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        manual_text.setStyleSheet("""
+    padding: 8px;
+    background: transparent;
+
+    QScrollBar:vertical {
+        background: #e0e0e0;
+        width: 12px;
+        margin: 0px;
+        border-radius: 3px;
+    }
+
+    QScrollBar::handle:vertical {
+        background: #a0a0a0;
+        min-height: 20px;
+        border-radius: 3px;
+    }
+
+    QScrollBar::handle:vertical:hover {
+        background: #888;
+    }
+
+    QScrollBar::add-line:vertical,
+    QScrollBar::sub-line:vertical {
+        height: 0px;
+    }
+
+    QScrollBar:horizontal {
+        background: #e0e0e0;
+        height: 12px;
+        border-radius: 3px;
+    }
+
+    QScrollBar::handle:horizontal {
+        background: #a0a0a0;
+        min-width: 20px;
+        border-radius: 3px;
+    }
+
+    QScrollBar::handle:horizontal:hover {
+        background: #888;
+    }
+""")
+
 
         # Load 'nasza_mapka.png' directly from the `GUI` folder next to this module.
         # If not present, show a small placeholder label with instructions.
@@ -822,19 +854,25 @@ class MapGeneratorGUI(QWidget):
 
         # Place text on the left and image on the right
         manual_h = QHBoxLayout()
-        manual_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
         img_label.setMaximumWidth(320)
-        manual_h.addWidget(manual_label, 1)
+        manual_h.addWidget(manual_text, 1)
         manual_h.addWidget(img_label, 0)
         manual_layout.addLayout(manual_h)
 
         manual_close = QPushButton("Back to editor")
+        manual_close.setCursor(QtCore.Qt.PointingHandCursor)
+        manual_close.setStyleSheet("color: #1a237e; font-weight: bold; font-size: 16px;")
+        manual_close.setFixedHeight(34)
         manual_close.setFixedWidth(140)
         manual_close.clicked.connect(lambda: self.stack.setCurrentIndex(0))
         manual_layout.addWidget(manual_close, alignment=QtCore.Qt.AlignRight)
         manual_widget.setLayout(manual_layout)
 
-        self.stack.addWidget(manual_widget)  # index 1 = manual
+        # Make manual scrollable like the main UI
+        manual_scroll = QtWidgets.QScrollArea()
+        manual_scroll.setWidgetResizable(True)
+        manual_scroll.setWidget(manual_widget)
+        self.stack.addWidget(manual_scroll)  # index 1 = manual
 
         main_layout = QVBoxLayout()
         main_layout.setContentsMargins(0, 0, 0, 0)
@@ -906,10 +944,9 @@ class MapGeneratorGUI(QWidget):
             info['spin'].setValue(1)
         self._refresh_available_terrains()
 
-        # players / cities / difficulty / teams
-        self.player_cities_spin.setValue(5)
+        # players / towns / difficulty / teams
         self.players_spin.setValue(5)
-        self.neutral_cities_spin.setValue(2)
+        self.neutral_towns_spin.setValue(2)
         self.difficulty_spin.setValue(1)
         self.teams_spin.setValue(0)
         self._rebuild_teams_grid()
@@ -965,9 +1002,9 @@ class MapGeneratorGUI(QWidget):
                 except Exception:
                     pass
             cfg['terrains'] = terrains
-            cfg['player_cities'] = int(self.player_cities_spin.value())
             cfg['players'] = int(self.players_spin.value())
-            cfg['neutral_cities'] = int(self.neutral_cities_spin.value())
+            cfg['player_towns'] = int(self.players_spin.value())
+            cfg['neutral_towns'] = int(self.neutral_towns_spin.value())
             cfg['difficulty'] = int(self.difficulty_spin.value())
             cfg['teams'] = int(self.teams_spin.value())
 
@@ -1001,31 +1038,50 @@ class MapGeneratorGUI(QWidget):
                 vdata = self.victory_combo.currentData()
             except Exception:
                 vdata = None
+            # Save only the parameters relevant to the selected victory condition.
+            # For town-related victory types (upgrade/capture) these should be None.
             if vdata is not None and vdata != VictoryConditions.NORMAL:
-                try:
-                    art = self.artifact_combo.currentData()
-                    cfg['artifact'] = art.name if hasattr(art, 'name') else str(self.artifact_combo.currentText())
-                except Exception:
+                # Artifact-related victories
+                if vdata in (VictoryConditions.ACQUIRE_ARTIFACT, VictoryConditions.TRANSPORT_ARTIFACT):
+                    try:
+                        art = self.artifact_combo.currentData()
+                        cfg['artifact'] = art.name if hasattr(art, 'name') else str(self.artifact_combo.currentText())
+                    except Exception:
+                        cfg['artifact'] = None
+                else:
                     cfg['artifact'] = None
-                try:
-                    cre = self.creature_combo.currentData()
-                    cfg['creature'] = cre.name if hasattr(cre, 'name') else str(self.creature_combo.currentText())
-                except Exception:
+
+                # Creature accumulation
+                if vdata == VictoryConditions.ACCUMULATE_CREATURES:
+                    try:
+                        cre = self.creature_combo.currentData()
+                        cfg['creature'] = cre.name if hasattr(cre, 'name') else str(self.creature_combo.currentText())
+                    except Exception:
+                        cfg['creature'] = None
+                    try:
+                        cfg['creature_count'] = int(self.creature_count_spin.value())
+                    except Exception:
+                        cfg['creature_count'] = None
+                else:
                     cfg['creature'] = None
-                try:
-                    cfg['creature_count'] = int(self.creature_count_spin.value())
-                except Exception:
                     cfg['creature_count'] = None
-                try:
-                    res = self.resource_combo.currentData()
-                    cfg['resource'] = res.name if hasattr(res, 'name') else str(self.resource_combo.currentText())
-                except Exception:
+
+                # Resource accumulation
+                if vdata == VictoryConditions.ACCUMULATE_RESOURCES:
+                    try:
+                        res = self.resource_combo.currentData()
+                        cfg['resource'] = res.name if hasattr(res, 'name') else str(self.resource_combo.currentText())
+                    except Exception:
+                        cfg['resource'] = None
+                    try:
+                        cfg['resource_amount'] = int(self.resource_amount_spin.value())
+                    except Exception:
+                        cfg['resource_amount'] = None
+                else:
                     cfg['resource'] = None
-                try:
-                    cfg['resource_amount'] = int(self.resource_amount_spin.value())
-                except Exception:
                     cfg['resource_amount'] = None
             else:
+                # Normal victory or missing selection — clear extra params
                 cfg['artifact'] = None
                 cfg['creature'] = None
                 cfg['creature_count'] = None
@@ -1034,7 +1090,17 @@ class MapGeneratorGUI(QWidget):
 
             # loss params
             try:
-                cfg['loss_days'] = int(self.loss_days_combo.currentData() or 0)
+                ldata = self.loss_combo.currentData()
+                # Only set loss_days for time-based loss; for lose-town/lose-hero it should be null
+                if ldata == LossConditions.TIME_EXPIRES:
+                    data = self.loss_days_combo.currentData()
+                    try:
+                        cfg['loss_days'] = int(data)
+                    except Exception:
+                        cfg['loss_days'] = None
+                else:
+                    # For LOSE_TOWN, LOSE_HERO and NORMAL, do not set days
+                    cfg['loss_days'] = None
             except Exception:
                 cfg['loss_days'] = None
 
@@ -1097,24 +1163,30 @@ class MapGeneratorGUI(QWidget):
             # ensure available list updated
             self._refresh_available_terrains()
 
-            if 'player_cities' in cfg:
-                v = int(cfg.get('player_cities') or 1)
-                # clamp to allowed range 1..8
-                v = max(1, min(8, v))
-                self.player_cities_spin.setValue(v)
-            if 'players' in cfg:
+            # load players / player_towns (new) or fallback to legacy keys
+            if 'player_towns' in cfg:
+                v = int(cfg.get('player_towns') or 1)
+            elif 'players' in cfg:
                 v = int(cfg.get('players') or 1)
-                # clamp to allowed range 1..8
-                v = max(1, min(8, v))
-                self.players_spin.setValue(v)
-            if 'neutral_cities' in cfg:
-                # clamp neutral to allowed total (MAX_TOTAL_TOWNS - 1 - player_cities)
-                pc = int(self.player_cities_spin.value())
-                allowed = max(0, MAX_TOTAL_TOWNS - 1 - pc)
+            elif 'player_cities' in cfg:
+                v = int(cfg.get('player_cities') or 1)
+            else:
+                v = 1
+            # clamp to allowed range 1..8
+            v = max(1, min(8, v))
+            self.players_spin.setValue(v)
+
+            # neutral towns: prefer new key 'neutral_towns', fallback to 'neutral_cities'
+            if 'neutral_towns' in cfg:
+                nv = int(cfg.get('neutral_towns') or 0)
+            else:
                 nv = int(cfg.get('neutral_cities') or 0)
-                nv = max(0, min(allowed, nv))
-                self.neutral_cities_spin.setValue(nv)
-                self.neutral_cities_spin.setMaximum(allowed)
+            # clamp neutral to allowed total (MAX_TOTAL_TOWNS- player_towns)
+            pc = int(self.players_spin.value())
+            allowed = max(0, MAX_TOTAL_TOWNS - pc)
+            nv = max(0, min(allowed, nv))
+            self.neutral_towns_spin.setValue(nv)
+            self.neutral_towns_spin.setMaximum(allowed)
             if 'difficulty' in cfg:
                 self.difficulty_spin.setValue(int(cfg.get('difficulty') or 0))
             if 'teams' in cfg:
@@ -1509,8 +1581,8 @@ class MapGeneratorGUI(QWidget):
                 terrain_values,
                 size=size_val,
                 players_count=int(self.players_spin.value()),
-                player_cities=int(self.player_cities_spin.value()),
-                neutral_cities=int(self.neutral_cities_spin.value()),
+                player_cities=int(self.players_spin.value()),
+                neutral_cities=int(self.neutral_towns_spin.value()),
                 difficulty=int(self.difficulty_spin.value()),
                 victory_condition_params=vc_params,
                 loss_condition_params=lc_params,
