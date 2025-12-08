@@ -8,6 +8,7 @@ from classes.Enums.LossConditions import LossConditions
 from classes.Enums.ResourceType import ResourceType
 from classes.Enums.VictoryConditions import VictoryConditions
 from classes.Map import Map
+from classes.Objects.Properties.TrivialOwnedObject import TrivialOwnedObject
 from classes.tile.Flags import Flags
 
 from classes.tile.Tile import RiverType, RoadType, TerrainType
@@ -170,6 +171,7 @@ def generate_voronoi_map(
                 )
             )
 
+    # STRATEGIC OBJECTS GENERATION
     total_regions = player_cities * 4 + neutral_cities  # 32 regiony (p?l)
     obj = ObjectTemplateHelper(tiles=tiles, number_of_players=players_count,
                                town_params=TownParams(player_cities, neutral_cities, 30, total_regions),
@@ -177,6 +179,7 @@ def generate_voronoi_map(
                                reserved_tiles=reserved_tiles, difficulty=difficulty)
     objects_templates, objects, city_field_mapping, players, occupied_tiles_excluding_landscape, occupied_tiles_excluding_actionable, actionable_tiles, towns_generated, heroes_generated, monsters_generated = obj.initData()
 
+    # ROADS AND SHIPYARDS GENERATION
     road_generator = RoadGenerator(size=size, terrain_map=terrain_map,
                                    entry_points=actionable_tiles,
                                    occupied_tiles_excluding_landscape=occupied_tiles_excluding_landscape,
@@ -192,6 +195,32 @@ def generate_voronoi_map(
             tiles[tile_index].road_sprite = road_sprite_val
             tiles[tile_index].flags.road_x = x_road_flip
             tiles[tile_index].flags.road_y = y_road_flip
+    
+    from classes.ObjectsTemplate import ObjectsTemplate
+    from classes.Objects.Objects import Objects
+    if road_generator.shipyard_positions:
+        print(f"\n=== PLACING {len(road_generator.shipyard_positions)} SHIPYARDS ===")
+        shipyard_template = ObjectsTemplate(
+            definition="AVXshyd0.def",
+            passability=[255, 255, 255, 255, 255, 31],
+            actionability=[0, 0, 0, 0, 0, 64],
+            allowed_landscapes=[255, 0],
+            landscape_group=[255, 0],
+            object_class=87,
+            object_subclass=0,
+            object_group=0,
+            is_ground=0
+        )
+        
+        for center_x, center_y in road_generator.shipyard_positions:
+            shipyard_x = center_x + 1
+            shipyard_y = center_y
+            obj.id += 1
+            shipyard_object = Objects(shipyard_x, shipyard_y, 0, obj.id, [], TrivialOwnedObject.create_default())
+            objects_templates.append(shipyard_template)
+            objects.append(shipyard_object)
+            obj.mark_object_tiles_as_occupied(shipyard_template, shipyard_x, shipyard_y, 0)
+            print(f"  Placed shipyard at ({shipyard_x}, {shipyard_y}) [center was ({center_x}, {center_y})]")
     
     # Wyswietl mapowanie miast do pol
     print("\n=== MAPOWANIE MIAST DO POL ===")
@@ -226,6 +255,8 @@ def generate_voronoi_map(
                 pass
             players.append(p)
 
+    # ADDITIONAL OBJECTS GENERATION (DECORATIVE + WATER BASED)
+    obj.generate_water_object()
     obj.generate_forests()
 
     return Map(

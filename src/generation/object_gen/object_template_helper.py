@@ -5,7 +5,6 @@ from binascii import a2b_hex
 from collections import deque
 from copy import copy
 from dataclasses import dataclass
-from importlib.resources.simple import TraversableReader
 from random import randint, choices, sample, random
 from math import sqrt
 
@@ -160,8 +159,6 @@ class ObjectTemplateHelper:
         self.generate_special_building()
         # warstwa 7 artefakty, zasoby i potwory
         self.generate_artifacts_resources_monsters()
-        # budowle na wodzie, shipyard, lighthouse
-        self.generate_water_object()
 
         return (self.objectTemplates, self.objects, self.city_field_mapping,
                 self.players, self.occupied_tiles_excluding_landscape, self.occupied_tiles_excluding_actionable, self.actionable_tiles, self.towns_generated, self.heroes_generated, self.monsters_generated)
