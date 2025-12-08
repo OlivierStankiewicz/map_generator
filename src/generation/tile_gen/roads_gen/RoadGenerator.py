@@ -33,12 +33,59 @@ class RoadGenerator:
         # self.entry_points: List[Tuple[int,int]] = []
         # grid marking of road tiles (RoadType or None)
         self.paths: List[List[RoadType | None]] = [[None for _ in range(self.width)] for _ in range(self.height)]
+        self.shipyard_positions: List[Tuple[int, int]] = []
 
     def in_bounds(self, x: int, y: int) -> bool:
         return 0 <= x < self.width and 0 <= y < self.height
 
     def is_walkable_cell(self, x: int, y: int) -> bool:
         return self.in_bounds(x, y) and (not self.occupied_tiles_excluding_actionable[y][x])
+    
+    def can_place_shipyard(self, center_x: int, center_y: int, path_tiles: set[Tuple[int, int]]) -> bool:
+        if not (1 <= center_x < self.width - 1 and 1 <= center_y < self.height - 1):
+            return False
+        
+        for dx in [-1, 0, 1]:
+            x = center_x + dx
+            y = center_y
+            if (x, y) not in path_tiles and self.occupied_tiles_excluding_landscape[y][x]:
+                return False
+        
+        has_water_access = False
+        for dx in [-1, 0, 1]:
+            x = center_x + dx
+            if self.in_bounds(x, center_y - 1):
+                if self.terrain_map[center_y - 1][x] == TerrainType.WATER:
+                    has_water_access = True
+                    break
+            if self.in_bounds(x, center_y + 1):
+                if self.terrain_map[center_y + 1][x] == TerrainType.WATER:
+                    has_water_access = True
+                    break
+        
+        return has_water_access
+    
+    def find_shipyard_placement(self, reference_x: int, reference_y: int, path_tiles: set[Tuple[int, int]], max_search_radius: int = 10) -> Optional[Tuple[int, int]]:
+        visited = set()
+        queue = [(reference_x, reference_y, 0)]
+        visited.add((reference_x, reference_y))
+        
+        while queue:
+            x, y, dist = queue.pop(0)
+            
+            if dist > max_search_radius:
+                break
+            
+            if self.can_place_shipyard(x, y, path_tiles):
+                return (x, y)
+            
+            for dx, dy in [(-1,0), (1,0), (0,-1), (0,1), (-1,-1), (-1,1), (1,-1), (1,1)]:
+                nx, ny = x + dx, y + dy
+                if self.in_bounds(nx, ny) and (nx, ny) not in visited:
+                    visited.add((nx, ny))
+                    queue.append((nx, ny, dist + 1))
+        
+        return None
     
     def _a_star_with_costs(self, start: Tuple[int,int], goal: Tuple[int,int], cost_map: List[List[float]]) -> List[Tuple[int,int]]:
         """A* search using a precomputed per-cell cost_map.
@@ -188,15 +235,46 @@ class RoadGenerator:
 
         # For each MST edge, compute a varied path and mark it in the grid
         for a, b in paths_endpoints:
-            # road_type = random.choice(list(RoadType))
-            road_type = RoadType.GRAVEL
+            road_type = random.choice(list(RoadType))
+            # road_type = RoadType.GRAVEL #! useful for testing, if you think a road didn't generate, use this!
             path = self.find_varied_path(a, b, attempts=6, noise=0.8, curvature_weight=0.5)
             print(f"Generated road path from {a} to {b}, path: {path}")
             if not path:
                 continue
-            for x, y in path:
+            
+            path_tiles = set(path)
+            
+            in_water_section = False
+            
+            for i, (x, y) in enumerate(path):
                 if self.is_walkable_cell(x, y):
                     self.occupied_tiles_excluding_landscape[y][x] = True
+                    
+                    current_is_water = self.terrain_map[y][x] == TerrainType.WATER
+                    
+                    if current_is_water and not in_water_section:
+                        if i > 0:
+                            prev_x, prev_y = path[i-1]
+                            if self.terrain_map[prev_y][prev_x] != TerrainType.WATER:
+                                shipyard_pos = self.find_shipyard_placement(prev_x, prev_y, path_tiles)
+                                if shipyard_pos:
+                                    if shipyard_pos not in self.shipyard_positions:
+                                        self.shipyard_positions.append(shipyard_pos)
+                                        # print(f"  Found shipyard placement at {shipyard_pos} for entering water from ({prev_x},{prev_y})")
+                                else:
+                                    print(f"  WARNING: Could not find shipyard placement near ({prev_x},{prev_y}) for water entry")
+                        in_water_section = True
+                    
+                    elif not current_is_water and in_water_section:
+                        shipyard_pos = self.find_shipyard_placement(x, y, path_tiles)
+                        if shipyard_pos:
+                            if shipyard_pos not in self.shipyard_positions:
+                                self.shipyard_positions.append(shipyard_pos)
+                                # print(f"  Found shipyard placement at {shipyard_pos} for exiting water at ({x},{y})")
+                        else:
+                            print(f"  WARNING: Could not find shipyard placement near ({x},{y}) for water exit")
+                        in_water_section = False
+                    
                     if self.terrain_map[y][x] in self.restricted_terrain:
                         self.paths[y][x] = RoadType.NONE
                     else: self.paths[y][x] = road_type

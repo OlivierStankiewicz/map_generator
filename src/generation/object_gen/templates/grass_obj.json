@@ -1,0 +1,1344 @@
+{
+  "def": "avlautr0.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [5, 0],
+  "object_class": 135, // IMPASSABLE_OAKTREES
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "avlautr1.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [5, 0],
+  "object_class": 135, // IMPASSABLE_OAKTREES
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLAUTR2.def",
+  "passability": [255, 255, 255, 255, 63, 159],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [5, 0],
+  "object_class": 135, // IMPASSABLE_OAKTREES
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLAUTR3.def",
+  "passability": [255, 255, 255, 255, 63, 159],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [5, 0],
+  "object_class": 135, // IMPASSABLE_OAKTREES
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLAUTR4.def",
+  "passability": [255, 255, 255, 255, 159, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [5, 0],
+  "object_class": 135, // IMPASSABLE_OAKTREES
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLAUTR5.def",
+  "passability": [255, 255, 255, 255, 159, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [5, 0],
+  "object_class": 135, // IMPASSABLE_OAKTREES
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLautr6.def",
+  "passability": [255, 255, 255, 159, 31, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [5, 0],
+  "object_class": 135, // IMPASSABLE_OAKTREES
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLautr7.def",
+  "passability": [255, 255, 255, 63, 31, 159],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [5, 0],
+  "object_class": 135, // IMPASSABLE_OAKTREES
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLct1g0.def",
+  "passability": [255, 255, 255, 255, 15, 31],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 118, // IMPASSABLE_CRATER
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 1,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLct2g0.def",
+  "passability": [255, 255, 255, 31, 31, 31],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 118, // IMPASSABLE_CRATER
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 1,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLct3g0.def",
+  "passability": [255, 255, 255, 255, 63, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 118, // IMPASSABLE_CRATER
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 1,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLct4g0.def",
+  "passability": [255, 255, 255, 255, 255, 255],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 118, // IMPASSABLE_CRATER
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 1,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLct5g0.def",
+  "passability": [255, 255, 255, 255, 255, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 118, // IMPASSABLE_CRATER
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 1,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLct6g0.def",
+  "passability": [255, 255, 255, 255, 255, 255],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 118, // IMPASSABLE_CRATER
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 1,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLctrg0.def",
+  "passability": [255, 255, 255, 255, 255, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 118, // IMPASSABLE_CRATER
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 1,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AvLdlog.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [37, 0],
+  "object_class": 130, // IMPASSABLE_LOG
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLf01g0.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 120, // IMPASSABLE_FLOWERS
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLf02g0.def",
+  "passability": [255, 255, 255, 255, 255, 31],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 120, // IMPASSABLE_FLOWERS
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLf03g0.def",
+  "passability": [255, 255, 255, 255, 255, 31],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 120, // IMPASSABLE_FLOWERS
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLf04g0.def",
+  "passability": [255, 255, 255, 255, 255, 31],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 120, // IMPASSABLE_FLOWERS
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLf05g0.def",
+  "passability": [255, 255, 255, 255, 255, 31],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 120, // IMPASSABLE_FLOWERS
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLf06g0.def",
+  "passability": [255, 255, 255, 255, 255, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 120, // IMPASSABLE_FLOWERS
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLf07g0.def",
+  "passability": [255, 255, 255, 255, 255, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 120, // IMPASSABLE_FLOWERS
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLf08g0.def",
+  "passability": [255, 255, 255, 255, 255, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 120, // IMPASSABLE_FLOWERS
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLf09g0.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 120, // IMPASSABLE_FLOWERS
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLf10g0.def",
+  "passability": [255, 255, 255, 255, 255, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 120, // IMPASSABLE_FLOWERS
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLf11g0.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 120, // IMPASSABLE_FLOWERS
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLf12g0.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 120, // IMPASSABLE_FLOWERS
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLholg0.def",
+  "passability": [255, 255, 255, 255, 255, 255],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 124, // PASSABLE_HOLE
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 1,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLlk1g0.def",
+  "passability": [255, 255, 255, 7, 7, 143],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 126, // IMPASSABLE_LAKE
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 1,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLlk2g0.def",
+  "passability": [255, 255, 255, 255, 15, 15],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 126, // IMPASSABLE_LAKE
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 1,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLlk3g0.def",
+  "passability": [255, 255, 255, 255, 255, 31],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 126, // IMPASSABLE_LAKE
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 1,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLmd1g0.def",
+  "passability": [255, 255, 255, 255, 255, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 133, // IMPASSABLE_MOUND
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLmd2g0.def",
+  "passability": [255, 255, 255, 255, 255, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 133, // IMPASSABLE_MOUND
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLmtgn0.def",
+  "passability": [255, 255, 255, 15, 7, 199],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 134, // IMPASSABLE_MOUNTAIN
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLmtgn1.def",
+  "passability": [255, 255, 255, 135, 7, 31],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 134, // IMPASSABLE_MOUNTAIN
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLmtgn2.def",
+  "passability": [255, 255, 255, 255, 31, 159],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 134, // IMPASSABLE_MOUNTAIN
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLmtgn3.def",
+  "passability": [255, 255, 255, 255, 31, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 134, // IMPASSABLE_MOUNTAIN
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLmtgn4.def",
+  "passability": [255, 255, 255, 255, 63, 159],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 134, // IMPASSABLE_MOUNTAIN
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLmtgn5.def",
+  "passability": [255, 255, 255, 255, 159, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 134, // IMPASSABLE_MOUNTAIN
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLmtgr1.def",
+  "passability": [255, 255, 255, 135, 7, 31],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 134, // IMPASSABLE_MOUNTAIN
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLmtgr2.def",
+  "passability": [255, 255, 255, 15, 7, 199],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 134, // IMPASSABLE_MOUNTAIN
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLmtgr3.def",
+  "passability": [255, 255, 255, 255, 31, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 134, // IMPASSABLE_MOUNTAIN
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLmtgr4.def",
+  "passability": [255, 255, 255, 255, 31, 159],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 134, // IMPASSABLE_MOUNTAIN
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLmtgr5.def",
+  "passability": [255, 255, 255, 255, 159, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 134, // IMPASSABLE_MOUNTAIN
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLmtgr6.def",
+  "passability": [255, 255, 255, 255, 63, 159],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 134, // IMPASSABLE_MOUNTAIN
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLoc1g0.def",
+  "passability": [255, 255, 255, 255, 255, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 136, // IMPASSABLE_OUTCROPPING
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 1,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLoc2g0.def",
+  "passability": [255, 255, 255, 255, 255, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 136, // IMPASSABLE_OUTCROPPING
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 1,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLoc3g0.def",
+  "passability": [255, 255, 255, 255, 255, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 136, // IMPASSABLE_OUTCROPPING
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 1,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLPNTR0.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [5, 0],
+  "object_class": 137, // IMPASSABLE_PINETREES
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLPNTR1.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [5, 0],
+  "object_class": 137, // IMPASSABLE_PINETREES
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLPNTR2.def",
+  "passability": [255, 255, 255, 255, 63, 159],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [5, 0],
+  "object_class": 137, // IMPASSABLE_PINETREES
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLPNTR3.def",
+  "passability": [255, 255, 255, 255, 63, 159],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [5, 0],
+  "object_class": 137, // IMPASSABLE_PINETREES
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLPNTR4.def",
+  "passability": [255, 255, 255, 255, 159, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [5, 0],
+  "object_class": 137, // IMPASSABLE_PINETREES
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLPNTR5.def",
+  "passability": [255, 255, 255, 255, 159, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [5, 0],
+  "object_class": 137, // IMPASSABLE_PINETREES
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLpntr6.def",
+  "passability": [255, 255, 255, 159, 31, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [5, 0],
+  "object_class": 137, // IMPASSABLE_PINETREES
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLpntr7.def",
+  "passability": [255, 255, 255, 63, 31, 159],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [5, 0],
+  "object_class": 137, // IMPASSABLE_PINETREES
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AvLRG01.def",
+  "passability": [255, 255, 255, 255, 255, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 147, // IMPASSABLE_ROCK
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AvLRG02.def",
+  "passability": [255, 255, 255, 255, 255, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 147, // IMPASSABLE_ROCK
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AvLRG03.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 147, // IMPASSABLE_ROCK
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AvLRG04.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 147, // IMPASSABLE_ROCK
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AvLRG05.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 147, // IMPASSABLE_ROCK
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AvLRG06.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 147, // IMPASSABLE_ROCK
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AvLRG07.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 147, // IMPASSABLE_ROCK
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AvLRG08.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 147, // IMPASSABLE_ROCK
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AvLRG09.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 147, // IMPASSABLE_ROCK
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AvLRG10.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 147, // IMPASSABLE_ROCK
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AvLRG11.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 147, // IMPASSABLE_ROCK
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLsh1g0.def",
+  "passability": [255, 255, 255, 255, 255, 31],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 150, // IMPASSABLE_SHRUB
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLsh2g0.def",
+  "passability": [255, 255, 255, 255, 255, 31],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 150, // IMPASSABLE_SHRUB
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLsh3g0.def",
+  "passability": [255, 255, 255, 255, 255, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 150, // IMPASSABLE_SHRUB
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLsh4g0.def",
+  "passability": [255, 255, 255, 255, 255, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 150, // IMPASSABLE_SHRUB
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLsh5g0.def",
+  "passability": [255, 255, 255, 255, 255, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 150, // IMPASSABLE_SHRUB
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLsh6g0.def",
+  "passability": [255, 255, 255, 255, 255, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 150, // IMPASSABLE_SHRUB
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLSPTR0.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [20, 0],
+  "object_class": 135, // IMPASSABLE_OAKTREES
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLSPTR1.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [20, 0],
+  "object_class": 135, // IMPASSABLE_OAKTREES
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLSPTR2.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [20, 0],
+  "object_class": 135, // IMPASSABLE_OAKTREES
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLSPTR3.def",
+  "passability": [255, 255, 255, 255, 63, 159],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [20, 0],
+  "object_class": 135, // IMPASSABLE_OAKTREES
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLSPTR4.def",
+  "passability": [255, 255, 255, 255, 63, 159],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [20, 0],
+  "object_class": 135, // IMPASSABLE_OAKTREES
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLSPTR5.def",
+  "passability": [255, 255, 255, 255, 159, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [20, 0],
+  "object_class": 135, // IMPASSABLE_OAKTREES
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLSPTR6.def",
+  "passability": [255, 255, 255, 255, 159, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [20, 0],
+  "object_class": 135, // IMPASSABLE_OAKTREES
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLsptr7.def",
+  "passability": [255, 255, 255, 159, 31, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [20, 0],
+  "object_class": 135, // IMPASSABLE_OAKTREES
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLsptr8.def",
+  "passability": [255, 255, 255, 63, 31, 159],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [20, 0],
+  "object_class": 135, // IMPASSABLE_OAKTREES
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AvLStm1.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [37, 0],
+  "object_class": 153, // IMPASSABLE_STUMP
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AvLStm2.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [37, 0],
+  "object_class": 153, // IMPASSABLE_STUMP
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AvLStm3.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [37, 0],
+  "object_class": 153, // IMPASSABLE_STUMP
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLswmp0.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [20, 0],
+  "object_class": 155, // IMPASSABLE_TREES
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLswmp1.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [20, 0],
+  "object_class": 155, // IMPASSABLE_TREES
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLswmp4.def",
+  "passability": [255, 255, 255, 255, 159, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [20, 0],
+  "object_class": 155, // IMPASSABLE_TREES
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLswmp6.def",
+  "passability": [255, 255, 255, 159, 31, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [20, 0],
+  "object_class": 155, // IMPASSABLE_TREES
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLswmp7.def",
+  "passability": [255, 255, 255, 63, 31, 159],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [20, 0],
+  "object_class": 155, // IMPASSABLE_TREES
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLtr1d0.def",
+  "passability": [255, 255, 255, 255, 255, 191],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [21, 0],
+  "object_class": 155, // IMPASSABLE_TREES
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLtr2d0.def",
+  "passability": [255, 255, 255, 255, 255, 191],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [21, 0],
+  "object_class": 155, // IMPASSABLE_TREES
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLtr3d0.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [21, 0],
+  "object_class": 155, // IMPASSABLE_TREES
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "avlxgr01.def",
+  "passability": [255, 255, 255, 255, 255, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 208, // IMPASSABLE_GRASSHILLS
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "avlxgr02.def",
+  "passability": [255, 255, 255, 255, 255, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 208, // IMPASSABLE_GRASSHILLS
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "avlxgr03.def",
+  "passability": [255, 255, 255, 255, 255, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 208, // IMPASSABLE_GRASSHILLS
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "avlxgr04.def",
+  "passability": [255, 255, 255, 255, 63, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 208, // IMPASSABLE_GRASSHILLS
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "avlxgr05.def",
+  "passability": [255, 255, 255, 255, 255, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 208, // IMPASSABLE_GRASSHILLS
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "avlxgr06.def",
+  "passability": [255, 255, 255, 255, 63, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 208, // IMPASSABLE_GRASSHILLS
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "avlxgr07.def",
+  "passability": [255, 255, 255, 255, 255, 31],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 208, // IMPASSABLE_GRASSHILLS
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "avlxgr08.def",
+  "passability": [255, 255, 255, 255, 255, 31],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 208, // IMPASSABLE_GRASSHILLS
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "avlxgr09.def",
+  "passability": [255, 255, 255, 255, 255, 31],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 208, // IMPASSABLE_GRASSHILLS
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "avlxgr10.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 208, // IMPASSABLE_GRASSHILLS
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "avlxgr11.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 208, // IMPASSABLE_GRASSHILLS
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "avlxgr12.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [4, 0],
+  "object_class": 208, // IMPASSABLE_GRASSHILLS
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLwlw10.def",
+  "passability": [255, 255, 255, 255, 255, 31],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [20, 0],
+  "object_class": 155, // IMPASSABLE_TREES
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLwlw20.def",
+  "passability": [255, 255, 255, 255, 255, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [20, 0],
+  "object_class": 155, // IMPASSABLE_TREES
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLwlw30.def",
+  "passability": [255, 255, 255, 255, 255, 127],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [20, 0],
+  "object_class": 155, // IMPASSABLE_TREES
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLswmp2.def",
+  "passability": [255, 255, 255, 255, 159, 63],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [20, 0],
+  "object_class": 155, // IMPASSABLE_TREES
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLswmp3.def",
+  "passability": [255, 255, 255, 255, 63, 159],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [20, 0],
+  "object_class": 155, // IMPASSABLE_TREES
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+},
+{
+  "def": "AVLswmp5.def",
+  "passability": [255, 255, 255, 255, 63, 159],
+  "actionability": [0, 0, 0, 0, 0, 0],
+  "allowed_landscapes": [255, 1],
+  "landscape_group": [20, 0],
+  "object_class": 155, // IMPASSABLE_TREES
+  "object_subclass": 0,
+  "object_group": 0, // Terrain
+  "is_ground": 0,
+  "unknown": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+}

@@ -6,7 +6,7 @@ class Quest:
         return cls(
             type= 0,
             details= Details.create_default(),
-            deadline= 0,
+            deadline= 4294967295,
             proposal= '',
             progress= '',
             completion= ''
