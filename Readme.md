@@ -19,6 +19,7 @@ map_generator/
 │   ├── classes/                   # All classes used to represent map objects
 │   ├── generation/                # Map generation logic
 │   ├── test_scripts/              # Scripts for testing map generation and conversion
+│   ├── ui/                        # Classes and functions used by the gui app
 │   ├── gui.py                     # GUI version of the app
 │   └── main.py                    # Main script for map generation
 │
