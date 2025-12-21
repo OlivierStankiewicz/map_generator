@@ -107,13 +107,24 @@ def json_to_objects(data):
         objects.append(obj)
     return objects
 
+def get_base_path():
+    """Get the base path for resources, works for both dev and PyInstaller."""
+    if getattr(sys, 'frozen', False):
+        # Running in a PyInstaller bundle
+        return sys._MEIPASS
+    else:
+        # Running in normal Python environment
+        return os.path.dirname(os.path.abspath(__file__))
+
 def read_object_templates_from_json(filename):
-    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f"templates\\{filename}.json")
+    base_path = get_base_path()
+    path = os.path.join(base_path, f"templates\\{filename}.json")
     data = load_json_with_comments(path)
     return json_to_object_template(data)
 
 def read_object_from_json(filename):
-    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f"templates\\objects\\{filename}.json")
+    base_path = get_base_path()
+    path = os.path.join(base_path, f"templates\\objects\\{filename}.json")
     data = load_json_with_comments(path)
     return json_to_objects(data)
 

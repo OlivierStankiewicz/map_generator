@@ -6,3 +6,6 @@ generated_maps/
 .venv/
 venv/
 mapgen_configs/
+build/
+MapGenerator.spec
+dist/

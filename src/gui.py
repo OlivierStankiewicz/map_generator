@@ -32,7 +32,17 @@ def _qt_message_handler(msg_type, context, message):
 QtCore.qInstallMessageHandler(_qt_message_handler)
 
 H3MTXT_NAME = "h3mtxt.exe"
-_PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+
+def get_project_root():
+    """Get project root, works for both dev and PyInstaller."""
+    if getattr(sys, 'frozen', False):
+        # Running in PyInstaller bundle - look next to the .exe
+        return os.path.dirname(sys.executable)
+    else:
+        # Running in normal Python - one level up from src
+        return os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+
+_PROJECT_ROOT = get_project_root()
 H3MTXT_DEFAULT_PATH = os.path.join(_PROJECT_ROOT, H3MTXT_NAME)
 
 MAX_TOTAL_TOWNS = 48
@@ -828,8 +838,14 @@ class MapGeneratorGUI(QWidget):
 
         img_label = QLabel()
         img_label.setAlignment(QtCore.Qt.AlignCenter)
-        gui_dir = os.path.join(os.path.dirname(__file__), 'ui')
-        img_path = os.path.join(gui_dir, 'nasza_mapka.png')
+        
+        # Check if running in PyInstaller bundle
+        if getattr(sys, 'frozen', False):
+            base_path = sys._MEIPASS
+        else:
+            base_path = os.path.dirname(__file__)
+        
+        img_path = os.path.join(base_path, 'ui', 'nasza_mapka.png')
         if not os.path.exists(img_path):
             img_path = None
 
@@ -1825,11 +1841,19 @@ class MapGeneratorGUI(QWidget):
         try:
             self.status_label.setText("Converting JSON to h3m...")
             QApplication.processEvents()
+            
+            # Find h3mtxt.exe - check if it exists
             converter = H3MTXT_DEFAULT_PATH
-
+            if not os.path.exists(converter):
+                # If bundled with PyInstaller, check in the temp extraction directory
+                if getattr(sys, 'frozen', False):
+                    converter = os.path.join(sys._MEIPASS, H3MTXT_NAME)
+                
             print(f"Using converter: {converter}")
-            if not converter:
-                QMessageBox.information(self, "Saved JSON", f"JSON saved to {json_file_path}. Converter not found; .h3m not created.")
+            print(f"Converter exists: {os.path.exists(converter)}")
+            
+            if not os.path.exists(converter):
+                QMessageBox.information(self, "Saved JSON", f"JSON saved to {json_file_path}. Converter not found at {converter}; .h3m not created.")
                 self.status_label.setText("Saved JSON (no converter)")
             else:
                 converter_dir = os.path.dirname(converter) or os.getcwd()
